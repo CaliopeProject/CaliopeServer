@@ -3,15 +3,20 @@
 
 import os
 import json
+import uuid
+import hashlib
 
 from gevent.pywsgi import WSGIServer
 from geventwebsocket.handler import WebSocketHandler
 from flask import Flask, render_template, session, request, Response
 from gevent import sleep
-from gevent import monkey; monkey.patch_all()
-import uuid
-import hashlib
+from gevent import monkey;
 
+from odisea.CaliopeStorage import CaliopeUser
+from neomodel import DoesNotExist
+
+#: Gevent to patch all TCP/IP connections
+monkey.patch_all()
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 app.debug = True
@@ -33,30 +38,36 @@ def login_with_uuid(session, message):
 
 
 def login_with_name(session, message):
-
-    if 'user' in session:
-        result = {
-                 'result': 'ok', 
-                 'msg': "already logged", 
-                 'uuid': session['session_uuid']
-                 }
-    elif message['login'] == "admin" and message['password'] ==  hashlib.sha256("admin").hexdigest():
-        session['user'] = message['login']
-        session['session_uuid'] = str(uuid.uuid4())
-        storage_sessions[session['session_uuid']] = {}
-        storage_sessions[session['session_uuid']]['user'] = session['user']
-        response_msg = "new session:" + message['login'] \
-                       + " uuid=" + session['session_uuid']
-        result = {
-                 'result': 'ok', 
-                 'msg': response_msg, 
-                 'uuid' : session['session_uuid']
-                 }
-    else:
+    """
+    Default username after run CaliopeTestNode is
+    user:password
+    """
+    try:
+        if 'user' in session:
+            result = {
+                     'result': 'ok',
+                     'msg': "already logged",
+                     'uuid': session['session_uuid']
+                     }
+        user = CaliopeUser.index.get(username=message['login'])
+        print user.password, message['password']
+        if user.password == message['password']:
+            session['user'] = message['login']
+            session['session_uuid'] = str(uuid.uuid4()).decode('utf-8')
+            storage_sessions[session['session_uuid']] = {}
+            storage_sessions[session['session_uuid']]['user'] = session['user']
+            response_msg = "new session:" + message['login'] \
+                           + " uuid=" + session['session_uuid']
+            result = {
+                     'result': 'ok',
+                     'msg': response_msg,
+                     'uuid': session['session_uuid']
+                     }
+    except DoesNotExist:
         response_msg = "login error" + "(" + message['login'] + ", " \
                        + message['password'] + ")"
         result = {
-                 'result': 'error', 
+                 'result': 'error',
                  'msg': response_msg
                  }
 
@@ -65,9 +76,9 @@ def login_with_name(session, message):
 
 def process_message(session, message):
     res = {
-           'result': 'error', 
-           'msg': 'error', 
-          }  
+           'result': 'error',
+           'msg': 'error',
+          }
     if "cmd" not in message:
         pass
     elif message['cmd'] == 'authentication':
@@ -90,20 +101,19 @@ def api():
             message = ws.receive()
             if message is None:
                 break
-            
             message = json.loads(message)
             res = process_message(session, message)
             ws.send(json.dumps(res))
 
 
-@app.route('/rest', methods = ['POST'])
+@app.route('/rest', methods=['POST'])
 def rest():
     print request.json
-    message=request.json
+    message = request.json
     res = process_message(session, message)
     return json.dumps(res)
 
-    
+
 def event_stream():
     count = 0
     while True:
