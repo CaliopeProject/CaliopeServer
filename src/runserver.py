@@ -8,7 +8,9 @@ import hashlib
 
 from gevent.pywsgi import WSGIServer
 from geventwebsocket.handler import WebSocketHandler
-from flask import Flask, render_template, session, request, Response
+from flask import Flask, render_template, session, request, Response, abort
+from jinja2 import TemplateNotFound
+
 from gevent import sleep
 from gevent import monkey;
 
@@ -17,13 +19,15 @@ from neomodel import DoesNotExist
 
 #: Gevent to patch all TCP/IP connections
 monkey.patch_all()
+
+
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 app.debug = True
 
 storage_sessions = {}
 
-
+        
 def login_with_uuid(session, message):
     session_uuid = message['uuid']
     if session_uuid in storage_sessions:
@@ -92,6 +96,15 @@ def process_message(session, message):
 def index():
         return render_template('index.html')
 
+
+@app.route('/<page>')
+def show(page):
+    print "page="+page
+    try:
+        return render_template('%s.html' % page)
+    except TemplateNotFound:
+        abort(404)
+        
 
 @app.route('/api')
 def api():
