@@ -32,12 +32,14 @@ import json
 from gevent.pywsgi import WSGIServer
 from geventwebsocket.handler import WebSocketHandler
 from flask import Flask, render_template, send_from_directory
+from jinja2 import FileSystemLoader 
 
 from gevent import monkey;
 
 from api.views import api
 from server_notifications.views import server_notifications
-from jinja2 import FileSystemLoader 
+from file_uploader.views import file_uploader
+
 
 #: Gevent to patch all TCP/IP connections
 monkey.patch_all()
@@ -48,6 +50,7 @@ app.debug = True
 
 app.register_blueprint(api, url_prefix='/api')
 app.register_blueprint(server_notifications, url_prefix='/event_from_server')
+app.register_blueprint(file_uploader, url_prefix='/upload')
 
 
 @app.route('/')
@@ -91,7 +94,7 @@ def main(argv):
         
         print "=============================="
         print "listening at port : " + str(port)
-        print "dir static base : " + app.config['STATIC_PATH']
+        print "static base directory : " + app.config['STATIC_PATH']
         print "=============================="
 
         app.jinja_loader = FileSystemLoader(os.path.join(".", app.config['STATIC_PATH'])) 
