@@ -2,10 +2,10 @@
 '''
 Created on 27/06/2013
 
-@author: Andrés Felipe Calderón andres.calderon@correlibre.org
-@license:  GNU AFFERO GENERAL PUBLIC LICENSE
+@authors: Andrés Felipe Calderón andres.calderon@correlibre.org
+          Sebastián Ortiz V. neoecos@gmail.com
 
-Caliope Storage is the base of Caliope's Framework
+Caliope Server is the web server of Caliope's Framework
 Copyright (C) 2013 Fundación Correlibre
 
     This program is free software: you can redistribute it and/or modify
@@ -21,14 +21,17 @@ Copyright (C) 2013 Fundación Correlibre
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
+#system, and standard library
 import json
 import uuid
-import hashlib
 
-from flask import Flask, render_template, session, request, Response, abort, Blueprint
+#flask
+from flask import (Flask, render_template, session, request, Response, abort,
+                   Blueprint)
 
-from odisea.CaliopeStorage import CaliopeUser
+#CaliopeStorage
 from neomodel import DoesNotExist
+from odisea.CaliopeStorage import CaliopeUser
 
 api = Blueprint('api', __name__, template_folder='pages')
 

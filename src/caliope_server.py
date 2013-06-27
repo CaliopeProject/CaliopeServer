@@ -2,7 +2,7 @@
 # -*- encoding: utf-8 -*-
 '''
 @authors: Andrés Felipe Calderón andres.calderon@correlibre.org
-          Sebastián Ortiz neoecos@gmail.com
+          Sebastián Ortiz V. neoecos@gmail.com
 
 @license:  GNU AFFERO GENERAL PUBLIC LICENSE
 

@@ -1,7 +1,5 @@
 # -*- encoding: utf-8 -*-
 '''
-Created on 27/06/2013
-
 @author: Andrés Felipe Calderón andres.calderon@correlibre.org
 @license:  GNU AFFERO GENERAL PUBLIC LICENSE
 
@@ -21,11 +19,19 @@ Copyright (C) 2013 Fundación Correlibre
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
+#system, and standard library
 import os
-from flask import Blueprint, Response
+
+#gevent
 from gevent import sleep
 
-server_notifications = Blueprint('server_notifications', __name__, template_folder='')
+#flask
+from flask import Blueprint, Response
+
+
+server_notifications = Blueprint('server_notifications', __name__,
+                                 template_folder='')
+
 
 def event_stream():
     count = 0
@@ -36,7 +42,8 @@ def event_stream():
         f.close()
         # yield 'data: %s\n\n' % count
         count += 1
-        
+
+
 @server_notifications.route('/')
 def sse_request():
     return Response(

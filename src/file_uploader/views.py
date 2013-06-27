@@ -21,15 +21,21 @@ Copyright (C) 2013 Fundación Correlibre
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
+#system, and standard library
 import os
 import json
-from flask import Flask, request, redirect, url_for, Blueprint
+
+#flask
 from werkzeug import secure_filename
+from flask import Flask, request, redirect, url_for, Blueprint
+
 
 file_uploader = Blueprint('file_uploader', __name__, template_folder='')
 
+#: TODO: This items should be came from configuration files.
 UPLOAD_FOLDER="/tmp"
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+
 
 @file_uploader.route('/', methods=['GET', 'POST'])
 def uploader():
@@ -38,7 +44,7 @@ def uploader():
         #print " |file=" + file
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            print " |filename=" + filename 
+            print " |filename=" + filename
             file.save(os.path.join(UPLOAD_FOLDER, filename))
             result = {
                      'result': 'ok',
@@ -54,7 +60,8 @@ def uploader():
          <input type=submit value=Upload>
     </form>
     '''
-    
+
+
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
