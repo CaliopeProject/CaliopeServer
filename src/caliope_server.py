@@ -31,7 +31,7 @@ import json
 
 from gevent.pywsgi import WSGIServer
 from geventwebsocket.handler import WebSocketHandler
-from flask import Flask, render_template
+from flask import Flask, render_template, send_from_directory
 
 from gevent import monkey;
 
@@ -54,6 +54,10 @@ app.register_blueprint(server_notifications, url_prefix='/event_from_server')
 def index():
         return render_template('index.html')
     
+@app.route('/<path:filename>')
+def custom_static(filename):
+    return send_from_directory(app.config['STATIC_PATH'], filename)
+
 def main(argv): 
     configfile = "conf/caliope_server.json"
     try:
@@ -81,16 +85,16 @@ def main(argv):
             port = 8000
 
         if 'static' in config:
-            base = config['static']
+            app.config['STATIC_PATH'] = config['static']
         else:
-            base = "."
+            app.config['STATIC_PATH'] = "."
         
         print "=============================="
         print "listening at port : " + str(port)
-        print "dir static base : " + base
+        print "dir static base : " + app.config['STATIC_PATH']
         print "=============================="
 
-        app.jinja_loader = FileSystemLoader(os.path.join(".", base)) 
+        app.jinja_loader = FileSystemLoader(os.path.join(".", app.config['STATIC_PATH'])) 
         http_server = WSGIServer(('', port), app, handler_class=WebSocketHandler)
         http_server.serve_forever()
 
