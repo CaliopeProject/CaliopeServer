@@ -2,6 +2,8 @@
 # coding: utf-8
 
 import os
+import getopt
+import sys
 import json
 import uuid
 import hashlib
@@ -144,7 +146,44 @@ def sse_request():
         event_stream(),
         mimetype='text/event-stream')
 
+def main(argv): 
+    configfile = "conf/caliope_server.json"
+    try:
+        opts, args = getopt.getopt(argv, "hc:", ["help", "config="])
+    except getopt.GetoptError:
+      print 'runserver.py -c <configfile>'
+      sys.exit(2)
+      
+    for opt, arg in opts:
+        if opt == '-h':
+            print 'runserver.py -c <configfile>'
+            sys.exit()
+        elif opt in ("-c", "--config"):
+            configfile = arg
+        
+    try:
+        config = json.loads(open(configfile).read())
+    except IOError:
+        print "Error: can\'t find config file or read data"
+    else:
+        
+        if 'port' in config:
+            port = int(config['port'])
+        else:
+            port = 8000
+
+        if 'base' in config:
+            base = config['base']
+        else:
+            base = "."
+            
+        print "listening at port : " + str(port)
+        print "dir base : " + base
+        
+        http_server = WSGIServer(('', port), app, handler_class=WebSocketHandler)
+        http_server.serve_forever()
 
 if __name__ == '__main__':
-    http_server = WSGIServer(('', 8000), app, handler_class=WebSocketHandler)
-    http_server.serve_forever()
+    main(sys.argv[1:])
+    
+
