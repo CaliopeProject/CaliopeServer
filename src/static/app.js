@@ -1,6 +1,6 @@
 $(function() {
 	if ("WebSocket" in window) {
-		ws = new WebSocket("ws://" + document.domain + ":8000/api");
+		ws = new WebSocket("ws://" + document.domain + ":" + location.port + "/api/ws");
 		ws.onmessage = function(msg) {
 			var message = JSON.parse(msg.data);
 			$("p#log").append(message.msg + '<hr />');
