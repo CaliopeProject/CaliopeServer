@@ -37,6 +37,7 @@ from gevent import monkey;
 
 from api.views import api
 from server_notifications.views import server_notifications
+from jinja2 import FileSystemLoader 
 
 #: Gevent to patch all TCP/IP connections
 monkey.patch_all()
@@ -47,6 +48,7 @@ app.debug = True
 
 app.register_blueprint(api, url_prefix='/api')
 app.register_blueprint(server_notifications, url_prefix='/event_from_server')
+
 
 @app.route('/')
 def index():
@@ -87,8 +89,8 @@ def main(argv):
         print "listening at port : " + str(port)
         print "dir static base : " + base
         print "=============================="
-        print app.url_map
-        print "=============================="
+
+        app.jinja_loader = FileSystemLoader(os.path.join(".", base)) 
         http_server = WSGIServer(('', port), app, handler_class=WebSocketHandler)
         http_server.serve_forever()
 

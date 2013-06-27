@@ -1,0 +1,4 @@
+{
+  "port": "9000",
+  "static": "/home/afc/devel/caliope_webui_beowulf/app"
+}
