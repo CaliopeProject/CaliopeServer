@@ -3,7 +3,9 @@
 '''
 Created on 27/06/2013
 
-@author: Andrés Felipe Calderón andres.calderon@correlibre.org
+@authors: Andrés Felipe Calderón andres.calderon@correlibre.org
+          Sebastián Ortiz neoecos@gmail.com
+
 @license:  GNU AFFERO GENERAL PUBLIC LICENSE
 
 Caliope Storage is the base of Caliope's Framework
@@ -38,7 +40,6 @@ from server_notifications.views import server_notifications
 
 #: Gevent to patch all TCP/IP connections
 monkey.patch_all()
-
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -81,11 +82,13 @@ def main(argv):
             base = config['static']
         else:
             base = "."
-            
+        
+        print "=============================="
         print "listening at port : " + str(port)
         print "dir static base : " + base
-       
+        print "=============================="
         print app.url_map
+        print "=============================="
         http_server = WSGIServer(('', port), app, handler_class=WebSocketHandler)
         http_server.serve_forever()
 
