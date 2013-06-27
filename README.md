@@ -5,11 +5,13 @@ This is the server for Caliope Framework
 
 Requeriments
 ==========
-  *  libevent-dev
-  *  fortunes (For testing propouses)
+  * neo4j database
+  * libevent-dev
+  * fortunes
 
 How to?
 ==========
+install and run neo4j
 run `sudo apt-get install libevent-dev fortunes`
-run `pip install -r pip-dependencies.txt` to install requirements, and start the server with `python runserver.py` then browse `http://localhost:8000/` to try out.
+run `pip install -r pip-dependencies.txt` to install requirements and start the server with `python runserver.py` then browse `http://localhost:8000/` to try out.
 
