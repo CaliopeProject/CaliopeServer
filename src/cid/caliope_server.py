@@ -57,7 +57,8 @@ app.register_blueprint(file_uploader, url_prefix='/upload')
 
 @app.route('/')
 def index():
-        return render_template('index.html')
+    return send_from_directory(app.config['STATIC_PATH'], 'index.html')
+    #return render_template('index.html')
 
 
 @app.route('/<path:filename>')
@@ -68,7 +69,7 @@ def custom_static(filename):
 def main(argv):
     configfile = "conf/caliope_server.json"
     try:
-        opts, args = getopt.getopt(argv, "hc:", ["help", "config="])
+        opts, args = getopt.getopt(argv, "hc:", ["help", "config="]) # @UnusedVariable
     except getopt.GetoptError:
         print 'caliope_server.py -c <configfile>'
         sys.exit(2)
