@@ -40,15 +40,13 @@ ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 @file_uploader.route('/', methods=['GET', 'POST'])
 def uploader():
     if request.method == 'POST':
-        file = request.files['file']
-        #print " |file=" + file
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            print " |filename=" + filename
-            file.save(os.path.join(UPLOAD_FOLDER, filename))
+        for uploaded_file in request.files.getlist('files[]'):
+            if uploaded_file and allowed_file(uploaded_file.filename):
+                filename = secure_filename(uploaded_file.filename)
+                uploaded_file.save(os.path.join(UPLOAD_FOLDER, filename))
             result = {
                      'result': 'ok',
-                     'msg': "file saved"
+                     'msg': "uploaded_file saved"
                      }
             return json.dumps(result)
     return '''
@@ -56,7 +54,7 @@ def uploader():
     <title>Upload new File</title>
     <h1>Upload new File</h1>
     <form action="" method=post enctype=multipart/form-data>
-      <p><input type=file name=file>
+      <p><input type=uploaded_file name=uploaded_file>
          <input type=submit value=Upload>
     </form>
     '''
