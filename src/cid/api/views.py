@@ -26,8 +26,13 @@ import json
 import uuid
 
 #flask
+from flask.globals import current_app
 from flask import (Flask, render_template, session, request, Response, abort,
                    Blueprint)
+
+
+#Apps import
+from cid.utils.fileUtils import loadJSONFromFile
 
 #CaliopeStorage
 from neomodel import DoesNotExist
@@ -52,6 +57,8 @@ def index():
         ws = request.environ['wsgi.websocket']
         while True:
             message = ws.receive()
+            if current_app.debug:
+                print message
             if message is None:
                 break
             try:
@@ -112,16 +119,54 @@ def login_with_name(session, message):
     return result
 
 
+def getFormTemplate(message):
+    result = {
+           'result': 'error',
+           'msg': 'error',
+          }
+    if 'formId' in message:
+        formId = message['formId']
+        if 'domain' in message:
+            domain = message['domain']
+        else:
+            domain = ''
+        if 'version' in message:
+            version = message['version']
+        else:
+            version = ''
+    if formId == 'login':
+        result = {
+                  'result': 'ok',
+                  'data': loadJSONFromFile(current_app.config['FORM_TEMPLATES']
+                                           + "/" + "login.json"),
+                  }
+    else:
+        if current_app.debug:
+            print result
+    return result
+
+
 def process_message(session, message):
     res = {
            'result': 'error',
            'msg': 'error',
           }
-    if "cmd" not in message:
-        pass
-    elif message['cmd'] == 'authentication':
-        res = login_with_name(session, message)
-    elif message['cmd'] == 'authentication_with_uuid':
-        res = login_with_uuid(session, message)
-    res = json.dumps(res)
+    if "cmd" not in message or 'callback_id' not in message:
+        cmd = ''
+        callback_id = '0'
+    else:
+        cmd = message['cmd']
+        callback_id = message['callback_id']
+        if current_app.debug:
+            print "Received a command: " + cmd + " with args "\
+                  + message.__repr__()
+        if cmd == 'authentication':
+            res = login_with_name(session, message)
+        elif cmd == 'authentication_with_uuid':
+            res = login_with_uuid(session, message)
+        elif cmd == 'getFormTemplate':
+            res = getFormTemplate(message)
+    res['callback_id'] = callback_id
+    if current_app.debug:
+        print res
     return res
