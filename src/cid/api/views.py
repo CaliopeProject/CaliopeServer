@@ -120,4 +120,5 @@ def process_message(session, message):
         res = login_with_name(session, message)
     elif message['cmd'] == 'authentication_with_uuid':
         res = login_with_uuid(session, message)
+    print json.dumps(res)
     return res
