@@ -1,4 +1,5 @@
 {
   "port": "9000",
-  "static": "templates"
+  "static": "templates",
+  "formTemplates" : "templates/formTemplates"
 }
