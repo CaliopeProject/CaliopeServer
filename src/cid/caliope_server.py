@@ -94,10 +94,15 @@ def main(argv):
             app.config['STATIC_PATH'] = config['static']
         else:
             app.config['STATIC_PATH'] = "."
-        print "=============================="
+        if 'formTemplates' in config:
+            app.config['FORM_TEMPLATES'] = config['formTemplates']
+        else:
+            app.config['FORM_TEMPLATES'] = app.config['STATIC_PATH']
+        print "=" * 80
         print "listening at port : " + str(port)
         print "static base directory : " + app.config['STATIC_PATH']
-        print "=============================="
+        print "forms template directory : " + app.config['FORM_TEMPLATES']
+        print "=" * 80
 
         app.jinja_loader = FileSystemLoader(os.path.join(".",
                                             app.config['STATIC_PATH']))
