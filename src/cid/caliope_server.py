@@ -69,7 +69,7 @@ def custom_static(filename):
 def main(argv):
     configfile = "conf/caliope_server.json"
     try:
-        opts, args = getopt.getopt(argv, "hc:", ["help", "config="]) # @UnusedVariable
+        opts, args = getopt.getopt(argv, "hc:", ["help", "config="])
     except getopt.GetoptError:
         print 'caliope_server.py -c <configfile>'
         sys.exit(2)
