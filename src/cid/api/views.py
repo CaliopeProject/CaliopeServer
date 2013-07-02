@@ -54,8 +54,11 @@ def index():
             message = ws.receive()
             if message is None:
                 break
-            message = json.loads(message)
-            res = process_message(session, message)
+            try:
+                messageJSON = json.loads(message)
+            except ValueError:
+                messageJSON = json.loads('{}')
+            res = process_message(session, messageJSON)
             ws.send(json.dumps(res))
 
 
@@ -120,5 +123,5 @@ def process_message(session, message):
         res = login_with_name(session, message)
     elif message['cmd'] == 'authentication_with_uuid':
         res = login_with_uuid(session, message)
-    print json.dumps(res)
+    res = json.dumps(res)
     return res
