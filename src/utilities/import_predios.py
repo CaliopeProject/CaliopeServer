@@ -24,69 +24,49 @@ Copyright (C) 2013 Fundación Correlibre
 '''
 #system, and standard library
 import os
+import sys
+
+from datetime import datetime
+
+#Model imports
+from cid.model import RegistroPredioCatastroTipo2
 
 
-#CaliopeStorage
-import odisea.CaliopeStorage 
-from odisea.CaliopeStorage import CaliopeNode
-
-from neomodel import DoesNotExist
-from neomodel.contrib import SemiStructuredNode
-from neomodel.properties import (BooleanProperty,
-                                 DateTimeProperty,
-                                 FloatProperty,
-                                 IntegerProperty,
-                                 StringProperty)
+def main(argv):
+    if len(argv) is not 1:
+        print "Usage import_predios.py predios.csv"
+    else:
+        print "Preparing to import from "
+        print argv
+        importPredios(argv[0])
 
 
-class CatastroReg2(CaliopeNode):
-    sector  = StringProperty(index=True, unique_index=True)
-    chip = StringProperty(index=True, unique_index=True)
-    cedula_catastral = StringProperty(index=True, unique_index=True)
-    matricula = StringProperty(index=True, unique_index=True)
+def parseDateFromTwoDigitYear(dumbdate):
+    day, month, year = map(int, dumbdate.split('/'))
+    if year <= 13:
+        year += 2000
+    else:
+        year += 1900
+    return datetime(year, month, day)
 
-    #sector  = StringProperty(index=True)
-    #id_lote = StringProperty()
-    #chip = StringProperty(index=True)
-    #codigo_direccion = StringProperty()
-    #direccion_actual = StringProperty()
-    #cedula_catastral = StringProperty(index=True)
-    #matricula = StringProperty(index=True)
-    #escritura = StringProperty()
-    #notaria = IntegerProperty()
-    #fecha_documento = DateTimeProperty()
-    #area_terreno = FloatProperty()
-    #area_construida = FloatProperty()
-    #tipo_propiedad = IntegerProperty()
-    #codigo_destino = IntegerProperty()
-    #clase_predio = StringProperty()
-    #codigo_estrato = IntegerProperty()
-    #zona_fisica_geoeconomica = StringProperty()
-    
-    
-ins = open( "Predios.csv", "r" )
-line = ins.readline()
-header = map(lambda f: f.strip('\n').strip('"').lower(), line.split('|'))
 
-print header
+def importPredios(filename):
+    ins = open(filename, "r")
+    line = ins.readline()
+    header = map(lambda f: f.strip('\n').strip('"').lower(), line.split('|'))
+    print header
+    for line in ins:
+        fields = map(lambda f: f.strip('\n').strip('"'), line.replace(',', '.').split('|'))
+        node = RegistroPredioCatastroTipo2()
+        record = {}
+        map(lambda k, v: record.update({k: v}), header, fields)
+        map(lambda k, v: setattr(node, k, v), header, fields)
+        node.area_terreno = float(record["area_terreno"])
+        node.area_construida = float(record["area_construida"])
+        node.fecha_documento = parseDateFromTwoDigitYear(record['fecha_documento'])
+        node.save()
 
-for line in ins:
-    
-    fields = map(lambda f: f.strip('\n').strip('"'), line.replace(',','.').split('|'))
 
-    node = CatastroReg2()
+if __name__ == '__main__':
+    main(sys.argv[1:])
 
-    record = {}
-    map(lambda k, v: record.update({k: v}), header, fields)
-    
-    
-
-    map(lambda k, v: setattr(node,k, v), header, fields)
-
-    node.area_terreno = float(record["area_terreno"])
-    node.area_construida = float(record["area_terreno"])
-
-    
-    node.save()
-    
-    
