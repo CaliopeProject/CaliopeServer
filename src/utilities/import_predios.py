@@ -28,6 +28,10 @@ import sys
 
 from datetime import datetime
 
+#neomodel exceptiosn
+
+from neomodel.exception import UniqueProperty
+
 #Model imports
 from cid.model.SIIMModel import RegistroPredioCatastroTipo2
 
@@ -55,7 +59,7 @@ def importPredios(filename):
     line = ins.readline()
     header = map(lambda f: f.strip('\n').strip('"').lower(), line.split('|'))
     print header
-    for line in ins:
+    for line in ins:    
         fields = map(lambda f: f.strip('\n').strip('"'),
                      line.replace(',', '.').split('|'))
         node = RegistroPredioCatastroTipo2()
@@ -63,7 +67,10 @@ def importPredios(filename):
         map(lambda k, v: record.update({k: v}), header, fields)
         map(lambda k, v: setattr(node, k, v), header, fields)
         node.fecha_documento = parseDateFromTwoDigitYear(record['fecha_documento'])
-        node.save()
+        try:
+            node.save()
+        except UniqueProperty:
+            print record
 
 
 if __name__ == '__main__':
