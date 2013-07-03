@@ -61,8 +61,6 @@ def importPredios(filename):
         record = {}
         map(lambda k, v: record.update({k: v}), header, fields)
         map(lambda k, v: setattr(node, k, v), header, fields)
-        node.area_terreno = float(record["area_terreno"])
-        node.area_construida = float(record["area_construida"])
         node.fecha_documento = parseDateFromTwoDigitYear(record['fecha_documento'])
         node.save()
 
