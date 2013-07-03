@@ -32,7 +32,7 @@ from flask import (Flask, render_template, session, request, Response, abort,
 
 
 #Apps import
-from cid.utils.fileUtils import loadJSONFromFile
+from utils.fileUtils import loadJSONFromFile
 
 #CaliopeStorage
 from neomodel import DoesNotExist
