@@ -29,7 +29,6 @@ import json
 #: TODO: Pending to  implement
 def loadJSONFromFile(path):
     try:
-        #: TODO use utils.readJSONFromFile
         json_data = json.loads(open(path).read())
     except IOError:
         json_data = {}
