@@ -3,3 +3,4 @@ flask-login==0.2.3
 gevent==0.13.8
 gevent-websocket==0.3.6
 Caliope_Odisea==0.0.2dev
+PyExecJS==1.0.4
