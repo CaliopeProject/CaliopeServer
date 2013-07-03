@@ -42,6 +42,8 @@ from api.views import api
 from server_notifications.views import server_notifications
 from file_uploader.views import file_uploader
 
+#Apps import
+from utils.fileUtils import loadJSONFromFile
 
 #: Gevent to patch all TCP/IP connections
 monkey.patch_all()
@@ -80,34 +82,30 @@ def main(argv):
             sys.exit()
         elif opt in ("-c", "--config"):
             configfile = arg
-    try:
-        config = json.loads(open(configfile).read())
-    except IOError:
-        print "Error: can\'t find config file or read data"
+    config = loadJSONFromFile(configfile)
+    if 'port' in config:
+        port = int(config['port'])
     else:
-        if 'port' in config:
-            port = int(config['port'])
-        else:
-            port = 8000
+        port = 8000
 
-        if 'static' in config:
-            app.config['STATIC_PATH'] = config['static']
-        else:
-            app.config['STATIC_PATH'] = "."
-        if 'formTemplates' in config:
-            app.config['FORM_TEMPLATES'] = config['formTemplates']
-        else:
-            app.config['FORM_TEMPLATES'] = app.config['STATIC_PATH']
-        print "=" * 80
-        print "listening at port : " + str(port)
-        print "static base directory : " + app.config['STATIC_PATH']
-        print "forms template directory : " + app.config['FORM_TEMPLATES']
-        print "=" * 80
+    if 'static' in config:
+        app.config['STATIC_PATH'] = config['static']
+    else:
+        app.config['STATIC_PATH'] = "."
+    if 'formTemplates' in config:
+        app.config['FORM_TEMPLATES'] = config['formTemplates']
+    else:
+        app.config['FORM_TEMPLATES'] = app.config['STATIC_PATH']
+    print "=" * 80
+    print "listening at port : " + str(port)
+    print "static base directory : " + app.config['STATIC_PATH']
+    print "forms template directory : " + app.config['FORM_TEMPLATES']
+    print "=" * 80
 
-        app.jinja_loader = FileSystemLoader(os.path.join(".",
-                                            app.config['STATIC_PATH']))
-        http_server = WSGIServer(('', port), app, handler_class=WebSocketHandler)  # @IgnorePep8
-        http_server.serve_forever()
+    app.jinja_loader = FileSystemLoader(os.path.join(".",
+                                        app.config['STATIC_PATH']))
+    http_server = WSGIServer(('', port), app, handler_class=WebSocketHandler)  # @IgnorePep8
+    http_server.serve_forever()
 
 
 if __name__ == '__main__':
