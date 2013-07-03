@@ -29,7 +29,7 @@ import sys
 from datetime import datetime
 
 #Model imports
-from cid.model import RegistroPredioCatastroTipo2
+from cid.model.SIIMModel import RegistroPredioCatastroTipo2
 
 
 def main(argv):
@@ -56,7 +56,8 @@ def importPredios(filename):
     header = map(lambda f: f.strip('\n').strip('"').lower(), line.split('|'))
     print header
     for line in ins:
-        fields = map(lambda f: f.strip('\n').strip('"'), line.replace(',', '.').split('|'))
+        fields = map(lambda f: f.strip('\n').strip('"'),
+                     line.replace(',', '.').split('|'))
         node = RegistroPredioCatastroTipo2()
         record = {}
         map(lambda k, v: record.update({k: v}), header, fields)
