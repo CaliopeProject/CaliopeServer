@@ -24,7 +24,9 @@ Copyright (C) 2013 Fundación Correlibre
 #system, and standard library
 import json
 import uuid
-
+from functools import wraps
+from datetime import datetime
+from pytz import utc
 #flask
 from flask.globals import current_app
 from flask import (Flask, render_template, session, request, Response, abort,
@@ -69,6 +71,34 @@ def index():
             ws.send(json.dumps(res))
 
 
+#: TODO: Not implemented yet
+def _is_fresh_session(session):
+    return True
+
+
+def login_error(user=False, fresh=False):
+    msg = u''
+    if user:
+        msg += u"Session don't exists for user"
+    if fresh:
+        msg += u"Session is not fresh"
+    res = {
+           'result': 'ok',
+           'msg': msg,
+          }
+    return res
+
+
+def login_required(func):
+    @wraps(func)
+    def decorated_view(*args, **kwargs):
+        if 'user' in session:
+            return func(*args, **kwargs)
+        else:
+            return login_error(user=True)
+    return decorated_view
+
+
 def login_with_uuid(session, message):
     session_uuid = message['uuid']
     if session_uuid in storage_sessions:
@@ -95,12 +125,15 @@ def login_with_name(session, message):
                      'uuid': session['session_uuid']
                      }
         user = CaliopeUser.index.get(username=message['login'])
+        if current_app.debug:
+            print user.uuid, user.username, user.password
         print user.password, message['password']
         if user.password == message['password']:
             session['user'] = message['login']
             session['session_uuid'] = str(uuid.uuid4()).decode('utf-8')
             storage_sessions[session['session_uuid']] = {}
             storage_sessions[session['session_uuid']]['user'] = session['user']
+            storage_sessions[session['session_uuid']]['start_time'] = datetime.now(utc)
             response_msg = "new session:" + message['login'] \
                            + " uuid=" + session['session_uuid']
             result = {
@@ -119,7 +152,17 @@ def login_with_name(session, message):
     return result
 
 
-def getFormTemplate(message):
+@login_required
+def getPrivilegedForm(session, message):
+    result = {
+                  'result': 'ok',
+                  'data': loadJSONFromFile(current_app.config["FORM_TEMPLATES"]
+                                           + "/" + message["formId"] + ".json")
+                  }
+    return result
+
+#:TODO Implement the method with different version and domain options.
+def getFormTemplate(session, message):
     result = {
            'result': 'error',
            'msg': 'error',
@@ -140,9 +183,8 @@ def getFormTemplate(message):
                   'data': loadJSONFromFile(current_app.config['FORM_TEMPLATES']
                                            + "/" + "login.json"),
                   }
-    else:
-        if current_app.debug:
-            print result
+    elif formId == 'proyectomtv':
+        result = getPrivilegedForm(session, message)
     return result
 
 
@@ -165,7 +207,7 @@ def process_message(session, message):
         elif cmd == 'authentication_with_uuid':
             res = login_with_uuid(session, message)
         elif cmd == 'getFormTemplate':
-            res = getFormTemplate(message)
+            res = getFormTemplate(session, message)
     res['callback_id'] = callback_id
     if current_app.debug:
         print res
