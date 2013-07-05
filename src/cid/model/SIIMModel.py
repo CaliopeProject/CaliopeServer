@@ -40,8 +40,8 @@ class RegistroPredioCatastroTipo2(CaliopeNode):
     sector = StringProperty(unique_index=True)
     chip = StringProperty(unique_index=True)
     cedula_catastral = StringProperty(unique_index=True)
-    matricula = StringProperty(unique_index=True)
     #: All other
+    matricula = StringProperty()
     id_lote = StringProperty()
     codigo_direccion = StringProperty()
     direccion_actual = StringProperty()
