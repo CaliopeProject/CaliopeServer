@@ -1,4 +1,5 @@
 {
   "port": "9000",
-  "static": "/home/afc/devel/caliope_webui_beowulf/app"
+  "static": "../../../caliope_webui_beowulf/app",
+  "formTemplates": "templates/formTemplates"
 }
