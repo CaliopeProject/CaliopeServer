@@ -42,7 +42,7 @@ def main(argv):
     else:
         print "Preparing to import from "
         print argv
-        importPredios(argv[0])
+        importPrediosWithCreateMethod(argv[0])
 
 
 def parseDateFromTwoDigitYear(dumbdate):
@@ -72,6 +72,41 @@ def importPredios(filename):
         except UniqueProperty:
             print record
 
+
+def importPrediosWithCreateMethod(filename):
+    ins = open(filename, "r")
+    line = ins.readline()
+    header = map(lambda f: f.strip('\n').strip('"').lower(), line.split('|'))
+    print header
+    batchList = []
+    for line in ins:
+        fields = map(lambda f: f.strip('\n').strip('"'),
+                     line.replace(',', '.').split('|'))
+        record = {}
+        map(lambda k, v: record.update({k: v}), header, fields)
+        record['fecha_documento'] = parseDateFromTwoDigitYear(record['fecha_documento'])
+        batchList.append(record)
+        if len(batchList) == 12:
+            try:
+                RegistroPredioCatastroTipo2.create(batchList[0],
+                                                   batchList[1],
+                                                   batchList[2],
+                                                   batchList[3],
+                                                   batchList[4],
+                                                   batchList[5],
+                                                   batchList[6],
+                                                   batchList[7],
+                                                   batchList[8],
+                                                   batchList[9],
+                                                   batchList[10],
+                                                   batchList[11])
+                batchList = []
+            except UniqueProperty:
+                print "Error in"
+                print batchList
+    for lastRecord in batchList:
+        RegistroPredioCatastroTipo2.create(lastRecord)
+    print "No more todo"
 
 if __name__ == '__main__':
     main(sys.argv[1:])
