@@ -1,34 +1,28 @@
 {
-    "html" :
-    [
-        {
-            "type" : "p",
-            "html" : "You must login"
-        },
-        {
-            "type" : "div",
-            "class" : "leftside",            
-            "html" : 
-            [ 
-            {           
-                "name" : "username",
-                "id" : "txt-username",
-                "caption" : "Username2",
-                "type" : "text",
-                "placeholder" : "E.g. user@example.com"
-            }
-                ]
-        },
-        {
-        "type" : "div",
-        "class" : "leftside",
-        "html" : 
-        [
-            {
-                "name" : "password",
-                "caption" : "Password",
-                "type" : "password"
-            }
-        ]}
-        ]         
+   "ng-controller":"LoginCtrl",
+   "html":[
+      {
+         "type":"p",
+         "html":"Login"
+      },
+      {
+         "name":"login.id",
+         "id":"txt-id",
+         "caption":"Usuario",
+         "type":"text",
+         "ng-model":"login.username"
+      },
+      {
+         "name":"login.password",
+         "caption":"Password",
+         "type":"password",
+         "ng-model":"login.password"
+      },
+      {
+         "type":"button",
+         "ng-click":"authenticate(login)",
+         "name":"login.login",
+         "html":"Login"
+      }
+   ]
 }
