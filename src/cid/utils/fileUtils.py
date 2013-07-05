@@ -26,7 +26,6 @@ import sys
 import json
 
 
-#: TODO: Pending to  implement
 def loadJSONFromFile(path):
     try:
         json_data = json.loads(open(path).read())
