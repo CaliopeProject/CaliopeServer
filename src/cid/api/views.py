@@ -130,7 +130,9 @@ def login_with_name(session, message):
             result = {
                      'result': 'ok',
                      'msg': "already logged",
-                     'uuid': session['session_uuid']
+                     'data' : {
+                              'uuid': session['session_uuid']
+                              }
                      }
         user = CaliopeUser.index.get(username=message['login'])
         if current_app.debug:
@@ -147,14 +149,17 @@ def login_with_name(session, message):
             result = {
                      'result': 'ok',
                      'msg': response_msg,
-                     'uuid': session['session_uuid']
+                     'data': {
+                             'uuid': session['session_uuid']
+                             }
                      }
     except DoesNotExist:
         response_msg = "login error" + "(" + message['login'] + ", " \
                        + message['password'] + ")"
         result = {
                  'result': 'error',
-                 'msg': response_msg
+                 'msg': response_msg,
+                 'data' : {}
                  }
 
     return result
