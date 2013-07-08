@@ -99,6 +99,14 @@ def login_required(func):
     return decorated_view
 
 
+def event_logging(func):
+    @wraps(func)
+    def decorated_logging(*args, **kwargs):
+        print "log: %s" % (args,)
+        return func(*args, **kwargs)
+    return decorated_logging
+
+
 def login_with_uuid(session, message):
     session_uuid = message['uuid']
     if session_uuid in storage_sessions:
@@ -151,7 +159,6 @@ def login_with_name(session, message):
 
     return result
 
-
 @login_required
 def getPrivilegedForm(session, message):
     result = {
@@ -161,6 +168,7 @@ def getPrivilegedForm(session, message):
                   }
     return result
 
+@event_logging
 #:TODO Implement the method with different version and domain options.
 def getFormTemplate(session, message):
     result = {
