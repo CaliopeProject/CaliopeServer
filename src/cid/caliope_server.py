@@ -33,6 +33,7 @@ from gevent.pywsgi import WSGIServer
 from geventwebsocket.handler import WebSocketHandler
 from gevent import monkey
 
+
 #flask
 from flask import Flask, render_template, send_from_directory
 from jinja2 import FileSystemLoader
@@ -51,6 +52,9 @@ monkey.patch_all()
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 app.debug = True
+#To enable use of pydebuger
+app.use_debbuger = False
+app.use_reloader = False
 
 app.register_blueprint(api, url_prefix='/api')
 app.register_blueprint(server_notifications, url_prefix='/event_from_server')
@@ -104,6 +108,10 @@ def main(argv):
 
     app.jinja_loader = FileSystemLoader(os.path.join(".",
                                         app.config['STATIC_PATH']))
+    run_server(port)
+
+
+def run_server(port):
     http_server = WSGIServer(('', port), app, handler_class=WebSocketHandler)  # @IgnorePep8
     http_server.serve_forever()
 
