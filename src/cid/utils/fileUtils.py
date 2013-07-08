@@ -24,16 +24,17 @@ Copyright (C) 2013 Infometrika
 import os
 import sys
 import json
+import re
 
-
-def loadJSONFromFile(path):
+def loadJSONFromFile(filename):
     try:
-        json_data = json.loads(open(path).read())
+        json_data = json.loads(re.sub("(?:/\\*(?:[^*]|(?:\\*+[^*/]))*\\*+/)|(?://.*)", 
+                                      '', open(filename).read(), re.MULTILINE) )
     except IOError:
         json_data = {}
         print "Error: can\'t find file or read data"
     except ValueError:
         json_data = {}
-        print "Error, is not a JSON" + path
+        print "Error, is not a JSON" + filename
     else:
         return json_data
