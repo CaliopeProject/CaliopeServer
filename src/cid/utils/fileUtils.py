@@ -26,10 +26,12 @@ import sys
 import json
 import re
 
+
 def loadJSONFromFile(filename):
     try:
-        json_data = json.loads(re.sub("(?:/\\*(?:[^*]|(?:\\*+[^*/]))*\\*+/)|(?://.*)", 
-                                      '', open(filename).read(), re.MULTILINE) )
+        json_data = re.sub("(?:/\\*(?:[^*]|(?:\\*+[^*/]))*\\*+/)",
+                           '', open(filename).read(), re.MULTILINE)
+        json_data = json.loads(json_data)
     except IOError:
         json_data = {}
         print "Error: can\'t find file or read data"
