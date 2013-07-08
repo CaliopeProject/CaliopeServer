@@ -66,6 +66,7 @@ def main(argv):
     _init_flask_app()
     config_file = _parseCommandArguments(argv)
     _configureServer(config_file)
+    _configure_logger("conf/logger.json")
     _run_server()
 
 
@@ -119,10 +120,10 @@ def _configureServer(config_file):
         app.debug = True if config['server']['debug'] == 'True' else False
     else:
         app.debug = False
-    _configure_logger(config['logger'])
 
 
-def _configure_logger(config):
+def _configure_logger(config_file):
+    config = loadJSONFromFile(config_file)
     from logging.config import dictConfig
     dictConfig(config)
 

@@ -2,51 +2,8 @@
     "server": {
         "addres":"0.0.0.0",
         "port": "9000",
-        "debug": "False",
+        "debug": "True",
         "static": "templates",
         "formTemplates": "templates/formTemplates"
-    },
-    /*Use the logger.config.dictConfig format from
-     http://docs.python.org/dev/library/logging.config.html#logging-config-dictschema
-     */
-    "logger": {
-        "version": 1,
-        "handlers": {
-            "console": {
-                "class": "logging.StreamHandler",
-                "formatter": "detailed",
-                "stream": "ext://sys.stdout"
-            },
-            "file": {
-                "class": "logging.handlers.RotatingFileHandler",
-                "formatter": "detailed",
-                "filename": "../log/siim2.log",
-                "maxBytes": 1024,
-                "backupCount": 3
-            }
-        },
-        "formatters": {
-            "basic": {
-                "format": "%(asctime)s %(levelname)-8s %(message)s"
-            },
-            "detailed": {
-                "format": "%(asctime)s %(module)-17s line:%(lineno)-4d %(levelname)-8s %(message)s"
-            },
-            "email": {
-                "format": "Timestamp: %(asctime)s\nModule: %(module)s\nLine: %(lineno)d\nMessage: %(message)s"
-            }
-        },
-        "loggers": {
-            "develop": {
-               "level": "DEBUG",
-                "handlers": ["console"]
-            },
-            "production": {
-                "level": "DEBUG",
-                "handlers": ["file"]
-            }
-        }
-
     }
-
 }
