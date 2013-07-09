@@ -36,7 +36,8 @@ from gevent import monkey
 
 
 #flask
-from flask import Flask, render_template, send_from_directory
+from flask import Flask
+from flask.helpers import safe_join
 
 #Blueprints
 from api.views import api
@@ -53,13 +54,13 @@ app = Flask(__name__)
 @app.route('/')
 def index():
 
-    return send_from_memory(os.path.join(app.config['STATIC_PATH'], 'index.html'))
+    return send_from_memory(safe_join(app.config['STATIC_PATH'], 'index.html'))
     #return render_template('index.html')
 
 
 @app.route('/<path:filename>')
 def custom_static(filename):
-    return send_from_memory(os.path.join(app.config['STATIC_PATH'],filename))
+    return send_from_memory(safe_join(app.config['STATIC_PATH'], filename))
 
 
 def main(argv):
