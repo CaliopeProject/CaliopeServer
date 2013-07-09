@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
-'''
+"""
 @authors: Andrés Felipe Calderón andres.calderon@correlibre.org
           Sebastián Ortiz V. neoecos@gmail.com
 
@@ -21,21 +21,23 @@ Copyright (C) 2013 Fundación Correlibre
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-'''
+"""
 #system, and standard library
 import os
 import getopt
 import sys
-import json
+import logging
+from logging import getLogger
 
 #gevent
 from gevent.pywsgi import WSGIServer
 from geventwebsocket.handler import WebSocketHandler
 from gevent import monkey
 
+
 #flask
-from flask import Flask, render_template, send_from_directory
-from jinja2 import FileSystemLoader
+from flask import Flask
+from flask.helpers import safe_join
 
 #Blueprints
 from api.views import api
@@ -43,33 +45,47 @@ from server_notifications.views import server_notifications
 from file_uploader.views import file_uploader
 
 #Apps import
-from utils.fileUtils import loadJSONFromFile
+from utils.fileUtils import loadJSONFromFile, send_from_memory, Gzip
 
 #: Gevent to patch all TCP/IP connections
 monkey.patch_all()
-
 app = Flask(__name__)
-app.secret_key = os.urandom(24)
-app.debug = True
-
-app.register_blueprint(api, url_prefix='/api')
-app.register_blueprint(server_notifications, url_prefix='/event_from_server')
-app.register_blueprint(file_uploader, url_prefix='/upload')
-
 
 @app.route('/')
 def index():
-    return send_from_directory(app.config['STATIC_PATH'], 'index.html')
+
+    return send_from_memory(safe_join(app.config['STATIC_PATH'], 'index.html'))
     #return render_template('index.html')
 
 
 @app.route('/<path:filename>')
 def custom_static(filename):
-    return send_from_directory(app.config['STATIC_PATH'], filename)
+    return send_from_memory(safe_join(app.config['STATIC_PATH'], filename))
 
 
 def main(argv):
-    configfile = "conf/caliope_server.json"
+    _init_flask_app()
+    config_file = _parseCommandArguments(argv)
+    _configureServer(config_file)
+    _configure_logger("conf/logger.json")
+    _run_server()
+
+
+def _init_flask_app():
+    app.secret_key = os.urandom(24)
+    #: Disable internal debugger
+    app.use_debbuger = False
+    app.use_reloader = False
+    #: Register Blueprints
+    app.register_blueprint(api, url_prefix='/api')
+    app.register_blueprint(server_notifications, url_prefix='/event_from_server')
+    app.register_blueprint(file_uploader, url_prefix='/upload')
+    #: load gzip compressor
+    gzip = Gzip(app)
+
+
+def _parseCommandArguments(argv):
+    config_file = "conf/caliope_server.json"
     try:
         opts, args = getopt.getopt(argv, "hc:", ["help", "config="])
     except getopt.GetoptError:
@@ -81,32 +97,52 @@ def main(argv):
             print 'caliope_server.py -c <configfile>'
             sys.exit()
         elif opt in ("-c", "--config"):
-            configfile = arg
-    config = loadJSONFromFile(configfile)
-    if 'port' in config:
-        port = int(config['port'])
-    else:
-        port = 8000
+            config_file = arg
+    return config_file
 
-    if 'static' in config:
-        app.config['STATIC_PATH'] = config['static']
+
+def _configureServer(config_file):
+    config = loadJSONFromFile(config_file)
+    if 'address' in config['server']:
+        app.config['address'] = config['server']['address']
+    else:
+        app.config['address'] = 'localhost'
+    if 'port' in config['server']:
+        app.config['port'] = int(config['server']['port'])
+    else:
+        app.config['port'] = 8000
+    if 'static' in config['server']:
+        app.config['STATIC_PATH'] = config['server']['static']
     else:
         app.config['STATIC_PATH'] = "."
-    if 'formTemplates' in config:
-        app.config['FORM_TEMPLATES'] = config['formTemplates']
+    if 'formTemplates' in config['server']:
+        app.config['FORM_TEMPLATES'] = config['server']['formTemplates']
     else:
         app.config['FORM_TEMPLATES'] = app.config['STATIC_PATH']
-    print "=" * 80
-    print "listening at port : " + str(port)
-    print "static base directory : " + app.config['STATIC_PATH']
-    print "forms template directory : " + app.config['FORM_TEMPLATES']
-    print "=" * 80
+    if 'debug' in config['server']:
+        app.debug = True if config['server']['debug'] == 'True' else False
+    else:
+        app.debug = False
 
-    app.jinja_loader = FileSystemLoader(os.path.join(".",
-                                        app.config['STATIC_PATH']))
-    http_server = WSGIServer(('', port), app, handler_class=WebSocketHandler)  # @IgnorePep8
+
+def _configure_logger(config_file):
+    config = loadJSONFromFile(config_file)
+    from logging.config import dictConfig
+    dictConfig(config)
+
+
+def _run_server():
+    if not app.debug:
+        logger = logging.getLogger("production")
+    else:
+        logger = logging.getLogger("develop")
+    logger.info("Starting server on: " + app.config['address']+ ":" + str(app.config['port']))
+    logger.info("Static Base Directory: " + app.config['STATIC_PATH'])
+    logger.info("Forms Template Directory : " + app.config['FORM_TEMPLATES'])
+    http_server = WSGIServer((app.config['address'], app.config['port']), app, handler_class=WebSocketHandler)  # @IgnorePep8
     http_server.serve_forever()
 
 
 if __name__ == '__main__':
+    #: Start the application
     main(sys.argv[1:])

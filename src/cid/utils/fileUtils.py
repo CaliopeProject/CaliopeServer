@@ -24,16 +24,81 @@ Copyright (C) 2013 Infometrika
 import os
 import sys
 import json
+import re
+import mimetypes
+import gzip
+import StringIO
+
+#flask
+from flask import request, current_app
+
+#werkezug
+from werkzeug.datastructures import Headers
+from werkzeug.wsgi import wrap_file
+from werkzeug.exceptions import NotFound
 
 
-def loadJSONFromFile(path):
+
+
+def loadJSONFromFile(filename):
     try:
-        json_data = json.loads(open(path).read())
+        json_data = re.sub("(?:/\\*(?:[^*]|(?:\\*+[^*/]))*\\*+/)",
+                           '', open(filename).read(), re.MULTILINE)
+        json_data = json.loads(json_data)
     except IOError:
         json_data = {}
         print "Error: can\'t find file or read data"
     except ValueError:
         json_data = {}
-        print "Error, is not a JSON" + path
+        print "Error, is not a JSON" + filename
     else:
         return json_data
+
+
+def send_from_memory(filename):
+    """
+
+    :param filename: Name of the file to be loaded.
+    """
+    if not os.path.isfile(filename):
+        raise NotFound()
+    if filename is not None:
+        if not os.path.isabs(filename):
+            filename = os.path.join(current_app.root_path, filename)
+    mimetype = mimetypes.guess_type(filename)[0]
+    if mimetype is None:
+        mimetype = 'application/octet-stream'
+    file = open(filename, 'rb')
+    data = wrap_file(request.environ, file)
+    headers = Headers()
+    rv = current_app.response_class(data, mimetype=mimetype, headers=headers,
+                                    direct_passthrough=False)
+    return rv
+
+#From
+#https://github.com/elasticsales/Flask-gzip/blob/master/flask_gzip.py
+class Gzip(object):
+    def __init__(self, app, compress_level=6, minimum_size=500):
+        self.app = app
+        self.compress_level = compress_level
+        self.minimum_size = minimum_size
+        self.app.after_request(self.after_request)
+
+    def after_request(self, response):
+        accept_encoding = request.headers.get('Accept-Encoding', '')
+
+        if 'gzip' not in accept_encoding.lower():
+            return response
+
+        if (200 > response.status_code >= 300) or len(response.data) < self.minimum_size or 'Content-Encoding' in response.headers:
+            return response
+
+        gzip_buffer = StringIO.StringIO()
+        gzip_file = gzip.GzipFile(mode='wb', compresslevel=self.compress_level, fileobj=gzip_buffer)
+        gzip_file.write(response.data)
+        gzip_file.close()
+        response.data = gzip_buffer.getvalue()
+        response.headers['Content-Encoding'] = 'gzip'
+        response.headers['Content-Length'] = len(response.data)
+
+        return response
