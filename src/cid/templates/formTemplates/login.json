@@ -1,27 +1,21 @@
 {
-   "ng-controller":"LoginCtrl",
+   "name" : "login",
    "html":[
       {
-         "type":"p",
-         "html":"Login"
-      },
-      {
-         "name":"login.id",
+         "name":"username",
          "id":"txt-id",
          "caption":"Usuario",
-         "type":"text",
-         "ng-model":"login.username"
+         "type":"text"
       },
       {
-         "name":"login.password",
+         "name":"password",
          "caption":"Password",
-         "type":"password",
-         "ng-model":"login.password"
+         "type":"password"
       },
       {
          "type":"button",
          "ng-click":"authenticate(login)",
-         "name":"login.login",
+         "name":"authenticate",
          "html":"Login"
       }
    ]
