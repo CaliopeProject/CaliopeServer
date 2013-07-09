@@ -35,6 +35,7 @@ from flask import request, current_app
 #werkezug
 from werkzeug.datastructures import Headers
 from werkzeug.wsgi import wrap_file
+from werkzeug.exceptions import NotFound
 
 
 
@@ -59,6 +60,8 @@ def send_from_memory(filename):
 
     :param filename: Name of the file to be loaded.
     """
+    if not os.path.isfile(filename):
+        raise NotFound()
     if filename is not None:
         if not os.path.isabs(filename):
             filename = os.path.join(current_app.root_path, filename)
