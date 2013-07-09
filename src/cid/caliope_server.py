@@ -37,7 +37,6 @@ from gevent import monkey
 
 #flask
 from flask import Flask, render_template, send_from_directory
-from jinja2 import FileSystemLoader
 
 #Blueprints
 from api.views import api
@@ -45,7 +44,7 @@ from server_notifications.views import server_notifications
 from file_uploader.views import file_uploader
 
 #Apps import
-from utils.fileUtils import loadJSONFromFile
+from utils.fileUtils import loadJSONFromFile, send_from_memory, Gzip
 
 #: Gevent to patch all TCP/IP connections
 monkey.patch_all()
@@ -53,13 +52,14 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return send_from_directory(app.config['STATIC_PATH'], 'index.html')
+
+    return send_from_memory(os.path.join(app.config['STATIC_PATH'], 'index.html'))
     #return render_template('index.html')
 
 
 @app.route('/<path:filename>')
 def custom_static(filename):
-    return send_from_directory(app.config['STATIC_PATH'], filename)
+    return send_from_memory(os.path.join(app.config['STATIC_PATH'],filename))
 
 
 def main(argv):
@@ -79,6 +79,8 @@ def _init_flask_app():
     app.register_blueprint(api, url_prefix='/api')
     app.register_blueprint(server_notifications, url_prefix='/event_from_server')
     app.register_blueprint(file_uploader, url_prefix='/upload')
+    #: load gzip compressor
+    gzip = Gzip(app)
 
 
 def _parseCommandArguments(argv):
