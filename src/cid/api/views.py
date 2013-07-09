@@ -164,7 +164,7 @@ def login_with_name(session, message):
 
     return result
 
-@login_required
+#@login_required
 def getPrivilegedForm(session, message):
     result = {
                   'result': 'ok',
