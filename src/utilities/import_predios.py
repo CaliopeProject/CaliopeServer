@@ -33,7 +33,7 @@ from datetime import datetime
 from neomodel.exception import UniqueProperty
 
 #Model imports
-from cid.model.SIIMModel import RegistroPredioCatastroTipo2
+from model.SIIMModel import RegistroPredioCatastroTipo2
 
 
 def main(argv):
@@ -86,26 +86,14 @@ def importPrediosWithCreateMethod(filename):
         map(lambda k, v: record.update({k: v}), header, fields)
         record['fecha_documento'] = parseDateFromTwoDigitYear(record['fecha_documento'])
         batchList.append(record)
-        if len(batchList) == 12:
+        if len(batchList) == 300:
             try:
-                RegistroPredioCatastroTipo2.create(batchList[0],
-                                                   batchList[1],
-                                                   batchList[2],
-                                                   batchList[3],
-                                                   batchList[4],
-                                                   batchList[5],
-                                                   batchList[6],
-                                                   batchList[7],
-                                                   batchList[8],
-                                                   batchList[9],
-                                                   batchList[10],
-                                                   batchList[11])
+                RegistroPredioCatastroTipo2.create(*batchList)
                 batchList = []
             except UniqueProperty:
                 print "Error in"
                 print batchList
-    for lastRecord in batchList:
-        RegistroPredioCatastroTipo2.create(lastRecord)
+    RegistroPredioCatastroTipo2.create(*batchList)
     print "No more todo"
 
 if __name__ == '__main__':
