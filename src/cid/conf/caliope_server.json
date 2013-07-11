@@ -1,9 +1,16 @@
 {
     "server": {
-        "address":"0.0.0.0",
+        "address": "0.0.0.0",
         "port": "9000",
         "debug": "True",
         "static": "templates",
-        "formTemplates": "templates/formTemplates"
+        "formTemplates": "templates/formTemplates",
+    },
+    /*Added fo app configurations*/
+    "app": {
+        "languages": {
+            "en": "English",
+            "es": "Español"
+        }
     }
 }

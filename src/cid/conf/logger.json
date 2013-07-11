@@ -1,8 +1,8 @@
 /*
-Use the logger.config.dictConfig format from
-http://docs.python.org/dev/library/logging.config.html#logging-config-dictschema
-Based on http://stackoverflow.com/questions/10931423/using-dictconfig-in-python-logging-need-to-create-a-logger-with-a-different-fil
-*/
+ Use the logger.config.dictConfig format from
+ http://docs.python.org/dev/library/logging.config.html#logging-config-dictschema
+ Based on http://stackoverflow.com/questions/10931423/using-dictconfig-in-python-logging-need-to-create-a-logger-with-a-different-fil
+ */
 {
     "version": 1,
     "handlers": {
