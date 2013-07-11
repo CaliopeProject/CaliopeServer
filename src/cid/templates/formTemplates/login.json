@@ -1,26 +1,24 @@
 {
-  "form":
-    {
-     "name" : "login",
-     "html":[
-        {
-           "name":"username",
-           "id":"txt-id",
-           "caption":"Usuario",
-           "type":"text"
-        },
-        {
-           "name":"password",
-           "caption":"Password",
-           "type":"password"
-        }
-     ]
+    "form": {
+        "name": "login",
+        "html": [
+            {
+                "name": "username",
+                "id": "txt-id",
+                "caption": "Usuario",
+                "type": "text"
+            },
+            {
+                "name": "password",
+                "caption": "Password",
+                "type": "password"
+            }
+        ]
     },
-  "data" : {
-  },
-  "actions" : ["authenticate"],
-  "translations" :
-     {
-         "authenticate"    : "Iniciar Sesion"
-     }  
+    "data": {
+    },
+    "actions": ["authenticate"],
+    "translations": {
+        "authenticate": "Iniciar Sesion"
+    }
 }
