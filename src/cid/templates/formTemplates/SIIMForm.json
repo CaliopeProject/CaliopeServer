@@ -1,0 +1,75 @@
+{
+    "form": {
+        "name": "SIIMForm",
+        "html": [
+            {
+                "name": "ficha",
+                "caption": "Ficha",
+                "type": "select",
+                "options": {
+                    "idea": "Idea",
+                    "perfil": "Perfil",
+                    "prefactibilidad": "Prefactibilidad",
+                    "factibilidad": "Factibilidad",
+                    "ejecucion": "Ejecución"
+                }
+            },
+            {
+                "name": "estado",
+                "caption": "Estado",
+                "type": "select",
+
+                "options": {
+                    "en_estudio": "En Estudio",
+                    "en_ejecucion": "En Ejecución",
+                    "rechazado": "Rechazado",
+                    "aplazado": "Aplazado",
+                    "aprobado": "Aprobado",
+                    "no_aprobado": "No Aprobado",
+                    "viable": "Viable",
+                    "no_viable": "No Viable",
+                    "finalizado": "Finalizado"
+                }
+            },
+            {
+                "name": "nombre",
+                "caption": "Nombre del Proyecto",
+                "type": "text"
+            },
+            {
+                "name": "forma_intervencion",
+                "caption": "Forma de intervención",
+                "type": "select",
+                "options": {
+                    "forma_generica": "Forma Genérica",
+                    "intervencion_directa": "Intervención Directa",
+                    "por_asociacion": "Por Asociación"
+                }
+            },
+            {
+                "name": "localidad",
+                "caption": "Localidad",
+                "type": "select",
+                "options": {
+                    "usaquen": "Usaquén",
+                    "chapinero": "Chapinero",
+                    "santa_fe": "Santa Fe"
+                }
+            },
+            {
+                "name": "localizacion_general",
+                "caption": "Localizacion General Proyecto",
+                "type": "textarea",
+                "rows": "5",
+                "cols": "70"
+            }
+        ]
+    },
+    "data": {
+
+    },
+    "actions": ["create"],
+    "translations": {
+        "create": "Crear"
+    }
+}
