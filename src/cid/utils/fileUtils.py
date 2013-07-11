@@ -22,7 +22,6 @@ Copyright (C) 2013 Infometrika
 '''
 #system, and standard library
 import os
-import sys
 import json
 import re
 import mimetypes
@@ -36,8 +35,6 @@ from flask import request, current_app
 from werkzeug.datastructures import Headers
 from werkzeug.wsgi import wrap_file
 from werkzeug.exceptions import NotFound
-
-
 
 
 def loadJSONFromFile(filename):
@@ -90,7 +87,11 @@ class Gzip(object):
         if 'gzip' not in accept_encoding.lower():
             return response
 
-        if (200 > response.status_code >= 300) or len(response.data) < self.minimum_size or 'Content-Encoding' in response.headers:
+        if response.direct_passthrough:
+            return response
+
+        if (200 > response.status_code >= 300) or len(
+                response.data) < self.minimum_size or 'Content-Encoding' in response.headers:
             return response
 
         gzip_buffer = StringIO.StringIO()

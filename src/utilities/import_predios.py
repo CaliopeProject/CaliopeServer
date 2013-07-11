@@ -23,7 +23,6 @@ Copyright (C) 2013 Fundación Correlibre
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 #system, and standard library
-import os
 import sys
 
 from datetime import datetime
@@ -33,7 +32,7 @@ from datetime import datetime
 from neomodel.exception import UniqueProperty
 
 #Model imports
-from model.SIIMModel import RegistroPredioCatastroTipo2
+from cid.model.SIIMModel import RegistroPredioCatastroTipo2
 
 
 def main(argv):
@@ -59,7 +58,7 @@ def importPredios(filename):
     line = ins.readline()
     header = map(lambda f: f.strip('\n').strip('"').lower(), line.split('|'))
     print header
-    for line in ins:    
+    for line in ins:
         fields = map(lambda f: f.strip('\n').strip('"'),
                      line.replace(',', '.').split('|'))
         node = RegistroPredioCatastroTipo2()
@@ -95,6 +94,7 @@ def importPrediosWithCreateMethod(filename):
                 print batchList
     RegistroPredioCatastroTipo2.create(*batchList)
     print "No more todo"
+
 
 if __name__ == '__main__':
     main(sys.argv[1:])

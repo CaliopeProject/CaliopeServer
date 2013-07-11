@@ -27,7 +27,7 @@ import json
 
 #flask
 from werkzeug import secure_filename
-from flask import Flask, request, redirect, url_for, Blueprint
+from flask import request, Blueprint
 
 
 file_uploader = Blueprint('file_uploader', __name__, template_folder='')
@@ -45,9 +45,9 @@ def uploader():
                 filename = secure_filename(uploaded_file.filename)
                 uploaded_file.save(os.path.join(UPLOAD_FOLDER, filename))
             result = {
-                     'result': 'ok',
-                     'msg': "uploaded_file saved"
-                     }
+                'result': 'ok',
+                'msg': "uploaded_file saved"
+            }
             return json.dumps(result)
     return '''
     <!doctype html>

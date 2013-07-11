@@ -1,11 +1,11 @@
 # -*- encoding: utf-8 -*-
-'''
+"""
 @authors: Andrés Felipe Calderón andres.calderon@correlibre.org
           Sebastián Ortiz V. neoecos@gmail.com
 
 @license:  GNU AFFERO GENERAL PUBLIC LICENSE
 
-SIIM Models are the data definition of SIIM
+SIIM Models are the data definition of SIIM2 Framework
 Copyright (C) 2013 Infometrika Ltda.
 
     This program is free software: you can redistribute it and/or modify
@@ -20,10 +20,9 @@ Copyright (C) 2013 Infometrika Ltda.
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-'''
+"""
 
 #system, and standard library
-import os
 
 #neomodel primitives
 from neomodel.properties import (DateTimeProperty,
