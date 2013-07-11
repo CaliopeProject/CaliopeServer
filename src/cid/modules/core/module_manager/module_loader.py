@@ -3,8 +3,10 @@
 @authors: Andrés Felipe Calderón andres.calderon@correlibre.org
           Sebastián Ortiz V. neoecos@gmail.com
 
-SIIM Server is the web server of SIIM's Framework
-Copyright (C) 2013 Infometrika Ltda
+@license:  GNU AFFERO GENERAL PUBLIC LICENSE
+
+Cid Server is the web server of SIIM2 Framework
+Copyright (C) 2013 Infometrika Ltda.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as published by
@@ -21,14 +23,5 @@ Copyright (C) 2013 Infometrika Ltda
 """
 
 
-def getResultBase(error=False):
-    if not error:
-        rv = {
-            'result': 'ok'
-        }
-    else:
-        rv = {
-            'result': 'error',
-            'msg': ''
-        }
-    return rv
+
+

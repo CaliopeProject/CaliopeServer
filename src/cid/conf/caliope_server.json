@@ -4,13 +4,21 @@
         "port": "9000",
         "debug": "True",
         "static": "templates",
-        "formTemplates": "templates/formTemplates",
+        "formTemplates": "templates/formTemplates"
     },
     /*Added fo app configurations*/
     "app": {
         "languages": {
             "en": "English",
             "es": "Español"
-        }
+        },
+        "modules": [
+            {
+                "dispatcher": {
+                    "module_name": "core.dispatcher",
+                    "module_route": "/api"
+                }
+            }
+        ]
     }
 }

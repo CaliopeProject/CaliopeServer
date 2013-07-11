@@ -26,6 +26,7 @@ Copyright (C) 2013 Infometrika Ltda.
 import os
 import getopt
 import sys
+import importlib
 from logging import getLogger
 
 #gevent
@@ -38,11 +39,10 @@ from flask import Flask
 from flask.helpers import safe_join
 
 #Blueprints
-from api.views import api
-from server_notifications.views import server_notifications
-from file_uploader.views import file_uploader
+from src.cid.modules.file_uploader.views import file_uploader
 
 #Apps import
+from src.cid.modules.core.module_manager import module_loader
 from utils.fileUtils import loadJSONFromFile, send_from_memory, Gzip
 
 #: Gevent to patch all TCP/IP connections
@@ -66,6 +66,7 @@ def main(argv):
     config_file = _parseCommandArguments(argv)
     _configure_server_and_app(config_file)
     _configure_logger("conf/logger.json")
+    _register_modules()
     _run_server()
 
 
@@ -74,10 +75,6 @@ def _init_flask_app():
     #: Disable internal debugger
     app.use_debbuger = False
     app.use_reloader = False
-    #: Register Blueprints
-    app.register_blueprint(api, url_prefix='/api')
-    app.register_blueprint(server_notifications, url_prefix='/event_from_server')
-    app.register_blueprint(file_uploader, url_prefix='/upload')
     #: load gzip compressor
     gzip = Gzip(app)
 
@@ -101,6 +98,7 @@ def _parseCommandArguments(argv):
 
 def _configure_server_and_app(config_file):
     config = loadJSONFromFile(config_file)
+    #TODO: Validate 'server' in config and load default if not present
     if 'address' in config['server']:
         app.config['address'] = config['server']['address']
     else:
@@ -117,6 +115,16 @@ def _configure_server_and_app(config_file):
         app.config['FORM_TEMPLATES'] = config['server']['formTemplates']
     else:
         app.config['FORM_TEMPLATES'] = app.config['STATIC_PATH']
+    #: Load app config
+    if 'app' in config:
+        if 'modules' in config['app']:
+            app.config['modules'] = config['app']['modules']
+        else:
+            app.config['modules'] = {'dispatcher': {'module_name': 'src.cid.modules.core.dispatcher',
+                                     'module_route': '/api'}}
+    else:
+        #TODO: Load all default app config
+        pass
     if 'debug' in config['server']:
         app.debug = True if config['server']['debug'] == 'True' else False
     else:
@@ -128,6 +136,27 @@ def _configure_logger(config_file):
     from logging.config import dictConfig
     dictConfig(config)
 
+
+def _register_modules():
+    """
+    Register modules listed in the configuration of the app.
+
+
+    """
+    for module in app.config['modules']:
+        module_config = module.values()[0]
+        module_name = module_config['module_name'] if 'module_name' in module_config else ''
+        #: default route is /module_name
+        module_route = module_config['module_route'] if 'module_route' in module_config else '/' \
+                      + module_config['module_name']
+        blueprint_name = module_config['module_blueprint'] if 'module_blueprint' in module_config else \
+                      module_config['module_name'].split('.')[-1]
+        try:
+            #from src.cid.modules import module_name
+            module_blueprint = importlib.import_module('src.cid.modules.' + module_name)
+            app.register_blueprint(module_blueprint.getBlueprint(), url_prefix=module_route)
+        except Exception:
+            app.logger.exception(str(Exception))
 
 def _run_server():
     if not app.debug:
