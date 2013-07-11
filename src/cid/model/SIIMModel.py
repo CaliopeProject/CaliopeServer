@@ -55,3 +55,14 @@ class RegistroPredioCatastroTipo2(CaliopeNode):
     clase_predio = StringProperty()
     codigo_estrato = IntegerProperty()
     zona_fisica_geoeconomica = StringProperty()
+
+
+class SIIMForm(CaliopeNode):
+    def __init__(self, *args, **kwargs):
+        super(SIIMForm, self).__init__(*args, **kwargs)
+        for k in kwargs.keys():
+            setattr(self, k, kwargs[k])
+
+
+
+
