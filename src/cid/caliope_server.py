@@ -6,8 +6,8 @@
 
 @license:  GNU AFFERO GENERAL PUBLIC LICENSE
 
-Caliope Server is the web server of Caliope's Framework
-Copyright (C) 2013 Fundación Correlibre
+Cid Server is the web server of SIIM2 Framework
+Copyright (C) 2013 Infometrika Ltda.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as published by
@@ -26,14 +26,12 @@ Copyright (C) 2013 Fundación Correlibre
 import os
 import getopt
 import sys
-import logging
 from logging import getLogger
 
 #gevent
 from gevent.pywsgi import WSGIServer
 from geventwebsocket.handler import WebSocketHandler
 from gevent import monkey
-
 
 #flask
 from flask import Flask
@@ -51,9 +49,9 @@ from utils.fileUtils import loadJSONFromFile, send_from_memory, Gzip
 monkey.patch_all()
 app = Flask(__name__)
 
+
 @app.route('/')
 def index():
-
     return send_from_memory(safe_join(app.config['STATIC_PATH'], 'index.html'))
     #return render_template('index.html')
 
@@ -66,7 +64,7 @@ def custom_static(filename):
 def main(argv):
     _init_flask_app()
     config_file = _parseCommandArguments(argv)
-    _configureServer(config_file)
+    _configure_server_and_app(config_file)
     _configure_logger("conf/logger.json")
     _run_server()
 
@@ -101,7 +99,7 @@ def _parseCommandArguments(argv):
     return config_file
 
 
-def _configureServer(config_file):
+def _configure_server_and_app(config_file):
     config = loadJSONFromFile(config_file)
     if 'address' in config['server']:
         app.config['address'] = config['server']['address']
@@ -133,13 +131,14 @@ def _configure_logger(config_file):
 
 def _run_server():
     if not app.debug:
-        logger = logging.getLogger("production")
+        Flask.logger = getLogger("production")
     else:
-        logger = logging.getLogger("develop")
-    logger.info("Starting server on: " + app.config['address']+ ":" + str(app.config['port']))
-    logger.info("Static Base Directory: " + app.config['STATIC_PATH'])
-    logger.info("Forms Template Directory : " + app.config['FORM_TEMPLATES'])
-    http_server = WSGIServer((app.config['address'], app.config['port']), app, handler_class=WebSocketHandler)  # @IgnorePep8
+        Flask.logger = getLogger("develop")
+    app.logger.info("Starting server on: " + app.config['address'] + ":" + str(app.config['port']))
+    app.logger.info("Static Base Directory: " + app.config['STATIC_PATH'])
+    app.logger.info("Forms Template Directory : " + app.config['FORM_TEMPLATES'])
+    http_server = WSGIServer((app.config['address'], app.config['port']), app,
+                             handler_class=WebSocketHandler)  # @IgnorePep8
     http_server.serve_forever()
 
 
