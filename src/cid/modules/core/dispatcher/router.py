@@ -162,8 +162,9 @@ def login_with_name(session, message):
 def getPrivilegedForm(session, message):
     result = {
         'result': 'ok',
-        'data': loadJSONFromFile(current_app.config["FORM_TEMPLATES"]
-                                 + "/" + message["formId"] + ".json", current_app.root_path)
+        'form': loadJSONFromFile(current_app.config["FORM_TEMPLATES"]
+                                 + "/" + message["formId"] + ".json", current_app.root_path),
+        'actions' : ["create"]       
     }
     return result
 
@@ -188,9 +189,11 @@ def getFormTemplate(session, message):
     if formId == 'login':
         result = {
             'result': 'ok',
-            'data': loadJSONFromFile(current_app.config['FORM_TEMPLATES']
+            'form': loadJSONFromFile(current_app.config['FORM_TEMPLATES']
                                      + "/" + "login.json",  current_app.root_path),
+            'actions' : ["authenticate"]        
         }
+        
     elif formId == 'proyectomtv':
         result = getPrivilegedForm(session, message)
     elif formId == 'SIIMForm':
