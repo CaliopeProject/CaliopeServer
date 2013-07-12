@@ -149,6 +149,7 @@ def _register_modules():
         #: default route is /module_name
         module_route = module_config['module_route'] if 'module_route' in module_config else '/' \
                       + module_config['module_name']
+        #:TODO  Is possible to only module to have more than 1 blueprint
         blueprint_name = module_config['module_blueprint'] if 'module_blueprint' in module_config else \
                       module_config['module_name'].split('.')[-1]
         try:
@@ -157,6 +158,7 @@ def _register_modules():
             app.register_blueprint(module_blueprint.getBlueprint(), url_prefix=module_route)
         except Exception:
             app.logger.exception(str(Exception))
+
 
 def _run_server():
     if not app.debug:

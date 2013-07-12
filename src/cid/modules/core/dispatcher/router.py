@@ -214,23 +214,23 @@ def createFromForm(session, message):
     if form_id == 'SIIMForm':
         form = SIIMModel.SIIMForm(**form_data)
         #: default responde is error
-        rv = helpers.getResultBase(error=True)
+        rv = helpers.get_json_response_base(error=True)
         try:
             form.save()
-            rv = helpers.getResultBase()
+            rv = helpers.get_json_response_base()
             rv['data'] = {'uuid': form.uuid}
         except Exception:
             rv['msg'] = Exception.message()
         finally:
             return rv
     else:
-        rv = helpers.getResultBase(error=True)
+        rv = helpers.get_json_response_base(error=True)
         rv['msg'] = 'Class ' + form_id + ' not found in Model'
         return rv
 
 
 def process_message(session, message):
-    res = helpers.getResultBase(error=True)
+    res = helpers.get_json_response_base(error=True)
     if "cmd" not in message or 'callback_id' not in message:
         cmd = ''
         callback_id = '0'

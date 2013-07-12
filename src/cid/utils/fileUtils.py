@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-'''
+"""
 @authors: Sebastián Ortiz V. neoecos@gmail.com
 
 @license:  GNU AFFERO GENERAL PUBLIC LICENSE
@@ -19,7 +19,7 @@ Copyright (C) 2013 Infometrika
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-'''
+"""
 #system, and standard library
 import os
 import json

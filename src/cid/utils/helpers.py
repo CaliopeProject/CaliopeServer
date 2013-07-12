@@ -21,7 +21,7 @@ Copyright (C) 2013 Infometrika Ltda
 """
 
 
-def getResultBase(error=False):
+def get_json_response_base(error=False):
     if not error:
         rv = {
             'result': 'ok'
@@ -32,3 +32,54 @@ def getResultBase(error=False):
             'msg': ''
         }
     return rv
+
+
+def get_json_response_form_create(*args,**kwargs):
+    """
+        {
+
+        "callback_id" : "request uuid4",
+        "result"      : "{ok o error}",
+        "event_id"    : "uuid4", /* entrada opcional" */
+        "msg"         : "mensaje de error, si 'result' = 'error'",
+        "class"       : "class_name",
+        "form" :
+            {
+            /* dform template */
+            },
+        "data" :
+            {
+                "field0" :
+                    {
+                        "value"   : "**********",
+                        "mandatory"  : "True o False", /* entrada opcional, en ausencia : "False" */
+                        "editable"   : "True o False", /* entrada opcional, en ausencia : "False" */
+                        "options" : ["xx","yy","zz"]   /* entrada opcional */
+                    },
+                "field1" :
+                    {
+                        "value"   : "**********",
+                        "mandatory"  : "True o False", /* entrada opcional, en ausencia : "False" */
+                        "editable"   : "True o False", /* entrada opcional, en ausencia : "False" */
+                        "options" : ["xx","yy","zz"]   /* entrada opcional */
+                    },
+                "field_n" :
+                    {
+                        "value"   : "**********",
+                        "options" : ["xx","yy","zz"]
+                    }
+            },
+        "actions" : ["create", "delete", "edit"],
+        "translations" :
+             {
+                 "key"    : "Llave",
+                 "field"  : "Campo",
+                 "create" : "Crear",
+                 "edit"   : "Editar",
+                 "delete" : "Borrar"
+             }
+        }
+    }
+    """
+
+
