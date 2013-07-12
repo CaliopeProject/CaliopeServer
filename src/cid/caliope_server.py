@@ -62,15 +62,15 @@ def custom_static(filename):
 
 
 def main(argv):
-    _init_flask_app()
+    init_flask_app()
     config_file = _parseCommandArguments(argv)
-    _configure_server_and_app(config_file)
-    _configure_logger("conf/logger.json")
-    _register_modules()
-    _run_server()
+    configure_server_and_app(config_file)
+    configure_logger("conf/logger.json")
+    register_modules()
+    run_server()
 
 
-def _init_flask_app():
+def init_flask_app():
     app.secret_key = os.urandom(24)
     #: Disable internal debugger
     app.use_debbuger = False
@@ -96,8 +96,8 @@ def _parseCommandArguments(argv):
     return config_file
 
 
-def _configure_server_and_app(config_file):
-    config = loadJSONFromFile(config_file)
+def configure_server_and_app(config_file):
+    config = loadJSONFromFile(config_file, app.root_path)
     #TODO: Validate 'server' in config and load default if not present
     if 'address' in config['server']:
         app.config['address'] = config['server']['address']
@@ -131,13 +131,13 @@ def _configure_server_and_app(config_file):
         app.debug = False
 
 
-def _configure_logger(config_file):
-    config = loadJSONFromFile(config_file)
+def configure_logger(config_file):
+    config = loadJSONFromFile(config_file, app.root_path)
     from logging.config import dictConfig
     dictConfig(config)
 
 
-def _register_modules():
+def register_modules():
     """
     Register modules listed in the configuration of the app.
 
@@ -160,7 +160,7 @@ def _register_modules():
             app.logger.exception(str(Exception))
 
 
-def _run_server():
+def run_server():
     if not app.debug:
         Flask.logger = getLogger("production")
     else:
