@@ -5,5 +5,21 @@
         "debug": "True",
         "static": "../../../caliope_webui_beowulf/app",
         "formTemplates": "templates/formTemplates"
+    },
+        /*Added fo app configurations*/
+    "app": {
+        "languages": {
+            "en": "English",
+            "es": "Español"
+        },
+        "modules": [
+            {
+                "dispatcher": {
+                    "module_name": "core.dispatcher",
+                    "module_route": "/api"
+                }
+            }
+        ]
     }
+    
 }
