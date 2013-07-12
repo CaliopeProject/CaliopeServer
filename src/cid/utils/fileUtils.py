@@ -37,7 +37,12 @@ from werkzeug.wsgi import wrap_file
 from werkzeug.exceptions import NotFound
 
 
-def loadJSONFromFile(filename):
+def loadJSONFromFile(filename, root_path):
+    if filename is not None:
+        if not os.path.isabs(filename):
+            filename = os.path.join(root_path, filename)
+    if not os.path.isfile(filename):
+        raise NotFound("JSON file" + filename + " not found")
     try:
         json_data = re.sub("(?:/\\*(?:[^*]|(?:\\*+[^*/]))*\\*+/)",
                            '', open(filename).read(), re.MULTILINE)

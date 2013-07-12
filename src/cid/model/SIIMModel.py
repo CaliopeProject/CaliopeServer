@@ -25,7 +25,8 @@ Copyright (C) 2013 Infometrika Ltda.
 #system, and standard library
 
 #neomodel primitives
-from neomodel.properties import (DateTimeProperty,
+from neomodel.properties import (Property,
+                                 DateTimeProperty,
                                  FloatProperty,
                                  IntegerProperty,
                                  StringProperty)
@@ -61,6 +62,15 @@ class SIIMForm(CaliopeNode):
         super(SIIMForm, self).__init__(*args, **kwargs)
         for k in kwargs.keys():
             setattr(self, k, kwargs[k])
+
+    def get_form_data(self):
+        rv = {}
+        for attr in self.__node__.__metadata__['data']:
+            rv[attr] = {'value': self.__node__.__metadata__['data'][attr]}
+        return rv
+
+
+
 
 
 

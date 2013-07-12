@@ -31,13 +31,13 @@ from flask.globals import current_app
 from flask import (session, request, Blueprint)
 
 #Apps import
-from utils.fileUtils import loadJSONFromFile
+from src.cid.utils.fileUtils import loadJSONFromFile
 from src.cid.utils import helpers
 
 
 #CaliopeStorage
 from neomodel import DoesNotExist
-from odisea.CaliopeStorage import CaliopeUser
+from odisea.CaliopeStorage import CaliopeUser, CaliopeNode
 from src.cid.model import SIIMModel
 
 #Moved to package __init__.py
@@ -130,15 +130,15 @@ def login_with_name(session, message):
     Default username after run CaliopeTestNode is
     user:password
     """
+    #: TODO: Enable system to be session oriented, so one user can have multiple active sessions
+    #: TODO: Check security of this autentication method
+
+    response = helpers.get_json_response_base(error=True)
+    if 'user' in session:
+        response['result'] = 'ok'
+        response['data'] = {'uuid': session['session_uuid']}
+        return response
     try:
-        if 'user' in session:
-            result = {
-                'result': 'ok',
-                'msg': "already logged",
-                'data': {
-                    'uuid': session['session_uuid']
-                }
-            }
         user = CaliopeUser.index.get(username=message['login'])
         #: TODO Add to log
         if user.password == message['password']:
@@ -147,32 +147,23 @@ def login_with_name(session, message):
             storage_sessions[session['session_uuid']] = {}
             storage_sessions[session['session_uuid']]['user'] = session['user']
             storage_sessions[session['session_uuid']]['start_time'] = datetime.now(utc)
-            response_msg = "new session:" + message['login'] \
-                           + " uuid=" + session['session_uuid']
-            result = {
-                'result': 'ok',
-                'msg': response_msg,
-                'data': {
-                    'uuid': session['session_uuid']
-                }
-            }
+            response = helpers.get_json_response_base()
+            response['data'] = {'uuid': session['session_uuid']}
+        else:
+            response['result'] = 'error'
+            response['msg'] = 'The password does not match the username'
     except DoesNotExist:
-        response_msg = "login error" + "(" + message['login'] + ", " \
-                       + message['password'] + ")"
-        result = {
-            'result': 'error',
-            'msg': response_msg,
-            'data': {}
-        }
-
-    return result
+        response = helpers.get_json_response_base(error=True)
+        response['msg'] = "The username does not exists"
+    finally:
+        return response
 
 #@login_required
 def getPrivilegedForm(session, message):
     result = {
         'result': 'ok',
         'data': loadJSONFromFile(current_app.config["FORM_TEMPLATES"]
-                                 + "/" + message["formId"] + ".json")
+                                 + "/" + message["formId"] + ".json", current_app.root_path)
     }
     return result
 
@@ -198,7 +189,7 @@ def getFormTemplate(session, message):
         result = {
             'result': 'ok',
             'data': loadJSONFromFile(current_app.config['FORM_TEMPLATES']
-                                     + "/" + "login.json"),
+                                     + "/" + "login.json",  current_app.root_path),
         }
     elif formId == 'proyectomtv':
         result = getPrivilegedForm(session, message)
@@ -220,7 +211,7 @@ def createFromForm(session, message):
             rv = helpers.get_json_response_base()
             rv['data'] = {'uuid': form.uuid}
         except Exception:
-            rv['msg'] = Exception.message()
+            rv['msg'] = "Unknown error " + Exception.message()
         finally:
             return rv
     else:
@@ -229,12 +220,36 @@ def createFromForm(session, message):
         return rv
 
 
+def getFormData(session, message):
+    form_id = message['formId'] if 'formId' in message else 'SIIMForm'
+    data_uuid = message['uuid'] if 'uuid' in message else ''
+    if form_id == 'SIIMForm':
+        try:
+            form_node = SIIMModel.SIIMForm.index.get(uuid=data_uuid)
+            response = helpers.get_json_response_base()
+            response['data'] = form_node.get_form_data()
+            #: TODO: Create a helper private method to access forms
+            response['form'] = loadJSONFromFile(current_app.config["FORM_TEMPLATES"]
+                                 + "/" + message["formId"] + ".json", current_app.root_path)
+            response['actions'] = ["create", "delete", "edit"]
+
+        except DoesNotExist:
+            response = helpers.get_json_response_base(error=True)
+            response['msg'] = 'Not found in db with uuid: ' + uuid
+        except Exception:
+            response = helpers.get_json_response_base(error=True)
+            response['msg'] = Exception.message()
+        finally:
+            return response
+
+
+
 def process_message(session, message):
     res = helpers.get_json_response_base(error=True)
     if "cmd" not in message or 'callback_id' not in message:
         cmd = ''
         callback_id = '0'
-        current_app.logger.warn("Message did not contain a valid command, messageJSON: " + message)
+        current_app.logger.warn("Message did not contain a valid command, messageJSON: " + str(message))
     else:
         current_app.logger.debug('Command: ' + str(message))
         cmd = message['cmd']
@@ -247,6 +262,8 @@ def process_message(session, message):
             res = getFormTemplate(session, message)
         elif cmd == 'create':
             res = createFromForm(session, message)
+        elif cmd == 'getFormData':
+            res = getFormData(session, message)
     res['callback_id'] = callback_id
     current_app.logger.debug('Result: ' + str(res))
     return res
