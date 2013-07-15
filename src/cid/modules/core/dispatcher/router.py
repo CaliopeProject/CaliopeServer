@@ -256,23 +256,25 @@ def getFormData(session, message):
 
 def process_message(session, message):
     res = helpers.get_json_response_base(error=True)
-    if "cmd" not in message or 'callback_id' not in message:
-        cmd = ''
+    if "jsonrpc" not in message:
+        callback_id = '0'
+        current_app.logger.warn("Message did not contain a valid JSON RPC, messageJSON: " + str(message))
+    elif "method" not in message or 'id' not in message:
         callback_id = '0'
         current_app.logger.warn("Message did not contain a valid command, messageJSON: " + str(message))
     else:
         current_app.logger.debug('Command: ' + str(message))
-        cmd = message['cmd']
-        callback_id = message['callback_id']
-        if cmd == 'authentication':
+        method = message['method']
+        callback_id = message['id']
+        if method == 'authentication':
             res = login_with_name(session, message)
-        elif cmd == 'authentication_with_uuid':
+        elif method == 'authentication_with_uuid':
             res = login_with_uuid(session, message)
-        elif cmd == 'getFormTemplate':
+        elif method == 'getFormTemplate':
             res = getFormTemplate(session, message)
-        elif cmd == 'create':
+        elif method == 'create':
             res = createFromForm(session, message)
-        elif cmd == 'getFormData':
+        elif method == 'getFormData':
             res = getFormData(session, message)
     res['callback_id'] = callback_id
     current_app.logger.debug('Result: ' + str(res))
