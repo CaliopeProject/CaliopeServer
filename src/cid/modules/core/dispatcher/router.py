@@ -167,23 +167,22 @@ def login_with_name(session, params):
 
 #@login_required
 def getPrivilegedForm(session, params):
+    error=None
     result = {
         'result': 'ok',
         'form': loadJSONFromFile(current_app.config["FORM_TEMPLATES"]
                                  + "/" + params["formId"] + ".json", current_app.root_path),
         'actions' : ["create"]       
     }
-    return result
+    return result,error
 
 
 @event_logging
 #:TODO Implement the method with different version and domain options.
 def getFormTemplate(session, params):
-    result = {
-        'result': 'error',
-        'msg': 'error',
-    }
-
+    result=None
+    error=None
+    
     if 'formId' in params:
         formId = params['formId']
         if 'domain' in params:
@@ -203,14 +202,22 @@ def getFormTemplate(session, params):
         }
         
     elif formId == 'proyectomtv':
-        result = getPrivilegedForm(session, params)
+        result,error = getPrivilegedForm(session, params)
     elif formId == 'SIIMForm':
-        result = getPrivilegedForm(session, params)
-    return result
+        result,error = getPrivilegedForm(session, params)
+    else:
+        error = {
+            'code' : -32600,
+            'message' : "invalid form"
+        }
+    return result,error
 
 
 #@login_required
 def createFromForm(session, params):
+    error=None
+    result=None
+    
     form_id = params['formId'] if 'formId' in params else 'SIIMForm'
     form_data = params['data'] if 'data' in params else {}
     if form_id == 'SIIMForm':
@@ -220,16 +227,20 @@ def createFromForm(session, params):
         try:
             form.save()
             rv = helpers.get_json_response_base()
-            rv['data'] = {'uuid': form.uuid}
+            result = {'uuid': form.uuid}
         except Exception:
-            rv['msg'] = "Unknown error " + Exception.params()
+            error = {
+                'code' : -32600,
+                'message' : "Unknown error : " + Exception.params()
+            }
         finally:
-            return rv
+            return result,error 
     else:
-        rv = helpers.get_json_response_base(error=True)
-        rv['msg'] = 'Class ' + form_id + ' not found in Model'
-        return rv
-
+        error = {
+            'code' : -32600,
+            'message' : 'Class ' + form_id + ' not found in Model'
+            }
+        return result,error 
 
 def getFormData(session, params):
     form_id = params['formId'] if 'formId' in params else 'SIIMForm'
@@ -256,6 +267,7 @@ def getFormData(session, params):
 
 
 def process_message(session, message):
+    error = None
     rv = {}
     if 'jsonrpc' not in message:
         error= {
@@ -295,9 +307,9 @@ def process_message(session, message):
         elif method == 'authentication_with_uuid':
             rv['result'] = login_with_uuid(session, message['params'])
         elif method == 'getFormTemplate':
-            rv['result'] = getFormTemplate(session, message['params'])
+            result,error = getFormTemplate(session, message['params'])                
         elif method == 'create':
-            rv['result'] = createFromForm(session, message['params'])
+            result,error = createFromForm(session, message['params'])
         elif method == 'getFormData':
             rv['result'] = getFormData(session, message['params'])
         else:
@@ -308,6 +320,11 @@ def process_message(session, message):
             rv['error'] = error
             current_app.logger.warn("Message did not contain a valid Method, messageJSON: " + str(message))
 
+    if error is not None:
+        rv['error'] = error
+    else:
+        rv['result'] = result
+    
     rv['jsonrpc'] = "2.0"
     current_app.logger.debug('Result: ' + str(rv))
     return rv
