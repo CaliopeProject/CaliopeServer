@@ -231,10 +231,8 @@ def createFromForm(session, params):
     if form_id == 'SIIMForm':
         form = SIIMModel.SIIMForm(**form_data)
         #: default responde is error
-        rv = helpers.get_json_response_base(error=True)
         try:
             form.save()
-            rv = helpers.get_json_response_base()
             result = {'uuid': form.uuid}
         except Exception:
             error = {
@@ -250,6 +248,32 @@ def createFromForm(session, params):
             }
         return result,error 
 
+#@login_required
+def editFromForm(session, params):
+    error=None
+    result=None
+    
+    form_id = params['formId'] if 'formId' in params else 'SIIMForm'
+    form_data = params['data'] if 'data' in params else {}
+    if form_id == 'SIIMForm':
+        form = SIIMModel.SIIMForm(**form_data)
+        try:
+            form.save()
+            result = {'uuid': form.uuid}
+        except Exception:
+            error = {
+                'code' : -32600,
+                'message' : "Unknown error : " + Exception.params()
+            }
+        finally:
+            return result,error 
+    else:
+        error = {
+            'code' : -32600,
+            'message' : 'Class ' + form_id + ' not found in Model'
+            }
+        return result,error 
+    
 def getFormData(session, params):
     error=None
     result=None
@@ -326,6 +350,8 @@ def process_message(session, message):
             result,error = getFormTemplate(session, message['params'])                
         elif method == 'create':
             result,error = createFromForm(session, message['params'])
+        elif method == 'edit':
+            result,error = editFromForm(session, message['params'])
         elif method == 'getFormData':
             result,error = getFormData(session, message['params'])
         else:
