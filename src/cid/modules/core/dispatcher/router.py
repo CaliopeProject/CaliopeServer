@@ -276,6 +276,6 @@ def process_message(session, message):
             res = createFromForm(session, message)
         elif method == 'getFormData':
             res = getFormData(session, message)
-    res['callback_id'] = callback_id
+    res['id'] = callback_id
     current_app.logger.debug('Result: ' + str(res))
     return res
