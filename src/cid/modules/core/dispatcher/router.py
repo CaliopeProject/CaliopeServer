@@ -251,12 +251,12 @@ def createFromForm(session, params):
 #@login_required
 def editFromForm(session, params):
     error=None
-    result=None
-    
+    result=None    
     form_id = params['formId'] if 'formId' in params else 'SIIMForm'
     form_data = params['data'] if 'data' in params else {}
     if form_id == 'SIIMForm':
-        form = SIIMModel.SIIMForm(**form_data)
+        form = SIIMModel.SIIMForm.index.get(uuid=form_data['uuid'])
+        form.set_form_data(form_data)
         try:
             form.save()
             result = {'uuid': form.uuid}

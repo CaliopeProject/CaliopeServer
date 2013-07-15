@@ -69,8 +69,9 @@ class SIIMForm(CaliopeNode):
             rv[attr] = {'value': self.__node__.__metadata__['data'][attr]}
         return rv
 
-
-
+    def set_form_data(self, data):
+        for k in data.keys():
+            setattr(self, k, data[k])
 
 
 
