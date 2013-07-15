@@ -119,8 +119,8 @@ def event_logging(func):
     return decorated_logging
 
 
-def login_with_uuid(session, message):
-    session_uuid = message['uuid']
+def login_with_uuid(session, params):
+    session_uuid = params['uuid']
     if session_uuid in storage_sessions:
         session['user'] = storage_sessions[session_uuid]['user']
         session['session_uuid'] = session_uuid
@@ -132,7 +132,7 @@ def login_with_uuid(session, message):
         return {'result': 'error', 'msg': response_msg}
 
 
-def login_with_name(session, message):
+def login_with_name(session, params):
     """
     Default username after run CaliopeTestNode is
     user:password
@@ -146,10 +146,10 @@ def login_with_name(session, message):
         response['data'] = {'uuid': session['session_uuid']}
         return response
     try:
-        user = CaliopeUser.index.get(username=message['login'])
+        user = CaliopeUser.index.get(username=params['login'])
         #: TODO Add to log
-        if user.password == message['password']:
-            session['user'] = message['login']
+        if user.password == params['password']:
+            session['user'] = params['login']
             session['session_uuid'] = str(uuid.uuid4()).decode('utf-8')
             storage_sessions[session['session_uuid']] = {}
             storage_sessions[session['session_uuid']]['user'] = session['user']
@@ -166,11 +166,11 @@ def login_with_name(session, message):
         return response
 
 #@login_required
-def getPrivilegedForm(session, message):
+def getPrivilegedForm(session, params):
     result = {
         'result': 'ok',
         'form': loadJSONFromFile(current_app.config["FORM_TEMPLATES"]
-                                 + "/" + message["formId"] + ".json", current_app.root_path),
+                                 + "/" + params["formId"] + ".json", current_app.root_path),
         'actions' : ["create"]       
     }
     return result
@@ -178,19 +178,20 @@ def getPrivilegedForm(session, message):
 
 @event_logging
 #:TODO Implement the method with different version and domain options.
-def getFormTemplate(session, message):
+def getFormTemplate(session, params):
     result = {
         'result': 'error',
         'msg': 'error',
     }
-    if 'formId' in message:
-        formId = message['formId']
-        if 'domain' in message:
-            domain = message['domain']
+
+    if 'formId' in params:
+        formId = params['formId']
+        if 'domain' in params:
+            domain = params['domain']
         else:
             domain = ''
-        if 'version' in message:
-            version = message['version']
+        if 'version' in params:
+            version = params['version']
         else:
             version = ''
     if formId == 'login':
@@ -202,16 +203,16 @@ def getFormTemplate(session, message):
         }
         
     elif formId == 'proyectomtv':
-        result = getPrivilegedForm(session, message)
+        result = getPrivilegedForm(session, params)
     elif formId == 'SIIMForm':
-        result = getPrivilegedForm(session, message)
+        result = getPrivilegedForm(session, params)
     return result
 
 
 #@login_required
-def createFromForm(session, message):
-    form_id = message['formId'] if 'formId' in message else 'SIIMForm'
-    form_data = message['data'] if 'data' in message else {}
+def createFromForm(session, params):
+    form_id = params['formId'] if 'formId' in params else 'SIIMForm'
+    form_data = params['data'] if 'data' in params else {}
     if form_id == 'SIIMForm':
         form = SIIMModel.SIIMForm(**form_data)
         #: default responde is error
@@ -221,7 +222,7 @@ def createFromForm(session, message):
             rv = helpers.get_json_response_base()
             rv['data'] = {'uuid': form.uuid}
         except Exception:
-            rv['msg'] = "Unknown error " + Exception.message()
+            rv['msg'] = "Unknown error " + Exception.params()
         finally:
             return rv
     else:
@@ -230,9 +231,9 @@ def createFromForm(session, message):
         return rv
 
 
-def getFormData(session, message):
-    form_id = message['formId'] if 'formId' in message else 'SIIMForm'
-    data_uuid = message['uuid'] if 'uuid' in message else ''
+def getFormData(session, params):
+    form_id = params['formId'] if 'formId' in params else 'SIIMForm'
+    data_uuid = params['uuid'] if 'uuid' in params else ''
     if form_id == 'SIIMForm':
         try:
             form_node = SIIMModel.SIIMForm.index.get(uuid=data_uuid)
@@ -240,7 +241,7 @@ def getFormData(session, message):
             response['data'] = form_node.get_form_data()
             #: TODO: Create a helper private method to access forms
             response['form'] = loadJSONFromFile(current_app.config["FORM_TEMPLATES"]
-                                 + "/" + message["formId"] + ".json", current_app.root_path)
+                                 + "/" + params["formId"] + ".json", current_app.root_path)
             response['actions'] = ["create", "delete", "edit"]
 
         except DoesNotExist:
@@ -248,58 +249,65 @@ def getFormData(session, message):
             response['msg'] = 'Not found in db with uuid: ' + uuid
         except Exception:
             response = helpers.get_json_response_base(error=True)
-            response['msg'] = Exception.message()
+            response['msg'] = Exception.params()
         finally:
             return response
 
 
 
 def process_message(session, message):
-    res = helpers.get_json_response_base(error=True)
+    rv = {}
     if 'jsonrpc' not in message:
         error= {
             'result': "Invalid Request",
             'code': -32600
             }
-        res['error'] = error
+        rv['error'] = error
         current_app.logger.warn("Message did not contain a valid JSON RPC, messageJSON: " + str(message))
     elif 'method' not in message:
         error= {
             'result': "Method not found",
             'code': -32601
             }
-        res['error'] = error
-        res['id'] = None
+        rv['error'] = error
+        rv['id'] = None
         current_app.logger.warn("Message did not contain a valid Method, messageJSON: " + str(message))
     elif 'id' not in message:
         error= {
             'result': "Method did not contain a valid ID",
             'code': -32602
             }
-        res['error'] = error        
-        res['id'] = None
+        rv['error'] = error        
+        rv['id'] = None
         current_app.logger.warn("Message did not contain a valid ID, messageJSON: " + str(message))
+    elif 'params' not in message:
+        error= {
+            'result': "Method did not contain params",
+            'code': -32603
+            }
+        rv['error'] = error         
     else:
         current_app.logger.debug('Command: ' + str(message))
         method = message['method']
-        res['id'] = message['id']
+        rv['id'] = message['id']
         if method == 'authentication':
-            res = login_with_name(session, message)
+            rv['result'] = login_with_name(session, message['params'])
         elif method == 'authentication_with_uuid':
-            res = login_with_uuid(session, message)
+            rv['result'] = login_with_uuid(session, message['params'])
         elif method == 'getFormTemplate':
-            res = getFormTemplate(session, message)
+            rv['result'] = getFormTemplate(session, message['params'])
         elif method == 'create':
-            res = createFromForm(session, message)
+            rv['result'] = createFromForm(session, message['params'])
         elif method == 'getFormData':
-            res = getFormData(session, message)
+            rv['result'] = getFormData(session, message['params'])
         else:
             error= {
                 'result': "Method not found",
                 'code': -32601
             }
-            res['error'] = error
+            rv['error'] = error
             current_app.logger.warn("Message did not contain a valid Method, messageJSON: " + str(message))
 
-    current_app.logger.debug('Result: ' + str(res))
-    return res
+    rv['jsonrpc'] = "2.0"
+    current_app.logger.debug('Result: ' + str(rv))
+    return rv
