@@ -120,16 +120,21 @@ def event_logging(func):
 
 
 def login_with_uuid(session, params):
+    result=None
+    error=None
     session_uuid = params['uuid']
     if session_uuid in storage_sessions:
         session['user'] = storage_sessions[session_uuid]['user']
         session['session_uuid'] = session_uuid
         response_msg = "uuid found, user=" + session['user']
-        return {'result': 'ok', 'msg': response_msg, 'uuid': session_uuid}
+        result = {'msg': response_msg, 'uuid': session_uuid}
 
     else:
-        response_msg = "uuid not found"
-        return {'result': 'error', 'msg': response_msg}
+        error = {
+            'code' : -32600,
+            'message' : "uuid not found"
+            }
+    return result,error
 
 
 def login_with_name(session, params):
@@ -139,12 +144,11 @@ def login_with_name(session, params):
     """
     #: TODO: Enable system to be session oriented, so one user can have multiple active sessions
     #: TODO: Check security of this autentication method
-
-    response = helpers.get_json_response_base(error=True)
+    result=None
+    error=None
     if 'user' in session:
-        response['result'] = 'ok'
-        response['data'] = {'uuid': session['session_uuid']}
-        return response
+        result = {'uuid': session['session_uuid']}
+        return result,error
     try:
         user = CaliopeUser.index.get(username=params['login'])
         #: TODO Add to log
@@ -154,16 +158,20 @@ def login_with_name(session, params):
             storage_sessions[session['session_uuid']] = {}
             storage_sessions[session['session_uuid']]['user'] = session['user']
             storage_sessions[session['session_uuid']]['start_time'] = datetime.now(utc)
-            response = helpers.get_json_response_base()
-            response['data'] = {'uuid': session['session_uuid']}
+            result = {'uuid': session['session_uuid']}
         else:
-            response['result'] = 'error'
-            response['msg'] = 'The password does not match the username'
+            error = {
+                'code' : -32600,
+                'message' : "The password does not match the username"
+                }
+
     except DoesNotExist:
-        response = helpers.get_json_response_base(error=True)
-        response['msg'] = "The username does not exists"
+        error = {
+            'code' : -32600,
+            'message' : "The username does not exists"
+         }
     finally:
-        return response
+        return result,error
 
 #@login_required
 def getPrivilegedForm(session, params):
@@ -243,26 +251,34 @@ def createFromForm(session, params):
         return result,error 
 
 def getFormData(session, params):
+    error=None
+    result=None
     form_id = params['formId'] if 'formId' in params else 'SIIMForm'
     data_uuid = params['uuid'] if 'uuid' in params else ''
     if form_id == 'SIIMForm':
         try:
             form_node = SIIMModel.SIIMForm.index.get(uuid=data_uuid)
-            response = helpers.get_json_response_base()
-            response['data'] = form_node.get_form_data()
-            #: TODO: Create a helper private method to access forms
-            response['form'] = loadJSONFromFile(current_app.config["FORM_TEMPLATES"]
-                                 + "/" + params["formId"] + ".json", current_app.root_path)
-            response['actions'] = ["create", "delete", "edit"]
+            result = {
+                'data': form_node.get_form_data(),
+                #: TODO: Create a helper private method to access forms
+                'form' : loadJSONFromFile(current_app.config["FORM_TEMPLATES"]
+                                          + "/" + params["formId"] + ".json", current_app.root_path)
+                'actions' : ["create", "delete", "edit"]
+                }
 
         except DoesNotExist:
-            response = helpers.get_json_response_base(error=True)
-            response['msg'] = 'Not found in db with uuid: ' + uuid
+            error = {
+                'code' : -32600,
+                'message' : 'Not found in db with uuid: ' + uuid
+                }       
         except Exception:
-            response = helpers.get_json_response_base(error=True)
-            response['msg'] = Exception.params()
+            error = {
+                'code' : -32600,
+                'message' : Exception.params()
+                }       
+
         finally:
-            return response
+            return result,error 
 
 
 
@@ -303,15 +319,15 @@ def process_message(session, message):
         method = message['method']
         rv['id'] = message['id']
         if method == 'authentication':
-            rv['result'] = login_with_name(session, message['params'])
+            result,error = login_with_name(session, message['params'])
         elif method == 'authentication_with_uuid':
-            rv['result'] = login_with_uuid(session, message['params'])
+            result,error = login_with_uuid(session, message['params'])
         elif method == 'getFormTemplate':
             result,error = getFormTemplate(session, message['params'])                
         elif method == 'create':
             result,error = createFromForm(session, message['params'])
         elif method == 'getFormData':
-            rv['result'] = getFormData(session, message['params'])
+            result,error = getFormData(session, message['params'])
         else:
             error= {
                 'result': "Method not found",
