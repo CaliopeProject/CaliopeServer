@@ -38,9 +38,6 @@ from gevent import monkey
 from flask import Flask
 from flask.helpers import safe_join
 
-#Blueprints
-from src.cid.modules.file_uploader.views import file_uploader
-
 #Apps import
 from src.cid.modules.core.module_manager import module_loader
 from utils.fileUtils import loadJSONFromFile, send_from_memory, Gzip
@@ -141,11 +138,11 @@ def register_modules():
     """
     Register modules listed in the configuration of the app.
 
-
     """
     for module in app.config['modules']:
         module_config = module.values()[0]
         module_name = module_config['module_name'] if 'module_name' in module_config else ''
+
         #: default route is /module_name
         module_route = module_config['module_route'] if 'module_route' in module_config else '/' \
                       + module_config['module_name']

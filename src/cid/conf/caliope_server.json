@@ -18,6 +18,12 @@
                     "module_name": "core.dispatcher",
                     "module_route": "/api"
                 }
+            },
+            {
+                "file_uploader": {
+                    "module_name": "core.file_uploader",
+                    "module_route": "/upload"
+                }
             }
         ]
     }

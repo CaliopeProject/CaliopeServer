@@ -27,8 +27,8 @@ import json
 
 #flask
 from werkzeug import secure_filename
-from flask import request, Blueprint
-
+from flask.globals import current_app
+from flask import (session, request, Blueprint)
 
 file_uploader = Blueprint('file_uploader', __name__, template_folder='')
 
