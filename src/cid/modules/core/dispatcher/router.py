@@ -70,9 +70,16 @@ def index():
                 current_app.logger.error('Request ' + request.__str__()
                                          + '\tmessage:' + message)
                 messageJSON = json.loads('{}')
-            res = process_message(session, messageJSON)
-            ws.send(json.dumps(res))
-
+                
+            if type(messageJSON) is dict:
+                res = process_message(session, messageJSON)
+                ws.send(json.dumps(res))
+            elif type(messageJSON) is list:
+                rv=[]
+                for m in messageJSON:
+                    res = process_message(session, m)
+                    rv.append(res)
+                ws.send(json.dumps(rv))
 
 #: TODO: Not implemented yet
 def _is_fresh_session(session):
