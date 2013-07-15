@@ -262,7 +262,7 @@ def getFormData(session, params):
                 'data': form_node.get_form_data(),
                 #: TODO: Create a helper private method to access forms
                 'form' : loadJSONFromFile(current_app.config["FORM_TEMPLATES"]
-                                          + "/" + params["formId"] + ".json", current_app.root_path)
+                                          + "/" + params["formId"] + ".json", current_app.root_path),
                 'actions' : ["create", "delete", "edit"]
                 }
 
