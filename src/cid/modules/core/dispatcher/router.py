@@ -256,16 +256,33 @@ def getFormData(session, message):
 
 def process_message(session, message):
     res = helpers.get_json_response_base(error=True)
-    if "jsonrpc" not in message:
-        callback_id = '0'
+    if 'jsonrpc' not in message:
+        error= {
+            'result': "Invalid Request",
+            'code': -32600
+            }
+        res['error'] = error
         current_app.logger.warn("Message did not contain a valid JSON RPC, messageJSON: " + str(message))
-    elif "method" not in message or 'id' not in message:
-        callback_id = '0'
-        current_app.logger.warn("Message did not contain a valid command, messageJSON: " + str(message))
+    elif 'method' not in message:
+        error= {
+            'result': "Method not found",
+            'code': -32601
+            }
+        res['error'] = error
+        res['id'] = None
+        current_app.logger.warn("Message did not contain a valid Method, messageJSON: " + str(message))
+    elif 'id' not in message:
+        error= {
+            'result': "Method did not contain a valid ID",
+            'code': -32602
+            }
+        res['error'] = error        
+        res['id'] = None
+        current_app.logger.warn("Message did not contain a valid ID, messageJSON: " + str(message))
     else:
         current_app.logger.debug('Command: ' + str(message))
         method = message['method']
-        callback_id = message['id']
+        res['id'] = message['id']
         if method == 'authentication':
             res = login_with_name(session, message)
         elif method == 'authentication_with_uuid':
@@ -276,6 +293,13 @@ def process_message(session, message):
             res = createFromForm(session, message)
         elif method == 'getFormData':
             res = getFormData(session, message)
-    res['id'] = callback_id
+        else:
+            error= {
+                'result': "Method not found",
+                'code': -32601
+            }
+            res['error'] = error
+            current_app.logger.warn("Message did not contain a valid Method, messageJSON: " + str(message))
+
     current_app.logger.debug('Result: ' + str(res))
     return res
