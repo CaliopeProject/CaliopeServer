@@ -60,18 +60,12 @@ class RegistroPredioCatastroTipo2(CaliopeNode):
 class SIIMForm(CaliopeNode):
     def __init__(self, *args, **kwargs):
         super(SIIMForm, self).__init__(*args, **kwargs)
-        for k in kwargs.keys():
-            setattr(self, k, kwargs[k])
 
     def get_form_data(self):
-        rv = {}
-        for attr in self.__node__.__metadata__['data']:
-            rv[attr] = {'value': self.__node__.__metadata__['data'][attr]}
-        return rv
+        self._get_node_data()
 
     def set_form_data(self, data):
-        for k in data.keys():
-            setattr(self, k, data[k])
+        return self.evolve(**data)
 
 
 
