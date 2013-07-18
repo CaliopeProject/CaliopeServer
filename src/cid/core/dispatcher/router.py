@@ -374,14 +374,12 @@ def process_message(session, message):
             'result': "Invalid Request",
             'code': -32600
         }
-        rv['error'] = error
         current_app.logger.warn("Message did not contain a valid JSON RPC, messageJSON: " + str(message))
     elif 'method' not in message:
         error = {
             'result': "Method not found",
             'code': -32601
         }
-        rv['error'] = error
         rv['id'] = None
         current_app.logger.warn("Message did not contain a valid Method, messageJSON: " + str(message))
     elif 'id' not in message:
@@ -389,7 +387,6 @@ def process_message(session, message):
             'result': "Method did not contain a valid ID",
             'code': -32602
         }
-        rv['error'] = error
         rv['id'] = None
         current_app.logger.warn("Message did not contain a valid ID, messageJSON: " + str(message))
     elif 'params' not in message:
@@ -397,7 +394,6 @@ def process_message(session, message):
             'result': "Method did not contain params",
             'code': -32603
         }
-        rv['error'] = error
     else:
         current_app.logger.debug('Command: ' + str(message))
         method = message['method']
