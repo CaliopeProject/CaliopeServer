@@ -1,9 +1,0 @@
-2013-07-08 17:19:02,392 caliope_server    line:135  INFO     Starting server on: localhost:9000
-2013-07-08 17:19:02,392 caliope_server    line:136  INFO     Static Base Directory: templates
-2013-07-08 17:19:02,393 caliope_server    line:137  INFO     Forms Template Directory : templates/formTemplates
-2013-07-08 17:27:04,446 caliope_server    line:136  INFO     Starting server on: localhost:9000
-2013-07-08 17:27:04,446 caliope_server    line:137  INFO     Static Base Directory: templates
-2013-07-08 17:27:04,446 caliope_server    line:138  INFO     Forms Template Directory : templates/formTemplates
-2013-07-08 17:27:16,672 caliope_server    line:136  INFO     Starting server on: localhost:9000
-2013-07-08 17:27:16,672 caliope_server    line:137  INFO     Static Base Directory: templates
-2013-07-08 17:27:16,673 caliope_server    line:138  INFO     Forms Template Directory : templates/formTemplates
