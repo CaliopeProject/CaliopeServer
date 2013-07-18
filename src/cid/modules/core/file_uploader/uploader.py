@@ -36,19 +36,45 @@ file_uploader = Blueprint('file_uploader', __name__, template_folder='')
 UPLOAD_FOLDER = "/tmp"
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
+def human_readable_size(size_bytes):
+    if size_bytes == 1:
+        return "1 byte"
+
+    suffixes_table = [('bytes',0),('KB',1),('MB',2),('GB',2),('TB',3), ('PB',3)]
+
+    num = float(size_bytes)
+    for suffix, precision in suffixes_table:
+        if num < 1024.0:
+            break
+        num /= 1024.0
+        
+    formatted_size = ("%d" % num) if (precision == 0) else str(round(num, ndigits=precision))
+
+    return "%s %s" % (formatted_size, suffix)
 
 @file_uploader.route('/', methods=['GET', 'POST'])
 def uploader():
     if request.method == 'POST':
+        #print request.form['name']
+        #print str(dir(request.form.values))
+        rv = []
         for uploaded_file in request.files.getlist('files[]'):
             if uploaded_file and allowed_file(uploaded_file.filename):
                 filename = secure_filename(uploaded_file.filename)
                 uploaded_file.save(os.path.join(UPLOAD_FOLDER, filename))
-            result = {
-                'result': 'ok',
-                'msg': "uploaded_file saved"
-            }
-            return json.dumps(result)
+                result = {
+                    'result': 'ok',
+                    'name': filename,
+                    'size': human_readable_size(uploaded_file.tell())
+                }
+            else:
+                result = {
+                    'result': 'error',
+                    'name': filename
+                }
+                
+            rv.append(result);
+        return json.dumps(rv)
     return """
     <!doctype html>
     <title>Upload new File</title>
