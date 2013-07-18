@@ -39,7 +39,7 @@ from flask import Flask
 from flask.helpers import safe_join
 
 #Apps import
-from modules.core.module_manager import module_loader
+from cid.core.module_manager import module_loader
 from utils.fileUtils import loadJSONFromFile, send_from_memory, Gzip
 
 #: Gevent to patch all TCP/IP connections
@@ -120,7 +120,7 @@ def configure_server_and_app(server_config_file):
         if 'modules' in config['app']:
             app.config['modules'] = config['app']['modules']
         else:
-            app.config['modules'] = {'dispatcher': {'module_name': 'src.cid.modules.core.dispatcher',
+            app.config['modules'] = {'dispatcher': {'module_name': 'cid.core.dispatcher',
                                      'module_route': '/api'}}
     else:
         #TODO: Load all default app config
@@ -153,7 +153,7 @@ def register_modules():
         blueprint_name = module_config['module_blueprint'] if 'module_blueprint' in module_config else \
                       module_config['module_name'].split('.')[-1]
         try:
-            module_blueprint = importlib.import_module('cid.modules.' + module_name)
+            module_blueprint = importlib.import_module('cid.' + module_name)
             app.register_blueprint(module_blueprint.getBlueprint(), url_prefix=module_route)
         except Exception:
             app.logger.exception(str(Exception))
