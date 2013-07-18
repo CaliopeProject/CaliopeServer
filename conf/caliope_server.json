@@ -26,6 +26,13 @@
                 }
             }
         ]
-    }
-    
+    },
+    "storage": [
+        {
+            "local": {
+                "absolut_path":"/tmp",
+                "max_filesize":10000000
+                }
+        }
+    ]
 }

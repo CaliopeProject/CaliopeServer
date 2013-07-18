@@ -122,6 +122,8 @@ def configure_server_and_app(server_config_file):
         else:
             app.config['modules'] = {'dispatcher': {'module_name': 'cid.core.dispatcher',
                                      'module_route': '/api'}}
+    if 'storage' in config:
+        app.config['storage'] = config['storage']
     else:
         #TODO: Load all default app config
         pass
