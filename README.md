@@ -13,6 +13,12 @@ Requeriments
 How to?
 ==========
 install and run neo4j
-run `sudo apt-get install python-dev libevent-dev fortunes`
-run `pip install -r pip-dependencies.txt` to install requirements and start the server with `sh run_server.sh` then browse `http://localhost:9000/` to try out.
+  * sudo -i
+  * wget -O - http://debian.neo4j.org/neotechnology.gpg.key| apt-key add -
+  * echo 'deb http://debian.neo4j.org/repo stable/' > /etc/apt/sources.list.d/neo4j.list 
+  * apt-get update -y
+  * apt-get install neo4j-enterprise
+
+run `sudo apt-get install python-dev python-pip libevent-dev`
+run `pip install -r requirements.txt` to install requirements and start the server with `sh run_server.sh` then browse `http://localhost:9000/` to try out.
 
