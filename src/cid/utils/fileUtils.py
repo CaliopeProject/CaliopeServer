@@ -38,11 +38,12 @@ from werkzeug.exceptions import NotFound
 
 
 def loadJSONFromFile(filename, root_path):
-    if filename is not None:
-        if not os.path.isabs(filename):
-            filename = os.path.join(root_path, filename)
+    #if filename is not None:
+        #if not os.path.isabs(filename):
+            #filename = os.path.join(root_path, filename)
     if not os.path.isfile(filename):
-        raise NotFound("JSON file" + filename + " not found")
+        print "Error : JSON file " + filename + " not found"
+        raise NotFound("JSON file " + filename + " not found")
     try:
         json_data = re.sub("(?:/\\*(?:[^*]|(?:\\*+[^*/]))*\\*+/)",
                            '', open(filename).read(), re.MULTILINE)
@@ -64,9 +65,9 @@ def send_from_memory(filename):
     """
     if not os.path.isfile(filename):
         raise NotFound()
-    if filename is not None:
-        if not os.path.isabs(filename):
-            filename = os.path.join(current_app.root_path, filename)
+    #if filename is not None:
+        #if not os.path.isabs(filename):
+            #filename = os.path.join(current_app.root_path, filename)
     mimetype = mimetypes.guess_type(filename)[0]
     if mimetype is None:
         mimetype = 'application/octet-stream'

@@ -3,10 +3,10 @@
         "address": "0.0.0.0",
         "port": "9000",
         "debug": "True",
-        "static": "../../../caliope_webui_beowulf/app",
+        "static": "../caliope_webui_beowulf/app",
         "formTemplates": "templates/formTemplates"
     },
-        /*Added fo app configurations*/
+    /* Added fo app configurations */
     "app": {
         "languages": {
             "en": "English",

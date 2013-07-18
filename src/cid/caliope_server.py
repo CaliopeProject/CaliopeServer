@@ -60,9 +60,9 @@ def custom_static(filename):
 
 def main(argv):
     init_flask_app()
-    config_file = _parseCommandArguments(argv)
-    configure_server_and_app(config_file)
-    configure_logger("conf/logger.json")
+    server_config_file,logger_config_file = _parseCommandArguments(argv)
+    configure_server_and_app(server_config_file)
+    configure_logger(logger_config_file)
     register_modules()
     run_server()
 
@@ -77,24 +77,27 @@ def init_flask_app():
 
 
 def _parseCommandArguments(argv):
-    config_file = "conf/caliope_server.json"
+    server_config_file = "conf/caliope_server.json"
+    logger_config_file = "conf/logger.json"
     try:
-        opts, args = getopt.getopt(argv, "hc:", ["help", "config="])
+        opts, args = getopt.getopt(argv, "hc:l:", ["help", "config=","log="])
     except getopt.GetoptError:
-        print 'caliope_server.py -c <configfile>'
+        print 'caliope_server.py -c <server_configfile> - l <logger_configfile>' 
         sys.exit(2)
 
     for opt, arg in opts:
         if opt == '-h':
-            print 'caliope_server.py -c <configfile>'
+            print 'caliope_server.py -c <server_configfile> - l <logger_configfile>' 
             sys.exit()
         elif opt in ("-c", "--config"):
-            config_file = arg
-    return config_file
+            server_config_file = arg
+        elif opt in ("-l", "--log"):
+            logger_config_file = arg
+    return server_config_file,logger_config_file
 
 
-def configure_server_and_app(config_file):
-    config = loadJSONFromFile(config_file, app.root_path)
+def configure_server_and_app(server_config_file):
+    config = loadJSONFromFile(server_config_file, app.root_path)
     #TODO: Validate 'server' in config and load default if not present
     if 'address' in config['server']:
         app.config['address'] = config['server']['address']
@@ -128,8 +131,8 @@ def configure_server_and_app(config_file):
         app.debug = False
 
 
-def configure_logger(config_file):
-    config = loadJSONFromFile(config_file, app.root_path)
+def configure_logger(server_config_file):
+    config = loadJSONFromFile(server_config_file, app.root_path)
     from logging.config import dictConfig
     dictConfig(config)
 

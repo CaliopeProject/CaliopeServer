@@ -14,7 +14,7 @@
         "file": {
             "class": "logging.handlers.RotatingFileHandler",
             "formatter": "detailed",
-            "filename": "../log/siim2.log",
+            "filename": "log/siim2.log",
             "maxBytes": 1024,
             "backupCount": 3
         }

@@ -35,8 +35,8 @@ class SIIM2ServerTestCase(unittest.TestCase):
         """Before each test, set up a blank enviroment"""
         caliope_server.app.config['TESTING'] = True
         caliope_server.init_flask_app()
-        caliope_server.configure_server_and_app("conf/caliope_server.json")
-        caliope_server.configure_logger("conf/logger.json")
+        caliope_server.configure_server_and_app("../../conf/caliope_server.json")
+        caliope_server.configure_logger("../../conf/logger.json")
         caliope_server.register_modules()
         self.app = caliope_server.app.test_client()
 
