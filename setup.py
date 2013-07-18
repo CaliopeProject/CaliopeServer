@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-    Caliope_Odisea Setup
+    SIIM2 Server Setup
     ~~~~~~~~~~~~~~
 
     :author: Sebastián Ortiz <neoecos@gmail.com>
-    :copyright: (c) 2013 por Fundación CorreLibre
+    :copyright: (c) 2013  Infometrika Ltda.
     :license:  GNU AFFERO GENERAL PUBLIC LICENSE
 
-    Caliope Storage is the base of Caliope's Framework
-    Copyright (C) 2013  Fundación Correlibre
+    SIIM2 Server is the web server  of SIIM2's Framework
+    Copyright (C) 2013  Infometrika Ltda.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as published by
@@ -30,7 +30,9 @@ setup(
     name='SIIM2_Server',
     version='0.0.1',
     package_dir={'': 'src'},
-    packages=['cid', 'test'],
+    packages=['test', 'cid', 'cid.model', 'cid.modules', 'cid.modules.core', 'cid.modules.core.dispatcher',
+              'cid.modules.core.file_uploader', 'cid.modules.core.module_manager',
+              'cid.modules.core.server_notifications', 'cid.modules.core.jsonrpc', 'cid.utils'],
     license='GNU AFFERO GENERAL PUBLIC LICENSE',
     long_description=open('README.md').read(),
     author='Sebastián Ortiz Vásquez',
