@@ -37,7 +37,7 @@ from cid.utils import helpers
 
 #CaliopeStorage
 from neomodel import DoesNotExist
-from odisea.CaliopeStorage import CaliopeUser
+from odisea.CaliopeStorage import CaliopeUser, CaliopeNode
 from cid.model import SIIMModel
 
 #Moved to package __init__.py
@@ -80,7 +80,6 @@ def index():
                     res = process_message(session, m)
                     rv.append(res)
                 ws.send(json.dumps(rv))
-
 
 #: TODO: Not implemented yet
 def _is_fresh_session(session):
@@ -249,19 +248,18 @@ def createFromForm(session, params):
         }
         return result, error
 
-    #@login_required
-
-
+#@login_required
 def editFromForm(session, params):
     error = None
     result = None
     form_id = params['formId'] if 'formId' in params else 'SIIMForm'
     form_data = params['data'] if 'data' in params else {}
     if form_id == 'SIIMForm':
+        #: TODO: Update to SIIMForm.pull(uuid) when update to Caliope_Odisea > 0.0.4
         form = SIIMModel.SIIMForm.index.get(uuid=form_data['uuid'])
-        form.set_form_data(form_data)
         try:
-            form.save()
+            #: this will evolve the node
+            form = form.set_form_data(form_data)
             result = {'uuid': form.uuid}
         except Exception:
             error = {
@@ -277,9 +275,8 @@ def editFromForm(session, params):
         }
         return result, error
 
-    #@login_required
-
-
+#: TODO: This method is NOT doing what is suppose to do.
+#@login_required
 def deleteFromForm(session, params):
     error = None
     result = None
@@ -320,6 +317,38 @@ def getFormData(session, params):
                 'form': loadJSONFromFile(current_app.config["FORM_TEMPLATES"]
                                          + "/" + params["formId"] + ".json", current_app.root_path),
                 'actions': ["create", "delete", "edit"]
+            }
+
+        except DoesNotExist:
+            error = {
+                'code': -32600,
+                'message': 'Not found in db with uuid: ' + uuid
+            }
+        except Exception:
+            error = {
+                'code': -32600,
+                'message': Exception.params()
+            }
+
+        finally:
+            return result, error
+
+
+def getFormDataList(session, params):
+    error = None
+    result = None
+    form_id = params['formId'] if 'formId' in params else 'SIIMForm'
+    filters = params['filters'] if 'filters' in params else {}
+    if form_id == 'SIIMForm':
+        try:
+            #: TODO: Implement filters and ranged searchs
+            form_nodes_list = SIIMModel.SIIMForm.index.search('uuid:*')
+            form_nodes_data_list = []
+            for node in form_nodes_list:
+                form_nodes_data_list.append(node.get_form_data())
+
+            result = {
+                'data': form_nodes_data_list,
             }
 
         except DoesNotExist:
@@ -387,6 +416,8 @@ def process_message(session, message):
             result, error = deleteFromForm(session, message['params'])
         elif method == 'getFormData':
             result, error = getFormData(session, message['params'])
+        elif method == 'getFormDataList':
+            result, error = getFormDataList(session, message['params'])
         else:
             error = {
                 'result': "Method not found",
@@ -401,5 +432,5 @@ def process_message(session, message):
         rv['result'] = result
 
     rv['jsonrpc'] = "2.0"
-    current_app.logger.debug('Result: ' + str(rv))
+    current_app.logger.debug('Result: ' + json.dumps(rv))
     return rv
