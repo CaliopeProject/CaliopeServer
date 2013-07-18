@@ -24,6 +24,7 @@ Copyright (C) 2013 Fundación Correlibre
 #system, and standard library
 import os
 import json
+import uuid
 
 #flask
 from werkzeug import secure_filename
@@ -55,7 +56,7 @@ def human_readable_size(size_bytes):
 @file_uploader.route('/', methods=['GET', 'POST'])
 def uploader():
     if request.method == 'POST':
-        #print request.form['name']
+        print request.form['id']
         #print str(dir(request.form.values))
         rv = []
         for uploaded_file in request.files.getlist('files[]'):
@@ -65,15 +66,16 @@ def uploader():
                 result = {
                     'result': 'ok',
                     'name': filename,
-                    'size': human_readable_size(uploaded_file.tell())
+                    'size': human_readable_size(uploaded_file.tell()),
+                    'id':   str(uuid.uuid4()).decode('utf-8') #TODO: change to uuid3 nither uuid5
                 }
             else:
                 result = {
                     'result': 'error',
                     'name': filename
                 }
-                
             rv.append(result);
+
         return json.dumps(rv)
     return """
     <!doctype html>
