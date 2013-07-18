@@ -62,7 +62,7 @@ class SIIMForm(CaliopeNode):
         super(SIIMForm, self).__init__(*args, **kwargs)
 
     def get_form_data(self):
-        self._get_node_data()
+        return self._get_node_data()
 
     def set_form_data(self, data):
         return self.evolve(**data)
