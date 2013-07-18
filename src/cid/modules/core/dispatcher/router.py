@@ -31,14 +31,14 @@ from flask.globals import current_app
 from flask import (session, request, Blueprint)
 
 #Apps import
-from src.cid.utils.fileUtils import loadJSONFromFile
-from src.cid.utils import helpers
+from cid.utils.fileUtils import loadJSONFromFile
+from cid.utils import helpers
 
 
 #CaliopeStorage
 from neomodel import DoesNotExist
-from odisea.CaliopeStorage import CaliopeUser, CaliopeNode
-from src.cid.model import SIIMModel
+from odisea.CaliopeStorage import CaliopeUser
+from cid.model import SIIMModel
 
 #Moved to package __init__.py
 dispatcher = Blueprint('dispatcher', __name__, template_folder='pages')
@@ -70,16 +70,17 @@ def index():
                 current_app.logger.error('Request ' + request.__str__()
                                          + '\tmessage:' + message)
                 messageJSON = json.loads('{}')
-                
+
             if type(messageJSON) is dict:
                 res = process_message(session, messageJSON)
                 ws.send(json.dumps(res))
             elif type(messageJSON) is list:
-                rv=[]
+                rv = []
                 for m in messageJSON:
                     res = process_message(session, m)
                     rv.append(res)
                 ws.send(json.dumps(rv))
+
 
 #: TODO: Not implemented yet
 def _is_fresh_session(session):
@@ -120,8 +121,8 @@ def event_logging(func):
 
 
 def login_with_uuid(session, params):
-    result=None
-    error=None
+    result = None
+    error = None
     session_uuid = params['uuid']
     if session_uuid in storage_sessions:
         session['user'] = storage_sessions[session_uuid]['user']
@@ -131,10 +132,10 @@ def login_with_uuid(session, params):
 
     else:
         error = {
-            'code' : -32600,
-            'message' : "uuid not found"
-            }
-    return result,error
+            'code': -32600,
+            'message': "uuid not found"
+        }
+    return result, error
 
 
 def login_with_name(session, params):
@@ -144,11 +145,11 @@ def login_with_name(session, params):
     """
     #: TODO: Enable system to be session oriented, so one user can have multiple active sessions
     #: TODO: Check security of this autentication method
-    result=None
-    error=None
+    result = None
+    error = None
     if 'user' in session:
         result = {'uuid': session['session_uuid']}
-        return result,error
+        return result, error
     try:
         user = CaliopeUser.index.get(username=params['login'])
         #: TODO Add to log
@@ -161,36 +162,36 @@ def login_with_name(session, params):
             result = {'uuid': session['session_uuid']}
         else:
             error = {
-                'code' : -32600,
-                'message' : "The password does not match the username"
-                }
+                'code': -32600,
+                'message': "The password does not match the username"
+            }
 
     except DoesNotExist:
         error = {
-            'code' : -32600,
-            'message' : "The username does not exists"
-         }
+            'code': -32600,
+            'message': "The username does not exists"
+        }
     finally:
-        return result,error
+        return result, error
 
 #@login_required
 def getPrivilegedForm(session, params):
-    error=None
+    error = None
     result = {
         'result': 'ok',
         'form': loadJSONFromFile(current_app.config["FORM_TEMPLATES"]
                                  + "/" + params["formId"] + ".json", current_app.root_path),
-        'actions' : ["create"]       
+        'actions': ["create"]
     }
-    return result,error
+    return result, error
 
 
 @event_logging
 #:TODO Implement the method with different version and domain options.
 def getFormTemplate(session, params):
-    result=None
-    error=None
-    
+    result = None
+    error = None
+
     if 'formId' in params:
         formId = params['formId']
         if 'domain' in params:
@@ -205,27 +206,27 @@ def getFormTemplate(session, params):
         result = {
             'result': 'ok',
             'form': loadJSONFromFile(current_app.config['FORM_TEMPLATES']
-                                     + "/" + "login.json",  current_app.root_path),
-            'actions' : ["authenticate"]        
+                                     + "/" + "login.json", current_app.root_path),
+            'actions': ["authenticate"]
         }
-        
+
     elif formId == 'proyectomtv':
-        result,error = getPrivilegedForm(session, params)
+        result, error = getPrivilegedForm(session, params)
     elif formId == 'SIIMForm':
-        result,error = getPrivilegedForm(session, params)
+        result, error = getPrivilegedForm(session, params)
     else:
         error = {
-            'code' : -32600,
-            'message' : "invalid form"
+            'code': -32600,
+            'message': "invalid form"
         }
-    return result,error
+    return result, error
 
 
 #@login_required
 def createFromForm(session, params):
-    error=None
-    result=None
-    
+    error = None
+    result = None
+
     form_id = params['formId'] if 'formId' in params else 'SIIMForm'
     form_data = params['data'] if 'data' in params else {}
     if form_id == 'SIIMForm':
@@ -236,22 +237,24 @@ def createFromForm(session, params):
             result = {'uuid': form.uuid}
         except Exception:
             error = {
-                'code' : -32600,
-                'message' : "Unknown error : " + Exception.params()
+                'code': -32600,
+                'message': "Unknown error : " + Exception.params()
             }
         finally:
-            return result,error 
+            return result, error
     else:
         error = {
-            'code' : -32600,
-            'message' : 'Class ' + form_id + ' not found in Model'
-            }
-        return result,error 
+            'code': -32600,
+            'message': 'Class ' + form_id + ' not found in Model'
+        }
+        return result, error
 
-#@login_required
+    #@login_required
+
+
 def editFromForm(session, params):
-    error=None
-    result=None    
+    error = None
+    result = None
     form_id = params['formId'] if 'formId' in params else 'SIIMForm'
     form_data = params['data'] if 'data' in params else {}
     if form_id == 'SIIMForm':
@@ -262,22 +265,24 @@ def editFromForm(session, params):
             result = {'uuid': form.uuid}
         except Exception:
             error = {
-                'code' : -32600,
-                'message' : "Unknown error : " + Exception.params()
+                'code': -32600,
+                'message': "Unknown error : " + Exception.params()
             }
         finally:
-            return result,error 
+            return result, error
     else:
         error = {
-            'code' : -32600,
-            'message' : 'Class ' + form_id + ' not found in Model'
-            }
-        return result,error 
+            'code': -32600,
+            'message': 'Class ' + form_id + ' not found in Model'
+        }
+        return result, error
 
-#@login_required
+    #@login_required
+
+
 def deleteFromForm(session, params):
-    error=None
-    result=None    
+    error = None
+    result = None
     form_id = params['formId'] if 'formId' in params else 'SIIMForm'
     form_data = params['data'] if 'data' in params else {}
     if form_id == 'SIIMForm':
@@ -288,21 +293,22 @@ def deleteFromForm(session, params):
             result = {'uuid': form.uuid}
         except Exception:
             error = {
-                'code' : -32600,
-                'message' : "Unknown error : " + Exception.params()
+                'code': -32600,
+                'message': "Unknown error : " + Exception.params()
             }
         finally:
-            return result,error 
+            return result, error
     else:
         error = {
-            'code' : -32600,
-            'message' : 'Class ' + form_id + ' not found in Model'
-            }
-        return result,error 
-    
+            'code': -32600,
+            'message': 'Class ' + form_id + ' not found in Model'
+        }
+        return result, error
+
+
 def getFormData(session, params):
-    error=None
-    result=None
+    error = None
+    result = None
     form_id = params['formId'] if 'formId' in params else 'SIIMForm'
     data_uuid = params['uuid'] if 'uuid' in params else ''
     if form_id == 'SIIMForm':
@@ -311,79 +317,78 @@ def getFormData(session, params):
             result = {
                 'data': form_node.get_form_data(),
                 #: TODO: Create a helper private method to access forms
-                'form' : loadJSONFromFile(current_app.config["FORM_TEMPLATES"]
-                                          + "/" + params["formId"] + ".json", current_app.root_path),
-                'actions' : ["create", "delete", "edit"]
-                }
+                'form': loadJSONFromFile(current_app.config["FORM_TEMPLATES"]
+                                         + "/" + params["formId"] + ".json", current_app.root_path),
+                'actions': ["create", "delete", "edit"]
+            }
 
         except DoesNotExist:
             error = {
-                'code' : -32600,
-                'message' : 'Not found in db with uuid: ' + uuid
-                }       
+                'code': -32600,
+                'message': 'Not found in db with uuid: ' + uuid
+            }
         except Exception:
             error = {
-                'code' : -32600,
-                'message' : Exception.params()
-                }       
+                'code': -32600,
+                'message': Exception.params()
+            }
 
         finally:
-            return result,error 
-
+            return result, error
 
 
 def process_message(session, message):
     error = None
     rv = {}
     if 'jsonrpc' not in message:
-        error= {
+        error = {
             'result': "Invalid Request",
             'code': -32600
-            }
+        }
         rv['error'] = error
         current_app.logger.warn("Message did not contain a valid JSON RPC, messageJSON: " + str(message))
     elif 'method' not in message:
-        error= {
+        error = {
             'result': "Method not found",
             'code': -32601
-            }
+        }
         rv['error'] = error
         rv['id'] = None
         current_app.logger.warn("Message did not contain a valid Method, messageJSON: " + str(message))
     elif 'id' not in message:
-        error= {
+        error = {
             'result': "Method did not contain a valid ID",
             'code': -32602
-            }
-        rv['error'] = error        
+        }
+        rv['error'] = error
         rv['id'] = None
         current_app.logger.warn("Message did not contain a valid ID, messageJSON: " + str(message))
     elif 'params' not in message:
-        error= {
+        error = {
             'result': "Method did not contain params",
             'code': -32603
-            }
-        rv['error'] = error         
+        }
+        rv['error'] = error
     else:
         current_app.logger.debug('Command: ' + str(message))
         method = message['method']
         rv['id'] = message['id']
         if method == 'authentication':
-            result,error = login_with_name(session, message['params'])
+            result, error = login_with_name(session, message['params'])
         elif method == 'authentication_with_uuid':
-            result,error = login_with_uuid(session, message['params'])
+            result, error = login_with_uuid(session, message['params'])
         elif method == 'getFormTemplate':
-            result,error = getFormTemplate(session, message['params'])                
+            result, error = getFormTemplate(session, message['params'])
         elif method == 'create':
-            result,error = createFromForm(session, message['params'])
+            result, error = createFromForm(session, message['params'])
         elif method == 'edit':
-            result,error = editFromForm(session, message['params'])
+            result, error = editFromForm(session, message['params'])
         elif method == 'delete':
-            result,error = deleteFromForm(session, message['params'])
+            result, error = deleteFromForm(session, message['params'])
         elif method == 'getFormData':
-            result,error = getFormData(session, message['params'])
+            result, error = getFormData(session, message['params'])
         else:
-            error= {
+            error = {
                 'result': "Method not found",
                 'code': -32601
             }
@@ -394,7 +399,7 @@ def process_message(session, message):
         rv['error'] = error
     else:
         rv['result'] = result
-    
+
     rv['jsonrpc'] = "2.0"
     current_app.logger.debug('Result: ' + str(rv))
     return rv

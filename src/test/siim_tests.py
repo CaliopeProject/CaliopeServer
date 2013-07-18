@@ -22,9 +22,8 @@ Copyright (C) 2013 Infometrika Ltda
 """
 # -*- coding: utf-8 -*-
 import os
-from src.cid import caliope_server
+from cid import caliope_server
 import unittest
-import tempfile
 import json
 import uuid
 import hashlib
