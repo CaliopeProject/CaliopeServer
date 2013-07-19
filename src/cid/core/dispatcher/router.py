@@ -30,22 +30,32 @@ from pytz import utc
 from flask.globals import current_app
 from flask import (session, request, Blueprint)
 
-#Apps import
-from cid.utils.fileUtils import loadJSONFromFile
-from cid.utils import helpers
-
+#tinyrpc
+from tinyrpc.protocols.jsonrpc import JSONRPCProtocol
+from tinyrpc import BadRequestError, RPCBatchRequest
+from tinyrpc.dispatch import RPCDispatcher
 
 #CaliopeStorage
 from neomodel import DoesNotExist
 from odisea.CaliopeStorage import CaliopeUser, CaliopeNode
-from cid.model import SIIMModel
 
-#Moved to package __init__.py
-dispatcher = Blueprint('dispatcher', __name__, template_folder='pages')
+#Apps import
+from cid.utils.fileUtils import loadJSONFromFile
+from cid.utils import helpers
+from cid.model import SIIMModel
+from cid.core.login import LoginManager
+
+dispatcher_bp = Blueprint('dispatcher', __name__, template_folder='pages')
+
 storage_sessions = {}
 
+dispatcher = RPCDispatcher()
 
-@dispatcher.route('/rest', methods=['POST'])
+jsonrpc = JSONRPCProtocol()
+
+dispatcher.register_instance(LoginManager(), 'login.')
+
+@dispatcher_bp.route('/rest', methods=['POST'])
 def rest():
     current_app.logger.debug('POST:' + request.get_data(as_text=True))
     message = request.json
@@ -53,7 +63,7 @@ def rest():
     return json.dumps(res)
 
 
-@dispatcher.route('/ws')
+#@dispatcher_bp.route('/ws')
 def index():
     if request.environ.get('wsgi.websocket'):
         ws = request.environ['wsgi.websocket']
@@ -80,6 +90,57 @@ def index():
                     res = process_message(session, m)
                     rv.append(res)
                 ws.send(json.dumps(rv))
+
+@dispatcher_bp.route('/ws')
+def receive_ws_message():
+    if request.environ.get('wsgi.websocket'):
+        ws = request.environ['wsgi.websocket']
+        while True:
+            ws_message = ws.receive()
+            if ws_message is None:
+                current_app.logger.warn('Request: ' + request.__str__() + '\tmessage: None')
+                break
+            else:
+                handle_incoming_jsonrpc_message(ws_message, ws)
+
+
+#data can be from any transport layer
+def handle_incoming_jsonrpc_message(data, handler):
+    """
+
+    :param data: The string containing the json request
+    :param handler: The transport handler, MUST implement send(data) method.
+    """
+    try:
+        request = jsonrpc.parse_request(data)
+    except BadRequestError as e:
+        # request was invalid, directly create response
+        response = request.error_respond(e)
+    else:
+        # we got a valid request
+        # the handle_request function is user-defined
+        # and returns some form of response
+        if hasattr(request, 'create_batch_response'):
+            response = request.create_batch_response(
+                handle_request(req) for req in request
+            )
+        else:
+            response = handle_request(request)
+
+    # now send the response to the client
+    if response is not None:
+        handler.send(response.serialize())
+
+
+def handle_request(request):
+    try:
+        # do magic with method, args, kwargs...
+        return dispatcher.dispatch(request)
+    except Exception as e:
+        # for example, a method wasn't found
+        return request.error_respond(e)
+
+
 
 #: TODO: Not implemented yet
 def _is_fresh_session(session):
