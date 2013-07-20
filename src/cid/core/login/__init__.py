@@ -27,7 +27,7 @@ from neomodel import DoesNotExist
 from odisea.CaliopeStorage import CaliopeUser
 
 from tinyrpc.dispatch import public
-from flask import current_app, session
+from flask import current_app
 
 
 class LoginManager(object):

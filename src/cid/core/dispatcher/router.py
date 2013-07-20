@@ -107,6 +107,7 @@ def receive_ws_message():
 #data can be from any transport layer
 def handle_incoming_jsonrpc_message(data, handler):
     """
+    Validate the RPC, check if batch or single and handle the valid RPC
 
     :param data: The string containing the json request
     :param handler: The transport handler, MUST implement send(data) method.
