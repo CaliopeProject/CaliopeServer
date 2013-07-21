@@ -21,6 +21,7 @@ Copyright (C) 2013 Infometrika Ltda.
 """
 from uuid import uuid4
 from datetime import datetime, timedelta
+from functools import wraps
 
 #CaliopeStorage
 from neomodel import DoesNotExist
@@ -59,6 +60,7 @@ class LoginManager(object):
         """
         #: TODO: Load refresh timeout from app configuration.
         #: TODO: Review the best way to send uuid to client, maybe a "api_key" hmaced ;)?
+        #: TODO: Change key for session_storage key value should be the uuid or api_key?s
         app = current_app
         session_storage = app.config['session_storage']
         if username in session_storage:
@@ -75,8 +77,23 @@ class LoginManager(object):
             session_storage[username] = user_session
         return user_session['uuid']
 
+    @staticmethod
+    def login_required(func):
+        app = current_app
+        session_storage = app.config['session_storage']
+        @wraps(func)
+        def decorated_view(*args, **kwargs):
+            #: TODO: Define a way to validate request
+            #: TODO: Change this, for now if user is logged it will work, else false.
+            if 'user' in session_storage:
+                return func(*args, **kwargs)
+            else:
+                return Exception('Not authorized')
+            return decorated_view
 
-
+    #: TODO: Not implemented yet
+    #def _is_fresh_session(session):
+    #    return True
 
 
 
