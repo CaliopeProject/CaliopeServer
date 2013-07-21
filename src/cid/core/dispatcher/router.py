@@ -28,7 +28,7 @@ from pytz import utc
 
 #flask
 from flask.globals import current_app
-from flask import (session, request, Blueprint)
+from flask import (session, request, Blueprint, make_response)
 
 #tinyrpc
 from tinyrpc.protocols.jsonrpc import JSONRPCProtocol
@@ -55,14 +55,6 @@ jsonrpc = JSONRPCProtocol()
 
 #This does magics
 dispatcher.register_instance(LoginManager(), 'login.')
-
-@dispatcher_bp.route('/rest', methods=['POST'])
-def rest():
-    current_app.logger.debug('POST:' + request.get_data(as_text=True))
-    message = request.json
-    res = process_message(session, message)
-    return json.dumps(res)
-
 
 #@dispatcher_bp.route('/ws')
 def index():
@@ -93,7 +85,7 @@ def index():
                 ws.send(json.dumps(rv))
 
 @dispatcher_bp.route('/ws')
-def receive_ws_message():
+def ws_endpoint():
     if request.environ.get('wsgi.websocket'):
         ws = request.environ['wsgi.websocket']
         while True:
@@ -104,34 +96,48 @@ def receive_ws_message():
             else:
                 handle_incoming_jsonrpc_message(ws_message, ws)
 
+@dispatcher_bp.route('/rest', methods=['POST'])
+def rest_endpoint():
+    current_app.logger.debug('POST:' + request.get_data(as_text=True))
+    post_message = request.data
+    if post_message is None:
+        current_app.logger.warn('POST: ' + request.__str__() + '\tmessage: None')
+    else:
+        rv = handle_incoming_jsonrpc_message(post_message)
+        return rv
+
 
 #data can be from any transport layer
-def handle_incoming_jsonrpc_message(data, handler):
+def handle_incoming_jsonrpc_message(data, handler=None):
     """
     Validate the RPC, check if batch or single and handle the valid RPC
 
     :param data: The string containing the json request
-    :param handler: The transport handler, MUST implement send(data) method.
+    :param handler: The transport handler with method send(data)
+    :return: If handler is not present, the data of the response.
     """
     try:
-        request = jsonrpc.parse_request(data)
+        json_request = jsonrpc.parse_request(data)
     except BadRequestError as e:
         # request was invalid, directly create response
-        response = request.error_respond(e)
+        rpc_response = json_request.error_respond(e)
     else:
         # we got a valid request
         # the handle_request function is user-defined
         # and returns some form of response
-        if hasattr(request, 'create_batch_response'):
-            response = request.create_batch_response(
-                handle_request(req) for req in request
+        if hasattr(json_request, 'create_batch_response'):
+            rpc_response = json_request.create_batch_response(
+                handle_request(req) for req in json_request
             )
         else:
-            response = handle_request(request)
+            rpc_response = handle_request(json_request)
 
     # now send the response to the client
-    if response is not None:
-        handler.send(response.serialize())
+    if rpc_response is not None:
+        if handler is not None:
+            handler.send(rpc_response.serialize())
+        else:
+            return rpc_response.serialize()
 
 
 def handle_request(request):
@@ -143,36 +149,6 @@ def handle_request(request):
         return request.error_respond(e)
 
 
-
-#: TODO: Not implemented yet
-def _is_fresh_session(session):
-    return True
-
-
-def login_error(user=False, fresh=False):
-    msg = u''
-    if user:
-        msg += u"Session don't exists for user"
-    if fresh:
-        msg += u"Session is not fresh"
-    res = {
-        'result': 'ok',
-        'msg': msg,
-    }
-    return res
-
-
-def login_required(func):
-    @wraps(func)
-    def decorated_view(*args, **kwargs):
-        if 'user' in session:
-            return func(*args, **kwargs)
-        else:
-            return login_error(user=True)
-
-    return decorated_view
-
-
 def event_logging(func):
     @wraps(func)
     def decorated_logging(*args, **kwargs):
@@ -181,60 +157,6 @@ def event_logging(func):
 
     return decorated_logging
 
-
-def login_with_uuid(session, params):
-    result = None
-    error = None
-    session_uuid = params['uuid']
-    if session_uuid in storage_sessions:
-        session['user'] = storage_sessions[session_uuid]['user']
-        session['session_uuid'] = session_uuid
-        response_msg = "uuid found, user=" + session['user']
-        result = {'msg': response_msg, 'uuid': session_uuid}
-
-    else:
-        error = {
-            'code': -32600,
-            'message': "uuid not found"
-        }
-    return result, error
-
-
-def login_with_name(session, params):
-    """
-    Default username after run CaliopeTestNode is
-    user:password
-    """
-    #: TODO: Enable system to be session oriented, so one user can have multiple active sessions
-    #: TODO: Check security of this autentication method
-    result = None
-    error = None
-    if 'user' in session:
-        result = {'uuid': session['session_uuid']}
-        return result, error
-    try:
-        user = CaliopeUser.index.get(username=params['login'])
-        #: TODO Add to log
-        if user.password == params['password']:
-            session['user'] = params['login']
-            session['session_uuid'] = str(uuid.uuid4()).decode('utf-8')
-            storage_sessions[session['session_uuid']] = {}
-            storage_sessions[session['session_uuid']]['user'] = session['user']
-            storage_sessions[session['session_uuid']]['start_time'] = datetime.now(utc)
-            result = {'uuid': session['session_uuid']}
-        else:
-            error = {
-                'code': -32600,
-                'message': "The password does not match the username"
-            }
-
-    except DoesNotExist:
-        error = {
-            'code': -32600,
-            'message': "The username does not exists"
-        }
-    finally:
-        return result, error
 
 #@login_required
 def getPrivilegedForm(session, params):
@@ -428,68 +350,3 @@ def getFormDataList(session, params):
         finally:
             return result, error
 
-
-def process_message(session, message):
-    error = None
-    rv = {}
-    if 'jsonrpc' not in message:
-        error = {
-            'result': "Invalid Request",
-            'code': -32600
-        }
-        current_app.logger.warn("Message did not contain a valid JSON RPC, messageJSON: " + str(message))
-    elif 'method' not in message:
-        error = {
-            'result': "Method not found",
-            'code': -32601
-        }
-        rv['id'] = None
-        current_app.logger.warn("Message did not contain a valid Method, messageJSON: " + str(message))
-    elif 'id' not in message:
-        error = {
-            'result': "Method did not contain a valid ID",
-            'code': -32602
-        }
-        rv['id'] = None
-        current_app.logger.warn("Message did not contain a valid ID, messageJSON: " + str(message))
-    elif 'params' not in message:
-        error = {
-            'result': "Method did not contain params",
-            'code': -32603
-        }
-    else:
-        current_app.logger.debug('Command: ' + str(message))
-        method = message['method']
-        rv['id'] = message['id']
-        if method == 'authentication':
-            result, error = login_with_name(session, message['params'])
-        elif method == 'authentication_with_uuid':
-            result, error = login_with_uuid(session, message['params'])
-        elif method == 'getFormTemplate':
-            result, error = getFormTemplate(session, message['params'])
-        elif method == 'create':
-            result, error = createFromForm(session, message['params'])
-        elif method == 'edit':
-            result, error = editFromForm(session, message['params'])
-        elif method == 'delete':
-            result, error = deleteFromForm(session, message['params'])
-        elif method == 'getFormData':
-            result, error = getFormData(session, message['params'])
-        elif method == 'getFormDataList':
-            result, error = getFormDataList(session, message['params'])
-        else:
-            error = {
-                'result': "Method not found",
-                'code': -32601
-            }
-            rv['error'] = error
-            current_app.logger.warn("Message did not contain a valid Method, messageJSON: " + str(message))
-
-    if error is not None:
-        rv['error'] = error
-    else:
-        rv['result'] = result
-
-    rv['jsonrpc'] = "2.0"
-    current_app.logger.debug('Result: ' + json.dumps(rv))
-    return rv
