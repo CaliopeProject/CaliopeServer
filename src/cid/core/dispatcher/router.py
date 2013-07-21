@@ -53,6 +53,7 @@ dispatcher = RPCDispatcher()
 
 jsonrpc = JSONRPCProtocol()
 
+#This does magics
 dispatcher.register_instance(LoginManager(), 'login.')
 
 @dispatcher_bp.route('/rest', methods=['POST'])
