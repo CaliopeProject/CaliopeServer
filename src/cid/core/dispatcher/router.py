@@ -414,6 +414,8 @@ def process_message(session, message):
             result, error = getFormData(session, message['params'])
         elif method == 'getFormDataList':
             result, error = getFormDataList(session, message['params'])
+        elif method == 'getMenu':
+            result, error = getMenu(session, message['params'])
         else:
             error = {
                 'result': "Method not found",

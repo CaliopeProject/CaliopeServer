@@ -46,6 +46,28 @@ from utils.fileUtils import loadJSONFromFile, send_from_memory, Gzip
 monkey.patch_all()
 app = Flask(__name__)
 
+from flask import request
+ 
+import requests
+
+@app.route('/catastrobogota/<path:filename>', methods=['GET', 'POST', 'OPTIONS'])
+def catastrobogota(filename):
+
+    
+    params=""
+    for k in request.values.keys():
+        print k + " " + request.values[k]
+        params = params+'&'+k+'='+request.values[k]
+    
+    #print "----------------"
+    #print params 
+
+    r = requests.get('http://mapas.catastrobogota.gov.co/arcgiswsh/Mapa_Referencia/Mapa_referencia/MapServer/WMSServer?'+params)
+    #print "++++++++++++++++++++++++++++++++++++++++++"
+    #print str(r.content)
+    return r.content
+
+
 
 @app.route('/')
 def index():
