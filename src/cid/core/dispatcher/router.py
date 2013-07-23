@@ -40,10 +40,10 @@ from neomodel import DoesNotExist
 from odisea.CaliopeStorage import CaliopeUser, CaliopeNode
 
 #Apps import
-from cid.utils.fileUtils import loadJSONFromFile
-from cid.utils import helpers
-from cid.model import SIIMModel
-from cid.core.login import LoginManager
+from ...utils import loadJSONFromFile
+from ...model import SIIMModel
+from ..login import LoginManager
+from ..forms import FormManager
 
 dispatcher_bp = Blueprint('dispatcher', __name__, template_folder='pages')
 
@@ -55,34 +55,7 @@ jsonrpc = JSONRPCProtocol()
 
 #This does magics
 dispatcher.register_instance(LoginManager(), 'login.')
-
-#@dispatcher_bp.route('/ws')
-def index():
-    if request.environ.get('wsgi.websocket'):
-        ws = request.environ['wsgi.websocket']
-        while True:
-            message = ws.receive()
-            if message is None:
-                current_app.logger.warn('Request: ' + request.__str__() + '\tmessage: None')
-                break
-            try:
-                messageJSON = json.loads(message)
-                current_app.logger.info('Request: ' + request.__str__() + '\tmessage: ' + message
-                                        + '\tmessageJSON: ' + str(messageJSON))
-            except ValueError:
-                current_app.logger.error('Request ' + request.__str__()
-                                         + '\tmessage:' + message)
-                messageJSON = json.loads('{}')
-
-            if type(messageJSON) is dict:
-                res = process_message(session, messageJSON)
-                ws.send(json.dumps(res))
-            elif type(messageJSON) is list:
-                rv = []
-                for m in messageJSON:
-                    res = process_message(session, m)
-                    rv.append(res)
-                ws.send(json.dumps(rv))
+dispatcher.register_instance(FormManager(), 'form.')
 
 @dispatcher_bp.route('/ws')
 def ws_endpoint():
@@ -122,9 +95,6 @@ def handle_incoming_jsonrpc_message(data, handler=None):
         # request was invalid, directly create response
         rpc_response = json_request.error_respond(e)
     else:
-        # we got a valid request
-        # the handle_request function is user-defined
-        # and returns some form of response
         if hasattr(json_request, 'create_batch_response'):
             rpc_response = json_request.create_batch_response(
                 handle_request(req) for req in json_request
@@ -192,7 +162,7 @@ def getFormTemplate(session, params):
             'form': loadJSONFromFile(current_app.config['FORM_TEMPLATES']
                                      + "/" + "login.json", current_app.root_path),
             'actions': ["authenticate"]
-        }
+        }   
 
     elif formId == 'proyectomtv':
         result, error = getPrivilegedForm(session, params)
