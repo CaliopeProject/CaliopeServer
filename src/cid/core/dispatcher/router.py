@@ -145,7 +145,7 @@ def logout(session, params):
         if session_uuid in storage_sessions:
             if session_uuid in session:
                 session.pop(session_uuid)
-            session.pop(session_uuid)
+            storage_sessions.pop(session_uuid)
     else:
         error = {
             'code': -32600,
