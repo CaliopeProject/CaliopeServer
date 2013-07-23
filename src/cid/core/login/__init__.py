@@ -35,17 +35,28 @@ class LoginManager(object):
 
     @staticmethod
     @public
-    def autenticate(username, password, domain=''):
+    def autenticate(username, password, domain=None):
         try:
             #: TODO: Add support to domain
             userNode = CaliopeUser.index.get(username=username)
             if userNode.password == password:
                 #valid user, domain, password combination
-                lm = LoginManager()
+                lm = LoginManager(user=userNode)
+                current_app.g.lm = lm
                 session_uuid = lm.validate_user_session(username)
                 return {'login': True, 'uuid': session_uuid}
         except DoesNotExist:
                 return {'login': False, 'uuid': None}
+
+    def __int__(self, *args, **kwargs):
+        self.user = kwargs['user'] if 'user' in kwargs else None
+
+    def get_user(self):
+        if self.user is not None:
+            return self.user
+        else:
+            #: TODO: Raise some exception
+            return None
 
     def validate_user_session(self, username):
         """
