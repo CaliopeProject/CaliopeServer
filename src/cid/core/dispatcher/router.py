@@ -127,7 +127,7 @@ def login_with_uuid(session, params):
         session['user'] = storage_sessions[session_uuid]['user']
         session['session_uuid'] = session_uuid
         response_msg = "uuid found, user=" + session['user']
-        result = {'msg': response_msg, 'uuid': session_uuid, ,'user': session['user']}
+        result = {'msg': response_msg, 'uuid': session_uuid, 'user': session['user']}
 
     else:
         error = {
