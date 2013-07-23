@@ -154,7 +154,7 @@ def logout(session, params):
         
     result = {'msg': u'sesión cerrada'}
 
-    return result, None
+    return result, error
 
 
 def login_with_name(session, params):
