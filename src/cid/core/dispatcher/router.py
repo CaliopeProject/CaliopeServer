@@ -137,6 +137,26 @@ def login_with_uuid(session, params):
     return result, error
 
 
+def logout(session, params):
+    result = None
+    error = None
+    if 'uuid' in params:
+        session_uuid = params['uuid']    
+        if session_uuid in storage_sessions:
+            if session_uuid in session:
+                session.pop(session_uuid)
+            session.pop(session_uuid)
+    else:
+        error = {
+            'code': -32600,
+            'message': "uuid not found"
+        }
+        
+    result = {'msg': u'sesión cerrada'}
+
+    return result, None
+
+
 def login_with_name(session, params):
     """
     Default username after run CaliopeTestNode is
@@ -402,6 +422,8 @@ def process_message(session, message):
             result, error = login_with_name(session, message['params'])
         elif method == 'authentication_with_uuid':
             result, error = login_with_uuid(session, message['params'])
+        elif method == 'logout':            
+            result, error = logout(session, message['params'])
         elif method == 'getFormTemplate':
             result, error = getFormTemplate(session, message['params'])
         elif method == 'create':
