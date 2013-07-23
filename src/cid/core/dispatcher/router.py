@@ -127,7 +127,7 @@ def login_with_uuid(session, params):
         session['user'] = storage_sessions[session_uuid]['user']
         session['session_uuid'] = session_uuid
         response_msg = "uuid found, user=" + session['user']
-        result = {'msg': response_msg, 'uuid': session_uuid}
+        result = {'msg': response_msg, 'uuid': session_uuid, ,'user': session['user']}
 
     else:
         error = {
@@ -147,7 +147,7 @@ def login_with_name(session, params):
     result = None
     error = None
     if 'user' in session:
-        result = {'uuid': session['session_uuid']}
+        result = {'uuid': session['session_uuid'],'user': session['user']}
         return result, error
     try:
         user = CaliopeUser.index.get(username=params['login'])
@@ -158,7 +158,7 @@ def login_with_name(session, params):
             storage_sessions[session['session_uuid']] = {}
             storage_sessions[session['session_uuid']]['user'] = session['user']
             storage_sessions[session['session_uuid']]['start_time'] = datetime.now(utc)
-            result = {'uuid': session['session_uuid']}
+            result = {'uuid': session['session_uuid'],'user': session['user']}
         else:
             error = {
                 'code': -32600,
