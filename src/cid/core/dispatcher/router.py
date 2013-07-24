@@ -58,14 +58,24 @@ jsonrpc = JSONRPCProtocol()
 dispatcher.register_instance(LoginManager(), 'login.')
 dispatcher.register_instance(FormManager(), 'form.')
 
-
 class PublicMethods(object):
     @staticmethod
     @public
-    def getMethods(username, password, domain=None):
-        for name in dispatcher.method_map.keys():
-            print name
-      
+    def getMethods():        
+        methods = PublicMethods.get_methods(dispatcher,"")
+        return {'methods': methods}
+        
+    @staticmethod
+    def get_methods(dp,context):
+        methods = []
+        for name in dp.method_map.keys():
+            methods.append(context+name)
+                           
+        for prefix, subdispatchers in dp.subdispatchers.iteritems():
+            for sd in subdispatchers:
+                methods = methods + PublicMethods.get_methods(sd,prefix)
+        return methods
+     
 dispatcher.register_instance(PublicMethods(), 'general.')
 
       
