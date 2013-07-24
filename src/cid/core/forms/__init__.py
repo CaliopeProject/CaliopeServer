@@ -27,9 +27,9 @@ from neomodel.exception import DoesNotExist
 
 from flask import current_app, g
 
-from ..login import LoginManager
-from ...utils import fileUtils
-from ...model import SIIMForm
+from cid.core.login import LoginManager
+from cid.utils import fileUtils
+from cid.model import SIIMForm
 
 
 class FormManager(object):

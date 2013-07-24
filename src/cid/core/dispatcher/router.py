@@ -31,6 +31,7 @@ from flask.globals import current_app
 from flask import (session, request, Blueprint, make_response)
 
 #tinyrpc
+from tinyrpc.dispatch import public
 from tinyrpc.protocols.jsonrpc import JSONRPCProtocol
 from tinyrpc import BadRequestError, RPCBatchRequest
 from tinyrpc.dispatch import RPCDispatcher
@@ -40,10 +41,10 @@ from neomodel import DoesNotExist
 from odisea.CaliopeStorage import CaliopeUser, CaliopeNode
 
 #Apps import
-from ...utils import loadJSONFromFile
-from ...model import SIIMModel
-from ..login import LoginManager
-from ..forms import FormManager
+from cid.utils import loadJSONFromFile
+from cid.model import SIIMModel
+from cid.core.login import LoginManager
+from cid.core.forms import FormManager
 
 dispatcher_bp = Blueprint('dispatcher', __name__, template_folder='pages')
 
@@ -57,6 +58,17 @@ jsonrpc = JSONRPCProtocol()
 dispatcher.register_instance(LoginManager(), 'login.')
 dispatcher.register_instance(FormManager(), 'form.')
 
+
+class PublicMethods(object):
+    @staticmethod
+    @public
+    def getMethods(username, password, domain=None):
+        for name in dispatcher.method_map.keys():
+            print name
+      
+dispatcher.register_instance(PublicMethods(), 'general.')
+
+      
 @dispatcher_bp.route('/ws')
 def ws_endpoint():
     if request.environ.get('wsgi.websocket'):

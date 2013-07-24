@@ -31,6 +31,7 @@ from tinyrpc.protocols.jsonrpc import JSONRPCInvalidRequestError, JSONRPCInterna
 from tinyrpc.dispatch import public
 from flask import current_app, g
 
+dummy_storage_for_authenticate_with_uuid = {}
 
 def login_required(func, **kwargs):
         @wraps(func)
@@ -54,7 +55,7 @@ class LoginManager(object):
 
     @staticmethod
     @public
-    def autenticate(username, password, domain=None):
+    def authenticate(username, password, domain=None):
         try:
             #: TODO: Add support to domain
             userNode = CaliopeUser.index.get(username=username)
@@ -71,10 +72,25 @@ class LoginManager(object):
                 return {'login': False}
         except Exception as e:
                 raise JSONRPCInternalError(e)
-
+            
     @staticmethod
     @public
-    def logout():
+    def authenticate_with_uuid(uuid, domain=None):
+        if uuid in dummy_storage_for_authenticate_with_uuid:
+            username = dummy_storage_for_authenticate_with_uuid[uuid]
+            lm = LoginManager()
+            session_uuid = lm.validate_user_session(username)
+            return {'login': True, 'uuid': session_uuid, 'user': username}
+        else:
+            JSONRPCInternalError(e)
+            
+        
+    @staticmethod
+    @public
+    def logout(uuid):
+        if uuid in dummy_storage_for_authenticate_with_uuid:
+            dummy_storage_for_authenticate_with_uuid.pop(uuid)
+        
         lm = g.get('lm', None)
         if lm is not None:
             return lm.invalidate_user_session()
@@ -116,6 +132,7 @@ class LoginManager(object):
             user_session['uuid'] = str(uuid4()).decode('utf-8')
             user_session['timestamp'] = datetime.now()
             session_storage[username] = user_session
+        dummy_storage_for_authenticate_with_uuid[user_session['uuid']] = username
         self.user_session = user_session
         return user_session['uuid']
 
