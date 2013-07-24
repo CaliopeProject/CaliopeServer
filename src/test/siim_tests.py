@@ -45,7 +45,7 @@ class SIIM2ServerTestCase(unittest.TestCase):
         pass
 
     def login(self, username, password, callback_id):
-        data = dict(cmd="authentication",
+        data = dict(cmd="login.autenticate",
                     login=username,
                     password=password,
                     callback_id=callback_id
@@ -62,9 +62,9 @@ class SIIM2ServerTestCase(unittest.TestCase):
                         hashlib.sha256('password').hexdigest(),
                         callback_id)
         response = json.loads(rv.data)
-        assert response['result'] == 'ok'
-        assert response['callback_id'] == callback_id
-        assert 'uuid' in response['data']
+        assert response['result']
+        assert response['id'] == callback_id
+        assert 'uuid' in response['result']
 
 
 if __name__ == '__main__':
