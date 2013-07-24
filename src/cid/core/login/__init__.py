@@ -27,8 +27,27 @@ from functools import wraps
 from neomodel import DoesNotExist
 from odisea.CaliopeStorage import CaliopeUser
 
+from tinyrpc.protocols.jsonrpc import JSONRPCInvalidRequestError, JSONRPCInternalError
 from tinyrpc.dispatch import public
-from flask import current_app
+from flask import current_app, g
+
+
+def login_required(func, **kwargs):
+        @wraps(func)
+        def decorated_view(*args, **kwargs):
+            #: TODO: Define a way to validate request
+            #: TODO: Change this, for now if user is logged it will work, else false.
+            app = current_app
+            session_storage = app.config['session_storage']
+            if 'user' in session_storage and session_storage['user']['uuid'] == kwargs['uuid']:
+                return func(*args, **kwargs)
+            else:
+                return JSONRPCInternalError('Not authorized')
+            return decorated_view
+
+    #: TODO: Not implemented yet
+    #def _is_fresh_session(session):
+    #    return True
 
 
 class LoginManager(object):
@@ -41,15 +60,26 @@ class LoginManager(object):
             userNode = CaliopeUser.index.get(username=username)
             if userNode.password == password:
                 #valid user, domain, password combination
-                lm = LoginManager(user=userNode)
-                current_app.g.lm = lm
+                lm = LoginManager()
+                lm.user = userNode
+                g.lm = lm
                 session_uuid = lm.validate_user_session(username)
-                return {'login': True, 'uuid': session_uuid}
+                return {'login': True, 'uuid': session_uuid, 'user': username}
+            else:
+                return {'login': False}
         except DoesNotExist:
-                return {'login': False, 'uuid': None}
+                return {'login': False}
+        except Exception as e:
+                raise JSONRPCInternalError(e)
 
-    def __int__(self, *args, **kwargs):
-        self.user = kwargs['user'] if 'user' in kwargs else None
+    @staticmethod
+    @public
+    def logout():
+        lm = g.get('lm', None)
+        if lm is not None:
+            return lm.invalidate_user_session()
+        else:
+            raise JSONRPCInvalidRequestError('No valid session found')
 
     def get_user(self):
         if self.user is not None:
@@ -86,25 +116,25 @@ class LoginManager(object):
             user_session['uuid'] = str(uuid4()).decode('utf-8')
             user_session['timestamp'] = datetime.now()
             session_storage[username] = user_session
+        self.user_session = user_session
         return user_session['uuid']
 
-    @staticmethod
-    def login_required(func):
+    def invalidate_user_session(self):
         app = current_app
         session_storage = app.config['session_storage']
-        @wraps(func)
-        def decorated_view(*args, **kwargs):
-            #: TODO: Define a way to validate request
-            #: TODO: Change this, for now if user is logged it will work, else false.
-            if 'user' in session_storage:
-                return func(*args, **kwargs)
-            else:
-                return Exception('Not authorized')
-            return decorated_view
+        if self.user.username in session_storage:
+            session_storage[self.user.username] = None
+            return {'login': False}
+        else:
+            return JSONRPCInvalidRequestError()
 
-    #: TODO: Not implemented yet
-    #def _is_fresh_session(session):
-    #    return True
+    def is_authenticated(self):
+        return self.get_user() is not None
+
+    @public
+    def get_session_uuid(self):
+        return {'uuid': self.user_session['uuid']}
+
 
 
 
