@@ -21,9 +21,11 @@ Copyright (C) 2013 Infometrika Ltda.
 """
 
 from tinyrpc.dispatch import public
-from tinyrpc.protocols.jsonrpc import JSONRPCInvalidParamsError
+from tinyrpc.protocols.jsonrpc import JSONRPCInvalidParamsError, JSONRPCInvalidRequestError, JSONRPCInternalError
 
-from flask import current_app
+from neomodel.exception import DoesNotExist
+
+from flask import current_app, g
 
 from ..login import LoginManager
 from ...utils import fileUtils
@@ -44,6 +46,43 @@ class FormManager(object):
         else:
             raise JSONRPCInvalidParamsError()
 
+    @staticmethod
+    @public("getFormData")
+    def get_form_data(formId=None, uuid=None):
+        if formId is None or uuid is None:
+            raise JSONRPCInvalidRequestError()
+        else:
+            form = Form(formId=formId)
+            return form.get_form_with_data(uuid)
+
+    @staticmethod
+    @public("getFormDataList")
+    def get_form_data_list(formId=None, filters=None):
+        if formId is None:
+            raise JSONRPCInvalidRequestError()
+        else:
+            form = Form(formId=formId)
+            return form.get_from_with_data_list(filters)
+
+    @staticmethod
+    @public("editFromForm")
+    #: TODO: test
+    def edit_form(formId=None, uuid=None, data=None):
+        if formId is None or uuid is None or data is None:
+            raise JSONRPCInvalidRequestError()
+        else:
+            form = Form(formId=formId)
+            return form.update_form_data(uuid, data)
+
+    @staticmethod
+    @public("createFromForm")
+    def edit_form(formId=None, data=None):
+        if formId is None or data is None:
+            raise JSONRPCInvalidRequestError()
+        else:
+            form = Form(formId=formId)
+            return form.create_form(data)
+
 
 class Form(object):
 
@@ -58,22 +97,34 @@ class Form(object):
         #: TODO: Check form node and check acl for node
         pass
 
+    def _check_access(self):
+        #: TODO: Implement
+        lm = g.get('lm', None)
+        if self.form_name == 'login':
+            return True
+        elif lm is not None:
+            return True
+        else:
+            return False
+
     def _check_valid_form(self):
         #: TODO: Check if form_name is valid and form_path is a file
         #: TODO: Cache this files
-        self.form_json = fileUtils.loadJSONFromFile(self.form_path + "/" + self.form_name + ".json",
+        try:
+            self.form_json = fileUtils.loadJSONFromFile(self.form_path + "/" + self.form_name + ".json",
                                                     current_app.root_path)
-        return True
+            return True
+        except IOError:
+            return False
 
     def _get_form(self):
         return self.form_json
 
     def _get_actions(self):
         #: TODO: Implement depending on user
-        self.actions = ["authenticate"]
+        self.actions = ["authenticate", "create", "delete", "edit"]
         return self.actions
 
-    @LoginManager.login_required
     def get_form_template(self):
         if self._check_access():
             if self._check_valid_form():
@@ -81,8 +132,78 @@ class Form(object):
                 rv['form'] = self._get_form()
                 rv['actions'] = self._get_actions()
                 return rv
+            else:
+                return JSONRPCInternalError('Invalid Form')
+        else:
+            raise JSONRPCInvalidRequestError('Forbidden')
+
+    def _get_node_data(self, uuid):
+        #: TODO: User dynamic class types
+        self.form_cls = SIIMForm
+        try:
+            self.node = self.form_cls.index.get(uuid=uuid)
+            self.form_data = self.node.get_form_data()
+            return self.form_data
+        except DoesNotExist as e:
+            self.node = None
+            self.form_data = None
+            raise JSONRPCInvalidRequestError(e)
+
+    def _get_node_data_list(self, filters):
+        #: TODO: User dynamic class types
+        self.form_cls = SIIMForm
+        try:
+            self.nodes = self.form_cls.index.search('uuid:*')
+            self.form_data_list = [node.get_form_data() for node in self.nodes]
+            return self.form_data_list
+        except DoesNotExist as e:
+            self.node = None
+            self.form_data = None
+            raise JSONRPCInvalidRequestError(e)
 
 
+    def get_form_with_data(self, uuid):
+        #: TODO: this looks like a decorator is needed
+        if self._check_access():
+            rv = self.get_form_template()
+            rv['data'] = self._get_node_data(uuid)
+            return rv
+        else:
+            raise JSONRPCInvalidRequestError('Forbidden')
+
+    def get_from_with_data_list(self, filters=None):
+        #: TODO: this looks like a decorator is needed
+        if self._check_access():
+            rv = self.get_form_template()
+            rv['data'] = self._get_node_data_list(filters)
+            return rv
+        else:
+            raise JSONRPCInvalidRequestError('Forbidden')
+
+    def update_form_data(self, uuid, data):
+        if self._check_access():
+            rv = dict()
+            rv['uuid'] = self._update_or_create_node_data(uuid, data)
+            return rv
+        else:
+            raise JSONRPCInvalidRequestError('Forbidden')
+
+    def _update_or_create_node_data(self, data, uuid=None):
+        if uuid is not None:
+            self._get_node_data(uuid)
+            self.node = self.node.set_form_data(data)
+        else:
+            #: Create new node
+            self.node = SIIMForm(**data)
+        return self.node.uuid
+
+    def create_form(self, data):
+        if self._check_access():
+            rv = dict()
+            rv['uuid'] = self._update_or_create_node_data(data)
+            return rv
+        else:
+            raise JSONRPCInvalidRequestError('Forbidden')
 
 
 
