@@ -38,7 +38,7 @@ class FormManager(object):
     This class is the base for all future forms elements.
     """
     @staticmethod
-    @public("getFormTemplate")
+    @public("getTemplate")
     def get_form_template(formId, domain=None, version=None):
         if formId is not None:
             form = Form(formId=formId)
@@ -47,7 +47,7 @@ class FormManager(object):
             raise JSONRPCInvalidParamsError()
 
     @staticmethod
-    @public("getFormData")
+    @public("getData")
     def get_form_data(formId=None, uuid=None):
         if formId is None or uuid is None:
             raise JSONRPCInvalidRequestError()
@@ -56,7 +56,7 @@ class FormManager(object):
             return form.get_form_with_data(uuid)
 
     @staticmethod
-    @public("getFormDataList")
+    @public("getDataList")
     def get_form_data_list(formId=None, filters=None):
         if formId is None:
             raise JSONRPCInvalidRequestError()
