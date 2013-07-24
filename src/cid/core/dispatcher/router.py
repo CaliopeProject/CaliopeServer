@@ -105,7 +105,7 @@ def handle_incoming_jsonrpc_message(data, handler=None):
         json_request = jsonrpc.parse_request(data)
     except BadRequestError as e:
         # request was invalid, directly create response
-        rpc_response = json_request.error_respond(e)
+        rpc_response = e.error_respond()
     else:
         if hasattr(json_request, 'create_batch_response'):
             rpc_response = json_request.create_batch_response(
