@@ -49,8 +49,6 @@ from cid.core.tasks import TaskManager
 
 dispatcher_bp = Blueprint('dispatcher', __name__, template_folder='pages')
 
-storage_sessions = {}
-
 dispatcher = RPCDispatcher()
 
 jsonrpc = JSONRPCProtocol()
