@@ -45,6 +45,7 @@ from cid.utils import loadJSONFromFile
 from cid.model import SIIMModel
 from cid.core.login import LoginManager
 from cid.core.forms import FormManager
+from cid.core.tasks import TaskManager
 
 dispatcher_bp = Blueprint('dispatcher', __name__, template_folder='pages')
 
@@ -56,7 +57,9 @@ jsonrpc = JSONRPCProtocol()
 
 #This does magics
 dispatcher.register_instance(LoginManager(), 'login.')
-dispatcher.register_instance(FormManager(), 'form.')
+dispatcher.register_instance(FormManager(),  'form.')
+dispatcher.register_instance(TaskManager(),  'task.')
+
 
 class PublicMethods(object):
     @staticmethod
