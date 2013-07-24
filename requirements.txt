@@ -3,5 +3,6 @@ gevent==0.13.8
 gevent-websocket==0.3.6
 Caliope-Odisea==0.0.3
 tinyrpc==0.5
+requests==1.2.3
 #PyExecJS==1.0.4
 #-e .
