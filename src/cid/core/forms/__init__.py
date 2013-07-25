@@ -30,7 +30,6 @@ from flask import current_app, g
 from cid.core.login import LoginManager
 from cid.utils import fileUtils
 from cid.model import SIIMForm
-from dbus.decorators import method
 
 
 class FormManager(object):
