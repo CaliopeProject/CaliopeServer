@@ -1,0 +1,33 @@
+{
+  "name": "asignaciones",
+  "html": [
+      {
+          "name": "tarea",
+          "caption": "Tarea",
+          "type": "select",
+          "options" : {
+            "entity" : "task"
+          }
+      },
+      {
+          "name": "ente_asignado",
+          "caption": "Asignar a",
+          "type": "select",
+          "options" : {
+            "gr_doep" : "Grupo DOEP",
+            "gr_dot"  : "Grupo DOT",
+            "gr_di"   : "Grupo DIM",
+            "usr_user1" : "Usuario 1",
+            "usr_user2" : "Usuario 2",
+            "usr_user2" : "Usuario 3"
+          }
+      },
+      {
+          "name": "descripcion",
+          "caption": "Descripción tarea",
+          "type": "textarea",
+          "rows": "5",
+          "cols": "70"
+      }
+  ]
+}
