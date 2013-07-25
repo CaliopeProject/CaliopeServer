@@ -28,86 +28,120 @@ from pytz import utc
 
 #flask
 from flask.globals import current_app
-from flask import (session, request, Blueprint)
+from flask import (session, request, Blueprint, make_response)
 
-#Apps import
-from cid.utils.fileUtils import loadJSONFromFile
-from cid.utils import helpers
-
+#tinyrpc
+from tinyrpc.dispatch import public
+from tinyrpc.protocols.jsonrpc import JSONRPCProtocol
+from tinyrpc import BadRequestError, RPCBatchRequest
+from tinyrpc.dispatch import RPCDispatcher
 
 #CaliopeStorage
 from neomodel import DoesNotExist
 from odisea.CaliopeStorage import CaliopeUser, CaliopeNode
+
+#Apps import
+from cid.utils import loadJSONFromFile
 from cid.model import SIIMModel
+from cid.core.login import LoginManager
+from cid.core.forms import FormManager
+from cid.core.tasks import TaskManager
+from cid.core.users import UsersManager
 
-#Moved to package __init__.py
-dispatcher = Blueprint('dispatcher', __name__, template_folder='pages')
-storage_sessions = {}
+dispatcher_bp = Blueprint('dispatcher', __name__, template_folder='pages')
+
+dispatcher = RPCDispatcher()
+
+jsonrpc = JSONRPCProtocol()
+
+#This does magics
+dispatcher.register_instance(LoginManager(), 'login.')
+dispatcher.register_instance(FormManager(),  'form.')
+dispatcher.register_instance(TaskManager(),  'task.')
+dispatcher.register_instance(UsersManager(),  'users.')
 
 
-@dispatcher.route('/rest', methods=['POST'])
-def rest():
-    current_app.logger.debug('POST:' + request.get_data(as_text=True))
-    message = request.json
-    res = process_message(session, message)
-    return json.dumps(res)
+class PublicMethods(object):
+    @staticmethod
+    @public
+    def getMethods():        
+        methods = PublicMethods.get_methods(dispatcher,"")
+        return {'methods': methods}
+        
+    @staticmethod
+    def get_methods(dp,context):
+        methods = []
+        for name in dp.method_map.keys():
+            methods.append(context+name)
+                           
+        for prefix, subdispatchers in dp.subdispatchers.iteritems():
+            for sd in subdispatchers:
+                methods = methods + PublicMethods.get_methods(sd,prefix)
+        return methods
+     
+dispatcher.register_instance(PublicMethods(), 'general.')
 
-
-@dispatcher.route('/ws')
-def index():
+      
+@dispatcher_bp.route('/ws')
+def ws_endpoint():
     if request.environ.get('wsgi.websocket'):
         ws = request.environ['wsgi.websocket']
         while True:
-            message = ws.receive()
-            if message is None:
+            ws_message = ws.receive()
+            if ws_message is None:
                 current_app.logger.warn('Request: ' + request.__str__() + '\tmessage: None')
                 break
-            try:
-                messageJSON = json.loads(message)
-                current_app.logger.info('Request: ' + request.__str__() + '\tmessage: ' + message
-                                        + '\tmessageJSON: ' + str(messageJSON))
-            except ValueError:
-                current_app.logger.error('Request ' + request.__str__()
-                                         + '\tmessage:' + message)
-                messageJSON = json.loads('{}')
+            else:
+                handle_incoming_jsonrpc_message(ws_message, ws)
 
-            if type(messageJSON) is dict:
-                res = process_message(session, messageJSON)
-                ws.send(json.dumps(res))
-            elif type(messageJSON) is list:
-                rv = []
-                for m in messageJSON:
-                    res = process_message(session, m)
-                    rv.append(res)
-                ws.send(json.dumps(rv))
-
-#: TODO: Not implemented yet
-def _is_fresh_session(session):
-    return True
+@dispatcher_bp.route('/rest', methods=['POST'])
+def rest_endpoint():
+    current_app.logger.debug('POST:' + request.get_data(as_text=True))
+    post_message = request.data
+    if post_message is None:
+        current_app.logger.warn('POST: ' + request.__str__() + '\tmessage: None')
+    else:
+        rv = handle_incoming_jsonrpc_message(post_message)
+        return rv
 
 
-def login_error(user=False, fresh=False):
-    msg = u''
-    if user:
-        msg += u"Session don't exists for user"
-    if fresh:
-        msg += u"Session is not fresh"
-    res = {
-        'result': 'ok',
-        'msg': msg,
-    }
-    return res
+#data can be from any transport layer
+def handle_incoming_jsonrpc_message(data, handler=None):
+    """
+    Validate the RPC, check if batch or single and handle the valid RPC
 
-
-def login_required(func):
-    @wraps(func)
-    def decorated_view(*args, **kwargs):
-        if 'user' in session:
-            return func(*args, **kwargs)
+    :param data: The string containing the json request
+    :param handler: The transport handler with method send(data)
+    :return: If handler is not present, the data of the response.
+    """
+    try:
+        json_request = jsonrpc.parse_request(data)
+    except BadRequestError as e:
+        # request was invalid, directly create response
+        rpc_response = e.error_respond()
+    else:
+        if hasattr(json_request, 'create_batch_response'):
+            rpc_response = json_request.create_batch_response(
+                handle_request(req) for req in json_request
+            )
         else:
-            return login_error(user=True)
+            rpc_response = handle_request(json_request)
 
-    return decorated_view
+    # now send the response to the client
+    if rpc_response is not None:
+        if handler is not None:
+            handler.send(rpc_response.serialize())
+        else:
+            return rpc_response.serialize()
+
+
+def handle_request(request):
+    try:
+        # do magic with method, args, kwargs...
+        return dispatcher.dispatch(request)
+    except Exception as e:
+        # for example, a method wasn't found
+        return request.error_respond(e)
 
 
 def event_logging(func):
@@ -119,314 +153,3 @@ def event_logging(func):
     return decorated_logging
 
 
-def login_with_uuid(session, params):
-    result = None
-    error = None
-    session_uuid = params['uuid']
-    if session_uuid in storage_sessions:
-        session['user'] = storage_sessions[session_uuid]['user']
-        session['session_uuid'] = session_uuid
-        response_msg = "uuid found, user=" + session['user']
-        result = {'msg': response_msg, 'uuid': session_uuid}
-
-    else:
-        error = {
-            'code': -32600,
-            'message': "uuid not found"
-        }
-    return result, error
-
-
-def login_with_name(session, params):
-    """
-    Default username after run CaliopeTestNode is
-    user:password
-    """
-    #: TODO: Enable system to be session oriented, so one user can have multiple active sessions
-    #: TODO: Check security of this autentication method
-    result = None
-    error = None
-    if 'user' in session:
-        result = {'uuid': session['session_uuid']}
-        return result, error
-    try:
-        user = CaliopeUser.index.get(username=params['login'])
-        #: TODO Add to log
-        if user.password == params['password']:
-            session['user'] = params['login']
-            session['session_uuid'] = str(uuid.uuid4()).decode('utf-8')
-            storage_sessions[session['session_uuid']] = {}
-            storage_sessions[session['session_uuid']]['user'] = session['user']
-            storage_sessions[session['session_uuid']]['start_time'] = datetime.now(utc)
-            result = {'uuid': session['session_uuid']}
-        else:
-            error = {
-                'code': -32600,
-                'message': "The password does not match the username"
-            }
-
-    except DoesNotExist:
-        error = {
-            'code': -32600,
-            'message': "The username does not exists"
-        }
-    finally:
-        return result, error
-
-#@login_required
-def getPrivilegedForm(session, params):
-    error = None
-    result = {
-        'result': 'ok',
-        'form': loadJSONFromFile(current_app.config["FORM_TEMPLATES"]
-                                 + "/" + params["formId"] + ".json", current_app.root_path),
-        'actions': ["create"]
-    }
-    return result, error
-
-
-@event_logging
-#:TODO Implement the method with different version and domain options.
-def getFormTemplate(session, params):
-    result = None
-    error = None
-
-    if 'formId' in params:
-        formId = params['formId']
-        if 'domain' in params:
-            domain = params['domain']
-        else:
-            domain = ''
-        if 'version' in params:
-            version = params['version']
-        else:
-            version = ''
-    if formId == 'login':
-        result = {
-            'result': 'ok',
-            'form': loadJSONFromFile(current_app.config['FORM_TEMPLATES']
-                                     + "/" + "login.json", current_app.root_path),
-            'actions': ["authenticate"]
-        }
-
-    elif formId == 'proyectomtv':
-        result, error = getPrivilegedForm(session, params)
-    elif formId == 'SIIMForm':
-        result, error = getPrivilegedForm(session, params)
-    else:
-        error = {
-            'code': -32600,
-            'message': "invalid form"
-        }
-    return result, error
-
-
-#@login_required
-def createFromForm(session, params):
-    error = None
-    result = None
-
-    form_id = params['formId'] if 'formId' in params else 'SIIMForm'
-    form_data = params['data'] if 'data' in params else {}
-    if form_id == 'SIIMForm':
-        form = SIIMModel.SIIMForm(**form_data)
-        #: default responde is error
-        try:
-            form.save()
-            result = {'uuid': form.uuid}
-        except Exception:
-            error = {
-                'code': -32600,
-                'message': "Unknown error : " + Exception.params()
-            }
-        finally:
-            return result, error
-    else:
-        error = {
-            'code': -32600,
-            'message': 'Class ' + form_id + ' not found in Model'
-        }
-        return result, error
-
-#@login_required
-def editFromForm(session, params):
-    error = None
-    result = None
-    form_id = params['formId'] if 'formId' in params else 'SIIMForm'
-    form_data = params['data'] if 'data' in params else {}
-    if form_id == 'SIIMForm':
-        #: TODO: Update to SIIMForm.pull(uuid) when update to Caliope_Odisea > 0.0.4
-        form = SIIMModel.SIIMForm.index.get(uuid=form_data['uuid'])
-        try:
-            #: this will evolve the node
-            form = form.set_form_data(form_data)
-            result = {'uuid': form.uuid}
-        except Exception:
-            error = {
-                'code': -32600,
-                'message': "Unknown error : " + Exception.params()
-            }
-        finally:
-            return result, error
-    else:
-        error = {
-            'code': -32600,
-            'message': 'Class ' + form_id + ' not found in Model'
-        }
-        return result, error
-
-#: TODO: This method is NOT doing what is suppose to do.
-#@login_required
-def deleteFromForm(session, params):
-    error = None
-    result = None
-    form_id = params['formId'] if 'formId' in params else 'SIIMForm'
-    form_data = params['data'] if 'data' in params else {}
-    if form_id == 'SIIMForm':
-        form = SIIMModel.SIIMForm.index.get(uuid=form_data['uuid'])
-        #form.set_form_data(form_data)
-        try:
-            #form.save()
-            result = {'uuid': form.uuid}
-        except Exception:
-            error = {
-                'code': -32600,
-                'message': "Unknown error : " + Exception.params()
-            }
-        finally:
-            return result, error
-    else:
-        error = {
-            'code': -32600,
-            'message': 'Class ' + form_id + ' not found in Model'
-        }
-        return result, error
-
-
-def getFormData(session, params):
-    error = None
-    result = None
-    form_id = params['formId'] if 'formId' in params else 'SIIMForm'
-    data_uuid = params['uuid'] if 'uuid' in params else ''
-    if form_id == 'SIIMForm':
-        try:
-            form_node = SIIMModel.SIIMForm.index.get(uuid=data_uuid)
-            result = {
-                'data': form_node.get_form_data(),
-                #: TODO: Create a helper private method to access forms
-                'form': loadJSONFromFile(current_app.config["FORM_TEMPLATES"]
-                                         + "/" + params["formId"] + ".json", current_app.root_path),
-                'actions': ["create", "delete", "edit"]
-            }
-
-        except DoesNotExist:
-            error = {
-                'code': -32600,
-                'message': 'Not found in db with uuid: ' + uuid
-            }
-        except Exception:
-            error = {
-                'code': -32600,
-                'message': Exception.params()
-            }
-
-        finally:
-            return result, error
-
-
-def getFormDataList(session, params):
-    error = None
-    result = None
-    form_id = params['formId'] if 'formId' in params else 'SIIMForm'
-    filters = params['filters'] if 'filters' in params else {}
-    if form_id == 'SIIMForm':
-        try:
-            #: TODO: Implement filters and ranged searchs
-            form_nodes_list = SIIMModel.SIIMForm.index.search('uuid:*')
-            form_nodes_data_list = []
-            for node in form_nodes_list:
-                form_nodes_data_list.append(node.get_form_data())
-
-            result = {
-                'data': form_nodes_data_list,
-            }
-
-        except DoesNotExist:
-            error = {
-                'code': -32600,
-                'message': 'Not found in db with uuid: ' + uuid
-            }
-        except Exception:
-            error = {
-                'code': -32600,
-                'message': Exception.params()
-            }
-
-        finally:
-            return result, error
-
-
-def process_message(session, message):
-    error = None
-    rv = {}
-    if 'jsonrpc' not in message:
-        error = {
-            'result': "Invalid Request",
-            'code': -32600
-        }
-        current_app.logger.warn("Message did not contain a valid JSON RPC, messageJSON: " + str(message))
-    elif 'method' not in message:
-        error = {
-            'result': "Method not found",
-            'code': -32601
-        }
-        rv['id'] = None
-        current_app.logger.warn("Message did not contain a valid Method, messageJSON: " + str(message))
-    elif 'id' not in message:
-        error = {
-            'result': "Method did not contain a valid ID",
-            'code': -32602
-        }
-        rv['id'] = None
-        current_app.logger.warn("Message did not contain a valid ID, messageJSON: " + str(message))
-    elif 'params' not in message:
-        error = {
-            'result': "Method did not contain params",
-            'code': -32603
-        }
-    else:
-        current_app.logger.debug('Command: ' + str(message))
-        method = message['method']
-        rv['id'] = message['id']
-        if method == 'authentication':
-            result, error = login_with_name(session, message['params'])
-        elif method == 'authentication_with_uuid':
-            result, error = login_with_uuid(session, message['params'])
-        elif method == 'getFormTemplate':
-            result, error = getFormTemplate(session, message['params'])
-        elif method == 'create':
-            result, error = createFromForm(session, message['params'])
-        elif method == 'edit':
-            result, error = editFromForm(session, message['params'])
-        elif method == 'delete':
-            result, error = deleteFromForm(session, message['params'])
-        elif method == 'getFormData':
-            result, error = getFormData(session, message['params'])
-        elif method == 'getFormDataList':
-            result, error = getFormDataList(session, message['params'])
-        else:
-            error = {
-                'result': "Method not found",
-                'code': -32601
-            }
-            rv['error'] = error
-            current_app.logger.warn("Message did not contain a valid Method, messageJSON: " + str(message))
-
-    if error is not None:
-        rv['error'] = error
-    else:
-        rv['result'] = result
-
-    rv['jsonrpc'] = "2.0"
-    current_app.logger.debug('Result: ' + json.dumps(rv))
-    return rv

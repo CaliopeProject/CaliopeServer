@@ -3,7 +3,9 @@
 @authors: Andrés Felipe Calderón andres.calderon@correlibre.org
           Sebastián Ortiz V. neoecos@gmail.com
 
-SIIM2 Server is the web server of SIIM2 Framework
+@license:  GNU AFFERO GENERAL PUBLIC LICENSE
+
+SIIM Models are the data definition of SIIM2 Framework
 Copyright (C) 2013 Infometrika Ltda.
 
     This program is free software: you can redistribute it and/or modify
@@ -19,3 +21,30 @@ Copyright (C) 2013 Infometrika Ltda.
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
+#neomodel primitives
+from neomodel.properties import (Property,
+                                 DateTimeProperty,
+                                 IntegerProperty,
+                                 StringProperty)
+
+#CaliopeStorage
+from odisea.CaliopeStorage import CaliopeNode
+
+class TaskNode(CaliopeNode):
+    userid = StringProperty()
+    event_date = DateTimeProperty()
+    description = StringProperty()
+    state = StringProperty()
+    
+    def __init__(self, *args, **kwargs):
+        super(Task, self).__init__(*args, **kwargs)
+
+    def get_task_data(self):
+        return self._get_node_data()
+
+    def set_task_data(self, data):
+        return self.evolve(**data)
+
+
+
+

@@ -125,12 +125,17 @@ def configure_server_and_app(server_config_file):
     if 'storage' in config:
         app.config['storage'] = config['storage']
     else:
-        #TODO: Load all default app config
+        #: TODO: load default storage if not found in config
         pass
     if 'debug' in config['server']:
         app.debug = True if config['server']['debug'] == 'True' else False
     else:
         app.debug = False
+    #: TODO: Add a new configuration for session_storage, default volatile dict
+    if 'session_storage' in config:
+        pass
+    else:
+        app.config['session_storage'] = {}
 
 
 def configure_logger(server_config_file):
