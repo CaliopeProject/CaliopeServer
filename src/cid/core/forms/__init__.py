@@ -53,7 +53,6 @@ class FormManager(object):
             raise JSONRPCInvalidRequestError()
         else:
             form = Form(formId=formId)
-            print 'get_form_data ok formId and uuid'
             return form.get_form_with_data(uuid)
 
     @staticmethod
@@ -146,12 +145,9 @@ class Form(object):
     def _get_node_data(self, uuid):
         #: TODO: User dynamic class types             
         self.form_cls = SIIMForm
-        print self.form_cls;
         try:
             self.node = self.form_cls.index.get(uuid=uuid)
-            print self.node.uuid;
             self.form_data = self.node.get_form_data()
-            print 'self form data'
             return self.form_data
         except DoesNotExist as e:
             self.node = None
@@ -176,7 +172,6 @@ class Form(object):
         if self._check_access():            
             rv = self.get_form_template()            
             rv['data'] = self._get_node_data(uuid)
-            print('set rv.data')
             return rv
         else:
             raise JSONRPCInvalidRequestError('Forbidden')
