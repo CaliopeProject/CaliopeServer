@@ -1,66 +1,62 @@
 {
     "name": "proyectomtv",
     "html": [
-        {
-            "name": "ficha",
-            "caption": "Ficha",
-            "type": "select",
-            "options": {
-                "idea": "Idea",
-                "perfil": "Perfil",
-                "prefactibilidad": "Prefactibilidad",
-                "factibilidad": "Factibilidad",
-                "ejecucion": "Ejecución"
-            }
-        },
-        {
-            "name": "estado",
-            "caption": "Estado",
-            "type": "select",
-
-            "options": {
-                "en_estudio": "En Estudio",
-                "en_ejecucion": "En Ejecución",
-                "rechazado": "Rechazado",
-                "aplazado": "Aplazado",
-                "aprobado": "Aprobado",
-                "no_aprobado": "No Aprobado",
-                "viable": "Viable",
-                "no_viable": "No Viable",
-                "finalizado": "Finalizado"
-            }
-        },
-        {
-            "name": "nombre",
-            "caption": "Nombre del Proyecto",
-            "type": "text"
-        },
-        {
-            "name": "forma_intervencion",
-            "caption": "Forma de intervención",
-            "type": "select",
-            "options": {
-                "forma_generica": "Forma Genérica",
-                "intervencion_directa": "Intervención Directa",
-                "por_asociacion": "Por Asociación"
-            }
-        },
-        {
-            "name": "localidad",
-            "caption": "Localidad",
-            "type": "select",
-            "options": {
-                "usaquen": "Usaquén",
-                "chapinero": "Chapinero",
-                "santa_fe": "Santa Fe"
-            }
-        },
-        {
-            "name": "localizacion_general",
-            "caption": "Localizacion General Proyecto",
-            "type": "textarea",
-            "rows": "5",
-            "cols": "70"
+      {
+        "name": "nombre",
+        "caption": "Nombre Proyecto",
+        "type": "text",
+        "validations" : {
+          "required" : true
         }
+      },
+      {
+        "name": "localizacion_general",
+        "caption": "Localizacion General Proyecto",
+        "type": "textarea",
+        "rows": "5",
+        "cols": "70"
+      },
+      {
+        "name": "localidad",
+        "caption": "Localidad",
+        "type": "select",
+        "options": {
+          "antonio_nar" : "Antonio Nariño",
+          "barrios_unidos"  : "Barrios Unidos",
+          "bosa"  : "Bosa",
+          "chapinero": "Chapinero",
+          "ciudad_bol": "Ciudad Bolivar",
+          "engativa": "Engativá",
+          "fontibon": "Fontibón",
+          "kennedy" : "Kennedy",
+          "la_candelaria" : "La Candelaria",
+          "los_martires" : "Los Mártires",
+          "puente_aranda" : "Puente Aranda",
+          "rafael_uribe"  : "Rafael Uribe Uribe",
+          "san_cristobal" : "San Cristóbal",
+          "santa_fe" : "Santa Fe",
+          "suba"  : "Suba",
+          "sumapaz"  : "Sumapaz",
+          "teusaquillo"  : "Teusaquillo",
+          "tunjuelito"  : "Tunjuelito",
+          "usaquen": "Usaquén",
+          "usme": "Usme"
+        }
+      },
+      {
+        "name": "tipo_proyecto",
+        "caption": "Tipo de Proyecto",
+        "type": "select",
+        "options": {
+          "py_pq_escala": "Proyecto Pequeña Escala",
+          "py_gr_escala": "Proyecto Gran Escala"
+        }
+      },
+      {
+        "name": "res_anuncio_py",
+        "caption": "Resolución Anuncio del Proyecto",
+        "type": "attachment"
+      }
+
     ]
 }

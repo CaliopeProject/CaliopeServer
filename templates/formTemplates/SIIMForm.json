@@ -33,7 +33,10 @@
       {
           "name": "nombre",
           "caption": "Nombre del Proyecto",
-          "type": "text"
+          "type": "text",
+          "validations": {
+            "minlength" : 10
+      }
       },
       {
           "name": "forma_intervencion",
@@ -50,10 +53,14 @@
           "caption": "Localidad",
           "type": "select",
           "options": {
-              "usaquen": "Usaquén",
-              "chapinero": "Chapinero",
-              "santa_fe": "Santa Fe"
-          }
+            "": "",
+	        "usaquen": "Usaquén",
+	        "chapinero": "Chapinero",
+            "santa_fe": "Santa Fe"
+          },
+          "validations": {
+            "required"  : true
+          }          
       },
       {
           "name": "localizacion_general",
@@ -61,6 +68,11 @@
           "type": "textarea",
           "rows": "5",
           "cols": "70"
+      },
+      {
+          "name": "acta_creacion_proyecto",
+          "caption": "Acta creación proyecto",
+          "type": "attachment"
       }
   ]    
 }
