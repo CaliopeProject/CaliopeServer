@@ -200,6 +200,7 @@ class Form(object):
         else:
             #: Create new node
             self.node = SIIMForm(**data)
+        self.node.save()
         return self.node.uuid
 
     def create_form(self, data):
