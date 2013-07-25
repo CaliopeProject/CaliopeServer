@@ -33,12 +33,11 @@
             }  
         ]
     },
-    "storage": [
+    "storage": 
         {
             "local": {
-                "absolut_path":"/tmp",
+                "absolut_path":"./storage",
                 "max_filesize":10000000
                 }
         }
-    ]
 }

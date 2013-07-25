@@ -58,16 +58,24 @@ def uploader():
     if request.method == 'POST':
         #print request.form['id']
         #print str(dir(request.form.values))
+        app = current_app
+        storage_setup =  app.config['storage']
+
+        if 'local' in storage_setup:
+            UPLOAD_FOLDER  = storage_setup['local']['absolut_path']
+            
         rv = []
         for uploaded_file in request.files.getlist('files[]'):
             if uploaded_file and allowed_file(uploaded_file.filename):
+                idfile = str(uuid.uuid4()).decode('utf-8') #TODO: change to uuid3 nither uuid5
                 filename = secure_filename(uploaded_file.filename)
-                uploaded_file.save(os.path.join(UPLOAD_FOLDER, filename))
+                uploaded_file.save(os.path.join(UPLOAD_FOLDER, idfile))
+
                 result = {
                     'result': 'ok',
                     'name': filename,
                     'size': human_readable_size(uploaded_file.tell()),
-                    'id':   str(uuid.uuid4()).decode('utf-8') #TODO: change to uuid3 nither uuid5
+                    'id':   idfile 
                 }
             else:
                 result = {
