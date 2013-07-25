@@ -123,10 +123,9 @@ class Form(object):
     def _get_actions(self):
         #: TODO: Implement depending on user
         self.actions = [
-                        {"name": "authenticate", "method": "authenticate"},
-                        {"name": "create", "method":"createFromForm"}, 
-                        {"name": "delete", "method":"delete"}, 
-                        {"name": "edit", "method":"editFromForm"}
+                        {"name": "create", "method":"form.createFromForm"}, 
+                        {"name": "delete", "method":"form.delete"}, 
+                        {"name": "edit", "method":"form.editFromForm"}
                     ]
         return self.actions
 
@@ -143,7 +142,7 @@ class Form(object):
             raise JSONRPCInvalidRequestError('Forbidden')
 
     def _get_node_data(self, uuid):
-        #: TODO: User dynamic class types
+        #: TODO: User dynamic class types             
         self.form_cls = SIIMForm
         try:
             self.node = self.form_cls.index.get(uuid=uuid)
@@ -169,8 +168,8 @@ class Form(object):
 
     def get_form_with_data(self, uuid):
         #: TODO: this looks like a decorator is needed
-        if self._check_access():
-            rv = self.get_form_template()
+        if self._check_access():            
+            rv = self.get_form_template()            
             rv['data'] = self._get_node_data(uuid)
             return rv
         else:
