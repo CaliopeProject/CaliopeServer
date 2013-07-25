@@ -123,7 +123,6 @@ class Form(object):
     def _get_actions(self):
         #: TODO: Implement depending on user
         self.actions = [
-                        {"name": "authenticate", "method": "form.authenticate"},
                         {"name": "create", "method":"form.createFromForm"}, 
                         {"name": "delete", "method":"form.delete"}, 
                         {"name": "edit", "method":"form.editFromForm"}
