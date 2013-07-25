@@ -37,7 +37,8 @@
         {
             "local": {
                 "absolut_path":"./storage",
-                "max_filesize":10000000
+                "max_filesize":10000000,
+                "allowed_extensions" :["txt", "pdf", "png", "jpg", "jpeg", "gif","odt","pdf","ods"]
                 }
         }
 }

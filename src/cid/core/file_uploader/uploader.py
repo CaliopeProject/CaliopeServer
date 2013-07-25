@@ -61,14 +61,17 @@ def uploader():
         app = current_app
         storage_setup =  app.config['storage']
 
-        if 'local' in storage_setup:
+        if 'local' in storage_setup and 'absolut_path' in storage_setup['local']:
             UPLOAD_FOLDER  = storage_setup['local']['absolut_path']
+
+        if 'local' in storage_setup and 'allowed_extensions' in storage_setup['local']:
+            ALLOWED_EXTENSIONS = storage_setup['local']['allowed_extensions']
             
         rv = []
         for uploaded_file in request.files.getlist('files[]'):
+            filename = secure_filename(uploaded_file.filename)
             if uploaded_file and allowed_file(uploaded_file.filename):
                 idfile = str(uuid.uuid4()).decode('utf-8') #TODO: change to uuid3 nither uuid5
-                filename = secure_filename(uploaded_file.filename)
                 uploaded_file.save(os.path.join(UPLOAD_FOLDER, idfile))
 
                 result = {
