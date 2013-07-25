@@ -30,6 +30,7 @@ from flask import current_app, g
 from cid.core.login import LoginManager
 from cid.utils import fileUtils
 from cid.model import SIIMForm
+from dbus.decorators import method
 
 
 class FormManager(object):
@@ -76,7 +77,7 @@ class FormManager(object):
 
     @staticmethod
     @public("createFromForm")
-    def edit_form(formId=None, data=None):
+    def edit_form(formId=None, data=None, formUUID=None):
         if formId is None or data is None:
             raise JSONRPCInvalidRequestError()
         else:
@@ -122,7 +123,12 @@ class Form(object):
 
     def _get_actions(self):
         #: TODO: Implement depending on user
-        self.actions = ["authenticate", "create", "delete", "edit"]
+        self.actions = [
+                        {"name": "authenticate", "method": "authenticate"},
+                        {"name": "create", "method":"createFromForm"}, 
+                        {"name": "delete", "method":"delete"}, 
+                        {"name": "edit", "method":"editFromForm"}
+                    ]
         return self.actions
 
     def get_form_template(self):
