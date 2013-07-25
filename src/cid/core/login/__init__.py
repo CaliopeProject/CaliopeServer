@@ -82,7 +82,7 @@ class LoginManager(object):
             session_uuid = lm.validate_user_session(username)
             return {'login': True, 'uuid': session_uuid, 'user': username}
         else:
-            JSONRPCInternalError(e)
+            raise JSONRPCInternalError('No valid session found')
             
         
     @staticmethod
