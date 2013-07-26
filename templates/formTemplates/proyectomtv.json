@@ -6,7 +6,8 @@
         "caption": "Nombre Proyecto",
         "type": "text",
         "validations" : {
-          "required" : true
+          "required" : true,
+          "minlength" : "10"          
         }
       },
       {
