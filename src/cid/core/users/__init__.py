@@ -37,30 +37,35 @@ class UsersManager(object):
     @staticmethod
     @public
     def getAll():
-        return JSONRPCInternalError('Unimplemented')
+        try:
+            users = CaliopeUser.index.search('username:*')
+            users_list = [user.username for user in users]
+            return {"users":users_list}
+        except DoesNotExist as e:
+            raise JSONRPCInvalidRequestError(e)
 
     @staticmethod
     @public
     def getGroups():
-        return JSONRPCInternalError('Unimplemented')
+        raise JSONRPCInvalidRequestError('Unimplemented')
     
     @staticmethod
     @public
     def getFilteredByProyect(proyect_id):
-        return JSONRPCInternalError('Unimplemented')
+        raise JSONRPCInvalidRequestError('Unimplemented')
     
     @staticmethod
     @public
     def getFilteredByGroup(proyect_id):
-        return JSONRPCInternalError('Unimplemented')
+        raise JSONRPCInvalidRequestError('Unimplemented')
     
     @staticmethod
     @public
     def addUser(username,password,group=None):
-        return JSONRPCInternalError('Unimplemented')
+        raise JSONRPCInvalidRequestError('Unimplemented')
     
     @staticmethod
     @public
     def addGroup(groupname):
-        return JSONRPCInternalError('Unimplemented')
+        raise JSONRPCInvalidRequestError('Unimplemented')
     

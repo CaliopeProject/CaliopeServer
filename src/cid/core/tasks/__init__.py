@@ -31,6 +31,7 @@ from tinyrpc.dispatch import public
 #Flask
 from flask import current_app, g
 
+from cid.core.forms import FormManager
 from tasksmodel import TaskNode
 import json
 
@@ -39,43 +40,67 @@ class TaskManager(object):
     @public
     def getAll():
         tasks =   '''    
-        [{
+        {
             "ToDo": [
-                {"tarea": "t 1", "description": "Buscar que hacer"},
-                {"tarea": "t 2", "description": "El ser o el ente?"},
-                {"tarea": "t 3", "description": "Salvar al mundo (con la panza llena)"},
-                {"tarea": "t 4", "description": "Adoptar una directiva sin controlador"}
-            ]
-        },
-        {
+                {
+                    "tarea": "t 1",
+                    "description": "Buscar que hacer"
+                },
+                {
+                    "tarea": "t 2",
+                    "description": "El ser o el ente?"
+                },
+                {
+                    "tarea": "t 3",
+                    "description": "Salvar al mundo (con la panza llena)"
+                },
+                {
+                    "tarea": "t 4",
+                    "description": "Adoptar una directiva sin controlador"
+                }
+            ],
             "Doing": [
-                {"tarea": "t 5", "description": "plantilla de tareas"}
-            ]
-        },
-        {
+                {
+                    "tarea": "t 5",
+                    "description": "plantilla de tareas"
+                }
+            ],
             "Done": [
-                {"tarea": "t 6", "description": "Perder muchoooo tiempo contando llaves, corchetes y paréntesis"},
-                {"tarea": "t 7", "description": "hablar mal de JS"},
-                {"tarea": "t 8", "description": "desterrar a Java"}
+                {
+                    "tarea": "t 6",
+                    "description": "Perder muchoooo tiempo contando llaves, corchetes y paréntesis"
+                },
+                {
+                    "tarea": "t 7",
+                    "description": "hablar mal de JS"
+                },
+                {
+                    "tarea": "t 8",
+                    "description": "desterrar a Java"
+                }
             ]
-        }]'''
+        }
+        '''
 
         json_data = json.loads(tasks)
         return json_data
-        #return JSONRPCInternalError('Unimplemented')
+        #raise JSONRPCInvalidRequestError('Unimplemented')
     
     @staticmethod
     @public
     def getFilteredByProyect(proyect_id):
-        return JSONRPCInternalError('Unimplemented')
+        raise JSONRPCInvalidRequestError('Unimplemented')
     
     @staticmethod
     @public
-    def create():
-        return JSONRPCInternalError('Unimplemented')
+    def create(data=None):
+        rv = FormManager().edit_form('asignaciones', data, None)
+        return rv
+        #raise JSONRPCInvalidRequestError('Unimplemented')
     
+        
     @staticmethod
     @public
     def setState():
-        return JSONRPCInternalError('Unimplemented')
+        raise JSONRPCInvalidRequestError('Unimplemented')
     
