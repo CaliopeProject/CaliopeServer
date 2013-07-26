@@ -6,7 +6,9 @@
           "caption": "Tarea",
           "type": "select",
           "options" : {
-            "entity" : "task"
+            "entity" : "task",
+            "Tarea1" : "Tarea 1",
+            "Tarea2" : "Tarea 2"
           }
       },
       {
@@ -34,8 +36,7 @@
   "actions" : [
       {
           "name": "Create",
-          "method":"tasks.create",
-          "params": ["uuid","ente_asignado"]
+          "method":"tasks.create"
       }
   ]
 }
