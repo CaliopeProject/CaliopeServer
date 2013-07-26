@@ -29,5 +29,13 @@
           "rows": "5",
           "cols": "70"
       }
+  ],
+      
+  "actions" : [
+      {
+          "name": "Create",
+          "method":"tasks.create",
+          "params": ["uuid","ente_asignado"]
+      }
   ]
 }
