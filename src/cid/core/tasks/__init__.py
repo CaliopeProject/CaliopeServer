@@ -93,8 +93,8 @@ class TaskManager(object):
     
     @staticmethod
     @public
-    def create(data=None):
-        rv = FormManager().edit_form('asignaciones', data, None)
+    def create(data=None, formUUID=None):
+        rv = FormManager().edit_form('asignaciones', data, formUUID=formUUID)
         return rv
         #raise JSONRPCInvalidRequestError('Unimplemented')
     
