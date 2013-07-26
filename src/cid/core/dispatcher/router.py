@@ -57,7 +57,7 @@ jsonrpc = JSONRPCProtocol()
 #This does magics
 dispatcher.register_instance(LoginManager(), 'login.')
 dispatcher.register_instance(FormManager(),  'form.')
-dispatcher.register_instance(TaskManager(),  'task.')
+dispatcher.register_instance(TaskManager(),  'tasks.')
 dispatcher.register_instance(UsersManager(), 'users.')
 
 

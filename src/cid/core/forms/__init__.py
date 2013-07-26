@@ -129,7 +129,7 @@ class Form(object):
         else:
             self.actions = [
                             {"name": "create", "method":"form.createFromForm"}, 
-                            {"name": "delete", "method":"form.delete"}, 
+                            {"name": "delete", "method":"form.delete", "params":["uuid"]}, 
                             {"name": "edit", "method":"form.editFromForm"}
                            ]
         return self.actions
