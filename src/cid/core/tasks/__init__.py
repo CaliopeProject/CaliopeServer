@@ -46,7 +46,7 @@ class TaskManager(object):
     
     @staticmethod
     @public
-    def addTask():
+    def create():
         return JSONRPCInternalError('Unimplemented')
     
     @staticmethod

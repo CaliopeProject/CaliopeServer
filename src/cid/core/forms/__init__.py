@@ -122,11 +122,16 @@ class Form(object):
 
     def _get_actions(self):
         #: TODO: Implement depending on user
-        self.actions = [
-                        {"name": "create", "method":"form.createFromForm"}, 
-                        {"name": "delete", "method":"form.delete"}, 
-                        {"name": "edit", "method":"form.editFromForm"}
-                    ]
+        #Workaround!!
+        if 'actions' in self.form_json:
+            self.actions = self.form_json['actions']
+            self.form_json.pop('actions')
+        else:
+            self.actions = [
+                            {"name": "create", "method":"form.createFromForm"}, 
+                            {"name": "delete", "method":"form.delete"}, 
+                            {"name": "edit", "method":"form.editFromForm"}
+                           ]
         return self.actions
 
     def get_form_template(self):
@@ -199,6 +204,7 @@ class Form(object):
         else:
             #: Create new node
             self.node = SIIMForm(**data)
+        self.node.formid = self.form_name
         self.node.save()
         return self.node.uuid
 
