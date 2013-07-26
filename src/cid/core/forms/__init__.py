@@ -199,6 +199,8 @@ class Form(object):
         else:
             #: Create new node
             self.node = SIIMForm(**data)
+        print "self.form_name = " + self.form_name
+        self.node.formid = self.form_name
         self.node.save()
         return self.node.uuid
 

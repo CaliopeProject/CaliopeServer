@@ -58,6 +58,7 @@ class RegistroPredioCatastroTipo2(CaliopeNode):
 
 
 class SIIMForm(CaliopeNode):
+    formid = StringProperty(index=True)
     def __init__(self, *args, **kwargs):
         super(SIIMForm, self).__init__(*args, **kwargs)
 
