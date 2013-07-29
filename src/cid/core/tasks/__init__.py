@@ -40,60 +40,63 @@ class TaskManager(object):
     @public
     def getAll():
         tasks =   '''    
-    [
-        {
-            "ToDo": [
-                {
-                    "id":"1",
-                    "tarea": "t 1",
-                    "description": "Buscar que hacer"
-                },
-                {
-                    "id":"2",
-                    "tarea": "t 2",
-                    "description": "El ser o el ente?"
-                },
-                {
-                    "id":"3",
-                    "tarea": "t 3",
-                    "description": "Salvar al mundo (con la panza llena)"
-                },
-                {
-                    "id":"4",
-                    "tarea": "t 4",
-                    "description": "Adoptar una directiva sin controlador"
-                }
-            ]
-        },
-        {
-            "Doing": [
-                {
-                    "id":"5",
-                    "tarea": "t 5",
-                    "description": "plantilla de tareas"
-                }
-            ]
-        },
-        {
-            "Done": [
-                {
-                    "id":"6",
-                    "tarea": "t 6",
-                    "description": "Perder muchoooo tiempo contando llaves, corchetes y paréntesis"
-                },
-                {
-                    "id":"7",
-                    "tarea": "t 7",
-                    "description": "hablar mal de JS"
-                },
-                {
-                    "id":"8",
-                    "tarea": "t 8",
-                    "description": "desterrar a Java"
-                }
-            ]
-        }
-    ]
+[
+    {
+        "category": "ToDo",
+        "tasks": [
+            {
+                "uuid" : "1",
+                "tarea": "t 1",
+                "description": "Buscar que hacer"
+            },
+            {
+                "uuid" : "2",
+                "tarea": "t 2",
+                "description": "El ser o el ente?"
+            },
+            {
+                "uuid" : "3",
+                "tarea": "t 3",
+                "description": "Salvar al mundo (con la panza llena)"
+            },
+            {
+                "uuid" : "4",
+                "tarea": "t 4",
+                "description": "Adoptar una directiva sin controlador"
+            }
+        ]
+    },
+    {
+        "category": "Doing",
+        "tasks": [
+            {
+                "uuid" : "5",
+                "tarea": "t 5",
+                "description": "plantilla de tareas"
+            }
+        ]
+    },
+    {
+        "category": "Done",
+        "tasks": [
+            {
+                "uuid" : "6",
+                "tarea": "t 6",
+                "description": "Perder muchoooo tiempo contando llaves, corchetes y paréntesis"
+            },
+            {
+                "uuid" : "7",
+                "tarea": "t 7",
+                "description": "hablar mal de JS"
+            },
+            {
+                "uuid" : "8",
+                "tarea": "t 8",
+                "description": "desterrar a Java"
+            }
+        ]
+    }
+]
         '''
 
         json_data = json.loads(tasks)
