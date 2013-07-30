@@ -30,6 +30,7 @@ from flask import current_app, g
 from cid.core.login import LoginManager
 from cid.utils import fileUtils
 from cid.model import SIIMForm
+from cid.core.login import LoginManager
 
 
 class FormManager(object):
@@ -97,14 +98,15 @@ class Form(object):
         pass
 
     def _check_access(self):
-        #: TODO: Implement
-        lm = g.get('lm', None)
-        if self.form_name == 'login':
-            return True
-        elif lm is not None:
-            return True
-        else:
-            return False
+        return LoginManager.check()
+        ##: TODO: Implement
+        #lm = g.get('lm', None)
+        #if self.form_name == 'login':
+            #return True
+        #elif lm is not None:
+            #return True
+        #else:
+            #return False
 
     def _check_valid_form(self):
         #: TODO: Check if form_name is valid and form_path is a file

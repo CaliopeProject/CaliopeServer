@@ -31,6 +31,8 @@ from werkzeug import secure_filename
 from flask.globals import current_app
 from flask import (session, request, Blueprint)
 
+from cid.core.documents import DocumentManager
+
 file_uploader = Blueprint('file_uploader', __name__, template_folder='')
 
 #: TODO: This items should be came from configuration files.
@@ -56,7 +58,7 @@ def human_readable_size(size_bytes):
 @file_uploader.route('/', methods=['GET', 'POST'])
 def uploader():
     if request.method == 'POST':
-        #print request.form['id']
+        print request.form['id']
         #print str(dir(request.form.values))
         app = current_app
         storage_setup =  app.config['storage']

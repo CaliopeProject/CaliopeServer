@@ -28,7 +28,7 @@ from pytz import utc
 
 #flask
 from flask.globals import current_app
-from flask import (session, request, Blueprint, make_response)
+from flask import (session, request, Blueprint, make_response, current_app, g)
 
 #tinyrpc
 from tinyrpc.dispatch import public
@@ -47,6 +47,8 @@ from cid.core.login import LoginManager
 from cid.core.forms import FormManager
 from cid.core.tasks import TaskManager
 from cid.core.users import UsersManager
+from cid.core.documents import DocumentManager
+
 
 dispatcher_bp = Blueprint('dispatcher', __name__, template_folder='pages')
 
@@ -55,10 +57,11 @@ dispatcher = RPCDispatcher()
 jsonrpc = JSONRPCProtocol()
 
 #This does magics
-dispatcher.register_instance(LoginManager(), 'login.')
-dispatcher.register_instance(FormManager(),  'form.')
-dispatcher.register_instance(TaskManager(),  'tasks.')
-dispatcher.register_instance(UsersManager(), 'users.')
+dispatcher.register_instance(LoginManager(),    'login.')
+dispatcher.register_instance(FormManager(),     'form.')
+dispatcher.register_instance(TaskManager(),     'tasks.')
+dispatcher.register_instance(UsersManager(),    'users.')
+dispatcher.register_instance(DocumentManager(), 'docs.')
 
 
 class PublicMethods(object):
@@ -81,19 +84,27 @@ class PublicMethods(object):
      
 dispatcher.register_instance(PublicMethods(), 'general.')
 
-      
+conection_thread_pool_id = {}
+
 @dispatcher_bp.route('/ws')
 def ws_endpoint():
     if request.environ.get('wsgi.websocket'):
         ws = request.environ['wsgi.websocket']
+        conection_thread_id = uuid.uuid1()
+        conection_thread_pool_id[conection_thread_id] = None
+        g.conection_thread_pool_id = conection_thread_pool_id
         while True:
+            g.conection_thread_id = conection_thread_id
             ws_message = ws.receive()
             if ws_message is None:
                 current_app.logger.warn('Request: ' + request.__str__() + '\tmessage: None')
                 break
             else:
                 handle_incoming_jsonrpc_message(ws_message, ws)
-
+        
+        del conection_thread_pool_id[conection_thread_id]
+        
+        
 @dispatcher_bp.route('/rest', methods=['POST'])
 def rest_endpoint():
     current_app.logger.debug('POST:' + request.get_data(as_text=True))
