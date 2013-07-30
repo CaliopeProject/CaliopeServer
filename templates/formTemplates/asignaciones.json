@@ -5,21 +5,20 @@
           "name": "tarea",
           "caption": "Tarea",
           "type": "select",
-          "options-load-server" : {
-            "entity" : "task"
+          "options" : {
+            "t1"    : "tarea1",
+            "t2"    : "tarea2",
+            "t3"    : "tarea3"
           }
       },
       {
           "name": "ente_asignado",
           "caption": "Asignar a",
           "type": "select",
-          "options" : {
-            "gr_doep" : "Grupo DOEP",
-            "gr_dot"  : "Grupo DOT",
-            "gr_di"   : "Grupo DIM",
-            "usr_user1" : "Usuario 1",
-            "usr_user2" : "Usuario 2",
-            "usr_user2" : "Usuario 3"
+          "options-load-server" : {
+            "method"        : "users.getAll",          
+            "field-value"   : "username.value",
+            "field-desc"    : "username.value"
           }
       },
       {
