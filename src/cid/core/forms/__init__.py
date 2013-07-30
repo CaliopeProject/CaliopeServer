@@ -76,12 +76,12 @@ class FormManager(object):
 
     @staticmethod
     @public("createFromForm")
-    def edit_form(formId=None, data=None, formUUID=None):
-        if formId is None or data is None:
+    def create_form(formId, data, formUUID):
+        if formId is None or data is None or formUUID=None:
             raise JSONRPCInvalidRequestError()
         else:
             form = Form(formId=formId)
-            return form.create_form(data)
+            return form.create_form(data,formUUID)
 
 
 class Form(object):
@@ -191,27 +191,27 @@ class Form(object):
 
     def update_form_data(self, uuid, data):
         if self._check_access():
+            self._get_node_data(uuid)
+            self.node = self.node.set_form_data(data)
+            self.node.formid = self.form_name
+            self.node.save()
+
             rv = dict()
-            rv['uuid'] = self._update_or_create_node_data(uuid, data)
+            rv['uuid'] = self.node.uuid
             return rv
         else:
             raise JSONRPCInvalidRequestError('Forbidden')
 
-    def _update_or_create_node_data(self, data, uuid=None):
-        if uuid is not None:
-            self._get_node_data(uuid)
-            self.node = self.node.set_form_data(data)
-        else:
-            #: Create new node
-            self.node = SIIMForm(**data)
-        self.node.formid = self.form_name
-        self.node.save()
-        return self.node.uuid
-
-    def create_form(self, data):
+    def create_form(self, data,formUUID):
         if self._check_access():
+            self.node = SIIMForm(**data)
+            self.node.formid = self.form_name
+            if formUUID is not None:
+                self.node.uuid = formUUID
+            self.node.save()
+
             rv = dict()
-            rv['uuid'] = self._update_or_create_node_data(data)
+            rv['uuid'] = self.node.uuid
             return rv
         else:
             raise JSONRPCInvalidRequestError('Forbidden')
