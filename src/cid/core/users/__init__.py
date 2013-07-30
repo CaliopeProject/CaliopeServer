@@ -39,8 +39,9 @@ class UsersManager(object):
     def getAll():
         try:
             users = CaliopeUser.index.search('username:*')
-            users_list = [user.username for user in users]
-            return {"users":users_list}
+            #users_list = [user.username for user in users]
+            users_list = [user._get_node_data() for user in users]
+            return users_list
         except DoesNotExist as e:
             raise JSONRPCInvalidRequestError(e)
 
