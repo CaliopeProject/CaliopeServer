@@ -77,7 +77,7 @@ class FormManager(object):
     @staticmethod
     @public("createFromForm")
     def create_form(formId, data, formUUID):
-        if formId is None or data is None or formUUID=None:
+        if formId is None or data is None or formUUID is None:
             raise JSONRPCInvalidRequestError()
         else:
             form = Form(formId=formId)
