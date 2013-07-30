@@ -67,12 +67,12 @@ class FormManager(object):
     @staticmethod
     @public("editFromForm")
     #: TODO: test
-    def edit_form(formId=None, uuid=None, data=None):
-        if formId is None or uuid is None or data is None:
+    def edit_form(formId=None, formUUID=None, data=None):
+        if formId is None or formUUID is None or data is None:
             raise JSONRPCInvalidRequestError()
         else:
             form = Form(formId=formId)
-            return form.update_form_data(uuid, data)
+            return form.update_form_data(formUUID, data)
 
     @staticmethod
     @public("createFromForm")
