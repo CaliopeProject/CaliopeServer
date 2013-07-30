@@ -5,10 +5,8 @@
           "name": "tarea",
           "caption": "Tarea",
           "type": "select",
-          "options" : {
-            "entity" : "task",
-            "Tarea1" : "Tarea 1",
-            "Tarea2" : "Tarea 2"
+          "options-load-server" : {
+            "entity" : "task"
           }
       },
       {
@@ -32,7 +30,6 @@
           "cols": "70"
       }
   ],
-      
   "actions" : [
       {
           "name": "Create",
