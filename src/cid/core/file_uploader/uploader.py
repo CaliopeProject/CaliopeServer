@@ -58,7 +58,7 @@ def human_readable_size(size_bytes):
 @file_uploader.route('/', methods=['GET', 'POST'])
 def uploader():
     if request.method == 'POST':
-        print request.form['id']
+        #print request.form['id']
         #print str(dir(request.form.values))
         app = current_app
         storage_setup =  app.config['storage']
