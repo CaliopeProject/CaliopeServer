@@ -32,6 +32,7 @@ from tinyrpc.dispatch import public
 from flask import current_app, g
 
 from cid.core.forms import FormManager
+from cid.core.forms import Form
 from tasksmodel import TaskNode
 import json
 
@@ -112,8 +113,9 @@ class TaskManager(object):
     @public
     def create(formId=None, data=None, formUUID=None):
         if 'asignaciones' != formId:
-            raise JSONRPCInvalidRequestError('unexpected formId')
-        rv = FormManager().edit_form('asignaciones', data, formUUID=formUUID)
+            raise JSONRPCInvalidRequestError('unexpected formId')        
+        form = Form(formId=formId)
+        rv = form.create_form(data,formUUID)
         return rv
         #raise JSONRPCInvalidRequestError('Unimplemented')
     
