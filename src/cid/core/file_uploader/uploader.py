@@ -31,6 +31,8 @@ from werkzeug import secure_filename
 from flask.globals import current_app
 from flask import (session, request, Blueprint)
 
+from cid.core.documents import DocumentManager
+
 file_uploader = Blueprint('file_uploader', __name__, template_folder='')
 
 #: TODO: This items should be came from configuration files.
