@@ -41,7 +41,23 @@ class TaskManager(object):
     @public
     def getAll():
         userNode = CaliopeUser.index.get( username=LoginManager().get_user() )
+        
+        result = userNode.cypher("START s=node:CaliopeUser('username:"+LoginManager().get_user()+"')" +
+                          " MATCH (s)-[r:HOLDER]-(x) Return x,r.category", {'username': LoginManager().get_user()})[0]
+        
+        #print "-----------------------------------------------"
+        #tasks = []
+        #tasks["ToDo"] = {}
+        #for r in result:
+            #print r[0]
+            #print r[1]
 
+#Start s=node:CaliopeUser(username:{name})
+#MATCH (s)-[r:HOLDER]-(x)
+#RETURN x
+
+  #result = u.cypher('START root=node:Person(name={name})' +
+        #' MATCH root-[r:IS_FROM]->() RETURN r.city', {'name': u.name})[0]
 
         tasks =   '''    
 [
@@ -125,7 +141,6 @@ class TaskManager(object):
             holderUser = form.node.holder.all()[0]
             form.node.holder.disconnect(holderUser)
             
-            #print "form.node.ente_asignado "+ form.node.ente_asignado
             holderUser = CaliopeUser.index.get(username=form.node.ente_asignado)
             form.node.holder.connect(holderUser,  properties={'category': 'ToDo'})
             
