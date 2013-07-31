@@ -4,7 +4,7 @@
       {
           "name": "ficha",
           "caption": "Ficha",
-          "type": "select",
+          "type": "text",
           "options": {
               "idea": "Idea",
               "perfil": "Perfil",
@@ -74,5 +74,29 @@
           "caption": "Acta creación proyecto",
           "type": "attachment"
       }
-  ]    
+  ],
+  "layout" : [
+    {
+      "class" : "span12",
+      "columns" : [
+        {
+          "class": "span4",
+          "elements"    : ["ficha", "nombre"]
+        },
+        {
+          "class": "span4",
+          "elements"    : ["estado", "forma_intervencion"]
+        }
+      ]
+    },
+    {
+      "class" :  "span12",
+      "columns" : [
+        {
+          "class" : "span12",
+          "elements"  : ["localizacion_general"]
+        }
+      ]
+    }
+  ]
 }
