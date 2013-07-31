@@ -50,7 +50,6 @@ def login_required(func, **kwargs):
     #def _is_fresh_session(session):
     #    return True
 
-
 class LoginManager(object):
 
     @staticmethod
@@ -60,22 +59,11 @@ class LoginManager(object):
             #: TODO: Add support to domain
             userNode = CaliopeUser.index.get(username=username)
             if userNode.password == password:
-                #valid user, domain, password combination
-                #lm = LoginManager()
-                #lm.user = userNode
-                #g.lm = lm
-            
                 session_uuid = str(uuid4()).decode('utf-8')
                 
                 #!!!!!!!!!!!!!!!!!!!!thread safe untested!!!!!!!!!!!!!!!!!!
                 g.conection_thread_pool_id[g.conection_thread_id] = session_uuid 
-                print "g.conection_thread_pool_id : " + str(g.conection_thread_pool_id)
-                print "g.conection_thread_id : " + str(g.conection_thread_id)
-                print "username : " + username
-                
                 dummy_storage_for_authenticate_with_uuid[session_uuid] = username
-                
-                #session_uuid = lm.validate_user_session(username)
                 return {'login': True, 'uuid': session_uuid, 'user': username}
             else:
                 return {'login': False}
@@ -90,8 +78,6 @@ class LoginManager(object):
     def authenticate_with_uuid(uuid, domain=None):
         if uuid in dummy_storage_for_authenticate_with_uuid:
             username = dummy_storage_for_authenticate_with_uuid[uuid]
-            #lm = LoginManager()
-            #session_uuid = lm.validate_user_session(username)
             return {'login': True, 'uuid': uuid, 'user': username}
         else:
             raise JSONRPCInternalError('No valid session found')
@@ -103,26 +89,23 @@ class LoginManager(object):
         if uuid in dummy_storage_for_authenticate_with_uuid:
             del dummy_storage_for_authenticate_with_uuid[uuid]
         return {'logout': True, 'uuid': uuid}
-        #if uuid in dummy_storage_for_authenticate_with_uuid:
-            #dummy_storage_for_authenticate_with_uuid.pop(uuid)
-        
-        #lm = g.get('lm', None)
-        #if lm is not None:
-            #return lm.invalidate_user_session()
-        #else:
-            #raise JSONRPCInvalidRequestError('No valid session found')
+
     @staticmethod
     def check():
         #!!!!!!!!!!!!!!!!!!!!thread safe untested!!!!!!!!!!!!!!!!!!
-        print "check()"
-        print "g.conection_thread_pool_id : " + str(g.conection_thread_pool_id)
-        print "g.conection_thread_id : " + str(g.conection_thread_id)
-                
         if g.conection_thread_id in g.conection_thread_pool_id:
             if g.conection_thread_pool_id[g.conection_thread_id] in dummy_storage_for_authenticate_with_uuid:
-                print "username" + dummy_storage_for_authenticate_with_uuid[g.conection_thread_pool_id[g.conection_thread_id]]
                 return True
         return False
+
+    @staticmethod
+    def get_user():
+        #!!!!!!!!!!!!!!!!!!!!thread safe untested!!!!!!!!!!!!!!!!!!
+        if g.conection_thread_id in g.conection_thread_pool_id:
+            if g.conection_thread_pool_id[g.conection_thread_id] in dummy_storage_for_authenticate_with_uuid:
+                return dummy_storage_for_authenticate_with_uuid[g.conection_thread_pool_id[g.conection_thread_id]]
+        return None        
+    
     #def get_user(self):
         #if self.user is not None:
             #return self.user
