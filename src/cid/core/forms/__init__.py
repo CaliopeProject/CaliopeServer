@@ -30,7 +30,7 @@ from flask import current_app, g
 from cid.core.login import LoginManager
 from cid.utils import fileUtils
 from cid.model import SIIMForm
-from cid.core.login import LoginManager
+from odisea.CaliopeStorage import CaliopeUser
 
 
 class FormManager(object):
@@ -210,6 +210,10 @@ class Form(object):
             if formUUID is not None:
                 self.node.uuid = formUUID
             self.node.save()
+
+            ownerUser = CaliopeUser.index.get(username=LoginManager().get_user())
+            self.node.owner.connect(ownerUser)
+            self.node.holder.connect(ownerUser)
 
             rv = dict()
             rv['uuid'] = self.node.uuid
