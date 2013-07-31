@@ -127,7 +127,7 @@ class TaskManager(object):
             
             #print "form.node.ente_asignado "+ form.node.ente_asignado
             holderUser = CaliopeUser.index.get(username=form.node.ente_asignado)
-            form.node.holder.connect(holderUser)
+            form.node.holder.connect(holderUser,  properties={'category': 'ToDo'})
             
         return rv
     
