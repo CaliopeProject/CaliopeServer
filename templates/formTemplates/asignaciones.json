@@ -31,8 +31,12 @@
   ],
   "actions" : [
       {
-          "name": "Create",
+          "name": "create",
           "method":"tasks.create"
+      },
+      {
+        "name": "edit",
+        "method":"tasks.edit"
       }
   ]
 }
