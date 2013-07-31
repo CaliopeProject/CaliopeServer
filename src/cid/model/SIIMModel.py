@@ -31,8 +31,11 @@ from neomodel.properties import (Property,
                                  IntegerProperty,
                                  StringProperty)
 
+from neomodel import (StructuredNode, RelationshipTo, RelationshipFrom,
+        Relationship, One)
+
 #CaliopeStorage
-from odisea.CaliopeStorage import CaliopeNode
+from odisea.CaliopeStorage import CaliopeNode,CaliopeUser
 
 
 class RegistroPredioCatastroTipo2(CaliopeNode):
@@ -59,6 +62,9 @@ class RegistroPredioCatastroTipo2(CaliopeNode):
 
 class SIIMForm(CaliopeNode):
     formid = StringProperty(index=True)
+    owner  = RelationshipFrom(CaliopeUser, 'OWNER', cardinality=One)
+    holder = RelationshipFrom(CaliopeUser, 'HOLDER')
+
     def __init__(self, *args, **kwargs):
         super(SIIMForm, self).__init__(*args, **kwargs)
 
