@@ -31,7 +31,9 @@ from tinyrpc.dispatch import public
 #Flask
 from flask import current_app, g
 
-import documentmodel
+from cid.core.login import LoginManager
+from cid.model import DocumentNode
+
 
 class DocumentManager(object):
     @staticmethod

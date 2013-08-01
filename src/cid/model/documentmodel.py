@@ -27,8 +27,10 @@ from neomodel.properties import (Property,
                                  IntegerProperty,
                                  StringProperty)
 
+from neomodel import RelationshipFrom
+
 #CaliopeStorage
-from odisea.CaliopeStorage import CaliopeNode
+from odisea.CaliopeStorage import CaliopeNode,CaliopeUser
 
 from urlparse import urlparse
 
@@ -43,7 +45,8 @@ class DocumentNode(CaliopeNode):
     sha256 = StringProperty()
     insertion_date = DateTimeProperty(default=lambda: datetime.now(pytz.utc))
     description = StringProperty()
-    state = StringProperty()
+    state = StringProperty()    
+    owner  = RelationshipFrom(CaliopeUser, 'OWNER')
 
     def add_to_repo(parent_uuid, url, description):
         u=urlparse(url)

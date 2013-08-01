@@ -33,23 +33,6 @@ from flask import current_app, g
 
 dummy_storage_for_authenticate_with_uuid = {}
 
-def login_required(func, **kwargs):
-        @wraps(func)
-        def decorated_view(*args, **kwargs):
-            #: TODO: Define a way to validate request
-            #: TODO: Change this, for now if user is logged it will work, else false.
-            app = current_app
-            session_storage = app.config['session_storage']
-            if 'user' in session_storage and session_storage['user']['uuid'] == kwargs['uuid']:
-                return func(*args, **kwargs)
-            else:
-                return JSONRPCInternalError('Not authorized')
-            return decorated_view
-
-    #: TODO: Not implemented yet
-    #def _is_fresh_session(session):
-    #    return True
-
 class LoginManager(object):
 
     @staticmethod
@@ -105,6 +88,25 @@ class LoginManager(object):
             if g.conection_thread_pool_id[g.conection_thread_id] in dummy_storage_for_authenticate_with_uuid:
                 return dummy_storage_for_authenticate_with_uuid[g.conection_thread_pool_id[g.conection_thread_id]]
         return None        
+
+
+def login_required(func, **kwargs):
+        @wraps(func)
+        def decorated_view(*args, **kwargs):
+            #: TODO: Define a way to validate request
+            #: TODO: Change this, for now if user is logged it will work, else false.
+            app = current_app
+            session_storage = app.config['session_storage']
+            if 'user' in session_storage and session_storage['user']['uuid'] == kwargs['uuid']:
+                return func(*args, **kwargs)
+            else:
+                return JSONRPCInternalError('Not authorized')
+            return decorated_view
+
+    #: TODO: Not implemented yet
+    #def _is_fresh_session(session):
+    #    return True
+
     
     #def get_user(self):
         #if self.user is not None:
