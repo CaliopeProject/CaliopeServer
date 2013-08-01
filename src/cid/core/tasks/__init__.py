@@ -83,12 +83,15 @@ class TaskManager(object):
         rv = form.create_form(data,formUUID)
         
         if hasattr(form.node, 'ente_asignado'):
-            holderUser = form.node.holder.all()[0]
-            form.node.holder.disconnect(holderUser)
+            holder_user = form.node.ente_asignado
+        else:
+            holder_user = LoginManager().get_user()
             
-            holderUser = CaliopeUser.index.get(username=form.node.ente_asignado)
-            form.node.holder.connect(holderUser,  properties={'category': 'ToDo'})
-            
+        holderUser = form.node.holder.all()[0]
+        form.node.holder.disconnect(holderUser)
+        holderUser = CaliopeUser.index.get(username=holder_user)
+        form.node.holder.connect(holderUser,  properties={'category': 'ToDo'})
+       
         return rv
     
     @staticmethod
