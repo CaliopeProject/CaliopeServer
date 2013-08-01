@@ -100,8 +100,17 @@ class TaskManager(object):
         #TODO: chequearlo todo!!!!!!!!!!
         if 'asignaciones' != formId:
             raise JSONRPCInvalidRequestError('unexpected formId')
+        
         form = Form(formId=formId)
         rv = form.update_form_data(data['uuid'], data);
+        
+        if hasattr(form.node, 'ente_asignado'):
+            holderUser = form.node.holder.all()[0]
+            form.node.holder.disconnect(holderUser)
+            
+            holderUser = CaliopeUser.index.get(username=form.node.ente_asignado)
+            #TODO: Category debe ser la misma en donde está la tarea
+            form.node.holder.connect(holderUser,  properties={'category': 'ToDo'})        
         
         return rv    
     
