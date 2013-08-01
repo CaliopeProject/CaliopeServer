@@ -73,7 +73,7 @@ class FormManager(object):
             raise JSONRPCInvalidRequestError()
         else:
             form = Form(formId=formId)
-            return form.update_form_data(formUUID, data)
+            return form.update_form_data(data['uuid'], data)
 
     @staticmethod
     @public("createFromForm")
@@ -134,6 +134,16 @@ class Form(object):
                             {"name": "edit", "method":"form.editFromForm"}
                            ]
         return self.actions
+    
+    def _get_layout(self):
+        #: TODO: Implement depending on user
+        #Workaround!!
+        if 'layout' in self.form_json:
+            self.layout = self.form_json['layout']
+            self.form_json.pop('layout')
+        else:
+            self.layout = []
+        return self.layout    
 
     def get_form_template(self):
         if self._check_access():
@@ -141,6 +151,7 @@ class Form(object):
                 rv = dict()
                 rv['form'] = self._get_form()
                 rv['actions'] = self._get_actions()
+                rv['layout'] = self._get_layout()
                 return rv
             else:
                 return JSONRPCInternalError('Invalid Form')
