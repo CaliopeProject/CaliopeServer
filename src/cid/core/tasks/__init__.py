@@ -43,7 +43,10 @@ class TaskManager(object):
         userNode = CaliopeUser.index.get( username=LoginManager().get_user() )
         
         result = userNode.cypher("START s=node:CaliopeUser('username:" + LoginManager().get_user() + "')" +
-                          " MATCH (s)-[r:HOLDER]-(x) Return x,r.category", {'username': LoginManager().get_user()})[0]
+                          " MATCH (s)-[r:HOLDER]-(x) " +
+                          " WHERE has(r.category)" + 
+                          " Return x,r.category", {'username': LoginManager().get_user()})[0]
+                          
         
         ToDo  = {'category': 'ToDo',  'tasks': []}
         Doing = {'category': 'Doing', 'tasks': []}
@@ -87,6 +90,17 @@ class TaskManager(object):
             form.node.holder.connect(holderUser,  properties={'category': 'ToDo'})
             
         return rv
+    
+    @staticmethod
+    @public
+    def edit(formId=None, data=None, formUUID=None):
+        #TODO: chequearlo todo!!!!!!!!!!
+        if 'asignaciones' != formId:
+            raise JSONRPCInvalidRequestError('unexpected formId')
+        form = Form(formId=formId)
+        rv = form.update_form_data(data['uuid'], data);
+        
+        return rv    
     
         
     @staticmethod
