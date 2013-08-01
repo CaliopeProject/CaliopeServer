@@ -32,6 +32,7 @@ from flask.globals import current_app
 from flask import (session, request, Blueprint)
 
 from cid.core.documents import DocumentManager
+from cid.core.login import LoginManager
 
 file_uploader = Blueprint('file_uploader', __name__, template_folder='')
 
@@ -63,6 +64,9 @@ def uploader():
         app = current_app
         storage_setup =  app.config['storage']
 
+        print "------------------------"
+        print LoginManager().get_user()
+        
         if 'local' in storage_setup and 'absolut_path' in storage_setup['local']:
             UPLOAD_FOLDER  = storage_setup['local']['absolut_path']
 
