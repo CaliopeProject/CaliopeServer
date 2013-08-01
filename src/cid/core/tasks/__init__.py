@@ -42,85 +42,27 @@ class TaskManager(object):
     def getAll():
         userNode = CaliopeUser.index.get( username=LoginManager().get_user() )
         
-        result = userNode.cypher("START s=node:CaliopeUser('username:"+LoginManager().get_user()+"')" +
+        result = userNode.cypher("START s=node:CaliopeUser('username:" + LoginManager().get_user() + "')" +
                           " MATCH (s)-[r:HOLDER]-(x) Return x,r.category", {'username': LoginManager().get_user()})[0]
         
-        #print "-----------------------------------------------"
-        #tasks = []
-        #tasks["ToDo"] = {}
-        #for r in result:
-            #print r[0]
-            #print r[1]
-
-#Start s=node:CaliopeUser(username:{name})
-#MATCH (s)-[r:HOLDER]-(x)
-#RETURN x
-
-  #result = u.cypher('START root=node:Person(name={name})' +
-        #' MATCH root-[r:IS_FROM]->() RETURN r.city', {'name': u.name})[0]
-
-        tasks =   '''    
-[
-    {
-        "category": "ToDo",
-        "tasks": [
-            {
-                "uuid" : "1",
-                "tarea": "t 1",
-                "description": "Buscar que hacer"
-            },
-            {
-                "uuid" : "2",
-                "tarea": "t 2",
-                "description": "El ser o el ente?"
-            },
-            {
-                "uuid" : "3",
-                "tarea": "t 3",
-                "description": "Salvar al mundo (con la panza llena)"
-            },
-            {
-                "uuid" : "4",
-                "tarea": "t 4",
-                "description": "Adoptar una directiva sin controlador"
-            }
-        ]
-    },
-    {
-        "category": "Doing",
-        "tasks": [
-            {
-                "uuid" : "5",
-                "tarea": "t 5",
-                "description": "plantilla de tareas"
-            }
-        ]
-    },
-    {
-        "category": "Done",
-        "tasks": [
-            {
-                "uuid" : "6",
-                "tarea": "t 6",
-                "description": "Perder muchoooo tiempo contando llaves, corchetes y paréntesis"
-            },
-            {
-                "uuid" : "7",
-                "tarea": "t 7",
-                "description": "hablar mal de JS"
-            },
-            {
-                "uuid" : "8",
-                "tarea": "t 8",
-                "description": "desterrar a Java"
-            }
-        ]
-    }
-]
-        '''
-
-        json_data = json.loads(tasks)
-        return json_data
+        ToDo  = {'category': 'ToDo',  'tasks': []}
+        Doing = {'category': 'Doing', 'tasks': []}
+        Done  = {'category': 'Done',  'tasks': []}
+        for r in result:
+            task = { 
+                'uuid':        r[0]['uuid'], 
+                'tarea':       r[0]['tarea'], 
+                'description': r[0]['descripcion']
+                }
+            if r[1] == 'ToDo':
+                ToDo['tasks'].append(task)
+            elif r[1] == 'Doing':
+                Doing['tasks'].append(task)
+            elif r[1] == 'Done':
+                Done['tasks'].append(task)
+               
+        tasks = [ToDo,Doing,Done]
+        return tasks 
         #raise JSONRPCInvalidRequestError('Unimplemented')
     
     @staticmethod
