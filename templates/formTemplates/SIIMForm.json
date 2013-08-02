@@ -17,7 +17,7 @@
           "name": "estado",
           "caption": "Estado",
           "type": "select",
-  
+
           "options": {
               "en_estudio": "En Estudio",
               "en_ejecucion": "En Ejecución",
@@ -34,6 +34,7 @@
           "name": "nombre",
           "caption": "Nombre del Proyecto",
           "type": "text",
+          "class": "input-xxlarge",
           "validations": {
             "minlength" : 10
       }
@@ -60,7 +61,7 @@
           },
           "validations": {
             "required"  : true
-          }          
+          }
       },
       {
           "name": "localizacion_general",
@@ -81,7 +82,7 @@
       "columns" : [
         {
           "class": "span4",
-          "elements"    : ["ficha", "nombre"]
+          "elements"    : ["ficha", "nombre", "localidad"]
         },
         {
           "class": "span4",
