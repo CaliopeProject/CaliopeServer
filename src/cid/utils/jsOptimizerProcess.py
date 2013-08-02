@@ -1,10 +1,11 @@
 # -*- encoding: utf-8 -*-
 """
-@authors: Andrés Felipe Calderón andres.calderon@correlibre.org
-          Sebastián Ortiz V. neoecos@gmail.com
+@authors: Andrés Calderón andres.calderon@correlibre.org
 
-SIIM2 Server is the web server of SIIM2 Framework
-Copyright (C) 2013 Infometrika Ltda.
+@license:  GNU AFFERO GENERAL PUBLIC LICENSE
+
+Caliope Server is the web server of Caliope's Framework
+Copyright (C) 2013 Infometrika
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as published by
@@ -19,7 +20,20 @@ Copyright (C) 2013 Infometrika Ltda.
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
-from helpers import *
-from fileUtils import *
 from jsOptimizer import *
-from jsOptimizerProcess import *
+import gevent
+
+def js_watcher(jso,base_path):
+    while True:
+        #print('watching')
+        gevent.sleep(1)
+        jso.watch(base_path)
+        
+def jsOptimizerProcess(cache_path, base_path):
+    print "javascript_cache_path = "+cache_path
+    print "javascript_base_path = "+base_path
+    jso = jsOptimizer(cache_path)
+    gevent.spawn(js_watcher(jso,base_path))
+
+
+            
