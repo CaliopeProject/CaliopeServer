@@ -26,63 +26,58 @@ import sys
 import hashlib
 import re
 import uglipyjs
-import gevent
 
 class jsOptimizer(object):
-    def __init__(self,js_cache_store_path):
-        self.js_cache_store_path = js_cache_store_path
+    def __init__(self, prefix="static_cache_"):
         self.jstype = re.compile(".*js$")
+        self.prefix = prefix 
 
-
-    def file_was_modified(self,prefix,path):
-        mts = int(os.path.getmtime(path))
-
-        try:
-            with open(self.js_cache_store_path + '/' + prefix + ".ts",'r') as fts: 
-                ts = fts.read()
-                fts.close()       
-                if len(ts) and mts == int(ts):
-                    return False
-        except IOError:
-            pass
-        
-        with open(self.js_cache_store_path + '/' + prefix + ".ts",'w') as fts: 
-            fts.write(repr(int(mts)))
-            fts.close()
-
-        return True
-
-
-    def watch_file(self,path):
+    def uglifyjs(self,path):
+        str = open(path,'r').read()
+        js = unicode(str, errors='ignore')
+        if len(js):
+            try:
+                ujs = uglipyjs.compile(js)
+            except:
+                pass
+            else:
+                return ujs
+        return None
+                       
+    def js_file_cache(self, path, cache_store):
         if self.jstype.match(path) is not None:
-            prefix = hashlib.sha1(path).hexdigest()
-            if self.file_was_modified(prefix,path): 
-                str = open(path,'r').read()
-                js = unicode(str, errors='ignore')
-                
-                if len(js):
-                    try:
-                        ujs = uglipyjs.compile(js)
-                    except:
-                        pass
-                    else:  
-                        #print path
-                        fjs = open(self.js_cache_store_path + '/' + prefix + ".js",'w')
-                        fjs.write(ujs)
-                        fjs.close()  
-            return self.js_cache_store_path + '/' + prefix + ".js"
+            h = hashlib.sha1(path).hexdigest()
+            key = self.prefix+h
+            if cache_store.__contains__(key):
+                value = cache_store.get(key)
+                return value
+            else:
+                value = self.uglifyjs(path)
+                if value:
+                    cache_store.put(key,value)
+                    return value
+        return None
+    
+
+    def js_put_file_cache(self, path, cache_store):
+        if self.jstype.match(path) is not None:
+            h = hashlib.sha1(path).hexdigest()
+            key = self.prefix+h
+            print key + " " + path
+            value = self.uglifyjs(path)
+            if value:
+                cache_store.put(key,value)
+                return value                    
         return None
 
 
-    def watch(self,rootdir):
+    def watch(self,rootdir,cache_store):
         for root, subFolders, files in os.walk(rootdir):
             for file in files:
                 path = root+'/'+file
-                self.watch_file(path)
+                self.js_file_cache(path,cache_store)
             
             for folder in subFolders:
                 for file in files:
                     path = root+'/'+file
-                    self.watch_file(path)
-
-                   
+                    self.js_file_cache(path,cache_store)

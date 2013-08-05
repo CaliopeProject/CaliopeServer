@@ -5,7 +5,6 @@
         "debug": "True",
         "static": "../caliope_webui_beowulf/app",
         "formTemplates": "templates/formTemplates",
-        "js-cache": "js-cache"
     },
     /* Added fo app configurations */
     "app": {

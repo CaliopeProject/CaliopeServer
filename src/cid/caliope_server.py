@@ -129,11 +129,6 @@ def configure_server_and_app(server_config_file):
     else:
         #: TODO: load default storage if not found in config
         pass
-    if 'js-cache' in config['server']:
-        app.config['js-cache'] = config['server']['js-cache']
-    else:
-        #: TODO: load default storage js cache
-        pass
     if 'debug' in config['server']:
         app.debug = True if config['server']['debug'] == 'True' else False
     else:

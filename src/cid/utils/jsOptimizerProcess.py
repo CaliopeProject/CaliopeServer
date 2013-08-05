@@ -20,29 +20,40 @@ Copyright (C) 2013 Infometrika
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
+
+import redis
+import sys
+from simplekv.memory.redisstore import RedisStore
+from os import path
+from pyinotify import (WatchManager, Notifier, ProcessEvent, IN_CREATE, IN_MODIFY, IN_DELETE)
 from jsOptimizer import *
-#import gevent
-import threading
 
-from flask import current_app, g
+class StaticsChangesProcessor(ProcessEvent):
+    def process_IN_CREATE(self, event):
+        pass
+        #print "Create: %s" %  path.join(event.path, event.name)
+        #jso.js_put_file_cache(path.join(event.path, event.name),store)
 
-def js_watcher(jso,base_path):
-    ct = threading.currentThread()
-    while True:
-        print('watching')
-        #gevent.sleep(1)
-        jso.watch(base_path)
-        
-def jsOptimizerProcess(cache_path, base_path):
-    print "javascript_cache_path = "+cache_path
-    print "javascript_base_path = "+base_path
-    jso = jsOptimizer(cache_path)
-    #g.js_optimizer = jso
-    tr = threading.Thread(target=js_watcher, args=(jso,base_path ))  
-    tr.start() 
-    print "jsOptimizerProcess running"
+    def process_IN_MODIFY(self, event):
+        #print "Modify: %s" %  path.join(event.path, event.name)
+        jso.js_put_file_cache(path.join(event.path, event.name),store)
 
-    #gevent.spawn(js_watcher(jso,base_path))
+    def process_IN_DELETE(self, event):
+        pass
 
+def main(argv):
+    store = RedisStore(redis.StrictRedis())
+    jso = jsOptimizer()
+    jso.watch(argv[1],store)
+    try:
+        wm = WatchManager()
 
-            
+        notifier = Notifier(wm, StaticsChangesProcessor())
+        wm.add_watch(argv[1], IN_CREATE|IN_MODIFY|IN_DELETE, rec=True)
+        notifier.loop()
+    finally:
+        pass
+
+if __name__ == '__main__':
+    #: Start the application
+    main(sys.argv)
