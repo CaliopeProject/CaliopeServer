@@ -4,7 +4,7 @@
         "port": "9000",
         "debug": "True",
         "static": "../caliope_webui_beowulf/app",
-        "formTemplates": "templates/formTemplates",
+        "formTemplates": "templates/formTemplates"
     },
     /* Added fo app configurations */
     "app": {
