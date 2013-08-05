@@ -70,6 +70,8 @@ class jsOptimizer(object):
                         fjs = open(self.js_cache_store_path + '/' + prefix + ".js",'w')
                         fjs.write(ujs)
                         fjs.close()  
+            return self.js_cache_store_path + '/' + prefix + ".js"
+        return None
 
 
     def watch(self,rootdir):

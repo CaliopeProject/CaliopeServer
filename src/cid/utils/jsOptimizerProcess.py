@@ -21,19 +21,28 @@ Copyright (C) 2013 Infometrika
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 from jsOptimizer import *
-import gevent
+#import gevent
+import threading
+
+from flask import current_app, g
 
 def js_watcher(jso,base_path):
+    ct = threading.currentThread()
     while True:
-        #print('watching')
-        gevent.sleep(1)
+        print('watching')
+        #gevent.sleep(1)
         jso.watch(base_path)
         
 def jsOptimizerProcess(cache_path, base_path):
     print "javascript_cache_path = "+cache_path
     print "javascript_base_path = "+base_path
     jso = jsOptimizer(cache_path)
-    gevent.spawn(js_watcher(jso,base_path))
+    #g.js_optimizer = jso
+    tr = threading.Thread(target=js_watcher, args=(jso,base_path ))  
+    tr.start() 
+    print "jsOptimizerProcess running"
+
+    #gevent.spawn(js_watcher(jso,base_path))
 
 
             
