@@ -1,82 +1,106 @@
 {
   "name": "SIIMForm",
   "html": [
-      {
-          "name": "ficha",
-          "caption": "Ficha",
-          "type": "text",
-          "options": {
-              "idea": "Idea",
-              "perfil": "Perfil",
-              "prefactibilidad": "Prefactibilidad",
-              "factibilidad": "Factibilidad",
-              "ejecucion": "Ejecución"
-          }
-      },
-      {
-          "name": "estado",
-          "caption": "Estado",
-          "type": "select",
+    {
+      "name" : "title",
+      "type" : "div",
+      "html" :
+      [
+        {
+          "type" : "h1",
+          "html" : "Formulario SIIMForm"
+        }
+      ]
+    },
+    {
+      "name"    : "ficha",
+      "caption" : "Ficha",
+      "type"    : "text",
+      "class"   : "input-xxlarge",
+      "options": {
+        "idea"            : "Idea",
+        "perfil"          : "Perfil",
+        "prefactibilidad" : "Prefactibilidad",
+        "factibilidad"    : "Factibilidad",
+        "ejecucion"       : "Ejecución"
+      }
+    },
+    {
+      "name"    : "estado",
+      "caption" : "Estado",
+      "class"   : "input-xxlarge",
+      "type"    : "select",
 
-          "options": {
-              "en_estudio": "En Estudio",
-              "en_ejecucion": "En Ejecución",
-              "rechazado": "Rechazado",
-              "aplazado": "Aplazado",
-              "aprobado": "Aprobado",
-              "no_aprobado": "No Aprobado",
-              "viable": "Viable",
-              "no_viable": "No Viable",
-              "finalizado": "Finalizado"
-          }
-      },
-      {
-          "name": "nombre",
-          "caption": "Nombre del Proyecto",
-          "type": "text",
-          "class": "input-xxlarge",
-          "validations": {
-            "minlength" : 10
+      "options": {
+        "en_estudio"   : "En Estudio",
+        "en_ejecucion" : "En Ejecución",
+        "rechazado"    : "Rechazado",
+        "aplazado"     : "Aplazado",
+        "aprobado"     : "Aprobado",
+        "no_aprobado"  : "No Aprobado",
+        "viable"       : "Viable",
+        "no_viable"    : "No Viable",
+        "finalizado"   : "Finalizado"
       }
-      },
-      {
-          "name": "forma_intervencion",
-          "caption": "Forma de intervención",
-          "type": "select",
-          "options": {
-              "forma_generica": "Forma Genérica",
-              "intervencion_directa": "Intervención Directa",
-              "por_asociacion": "Por Asociación"
-          }
-      },
-      {
-          "name": "localidad",
-          "caption": "Localidad",
-          "type": "select",
-          "options": {
-            "": "",
-	        "usaquen": "Usaquén",
-	        "chapinero": "Chapinero",
-            "santa_fe": "Santa Fe"
-          },
-          "validations": {
-            "required"  : true
-          }
-      },
-      {
-          "name": "localizacion_general",
-          "caption": "Localizacion General Proyecto",
-          "type": "textarea",
-          "rows": "5",
-          "cols": "70"
-      },
-      {
-          "name": "acta_creacion_proyecto",
-          "caption": "Acta creación proyecto",
-          "type": "attachment"
+    },
+    {
+      "name"    : "nombre",
+      "caption" : "Nombre del Proyecto",
+      "type"    : "text",
+      "class"   : "input-xxlarge",
+      "validations": {
+        "minlength" : 10
       }
+    },
+    {
+      "name"    : "forma_intervencion",
+      "caption" : "Forma de intervención",
+      "class"   : "input-xxlarge",
+      "type"    : "select",
+      "options": {
+        "forma_generica"       : "Forma Genérica",
+        "intervencion_directa" : "Intervención Directa",
+        "por_asociacion"       : "Por Asociación"
+      }
+    },
+    {
+      "name"    : "localidad",
+      "caption" : "Localidad",
+      "class"   : "input-xxlarge",
+      "type"    : "select",
+      "options": {
+        "": "",
+        "usaquen"   : "Usaquén",
+        "chapinero" : "Chapinero",
+        "santa_fe"  : "Santa Fe"
+      },
+      "validations": {
+        "required"  : true
+      }
+    },
+    {
+      "name"    : "localizacion_general",
+      "caption" : "Localizacion General Proyecto",
+      "type"    : "textarea",
+      "class"   : "input-xxlarge",
+      "rows"    : "5",
+      "cols"    : "70"
+    },
+    {
+      "name"    : "acta_creacion_proyecto",
+      "caption" : "Acta creación proyecto",
+      "type"    : "attachment"
+    }
   ],
   "layout" : [
+    {
+      "columns" : [
+        {
+          "class"   : "page-header",
+          "elements"  : ["title"]
+        }
+      ]
+    },
     {
       "class" : "span12",
       "columns" : [
@@ -86,15 +110,19 @@
         },
         {
           "class": "span4",
-          "elements"    : ["estado", "forma_intervencion"]
+          "elements"    : ["forma_intervencion"]
+        },
+        {
+          "class": "span4",
+          "elements"    : ["estado"]
         }
+
       ]
     },
     {
       "class" :  "span12",
       "columns" : [
         {
-          "class" : "span12",
           "elements"  : ["localizacion_general"]
         }
       ]
