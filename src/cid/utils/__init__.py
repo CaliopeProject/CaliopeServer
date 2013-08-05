@@ -21,3 +21,5 @@ Copyright (C) 2013 Infometrika Ltda.
 """
 from helpers import *
 from fileUtils import *
+from jsOptimizer import *
+from jsOptimizerProcess import *
