@@ -10,13 +10,13 @@
             "t2"    : "tarea2",
             "t3"    : "tarea3"
           }
-      },      
+      },
       {
           "name": "ente_asignado",
           "caption": "Asignar a",
           "type": "select",
           "options-load-server" : {
-            "method"        : "users.getAll",          
+            "method"        : "users.getAll",
             "field-value"   : "username.value",
             "field-desc"    : "username.value"
           }

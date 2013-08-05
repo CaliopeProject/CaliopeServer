@@ -40,7 +40,8 @@ from flask.helpers import safe_join
 
 #Apps import
 from cid.core.module_manager import module_loader
-from utils.fileUtils import loadJSONFromFile, send_from_memory, Gzip
+from cid.utils.fileUtils import loadJSONFromFile, send_from_memory, Gzip
+from cid.utils import jsOptimizerProcess
 
 #: Gevent to patch all TCP/IP connections
 monkey.patch_all()
@@ -64,6 +65,7 @@ def main(argv):
     configure_server_and_app(server_config_file)
     configure_logger(logger_config_file)
     register_modules()
+    #jsOptimizerProcess( app.config['js-cache'],  app.config['STATIC_PATH'])
     run_server()
 
 
@@ -126,6 +128,11 @@ def configure_server_and_app(server_config_file):
         app.config['storage'] = config['storage']
     else:
         #: TODO: load default storage if not found in config
+        pass
+    if 'js-cache' in config['server']:
+        app.config['js-cache'] = config['server']['js-cache']
+    else:
+        #: TODO: load default storage js cache
         pass
     if 'debug' in config['server']:
         app.debug = True if config['server']['debug'] == 'True' else False
