@@ -71,6 +71,15 @@ class jsOptimizer(object):
         return None
 
 
+    def js_get_file_cache(self, path, cache_store):
+        h = hashlib.sha1(path).hexdigest()
+        key = self.prefix+h
+        if cache_store.__contains__(key):
+            value = cache_store.get(key)
+            return value
+        return None
+
+
     def watch(self,rootdir,cache_store):
         for root, subFolders, files in os.walk(rootdir):
             for file in files:
