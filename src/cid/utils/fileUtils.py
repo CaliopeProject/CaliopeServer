@@ -81,6 +81,7 @@ def send_from_memory(filename):
         headers = Headers()
         headers['Content-Encoding'] = 'gzip'
         headers['Content-Length'] = len(data)
+        headers['Cache-Control'] = "max-age=172800, public, must-revalidate"
         rv = current_app.response_class(data, mimetype=mimetype, headers=headers,
                                         direct_passthrough=True)
     else:
