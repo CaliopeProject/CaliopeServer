@@ -25,19 +25,27 @@ import time
 import sys
 import hashlib
 import re
-import uglipyjs
-
+import gzip
+import StringIO
+import rjsmin
+ 
 class jsOptimizer(object):
     def __init__(self, prefix="static_cache_"):
         self.jstype = re.compile(".*js$")
         self.prefix = prefix 
 
-    def uglifyjs(self,path):
+    def compress(self,path):
         str = open(path,'r').read()
         js = unicode(str, errors='ignore')
         if len(js):
             try:
-                ujs = uglipyjs.compile(js)
+                js = rjsmin.jsmin(js)
+                gzip_buffer = StringIO.StringIO()
+                gzip_file = gzip.GzipFile(mode='wb', compresslevel=9, fileobj=gzip_buffer)
+                gzip_file.write(js)
+                gzip_file.close()
+                ujs = gzip_buffer.getvalue()
+                print "compress ratio = " + repr(float(len(js)) / float(len(ujs))) + ":1"
             except:
                 pass
             else:
@@ -52,8 +60,9 @@ class jsOptimizer(object):
                 value = cache_store.get(key)
                 return value
             else:
-                value = self.uglifyjs(path)
+                value = self.compress(path)
                 if value:
+                    print path + " :Added to cache" 
                     cache_store.put(key,value)
                     return value
         return None
@@ -61,18 +70,18 @@ class jsOptimizer(object):
 
     def js_put_file_cache(self, path, cache_store):
         if self.jstype.match(path) is not None:
-            h = hashlib.sha1(path).hexdigest()
+            h = hashlib.sha1(os.path.abspath(path)).hexdigest()
             key = self.prefix+h
-            print key + " " + path
-            value = self.uglifyjs(path)
+            value = self.compress(path)
             if value:
+                print path + " :Added to cache" 
                 cache_store.put(key,value)
                 return value                    
         return None
 
 
     def get_file(self, path, cache_store):
-        h = hashlib.sha1(path).hexdigest()
+        h = hashlib.sha1(os.path.abspath(path)).hexdigest()
         key = self.prefix+h
         if cache_store.__contains__(key):
             value = cache_store.get(key)
@@ -80,13 +89,14 @@ class jsOptimizer(object):
         return None
 
 
-    def watch(self,rootdir,cache_store):
+    def watch(self,rootdir,cache_store,force=False):
+        put_in_cache = self.js_put_file_cache if force else self.js_file_cache
         for root, subFolders, files in os.walk(rootdir):
             for file in files:
                 path = root+'/'+file
-                self.js_file_cache(path,cache_store)
+                put_in_cache(path,cache_store)
             
             for folder in subFolders:
                 for file in files:
                     path = root+'/'+file
-                    self.js_file_cache(path,cache_store)
+                    put_in_cache(path,cache_store)

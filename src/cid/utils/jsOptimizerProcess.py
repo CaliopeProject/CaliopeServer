@@ -44,7 +44,7 @@ class StaticsChangesProcessor(ProcessEvent):
 def main(argv):
     store = RedisStore(redis.StrictRedis())
     jso = jsOptimizer()
-    jso.watch(argv[1],store)
+    jso.watch(argv[1],store,force=True)
     try:
         wm = WatchManager()
 

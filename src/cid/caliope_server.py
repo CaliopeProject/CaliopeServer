@@ -27,6 +27,7 @@ import os
 import getopt
 import sys
 import importlib
+import redis
 from logging import getLogger
 
 #gevent
@@ -35,13 +36,16 @@ from geventwebsocket.handler import WebSocketHandler
 from gevent import monkey
 
 #flask
-from flask import Flask
+from flask import (Flask,g)
 from flask.helpers import safe_join
+
+#simplekv
+from simplekv.memory.redisstore import RedisStore
 
 #Apps import
 from cid.core.module_manager import module_loader
 from cid.utils.fileUtils import loadJSONFromFile, send_from_memory, Gzip
-from cid.utils import jsOptimizerProcess
+
 
 #: Gevent to patch all TCP/IP connections
 monkey.patch_all()
@@ -51,7 +55,6 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     return send_from_memory(safe_join(app.config['STATIC_PATH'], 'index.html'))
-    #return render_template('index.html')
 
 
 @app.route('/<path:filename>')
@@ -65,7 +68,6 @@ def main(argv):
     configure_server_and_app(server_config_file)
     configure_logger(logger_config_file)
     register_modules()
-    #jsOptimizerProcess( app.config['js-cache'],  app.config['STATIC_PATH'])
     run_server()
 
 
@@ -176,6 +178,7 @@ def run_server():
     app.logger.info("Starting server on: " + app.config['address'] + ":" + str(app.config['port']))
     app.logger.info("Static Base Directory: " + app.config['STATIC_PATH'])
     app.logger.info("Forms Template Directory : " + app.config['FORM_TEMPLATES'])
+    app.storekv = RedisStore(redis.StrictRedis())
     http_server = WSGIServer((app.config['address'], app.config['port']), app,
                              handler_class=WebSocketHandler)  # @IgnorePep8
     http_server.serve_forever()

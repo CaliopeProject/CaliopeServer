@@ -36,6 +36,7 @@ from werkzeug.datastructures import Headers
 from werkzeug.wsgi import wrap_file
 from werkzeug.exceptions import NotFound
 
+from cid.utils.jsOptimizer import jsOptimizer
 
 def loadJSONFromFile(filename, root_path):
     #if filename is not None:
@@ -71,12 +72,24 @@ def send_from_memory(filename):
     mimetype = mimetypes.guess_type(filename)[0]
     if mimetype is None:
         mimetype = 'application/octet-stream'
+
     file = open(filename, 'rb')
-    data = wrap_file(request.environ, file)
-    headers = Headers()
-    rv = current_app.response_class(data, mimetype=mimetype, headers=headers,
-                                    direct_passthrough=False)
+    
+    data = jsOptimizer().get_file(os.path.abspath(filename), current_app.storekv)
+    if data:
+        print "cached"
+        headers = Headers()
+        headers['Content-Encoding'] = 'gzip'
+        headers['Content-Length'] = len(data)
+        rv = current_app.response_class(data, mimetype=mimetype, headers=headers,
+                                        direct_passthrough=True)
+    else:
+        data = wrap_file(request.environ, file)
+        headers = Headers()
+        rv = current_app.response_class(data, mimetype=mimetype, headers=headers,
+                                        direct_passthrough=False)
     return rv
+
 
 #From
 #https://github.com/elasticsales/Flask-gzip/blob/master/flask_gzip.py
