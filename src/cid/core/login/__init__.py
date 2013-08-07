@@ -31,7 +31,7 @@ from tinyrpc.protocols.jsonrpc import JSONRPCInvalidRequestError, JSONRPCInterna
 from tinyrpc.dispatch import public
 from flask import current_app, g
 
-dummy_storage_for_authenticate_with_uuid = {}
+prefix_session_manager = "prefix_session_manager_"
 
 class LoginManager(object):
 
@@ -46,7 +46,8 @@ class LoginManager(object):
                 
                 #!!!!!!!!!!!!!!!!!!!!thread safe untested!!!!!!!!!!!!!!!!!!
                 g.conection_thread_pool_id[g.conection_thread_id] = session_uuid 
-                dummy_storage_for_authenticate_with_uuid[session_uuid] = username
+                current_app.storekv.put(prefix_session_manager+session_uuid,username)
+                
                 return {'login': True, 'uuid': session_uuid, 'user': username}
             else:
                 return {'login': False}
@@ -59,8 +60,8 @@ class LoginManager(object):
     @staticmethod
     @public
     def authenticate_with_uuid(uuid, domain=None):
-        if uuid in dummy_storage_for_authenticate_with_uuid:
-            username = dummy_storage_for_authenticate_with_uuid[uuid]
+        if current_app.storekv.__contains__(prefix_session_manager+uuid):
+            username = current_app.storekv.get(prefix_session_manager+uuid)
             return {'login': True, 'uuid': uuid, 'user': username}
         else:
             raise JSONRPCInternalError('No valid session found')
@@ -69,15 +70,16 @@ class LoginManager(object):
     @staticmethod
     @public
     def logout(uuid):
-        if uuid in dummy_storage_for_authenticate_with_uuid:
-            del dummy_storage_for_authenticate_with_uuid[uuid]
+        if current_app.storekv.__contains__(prefix_session_manager+uuid):
+            username = current_app.storekv.delete(prefix_session_manager+uuid)
         return {'logout': True, 'uuid': uuid}
 
     @staticmethod
     def check():
         #!!!!!!!!!!!!!!!!!!!!thread safe untested!!!!!!!!!!!!!!!!!!
         if g.conection_thread_id in g.conection_thread_pool_id:
-            if g.conection_thread_pool_id[g.conection_thread_id] in dummy_storage_for_authenticate_with_uuid:
+            key = prefix_session_manager + g.conection_thread_pool_id[g.conection_thread_id]
+            if current_app.storekv.__contains__(key):
                 return True
         return False
 
@@ -85,8 +87,9 @@ class LoginManager(object):
     def get_user():
         #!!!!!!!!!!!!!!!!!!!!thread safe untested!!!!!!!!!!!!!!!!!!
         if g.conection_thread_id in g.conection_thread_pool_id:
-            if g.conection_thread_pool_id[g.conection_thread_id] in dummy_storage_for_authenticate_with_uuid:
-                return dummy_storage_for_authenticate_with_uuid[g.conection_thread_pool_id[g.conection_thread_id]]
+            key = prefix_session_manager + g.conection_thread_pool_id[g.conection_thread_id]
+            if current_app.storekv.__contains__(key):
+                return current_app.storekv.get(key)
         return None        
 
 
