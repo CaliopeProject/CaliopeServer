@@ -45,7 +45,7 @@ class TaskManager(object):
         result = userNode.cypher("START s=node:CaliopeUser('username:" + LoginManager().get_user() + "')" +
                           " MATCH (s)-[r:HOLDER]-(x) " +
                           " WHERE has(r.category)" + 
-                          " Return x,r.category", {'username': LoginManager().get_user()})[0]
+                          " Return x,r.category", {})[0]
                           
         
         ToDo  = {'category': 'ToDo',  'tasks': []}

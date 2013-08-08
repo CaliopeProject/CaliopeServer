@@ -32,14 +32,18 @@ from cid.utils.fileUtils import loadJSONFromFile
 
 
 class StaticsChangesProcessor(ProcessEvent):
+    def __init__(self, jso,store):
+        self.jso = jso
+        self.store = store
+
     def process_IN_CREATE(self, event):
         pass
         #print "Create: %s" %  path.join(event.path, event.name)
         #jso.js_put_file_cache(path.join(event.path, event.name),store)
 
     def process_IN_MODIFY(self, event):
-        #print "Modify: %s" %  path.join(event.path, event.name)
-        jso.js_put_file_cache(path.join(event.path, event.name),store)
+        print "Modify: %s" %  path.join(event.path, event.name)
+        self.jso.js_put_file_cache(path.join(event.path, event.name),self.store)
 
     def process_IN_DELETE(self, event):
         pass
@@ -81,8 +85,8 @@ def main(argv):
     try:
         wm = WatchManager()
 
-        notifier = Notifier(wm, StaticsChangesProcessor())
-        wm.add_watch(argv[1], IN_CREATE|IN_MODIFY|IN_DELETE, rec=True)
+        notifier = Notifier(wm, StaticsChangesProcessor(jso,store))
+        wm.add_watch(static_path, IN_CREATE|IN_MODIFY|IN_DELETE, rec=True)
         notifier.loop()
     finally:
         pass
