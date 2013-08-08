@@ -98,15 +98,7 @@ class Form(object):
         pass
 
     def _check_access(self):
-        return LoginManager.check()
-        ##: TODO: Implement
-        #lm = g.get('lm', None)
-        #if self.form_name == 'login':
-            #return True
-        #elif lm is not None:
-            #return True
-        #else:
-            #return False
+        return LoginManager().check()
 
     def _check_valid_form(self):
         #: TODO: Check if form_name is valid and form_path is a file

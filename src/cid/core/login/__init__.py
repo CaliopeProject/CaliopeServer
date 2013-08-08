@@ -62,6 +62,7 @@ class LoginManager(object):
     def authenticate_with_uuid(uuid, domain=None):
         if current_app.storekv.__contains__(prefix_session_manager+uuid):
             username = current_app.storekv.get(prefix_session_manager+uuid)
+            g.conection_thread_pool_id[g.conection_thread_id] = uuid
             return {'login': True, 'uuid': uuid, 'user': username}
         else:
             raise JSONRPCInternalError('No valid session found')
