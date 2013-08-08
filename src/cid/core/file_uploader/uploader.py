@@ -60,13 +60,18 @@ def human_readable_size(size_bytes):
 def uploader():
     if request.method == 'POST':
         #print request.form['id']
-        #print str(dir(request.form.values))
+        #print str(request.form.viewitems())
+        if 'session_uuid' in request.form:
+           if LoginManager().check_with_uuid(request.form['session_uuid']):
+               print "OK"
+           else:
+               return "unrecheable"
+        else:
+           return "unrecheable"
+
         app = current_app
         storage_setup =  app.config['storage']
 
-        print "------------------------"
-        print LoginManager().get_user()
-        
         if 'local' in storage_setup and 'absolut_path' in storage_setup['local']:
             UPLOAD_FOLDER  = storage_setup['local']['absolut_path']
 
@@ -94,15 +99,7 @@ def uploader():
             rv.append(result);
 
         return json.dumps(rv)
-    return """
-    <!doctype html>
-    <title>Upload new File</title>
-    <h1>Upload new File</h1>
-    <form action="" method=post enctype=multipart/form-data>
-      <p><input type=uploaded_file name=uploaded_file>
-         <input type=submit value=Upload>
-    </form>
-    """
+    return "unrecheable"
 
 
 def allowed_file(filename):

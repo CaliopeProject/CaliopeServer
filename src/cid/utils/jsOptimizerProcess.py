@@ -40,7 +40,6 @@ class StaticsChangesProcessor(ProcessEvent):
         #print "Create: %s" %  path.join(event.path, event.name)
         self.jso.js_put_file_cache(path.join(event.path, event.name),self.store)
 
-
     def process_IN_MODIFY(self, event):
         #print "Modify: %s" %  path.join(event.path, event.name)
         self.jso.js_put_file_cache(path.join(event.path, event.name),self.store)
@@ -49,15 +48,12 @@ class StaticsChangesProcessor(ProcessEvent):
         pass
 
     def process_IN_ATTRIB(self, event):
-        self.jso.js_put_file_cache(path.join(event.path, event.name),self.store)
         #print "in attrib: %s" %  path.join(event.path, event.name)
-
+        self.jso.js_put_file_cache(path.join(event.path, event.name),self.store)
 
     def process_IN_ACCESS(self, event):
-        pass
         #print "in access: %s" %  path.join(event.path, event.name)
-
-
+        self.jso.js_put_file_cache(path.join(event.path, event.name),self.store)
 
 
 def _parseCommandArguments(argv):

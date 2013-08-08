@@ -83,7 +83,14 @@ class LoginManager(object):
             if current_app.storekv.__contains__(key):
                 return True
         return False
-
+    
+    @staticmethod
+    def check_with_uuid(uuid):
+        if current_app.storekv.__contains__(prefix_session_manager+uuid):
+            return True
+        else:
+            return False
+        
     @staticmethod
     def get_user():
         #!!!!!!!!!!!!!!!!!!!!thread safe untested!!!!!!!!!!!!!!!!!!
