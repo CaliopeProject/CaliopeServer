@@ -6,6 +6,10 @@
         "type": "hidden"
       },
       {
+        "name": "uuidparent",
+        "type": "hidden"
+      },
+      {
           "name": "tarea",
           "caption": "Tarea",
           "type": "select",
@@ -61,7 +65,7 @@
       "columns" : [
         {
           "class": "span4",
-          "elements"  : ["tarea", "ente_asignado", "descripcion", "fch_est_ini", "fch_est_final"]
+          "elements"  : ["categoria", "uuidparent", "tarea", "ente_asignado", "descripcion", "fch_est_ini", "fch_est_final"]
         }
       ]
     }
