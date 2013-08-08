@@ -26,7 +26,7 @@ import sys
 import getopt
 from simplekv.memory.redisstore import RedisStore
 from os import path
-from pyinotify import (WatchManager, Notifier, ProcessEvent, IN_CREATE, IN_MODIFY, IN_DELETE)
+from pyinotify import (WatchManager, Notifier, ProcessEvent, IN_ACCESS,IN_ATTRIB,IN_CREATE, IN_MODIFY, IN_DELETE)
 from cid.utils.jsOptimizer import *
 from cid.utils.fileUtils import loadJSONFromFile
 
@@ -37,16 +37,28 @@ class StaticsChangesProcessor(ProcessEvent):
         self.store = store
 
     def process_IN_CREATE(self, event):
-        pass
         #print "Create: %s" %  path.join(event.path, event.name)
-        #jso.js_put_file_cache(path.join(event.path, event.name),store)
+        self.jso.js_put_file_cache(path.join(event.path, event.name),self.store)
+
 
     def process_IN_MODIFY(self, event):
-        print "Modify: %s" %  path.join(event.path, event.name)
+        #print "Modify: %s" %  path.join(event.path, event.name)
         self.jso.js_put_file_cache(path.join(event.path, event.name),self.store)
 
     def process_IN_DELETE(self, event):
         pass
+
+    def process_IN_ATTRIB(self, event):
+        self.jso.js_put_file_cache(path.join(event.path, event.name),self.store)
+        #print "in attrib: %s" %  path.join(event.path, event.name)
+
+
+    def process_IN_ACCESS(self, event):
+        pass
+        #print "in access: %s" %  path.join(event.path, event.name)
+
+
+
 
 def _parseCommandArguments(argv):
     print "_parseCommandArguments" + str(argv)
@@ -84,9 +96,8 @@ def main(argv):
     jso.watch(static_path,store,force=True)
     try:
         wm = WatchManager()
-
         notifier = Notifier(wm, StaticsChangesProcessor(jso,store))
-        wm.add_watch(static_path, IN_CREATE|IN_MODIFY|IN_DELETE, rec=True)
+        wm.add_watch(static_path, IN_ATTRIB|IN_ACCESS|IN_CREATE|IN_MODIFY|IN_DELETE, rec=True)
         notifier.loop()
     finally:
         pass
