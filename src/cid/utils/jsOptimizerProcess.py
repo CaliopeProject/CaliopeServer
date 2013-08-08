@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 """
 @authors: Andrés Calderón andres.calderon@correlibre.org
@@ -20,13 +21,15 @@ Copyright (C) 2013 Infometrika
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
-
 import redis
 import sys
+import getopt
 from simplekv.memory.redisstore import RedisStore
 from os import path
 from pyinotify import (WatchManager, Notifier, ProcessEvent, IN_CREATE, IN_MODIFY, IN_DELETE)
-from jsOptimizer import *
+from cid.utils.jsOptimizer import *
+from cid.utils.fileUtils import loadJSONFromFile
+
 
 class StaticsChangesProcessor(ProcessEvent):
     def process_IN_CREATE(self, event):
@@ -41,10 +44,40 @@ class StaticsChangesProcessor(ProcessEvent):
     def process_IN_DELETE(self, event):
         pass
 
+def _parseCommandArguments(argv):
+    print "_parseCommandArguments" + str(argv)
+    server_config_file = "conf/caliope_server.json"
+    try:
+        opts, args = getopt.getopt(argv, "hc:", ["help", "config=",])
+    except getopt.GetoptError:
+        print 'jsOptimizerProcess.py -c <server_configfile>' 
+        sys.exit(2)
+
+    for opt, arg in opts:
+        if opt == '-h':
+            print 'jsOptimizerProcess.py -c <server_configfile>' 
+            sys.exit()
+        elif opt in ("-c", "--config"):
+            server_config_file = arg
+    return server_config_file
+
+def configure_server_and_app(server_config_file):
+    config = loadJSONFromFile(server_config_file, '')
+    print config['server']
+    if 'static' in config['server']:
+        static_path = config['server']['static']
+    else:
+        static_path = "."
+    return static_path
+    
 def main(argv):
+    server_config_file = _parseCommandArguments(argv)
+    static_path = configure_server_and_app(server_config_file)
+    print "server_config_file = "+ server_config_file
+    print "static_path = "+ static_path
     store = RedisStore(redis.StrictRedis())
     jso = jsOptimizer()
-    jso.watch(argv[1],store,force=True)
+    jso.watch(static_path,store,force=True)
     try:
         wm = WatchManager()
 
@@ -56,4 +89,5 @@ def main(argv):
 
 if __name__ == '__main__':
     #: Start the application
-    main(sys.argv)
+    main(sys.argv[1:])
+
