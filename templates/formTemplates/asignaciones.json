@@ -2,6 +2,10 @@
   "name": "asignaciones",
   "html": [
       {
+        "name": "categoria",
+        "type": "hidden"
+      },
+      {
           "name": "tarea",
           "caption": "Tarea",
           "type": "select",
