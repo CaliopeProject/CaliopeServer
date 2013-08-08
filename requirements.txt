@@ -1,7 +1,7 @@
 flask==0.10.1
 gevent==0.13.8
 gevent-websocket==0.3.6
-Caliope-Odisea==0.0.3
+Caliope-Odisea==0.0.4
 tinyrpc==0.5
 requests==1.2.3
 redis==2.7.6
