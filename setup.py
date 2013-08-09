@@ -28,11 +28,10 @@ from setuptools import setup
 
 setup(
     name='SIIM2_Server',
-    version='0.0.1',
+    version='0.0.2',
     package_dir={'': 'src'},
-    packages=['test', 'cid', 'cid.model', 'cid.modules', 'cid.modules.core', 'cid.modules.core.dispatcher',
-              'cid.modules.core.file_uploader', 'cid.modules.core.module_manager',
-              'cid.modules.core.server_notifications', 'cid.modules.core.jsonrpc', 'cid.utils'],
+    packages=['test', 'cid', 'cid.core', 'cid.core.accounts', 'cid.core.forms', 'cid.core.login',
+              'cid.core.file_uploader', 'cid.modules.gis_proxy','cid.utils'],
     license='GNU AFFERO GENERAL PUBLIC LICENSE',
     long_description=open('README.md').read(),
     author='Sebastián Ortiz Vásquez',
