@@ -14,31 +14,48 @@
         },
         "modules": [
             {
-                "dispatcher": {
-                    "module_name": "core.dispatcher",
-                    "module_route": "/api"
-                }
-            },
-            {
                 "file_uploader": {
-                    "module_name": "core.file_uploader",
-                    "module_route": "/upload"
+                    "package": "core.file_uploader",
+                    "route": "/upload"
                 }
             },
             {
                 "gis_proxy": {
-                    "module_name": "modules.gis_proxy",
-                    "module_route": "/gis_proxy"
+                    "package": "modules.gis_proxy",
+                    "route": "/gis_proxy"
                 }
-            }  
+            },
+            {
+                "forms": {
+                    "package": "core.forms",
+                    "service": "form"
+                }
+            },
+            {
+                "login": {
+                    "package": "core.login",
+                    "service": "login"
+                }
+            },
+            {
+                "tasks": {
+                    "package": "core.tasks",
+                    "service": "tasks"
+                }
+            },
+            {
+                "accounts": {
+                    "package": "core.accounts",
+                    "service": "accounts"
+                }
+            }
         ]
     },
-    "storage": 
-        {
-            "local": {
-                "absolut_path":"./storage",
-                "max_filesize":10000000,
-                "allowed_extensions" :["txt", "pdf", "png", "jpg", "jpeg", "gif","odt","pdf","ods"]
-                }
+    "storage": {
+        "local": {
+            "absolut_path": "./storage",
+            "max_filesize": 10000000,
+            "allowed_extensions": ["txt", "pdf", "png", "jpg", "jpeg", "gif", "odt", "pdf", "ods"]
         }
+    }
 }

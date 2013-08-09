@@ -1,69 +1,69 @@
 {
-  "name": "asignaciones",
-  "html": [
-      {
-        "name": "categoria",
-        "type": "hidden"
-      },
-      {
-          "name": "tarea",
-          "caption": "Tarea",
-          "type": "select",
-          "options" : {
-            "t1"    : "tarea1",
-            "t2"    : "tarea2",
-            "t3"    : "tarea3"
-          }
-      },
-      {
-          "name": "ente_asignado",
-          "caption": "Asignar a",
-          "type": "select",
-          "options-load-server" : {
-            "method"        : "users.getAll",
-            "field-value"   : "username.value",
-            "field-desc"    : "username.value"
-          }
-      },
-      {
-          "name": "descripcion",
-          "caption": "Descripción tarea",
-          "type": "textarea",
-          "rows": "5",
-          "cols": "70"
-      },
-      {
-        "name": "fch_est_ini",
-        "caption": "Fecha estima de inicio",
-        "type": "datepicker",
-        "format" : "dd/MM/yyyy"
-      },
-      {
-        "name": "fch_est_final",
-        "caption": "Fecha estima de finalización",
-        "type": "datepicker",
-        "format" : "dd/MM/yyyy"
-      }
-  ],
-  "actions" : [
-      {
-          "name": "create",
-          "method":"tasks.create"
-      },
-      {
-        "name": "edit",
-        "method":"tasks.edit"
-      }
-  ],
-  "layout" : [
-    {
-      "class" : "span12",
-      "columns" : [
+    "name": "asignaciones",
+    "html": [
         {
-          "class": "span4",
-          "elements"  : ["tarea", "ente_asignado", "descripcion", "fch_est_ini", "fch_est_final"]
+            "name": "categoria",
+            "type": "hidden"
+        },
+        {
+            "name": "tarea",
+            "caption": "Tarea",
+            "type": "select",
+            "options": {
+                "t1": "tarea1",
+                "t2": "tarea2",
+                "t3": "tarea3"
+            }
+        },
+        {
+            "name": "ente_asignado",
+            "caption": "Asignar a",
+            "type": "select",
+            "options-load-server": {
+                "method": "accounts.getAll",
+                "field-value": "username.value",
+                "field-desc": "username.value"
+            }
+        },
+        {
+            "name": "descripcion",
+            "caption": "Descripción tarea",
+            "type": "textarea",
+            "rows": "5",
+            "cols": "70"
+        },
+        {
+            "name": "fch_est_ini",
+            "caption": "Fecha estima de inicio",
+            "type": "datepicker",
+            "format": "dd/MM/yyyy"
+        },
+        {
+            "name": "fch_est_final",
+            "caption": "Fecha estima de finalización",
+            "type": "datepicker",
+            "format": "dd/MM/yyyy"
         }
-      ]
-    }
-  ]
+    ],
+    "actions": [
+        {
+            "name": "create",
+            "method": "tasks.create"
+        },
+        {
+            "name": "edit",
+            "method": "tasks.edit"
+        }
+    ],
+    "layout": [
+        {
+            "class": "span12",
+            "columns": [
+                {
+                    "class": "span4",
+                    "elements": ["tarea", "ente_asignado", "descripcion", "fch_est_ini", "fch_est_final"]
+                }
+            ]
+        }
+    ]
 }

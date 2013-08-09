@@ -20,92 +20,45 @@ Copyright (C) 2013 Infometrika Ltda.
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 #system, and standard library
-import json
 import uuid
 from functools import wraps
-from datetime import datetime
-from pytz import utc
 
 #flask
 from flask.globals import current_app
-from flask import (session, request, Blueprint, make_response, current_app, g)
+from flask import ( request, Blueprint, g)
 
 #tinyrpc
-from tinyrpc.dispatch import public
 from tinyrpc.protocols.jsonrpc import JSONRPCProtocol
-from tinyrpc import BadRequestError, RPCBatchRequest
-from tinyrpc.dispatch import RPCDispatcher
-
-#CaliopeStorage
-from neomodel import DoesNotExist
-from odisea.CaliopeStorage import CaliopeUser, CaliopeNode
-
-#Apps import
-from cid.utils import loadJSONFromFile
-from cid.model import SIIMModel
-from cid.core.login import LoginManager
-from cid.core.forms import FormManager
-from cid.core.tasks import TaskManager
-from cid.core.users import UsersManager
-from cid.core.documents import DocumentManager
+from tinyrpc import BadRequestError
 
 
-dispatcher_bp = Blueprint('dispatcher', __name__, template_folder='pages')
-
-dispatcher = RPCDispatcher()
+bp = Blueprint('api', __name__, template_folder='pages')
 
 jsonrpc = JSONRPCProtocol()
 
-#This does magics
-dispatcher.register_instance(LoginManager(),    'login.')
-dispatcher.register_instance(FormManager(),     'form.')
-dispatcher.register_instance(TaskManager(),     'tasks.')
-dispatcher.register_instance(UsersManager(),    'users.')
-dispatcher.register_instance(DocumentManager(), 'docs.')
+connection_thread_pool_id = {}
 
 
-class PublicMethods(object):
-    @staticmethod
-    @public
-    def getMethods():        
-        methods = PublicMethods.get_methods(dispatcher,"")
-        return {'methods': methods}
-        
-    @staticmethod
-    def get_methods(dp,context):
-        methods = []
-        for name in dp.method_map.keys():
-            methods.append(context+name)
-                           
-        for prefix, subdispatchers in dp.subdispatchers.iteritems():
-            for sd in subdispatchers:
-                methods = methods + PublicMethods.get_methods(sd,prefix)
-        return methods
-     
-dispatcher.register_instance(PublicMethods(), 'general.')
-
-conection_thread_pool_id = {}
-
-@dispatcher_bp.route('/ws')
+@bp.route('/api/ws')
 def ws_endpoint():
     if request.environ.get('wsgi.websocket'):
         ws = request.environ['wsgi.websocket']
-        conection_thread_id = uuid.uuid1()
-        conection_thread_pool_id[conection_thread_id] = None
-        g.conection_thread_pool_id = conection_thread_pool_id
+        connection_thread_id = uuid.uuid1()
+        connection_thread_pool_id[connection_thread_id] = None
+        g.connection_thread_pool_id = connection_thread_pool_id
         while True:
-            g.conection_thread_id = conection_thread_id
+            g.connection_thread_id = connection_thread_id
             ws_message = ws.receive()
             if ws_message is None:
                 current_app.logger.warn('Request: ' + request.__str__() + '\tmessage: None')
                 break
             else:
                 handle_incoming_jsonrpc_message(ws_message, ws)
-        
-        del conection_thread_pool_id[conection_thread_id]
-        
-        
-@dispatcher_bp.route('/rest', methods=['POST'])
+
+        del connection_thread_pool_id[connection_thread_id]
+
+
+@bp.route('/rest', methods=['POST'])
 def rest_endpoint():
     current_app.logger.debug('POST:' + request.get_data(as_text=True))
     post_message = request.data
@@ -149,7 +102,7 @@ def handle_incoming_jsonrpc_message(data, handler=None):
 def handle_request(request):
     try:
         # do magic with method, args, kwargs...
-        return dispatcher.dispatch(request)
+        return getattr(current_app, 'dispatcher', None).dispatch(request)
     except Exception as e:
         # for example, a method wasn't found
         return request.error_respond(e)

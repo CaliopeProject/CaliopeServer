@@ -21,18 +21,13 @@ Copyright (C) 2013 Infometrika Ltda.
 """
 
 #CaliopeStorage
-from neomodel import DoesNotExist
-from odisea.CaliopeStorage import CaliopeUser
-
 #tinyrpc
-from tinyrpc.protocols.jsonrpc import JSONRPCInvalidRequestError, JSONRPCInternalError
+from tinyrpc.protocols.jsonrpc import JSONRPCInternalError
 from tinyrpc.dispatch import public
 
 #Flask
-from flask import current_app, g
 
-from cid.core.login import LoginManager
-from cid.model import DocumentNode
+from cid.core.models import CaliopeDocument
 
 
 class DocumentManager(object):
@@ -40,12 +35,12 @@ class DocumentManager(object):
     @public
     def getAll():
         return JSONRPCInternalError('Unimplemented')
-    
+
     @staticmethod
     @public
     def getFilteredByProyect(proyect_id):
         return JSONRPCInternalError('Unimplemented')
-    
+
     @staticmethod
     @public
     def setState():
@@ -53,7 +48,7 @@ class DocumentManager(object):
 
     @staticmethod
     def addDocument(parent_uuid, url, description):
-        node = DocumentNode()
+        node = CaliopeDocument()
         node.add_to_repo(parent_uuid, url, description)
         
         
