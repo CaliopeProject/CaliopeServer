@@ -1,15 +1,17 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-    SIIM2 Server Setup
+    cid.core.utils
     ~~~~~~~~~~~~~~
 
+    Este módulo contiene funciones y clases que son utilizadas por
+    el módelo de almacenamiento.
+
     :author: Sebastián Ortiz <neoecos@gmail.com>
-    :copyright: (c) 2013  Infometrika Ltda.
+    :copyright: (c) 2013 por Fundación CorreLibre
     :license:  GNU AFFERO GENERAL PUBLIC LICENSE
 
-    SIIM2 Server is the web server  of SIIM2's Framework
-    Copyright (C) 2013  Infometrika Ltda.
+Caliope Storage is the base of Caliope's Framework
+Copyright (C) 2013  Fundación Correlibre
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as published by
@@ -24,19 +26,31 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
-from setuptools import setup
 
-setup(
-    name='SIIM2_Server',
-    version='0.0.2',
-    package_dir={'': 'src'},
-    packages=['test', 'cid', 'cid.core', 'cid.core.accounts', 'cid.core.forms', 'cid.core.login',
-              'cid.core.file_uploader', 'cid.modules.gis_proxy','cid.utils'],
-    license='GNU AFFERO GENERAL PUBLIC LICENSE',
-    long_description=open('README.md').read(),
-    author='Sebastián Ortiz Vásquez',
-    author_email='neoecos@gmail.com',
-    url='https://proyectos.correlibre.org/caliope/caliope_server_el_cid',
-    install_requires=['Caliope-Odisea==0.0.3'],
-    test_suite='nose.collector',
-)
+import uuid
+import hashlib
+from datetime import datetime
+from pytz import utc
+
+
+#: uuid version 4
+def uuidGenerator():
+    return str(uuid.uuid4()).decode('utf-8')
+
+
+#: All timestamps should be in UTC
+def timeStampGenerator():
+    return datetime.now(utc)
+
+
+def getBase64():
+    pass
+
+
+def get_sha256(file_name):
+    with open(file_name) as f:
+        m = hashlib.sha256()
+        m.update(f.read())
+        return m.hexdigest()
+
+

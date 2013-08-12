@@ -20,16 +20,15 @@ Copyright (C) 2013 Infometrika Ltda.
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-#CaliopeStorage
+#
 from neomodel import DoesNotExist
-from odisea.CaliopeStorage import CaliopeUser
+from cid.core.models import CaliopeUser
 
 #tinyrpc
-from tinyrpc.protocols.jsonrpc import JSONRPCInvalidRequestError, JSONRPCInternalError
+from tinyrpc.protocols.jsonrpc import JSONRPCInvalidRequestError
 from tinyrpc.dispatch import public
 
 #Flask
-from flask import current_app, g
 
 #from groupmodel import GroupNode
 
@@ -42,7 +41,7 @@ class UsersManager(object):
             users_list = []
             for user in users:
                 data = user._get_node_data()
-                if 'username' in  data:
+                if 'username' in data:
                     users_list.append({u'username': data['username']})
             return users_list
         except DoesNotExist as e:
@@ -52,24 +51,23 @@ class UsersManager(object):
     @public
     def getGroups():
         raise JSONRPCInvalidRequestError('Unimplemented')
-    
+
     @staticmethod
     @public
     def getFilteredByProyect(proyect_id):
         raise JSONRPCInvalidRequestError('Unimplemented')
-    
+
     @staticmethod
     @public
     def getFilteredByGroup(proyect_id):
         raise JSONRPCInvalidRequestError('Unimplemented')
-    
+
     @staticmethod
     @public
-    def addUser(username,password,group=None):
+    def addUser(username, password, group=None):
         raise JSONRPCInvalidRequestError('Unimplemented')
-    
+
     @staticmethod
     @public
     def addGroup(groupname):
         raise JSONRPCInvalidRequestError('Unimplemented')
-    

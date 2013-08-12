@@ -35,7 +35,7 @@ from neomodel import (StructuredNode, RelationshipTo, RelationshipFrom,
         Relationship, One)
 
 #CaliopeStorage
-from odisea.CaliopeStorage import CaliopeNode,CaliopeUser
+from cid.core.models import CaliopeNode,CaliopeUser
 
 
 class RegistroPredioCatastroTipo2(CaliopeNode):

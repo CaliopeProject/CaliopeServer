@@ -32,7 +32,7 @@ from datetime import datetime
 from neomodel.exception import UniqueProperty
 
 #Model imports
-from cid.model.SIIMModel import RegistroPredioCatastroTipo2
+from cid.core.forms import RegistroPredioCatastroTipo2
 
 
 def main(argv):

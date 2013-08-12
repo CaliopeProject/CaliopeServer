@@ -26,9 +26,10 @@ Copyright (C) 2013 Infometrika Ltda.
 import os
 import getopt
 import sys
-import importlib
-import redis
 from logging import getLogger
+
+import redis
+
 
 #gevent
 from gevent.pywsgi import WSGIServer
@@ -36,14 +37,14 @@ from geventwebsocket.handler import WebSocketHandler
 from gevent import monkey
 
 #flask
-from flask import (Flask,g)
+from flask import (Flask )
 from flask.helpers import safe_join
 
 #simplekv
 from simplekv.memory.redisstore import RedisStore
 
 #Apps import
-from cid.core.module_manager import module_loader
+from cid.core import module_manager
 from cid.utils.fileUtils import loadJSONFromFile, send_from_memory, Gzip
 
 
@@ -64,7 +65,7 @@ def custom_static(filename):
 
 def main(argv):
     init_flask_app()
-    server_config_file,logger_config_file = _parseCommandArguments(argv)
+    server_config_file, logger_config_file = _parseCommandArguments(argv)
     configure_server_and_app(server_config_file)
     configure_logger(logger_config_file)
     register_modules()
@@ -84,20 +85,20 @@ def _parseCommandArguments(argv):
     server_config_file = "conf/caliope_server.json"
     logger_config_file = "conf/logger.json"
     try:
-        opts, args = getopt.getopt(argv, "hc:l:", ["help", "config=","log="])
+        opts, args = getopt.getopt(argv, "hc:l:", ["help", "config=", "log="])
     except getopt.GetoptError:
-        print 'caliope_server.py -c <server_configfile> - l <logger_configfile>' 
+        print 'caliope_server.py -c <server_configfile> - l <logger_configfile>'
         sys.exit(2)
 
     for opt, arg in opts:
         if opt == '-h':
-            print 'caliope_server.py -c <server_configfile> - l <logger_configfile>' 
+            print 'caliope_server.py -c <server_configfile> - l <logger_configfile>'
             sys.exit()
         elif opt in ("-c", "--config"):
             server_config_file = arg
         elif opt in ("-l", "--log"):
             logger_config_file = arg
-    return server_config_file,logger_config_file
+    return server_config_file, logger_config_file
 
 
 def configure_server_and_app(server_config_file):
@@ -119,13 +120,13 @@ def configure_server_and_app(server_config_file):
         app.config['FORM_TEMPLATES'] = config['server']['formTemplates']
     else:
         app.config['FORM_TEMPLATES'] = app.config['STATIC_PATH']
-    #: Load app config
+        #: Load app config
     if 'app' in config:
         if 'modules' in config['app']:
             app.config['modules'] = config['app']['modules']
         else:
             app.config['modules'] = {'dispatcher': {'module_name': 'cid.core.dispatcher',
-                                     'module_route': '/api'}}
+                                                    'module_route': '/api'}}
     if 'storage' in config:
         app.config['storage'] = config['storage']
     else:
@@ -135,7 +136,7 @@ def configure_server_and_app(server_config_file):
         app.debug = True if config['server']['debug'] == 'True' else False
     else:
         app.debug = False
-    #: TODO: Add a new configuration for session_storage, default volatile dict
+        #: TODO: Add a new configuration for session_storage, default volatile dict
     if 'session_storage' in config:
         pass
     else:
@@ -145,6 +146,7 @@ def configure_server_and_app(server_config_file):
 def configure_logger(server_config_file):
     config = loadJSONFromFile(server_config_file, app.root_path)
     from logging.config import dictConfig
+
     dictConfig(config)
 
 
@@ -153,21 +155,7 @@ def register_modules():
     Register modules listed in the configuration of the app.
 
     """
-    for module in app.config['modules']:
-        module_config = module.values()[0]
-        module_name = module_config['module_name'] if 'module_name' in module_config else ''
-
-        #: default route is /module_name
-        module_route = module_config['module_route'] if 'module_route' in module_config else '/' \
-                      + module_config['module_name']
-        #:TODO  Is possible to only module to have more than 1 blueprint
-        blueprint_name = module_config['module_blueprint'] if 'module_blueprint' in module_config else \
-                      module_config['module_name'].split('.')[-1]
-        try:
-            module_blueprint = importlib.import_module('cid.' + module_name)
-            app.register_blueprint(module_blueprint.getBlueprint(), url_prefix=module_route)
-        except Exception:
-            app.logger.exception(str(Exception))
+    module_manager.register_modules(app)
 
 
 def run_server():
