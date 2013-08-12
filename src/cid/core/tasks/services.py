@@ -98,7 +98,9 @@ class TaskManager(object):
             raise JSONRPCInvalidRequestError('unexpected formId')
 
         form = Form(formId=formId)
-        rv = form.update_form_data(data['uuid'], data);
+        rv = form.update_form_data(data['uuid'], data)
+        category = data['category'] if data['category'] in ['ToDo', 'Doing', 'Done']\
+            else 'ToDo'
 
         if hasattr(form.node, 'ente_asignado'):
             holderUser = form.node.holder.all()[0]
@@ -106,13 +108,6 @@ class TaskManager(object):
 
             holderUser = CaliopeUser.index.get(username=form.node.ente_asignado)
             #TODO: Category debe ser la misma en donde está la tarea
-            form.node.holder.connect(holderUser, properties={'category': 'ToDo'})
-
+            form.node.holder.connect(holderUser, properties={'category': category})
         return rv
-
-
-    @staticmethod
-    @public
-    def setState():
-        raise JSONRPCInvalidRequestError('Unimplemented')
     
