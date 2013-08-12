@@ -59,5 +59,29 @@
         "type": "attachment"
       }
 
-    ]
+    ],
+  "layout" : [
+    {
+      "class" : "span12",
+      "columns" : [
+        {
+          "class": "span6",
+          "elements"  : ["nombre", "localizacion_general"]
+        },
+        {
+          "class": "span6",
+          "elements"  : ["localidad", "tipo_proyecto"]
+        }
+      ]
+    },
+    {
+      "class" : "span6",
+      "columns" : [
+        {
+          "class": "span6",
+          "elements"  : ["res_anuncio_py"]
+        }
+      ]
+    }
+  ]
 }
