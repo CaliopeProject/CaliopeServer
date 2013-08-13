@@ -29,9 +29,9 @@ Copyright (C) 2013  Fundación Correlibre
 """
 from py2neo import neo4j
 from neomodel.contrib import SemiStructuredNode
-from neomodel.properties import ( DateTimeProperty,
+from neomodel.properties import ( Property, DateTimeProperty,
                                   StringProperty)
-from neomodel.relationship import RelationshipDefinition, RelationshipFrom, RelationshipTo
+from neomodel.relationship import RelationshipDefinition, RelationshipFrom, RelationshipTo, RelationshipManager
 from utils import uuidGenerator, timeStampGenerator
 
 
@@ -50,12 +50,14 @@ class CaliopeNode(SemiStructuredNode):
     #: All timestamps should be in UTC using pytz.utc
     timestamp = DateTimeProperty(default=timeStampGenerator)
 
-    #:RelationshipTo previous node. Root nodes should use "ROOT"
-    ancestor_node = RelationshipFrom('CaliopeNode', 'ANCESTOR_NODE')
+
 
     def __init__(self, *args, **kwargs):
+        #:RelationshipTo previous node. Root nodes should use "ROOT"
+        ancestor_node = RelationshipFrom(self.__class__, 'ANCESTOR_NODE')
+        setattr(self.__class__, 'ancestor_node',ancestor_node)
         super(CaliopeNode, self).__init__(*args, **kwargs)
-        self._set_node_attr(**kwargs)
+        #self._set_node_attr(**kwargs)
 
     def _get_node_data(self):
         """
@@ -63,7 +65,10 @@ class CaliopeNode(SemiStructuredNode):
         """
         rv = {}
         for attr in self.__node__.__metadata__['data']:
-            rv[attr] = {'value': self.__node__.__metadata__['data'][attr]}
+            if attr in self._class_properties():
+                rv[attr] = getattr(self, attr)
+            else:
+                rv[attr] = self.__node__.__metadata__['data'][attr]
         return rv
 
     def _set_node_attr(self, **kwargs):
@@ -71,7 +76,14 @@ class CaliopeNode(SemiStructuredNode):
         Method to update or add attributes to  the node.
         """
         for k in kwargs.keys():
-            setattr(self, k, kwargs[k])
+            if k in self._class_properties() \
+                and issubclass(self._class_properties()[k].__class__, Property):
+                if self._class_properties()[k].has_default:
+                    pass
+                else:
+                    self._class_properties()[k].__class__(kwargs[k])
+            else:
+                setattr(self, k, kwargs[k])
 
     def evolve(self, **kwargs):
         """
@@ -83,8 +95,19 @@ class CaliopeNode(SemiStructuredNode):
         new_node = cls(self._get_node_data())
         new_node._set_node_attr(**kwargs)
         new_node.save()
+        cls.reconnect(self, new_node)
         new_node.ancestor_node.connect(self)
         return new_node
+
+    @classmethod
+    def reconnect(cls, old_node, new_node):
+        for key, val in old_node._class_properties().items():
+            if issubclass(val.__class__,RelationshipDefinition):
+                if hasattr(new_node, key):
+                    new_rel = getattr(new_node, key)
+                    old_rel = getattr(old_node,key)
+                    for n in old_rel.all():
+                        new_rel.connect(n)
 
     @classmethod
     def pull(cls, id_node):

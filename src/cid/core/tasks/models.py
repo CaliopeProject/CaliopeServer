@@ -23,26 +23,38 @@ Copyright (C) 2013 Infometrika Ltda.
 """
 #neomodel primitives
 from neomodel.properties import ( DateTimeProperty,
-                                  StringProperty)
+                                  StringProperty, IntegerProperty, JSONProperty)
 
 #SIIMForm
-from cid.core.forms.models import SIIMForm
+from cid.core.entities import CaliopeEntityData, CaliopeEntity
 
 
-class TaskNode(SIIMForm):
-    user_id = StringProperty()
-    event_date = DateTimeProperty()
+class TaskData(CaliopeEntityData):
+
+    deadline = DateTimeProperty()
+    task_name = StringProperty()
     description = StringProperty()
-    state = StringProperty()
+    progress = IntegerProperty()
+    subtasks = JSONProperty()
+    comments = JSONProperty()
+    task_color = StringProperty()
 
     def __init__(self, *args, **kwargs):
-        super(Task, self).__init__(*args, **kwargs)
+        super(TaskData, self).__init__(*args, **kwargs)
 
     def get_task_data(self):
         return self._get_node_data()
 
     def set_task_data(self, data):
         return self.evolve(**data)
+
+class Task(CaliopeEntity):
+
+    entity_data_type = TaskData
+
+    def __init__(self, *args, **kwargs):
+        super(Task, self).__init__(*args, **kwargs)
+
 
 
 

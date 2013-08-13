@@ -3,7 +3,9 @@
 @authors: Andrés Felipe Calderón andres.calderon@correlibre.org
           Sebastián Ortiz V. neoecos@gmail.com
 
-SIIM2 Server is the web server of SIIM2 Framework
+@license:  GNU AFFERO GENERAL PUBLIC LICENSE
+
+SIIM2 Models are the data definition of SIIM2 Information System
 Copyright (C) 2013 Infometrika Ltda.
 
     This program is free software: you can redistribute it and/or modify
@@ -19,15 +21,16 @@ Copyright (C) 2013 Infometrika Ltda.
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
-import models
-import forms
+#system, and standard library
 
-from cid.core import dispatcher
-from cid.core import module_manager
+#neomodel primitives
+from neomodel.properties import (Property,
+                                 DateTimeProperty,
+                                 FloatProperty,
+                                 IntegerProperty,
+                                 StringProperty)
 
-blueprint = dispatcher.bp
+from cid.core.forms.models import SIIMForm
 
-
-def getBlueprint():
-    return blueprint
-
+class ProjectForm(SIIMForm):
+    pass

@@ -31,38 +31,25 @@ from neomodel.properties import (Property,
                                  IntegerProperty,
                                  StringProperty)
 
-from neomodel import (StructuredNode, RelationshipTo, RelationshipFrom,
-        Relationship, One)
+from cid.core.models import CaliopeNode
 
-#CaliopeStorage
-from cid.core.models import CaliopeNode, CaliopeUser
-
-class SIIMFormData(CaliopeNode):
-
-    def get_form_data(self):
-        return self._get_node_data()
-
-    def set_form_data(self, data):
-        return self.evolve(**data)
-
-
-
-class SIIMForm(CaliopeNode):
-    form_id = StringProperty(index=True)
-    owner  = RelationshipFrom(CaliopeUser, 'OWNER', cardinality=One)
-    holder = RelationshipFrom(CaliopeUser, 'HOLDER')
-
-    def __init__(self, *args, **kwargs):
-        super(SIIMForm, self).__init__(*args, **kwargs)
-
-    def get_form_data(self):
-        return self._get_node_data()
-
-    def set_form_data(self, data):
-        if 'uuid' in data:
-            del data['uuid']
-        return self.evolve(**data)
-
-
-
-
+class RegistroPredioCatastroTipoII(CaliopeNode):
+    #: Unique and indexed properties first
+    sector = StringProperty(unique_index=True)
+    chip = StringProperty(unique_index=True)
+    cedula_catastral = StringProperty(unique_index=True)
+    #: All other
+    matricula = StringProperty()
+    id_lote = StringProperty()
+    codigo_direccion = StringProperty()
+    direccion_actual = StringProperty()
+    escritura = StringProperty()
+    notaria = IntegerProperty()
+    fecha_documento = DateTimeProperty()
+    area_terreno = FloatProperty()
+    area_construida = FloatProperty()
+    tipo_propiedad = IntegerProperty()
+    codigo_destino = IntegerProperty()
+    clase_predio = StringProperty()
+    codigo_estrato = IntegerProperty()
+    zona_fisica_geoeconomica = StringProperty()

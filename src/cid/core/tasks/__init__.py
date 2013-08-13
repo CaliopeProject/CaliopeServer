@@ -20,7 +20,7 @@ Copyright (C) 2013 Infometrika Ltda.
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from cid.core.tasks.services import TaskManager
+from services import TaskManager
 
 
 def get_service():
