@@ -31,9 +31,10 @@ from cid.core.login import LoginManager
 from cid.utils import fileUtils
 from cid.core.models import CaliopeUser
 
-from cid.core.forms.models import SIIMForm
+from cid.core.entities import *
 
-class FormManager(object):
+
+class CaliopeEntityServices(object):
     """
 
     This class is the base for all future forms elements.
@@ -42,7 +43,7 @@ class FormManager(object):
     @public("getTemplate")
     def get_form_template(formId, domain=None, version=None):
         if formId is not None:
-            form = Form(formId=formId)
+            form = CaliopeEntityController(formId=formId)
             return form.get_form_template()
         else:
             raise JSONRPCInvalidParamsError()
@@ -53,7 +54,7 @@ class FormManager(object):
         if formId is None or uuid is None:
             raise JSONRPCInvalidRequestError()
         else:
-            form = Form(formId=formId)
+            form = CaliopeEntityController(formId=formId)
             return form.get_form_with_data(uuid)
 
     @staticmethod
@@ -62,7 +63,7 @@ class FormManager(object):
         if formId is None:
             raise JSONRPCInvalidRequestError()
         else:
-            form = Form(formId=formId)
+            form = CaliopeEntityController(formId=formId)
             return form.get_from_with_data_list(filters)
 
     @staticmethod
@@ -72,7 +73,7 @@ class FormManager(object):
         if formId is None or formUUID is None or data is None:
             raise JSONRPCInvalidRequestError()
         else:
-            form = Form(formId=formId)
+            form = CaliopeEntityController(formId=formId)
             return form.update_form_data(data['uuid'], data)
 
     @staticmethod
@@ -81,16 +82,16 @@ class FormManager(object):
         if formId is None or data is None or formUUID is None:
             raise JSONRPCInvalidRequestError()
         else:
-            form = Form(formId=formId)
+            form = CaliopeEntityController(formId=formId)
             return form.create_form(data,formUUID)
 
 
-class Form(object):
+class CaliopeEntityController(object):
 
     def __init__(self, **kwargs):
         self.form_name = kwargs['formId'] if 'formId' in kwargs else None
         self.form_path = kwargs['form_path'] if 'form path' in kwargs else current_app.config['FORM_TEMPLATES']
-        self.form_cls = kwargs['form_cls'] if 'form_cls' in kwargs else SIIMForm
+        self.form_cls = kwargs['form_cls'] if 'form_cls' in kwargs else CaliopeEntityData
         self.app = kwargs['current_app'] if 'current_app' in kwargs else None
         self.form_json = None
 
@@ -153,7 +154,7 @@ class Form(object):
 
     def _get_node_data(self, uuid):
         #: TODO: User dynamic class types
-        self.form_cls = SIIMForm
+        self.form_cls = CaliopeEntityData if self.form_cls is None else self.form_cls
         try:
             self.node = self.form_cls.index.get(uuid=uuid)
             self.form_data = self.node.get_form_data()
@@ -165,7 +166,7 @@ class Form(object):
 
     def _get_node_data_list(self, filters):
         #: TODO: User dynamic class types
-        self.form_cls = SIIMForm
+        self.form_cls = CaliopeEntityData if self.form_cls is None else self.form_cls
         try:
             self.nodes = self.form_cls.index.search('uuid:*')
             self.form_data_list = [node.get_form_data() for node in self.nodes]
@@ -198,7 +199,7 @@ class Form(object):
         if self._check_access():
             self._get_node_data(uuid)
             self.node = self.node.set_form_data(data)
-            self.node.form_id = self.form_name
+            self.node.formid = self.form_name
             self.node.save()
 
             rv = dict()
@@ -207,9 +208,9 @@ class Form(object):
         else:
             raise JSONRPCInvalidRequestError('Forbidden')
 
-    def create_form(self, data, formUUID):
+    def create_form(self, data,formUUID):
         if self._check_access():
-            self.node = SIIMForm(**data)
+            self.node = self.form_cls(**data)
             self.node.form_id = self.form_name
             if formUUID is not None:
                 self.node.uuid = formUUID

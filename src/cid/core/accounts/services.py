@@ -41,6 +41,10 @@ class UsersManager(object):
             users_list = []
             for user in users:
                 data = user._get_node_data()
+                for k, v in data.items():
+                    if not isinstance(v, unicode):
+                        v = unicode(v)
+                    data[k] = {'value': v}
                 if 'username' in data:
                     users_list.append({u'username': data['username']})
             return users_list

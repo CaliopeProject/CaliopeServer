@@ -21,7 +21,7 @@ Copyright (C) 2013 Infometrika Ltda.
 """
 
 from cid.core.forms.services import FormManager, Form
-from cid.core.forms.models import SIIMForm, RegistroPredioCatastroTipo2
+from cid.core.forms.models import *
 
 def get_service():
     return FormManager()

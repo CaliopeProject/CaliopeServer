@@ -31,6 +31,8 @@ from cid import caliope_server
 from cid.core.models import CaliopeNode, CaliopeUser, CaliopeGroup
 from neomodel import DoesNotExist, UniqueProperty
 
+from cid.core.entities import CaliopeEntity, CaliopeEntityData
+
 
 class SIIM2ServerTestCase(unittest.TestCase):
 
@@ -261,6 +263,18 @@ class TestCaliopeStorage(unittest.TestCase):
                     assert g1.members.is_connected(u1)
             except DoesNotExist:
                 assert False
+        print "-" * 80
+
+    def test_CaliopeEntity_creationMany(self):
+        print "Test#13"
+        print "-" * 80
+        for i in xrange(1,5):
+            e1 = CaliopeEntity()
+            try:
+                assert e1.save() is not None
+                e1.delete()
+            except UniqueProperty:
+                assert True
         print "-" * 80
 
 

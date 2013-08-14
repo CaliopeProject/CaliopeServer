@@ -54,28 +54,27 @@ def register_modules(app):
             module_config['package'].split('.')[-1]
         try:
             module_imp = importlib.import_module('cid.' + package)
-            app.register_blueprint(module_imp.getBlueprint(), url_prefix=route)
-
-            dispatcher = getattr(app, 'dispatcher', None)
-            if dispatcher is not None:
-                dispatcher.register_instance(module_imp.service(), service)
-        except AttributeError as e:
-            app.logger.warning(str(e))
+            try:
+                app.register_blueprint(module_imp.getBlueprint(), url_prefix=route)
+            except AttributeError as e:
+                #This modules does not contain a blueprint
+                app.logger.warning(str(e))
+            try:
+                dispatcher = getattr(app, 'dispatcher', None)
+                if dispatcher is not None:
+                    dispatcher.register_instance(module_imp.get_service(), service)
+                else:
+                    raise Exception("No dispatcher found")
+            except AttributeError as e:
+                app.logger.warning(str(e))
             #This modules does not contain a blueprint
         except ImportError as e:
             app.logger.exception(str(e))
-
-        try:
-            dispatcher = getattr(app, 'dispatcher', None)
-            if dispatcher is not None:
-                dispatcher.register_instance(module_imp.get_service(), service)
-            else:
-                raise Exception
-        except AttributeError as e:
-            app.logger.warning(str(e))
-            #This modules does not contain a blueprint
         except Exception as e:
-            app.logger.critical("No dispatcher found")
+            app.logger.critical(e)
+
+
+
     _load_get_methods(app)
 
 

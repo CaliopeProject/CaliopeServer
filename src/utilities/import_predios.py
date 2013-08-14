@@ -27,12 +27,12 @@ import sys
 
 from datetime import datetime
 
-#neomodel exceptiosn
+#neomodel exceptions
 
 from neomodel.exception import UniqueProperty
 
 #Model imports
-from cid.core.forms import RegistroPredioCatastroTipo2
+from cid.modules.siim2_forms.models import RegistroPredioCatastroTipoII
 
 
 def main(argv):
@@ -61,7 +61,7 @@ def importPredios(filename):
     for line in ins:
         fields = map(lambda f: f.strip('\n').strip('"'),
                      line.replace(',', '.').split('|'))
-        node = RegistroPredioCatastroTipo2()
+        node = RegistroPredioCatastroTipoII()
         record = {}
         map(lambda k, v: record.update({k: v}), header, fields)
         map(lambda k, v: setattr(node, k, v), header, fields)
@@ -87,12 +87,12 @@ def importPrediosWithCreateMethod(filename):
         batchList.append(record)
         if len(batchList) == 300:
             try:
-                RegistroPredioCatastroTipo2.create(*batchList)
+                RegistroPredioCatastroTipoII.create(*batchList)
                 batchList = []
             except UniqueProperty:
                 print "Error in"
                 print batchList
-    RegistroPredioCatastroTipo2.create(*batchList)
+    RegistroPredioCatastroTipoII.create(*batchList)
     print "No more todo"
 
 
