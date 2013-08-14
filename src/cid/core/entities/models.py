@@ -114,11 +114,11 @@ class CaliopeEntity(CaliopeNode):
         return self.current.single()
 
     def _set_current(self, new_current):
-        self.current.disconnect(self._get_current())
-        self.current.connect(new_current)
+        self.current.reconnect(self._get_current(), new_current)
 
-    def set_entity_data(self, data):
-        del data['uuid']
+    def set_entity_data(self, **data):
+        if 'uuid' in data:
+            del data['uuid']
         new_current = self._get_current().evolve(**data)
         self._set_current(new_current)
         return self._get_current()
@@ -132,11 +132,12 @@ class CaliopeEntity(CaliopeNode):
     def get_entity_data(self):
         rv = self._get_current()._get_node_data()
         for k, v in rv.items():
+            if k == 'uuid':
+                v = self.uuid
             if not isinstance(v, unicode):
                 v = unicode(v)
-            #rv[k] = {'value': v}
-            rv[k] = v
-        rv['uuid'] = self.uuid
+            rv[k] = {'value': v}
+            #rv[k] = v
         return rv
 
 

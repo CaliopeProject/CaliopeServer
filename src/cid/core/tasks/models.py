@@ -25,7 +25,7 @@ Copyright (C) 2013 Infometrika Ltda.
 from neomodel.properties import ( DateTimeProperty,
                                   StringProperty, IntegerProperty, JSONProperty)
 
-#SIIMForm
+#Caliope Entities
 from cid.core.entities import CaliopeEntityData, CaliopeEntity
 
 
@@ -47,6 +47,7 @@ class TaskData(CaliopeEntityData):
 
     def set_task_data(self, data):
         return self.evolve(**data)
+
 
 class Task(CaliopeEntity):
 
