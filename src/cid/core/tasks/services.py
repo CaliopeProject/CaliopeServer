@@ -57,7 +57,7 @@ class TaskServices(object):
     @staticmethod
     @public
     def getTemplate():
-
+        pass
 
     @staticmethod
     @public
