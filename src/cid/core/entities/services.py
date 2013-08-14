@@ -34,7 +34,7 @@ from cid.core.models import CaliopeUser
 from cid.core.entities import *
 
 
-class EntityManager(object):
+class CaliopeEntityServices(object):
     """
 
     This class is the base for all future forms elements.
@@ -43,7 +43,7 @@ class EntityManager(object):
     @public("getTemplate")
     def get_form_template(formId, domain=None, version=None):
         if formId is not None:
-            form = CaliopeEntityWrapper(formId=formId)
+            form = CaliopeEntityController(formId=formId)
             return form.get_form_template()
         else:
             raise JSONRPCInvalidParamsError()
@@ -54,7 +54,7 @@ class EntityManager(object):
         if formId is None or uuid is None:
             raise JSONRPCInvalidRequestError()
         else:
-            form = CaliopeEntityWrapper(formId=formId)
+            form = CaliopeEntityController(formId=formId)
             return form.get_form_with_data(uuid)
 
     @staticmethod
@@ -63,7 +63,7 @@ class EntityManager(object):
         if formId is None:
             raise JSONRPCInvalidRequestError()
         else:
-            form = CaliopeEntityWrapper(formId=formId)
+            form = CaliopeEntityController(formId=formId)
             return form.get_from_with_data_list(filters)
 
     @staticmethod
@@ -73,7 +73,7 @@ class EntityManager(object):
         if formId is None or formUUID is None or data is None:
             raise JSONRPCInvalidRequestError()
         else:
-            form = CaliopeEntityWrapper(formId=formId)
+            form = CaliopeEntityController(formId=formId)
             return form.update_form_data(data['uuid'], data)
 
     @staticmethod
@@ -82,11 +82,11 @@ class EntityManager(object):
         if formId is None or data is None or formUUID is None:
             raise JSONRPCInvalidRequestError()
         else:
-            form = CaliopeEntityWrapper(formId=formId)
+            form = CaliopeEntityController(formId=formId)
             return form.create_form(data,formUUID)
 
 
-class CaliopeEntityWrapper(object):
+class CaliopeEntityController(object):
 
     def __init__(self, **kwargs):
         self.form_name = kwargs['formId'] if 'formId' in kwargs else None

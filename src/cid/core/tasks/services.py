@@ -34,36 +34,30 @@ from cid.core.login import LoginManager
 from models import Task, TaskData
 
 
-class TaskManager(object):
+class TaskServices(object):
+
     @staticmethod
     @public
     def getAll():
-        userNode = CaliopeUser.index.get(username=LoginManager().get_user())
 
-        result = userNode.cypher("START s=node:CaliopeUser('username:" + LoginManager().get_user() + "')" +
-                                 " MATCH (s)-[r:HOLDER]-(x)-[e:CURRENT]-(t) " +
-                                 " WHERE has(r.category)" +
-                                 " Return t,r.category", {})[0]
+        user_node = CaliopeUser.index.get(username=LoginManager().get_user())
+        results, metadata = user_node.cypher("START user=node({self})"
+                                             "MATCH (user)-[r:HOLDER]-(td)-[e:CURRENT]-(t)"
+                                             "WHERE has(r.category)"
+                                             "return t, r.category");
+        tasks_list = {'ToDo': {'category': 'ToDo', 'tasks': []}, 'Doing': {'category': 'Doing', 'tasks': []},
+                      'Done': {'category': 'Done', 'tasks': []}}
 
-        ToDo = {'category': 'ToDo', 'tasks': []}
-        Doing = {'category': 'Doing', 'tasks': []}
-        Done = {'category': 'Done', 'tasks': []}
-        for r in result:
-            task = {
-                'uuid': r[0]['uuid'],
-                'tarea': r[0]['tarea'],
-                'description': r[0]['descripcion']
-            }
-            if r[1] == 'ToDo':
-                ToDo['tasks'].append(task)
-            elif r[1] == 'Doing':
-                Doing['tasks'].append(task)
-            elif r[1] == 'Done':
-                Done['tasks'].append(task)
+        for row in results:
+            tl = tasks_list[row[1]]['tasks']
+            tl.append(Task().__class__.inflate(row[0]).get_entity_data())
 
-        tasks = [ToDo, Doing, Done]
-        return tasks
-        #raise JSONRPCInvalidRequestError('Unimplemented')
+        return [list for list in tasks_list.values()]
+
+    @staticmethod
+    @public
+    def getTemplate():
+
 
     @staticmethod
     @public
@@ -73,7 +67,7 @@ class TaskManager(object):
     @staticmethod
     @public
     def create(formId=None, data=None, formUUID=None):
-        task = TaskWrapper()
+        task = TaskController()
         task.set_task_data(**data)
         rv = task.get_task_data()
         return rv
@@ -101,7 +95,7 @@ class TaskManager(object):
         return rv
 
 
-class TaskWrapper(object):
+class TaskController(object):
 
     def __init__(self, *args, **kwargs):
         self.task = None

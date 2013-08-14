@@ -134,7 +134,8 @@ class CaliopeEntity(CaliopeNode):
         for k, v in rv.items():
             if not isinstance(v, unicode):
                 v = unicode(v)
-            rv[k] = {'value': v}
+            #rv[k] = {'value': v}
+            rv[k] = v
         rv['uuid'] = self.uuid
         return rv
 

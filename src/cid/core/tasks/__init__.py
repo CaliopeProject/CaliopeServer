@@ -20,8 +20,8 @@ Copyright (C) 2013 Infometrika Ltda.
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from services import TaskManager
+from services import TaskServices
 
 
 def get_service():
-    return TaskManager()
+    return TaskServices()

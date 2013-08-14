@@ -20,8 +20,8 @@ Copyright (C) 2013 Infometrika Ltda.
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from services import EntityManager
+from services import CaliopeEntityServices
 from models import *
 
 def get_service():
-    return EntityManager()
+    return CaliopeEntityServices()
