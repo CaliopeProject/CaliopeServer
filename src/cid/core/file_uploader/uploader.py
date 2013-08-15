@@ -33,6 +33,7 @@ from flask import (session, request, Blueprint)
 
 from cid.core.documents import DocumentManager
 from cid.core.login import LoginManager
+from thumbnails import get_thumbnail
 
 file_uploader = Blueprint('file_uploader', __name__, template_folder='')
 
@@ -89,7 +90,8 @@ def uploader():
                     'result': 'ok',
                     'name': filename,
                     'size': human_readable_size(uploaded_file.tell()),
-                    'id':   idfile 
+                    'id':   idfile,
+                    'thumbnail' : get_thumbnail(os.path.join(UPLOAD_FOLDER, idfile))
                 }
             else:
                 result = {

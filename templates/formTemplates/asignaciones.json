@@ -2,7 +2,7 @@
   "name": "asignaciones",
   "html": [
       {
-        "name": "categoria",
+        "name": "category",
         "type": "hidden"
       },
       {
@@ -20,8 +20,8 @@
           }
       },
       {
-          "name": "entes_asignados",
-          "caption": "Asignar a multi",
+          "name": "ente_asignado",
+          "caption": "Asignar a",
           "type": "multi-choices",
           "options-load-server" : {
             "method"        : "accounts.getAll",
@@ -65,7 +65,7 @@
       "columns" : [
 	        {
 	          "class": "span4",
-	          "elements"  : ["categoria", "uuidparent", "tarea", "entes_asignados", "descripcion", "fch_est_ini", "fch_est_final"]
+	          "elements"  : ["category", "uuidparent", "tarea", "ente_asignado", "descripcion", "fch_est_ini", "fch_est_final"]
 	        }
         ]
     }

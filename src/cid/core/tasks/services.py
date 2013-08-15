@@ -19,19 +19,23 @@ Copyright (C) 2013 Infometrika Ltda.
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
+from neomodel.exception import DoesNotExist
 
 #CaliopeStorage
 from cid.core.models import CaliopeUser
+
+from cid.core.entities.services import CaliopeEntityController, CaliopeEntityService
+
 
 #tinyrpc
 from tinyrpc.protocols.jsonrpc import JSONRPCInvalidRequestError
 from tinyrpc.dispatch import public
 
 #Flask
-
 from cid.core.login import LoginManager
-
-from models import Task, TaskData
+#temporal
+from cid.core.forms import FormManager
+from models import Task
 
 
 class TaskServices(object):
@@ -41,94 +45,111 @@ class TaskServices(object):
     def getAll():
 
         user_node = CaliopeUser.index.get(username=LoginManager().get_user())
+        #: Starting from current user, match all nodes which are connected througth a HOLDER
+        #: relationship and that node is connected with a  CURRENT relationship to a task.
+        #: From the task find the FIRST node
         results, metadata = user_node.cypher("START user=node({self})"
-                                             "MATCH (user)-[r:HOLDER]-(td)-[e:CURRENT]-(t)"
-                                             "WHERE has(r.category)"
+                                             "MATCH (user)-[r:HOLDER]-(tdc)-[e:CURRENT]-(t), (t)-[:FIRST]-(tdf)"
+                                             "WHERE has(r.category) and not(tdf=tdc)"
                                              "return t, r.category");
-        tasks_list = {'ToDo': {'category': 'ToDo', 'tasks': []}, 'Doing': {'category': 'Doing', 'tasks': []},
-                      'Done': {'category': 'Done', 'tasks': []}}
+        tasks_list = {'ToDo': {'pos': 0, 'category': 'ToDo', 'tasks': []},
+                      'Doing': {'pos': 1, 'category': 'Doing', 'tasks': []},
+                      'Done': {'pos':2, 'category': 'Done', 'tasks': []}}
 
         for row in results:
             tl = tasks_list[row[1]]['tasks']
             tl.append(Task().__class__.inflate(row[0]).get_entity_data())
 
-        return [list for list in tasks_list.values()]
+        return [list for list in sorted(tasks_list.values(), key=lambda pos: pos['pos'])]
+
+
+    @staticmethod
+    @public(name='getData')
+    def get_data(uuid):
+        data = {}
+        data['uuid']= uuid['value']
+        task_controller = TaskController(**data)
+        return task_controller.get_data()
+
+
+    @staticmethod
+    @public(name='getModel')
+    def get_model():
+        rv = FormManager.get_form_template('asignaciones')
+        rv['data'] = TaskController().get_data()
+        return rv
+
 
     @staticmethod
     @public
-    def getTemplate():
-        pass
-
-    @staticmethod
-    @public
-    def getFilteredByProyect(project_id):
+    def getFilteredByProject(project_id):
         raise JSONRPCInvalidRequestError('Unimplemented')
 
     @staticmethod
     @public
     def create(formId=None, data=None, formUUID=None):
-        task = TaskController()
-        task.set_task_data(**data)
-        rv = task.get_task_data()
+        if 'uuid' in data:
+            task = TaskController(uuid=data['uuid'])
+        else:
+            task = TaskController()
+        task.set_data(**data)
+        rv = task.get_data()
         return rv
 
     @staticmethod
     @public
     def edit(formId=None, data=None, formUUID=None):
-        #TODO: chequearlo todo!!!!!!!!!!
-        if 'asignaciones' != formId:
-            raise JSONRPCInvalidRequestError('unexpected formId')
+        task_controller = TaskController(uuid=formUUID)
+        task_controller.set_data(**data)
+        rv = task_controller.get_data()
+        return rv
 
-       # form = Form(formId=formId)
-        if 'category' in data and data['category'] in ['ToDo', 'Doing', 'Done']:
-            category = data['category']
-            data['category']
-        else:
-            category = 'ToDo'
-
-        #rv = form.update_form_data(data['uuid'], data)
-        rv = None
+    @staticmethod
+    @public
+    def add_subtasks():
+        pass
 
 
-        #TODO: Category debe ser la misma en donde está la tarea
-        #form.node.holder.connect(holderUser, properties={'category': category})
+    @staticmethod
+    @public
+    def set_category(uuid=None, data=None):
+        task_controller = TaskController(uuid=uuid)
+        task_controller.set_data(**data)
+        rv = task_controller.get_data()
         return rv
 
 
-class TaskController(object):
+class TaskController(CaliopeEntityController):
 
     def __init__(self, *args, **kwargs):
-        self.task = None
+        if 'uuid' in kwargs:
+            try:
+                self.task = Task.index.get(uuid=kwargs['uuid'])
+            except DoesNotExist as e:
+                self.task = None
+            except Exception as e:
+                raise e
+        else:
+            #: TODO check initialization
+            self.task = None
+            self.set_data(**{})
 
-    def set_task_data(self, **data):
+    @staticmethod
+    def get_model():
+        pass
 
+    def set_data(self, **data):
         # Check if category type is send, else set default category to ToDo
         if 'category' in data and data['category'] in ['ToDo', 'Doing', 'Done']:
             category = data['category']
             del data['category']
         else:
             category = 'ToDo'
-
-        # Check if is assigned to someone, else assing to the owner
         if 'ente_asignado' in data:
-            holders_params = data['ente_asignado']
-            if isinstance(holders_params, list):
-                holders = [h for h in holders_params]
-            else:
-                holders = [holders_params]
+            holders = data['ente_asignado']
             del data['ente_asignado']
         else:
             holders = LoginManager().get_user()
-
-        query = ''
-        for holder in holders:
-            if query == '':
-                query += 'username:' + holder
-            else:
-                query += 'OR username:' + holder
-        holdersUsersNodes = CaliopeUser.index.search(query=query)
-
-
 
         if self.task is None:
             self.task = Task()
@@ -136,13 +157,30 @@ class TaskController(object):
             self.task.init_entity_data(**data)
             ownerUserNode = CaliopeUser.index.get(username=LoginManager().get_user())
             self.task.set_owner(ownerUserNode)
-            for holderUser in holdersUsersNodes:
-                self.task.set_holder(holderUser, properties={'category': category})
         else:
             self.task.set_entity_data(**data)
-            for holderUser in holdersUsersNodes:
-                self.task.set_holder(holderUser, properties={'category': category})
+        self.set_holders(holders, category)
 
-
-    def get_task_data(self):
+    def get_data(self):
         return self.task.get_entity_data()
+
+    def set_holders(self, holders, category):
+
+        if isinstance(holders, list):
+            holders = [h for h in holders]
+        else:
+            holders = [holders]
+
+        query = ''
+        for holder in holders:
+            if query == '':
+                query += 'username:' + holder
+            else:
+                query += ' OR username:' + holder
+        holdersUsersNodes = CaliopeUser.index.search(query=query)
+        for holderUser in holdersUsersNodes:
+            self.task.set_holder(holderUser, properties={'category': category})
+
+    def set_category(self, category):
+        pass
+
