@@ -69,7 +69,7 @@ class TaskServices(object):
     @public(name='getData')
     def get_data(uuid):
         data = {}
-        data['uuid']= uuid['value']
+        data['uuid'] = uuid
         task_controller = TaskController(**data)
         return task_controller.get_data()
 
@@ -79,6 +79,16 @@ class TaskServices(object):
     def get_model():
         rv = FormManager.get_form_template('asignaciones')
         rv['data'] = TaskController().get_data()
+        return rv
+
+    @staticmethod
+    @public(name='getModelAndData')
+    def get_model_and_data(uuid):
+        data = {}
+        data['uuid'] = uuid
+        rv = FormManager.get_form_template('asignaciones')
+        task_controller = TaskController(**data)
+        rv['data'] = task_controller.get_data()
         return rv
 
 
