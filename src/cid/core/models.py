@@ -31,7 +31,7 @@ from py2neo import neo4j
 from neomodel.contrib import SemiStructuredNode
 from neomodel.properties import ( Property, DateTimeProperty,
                                   StringProperty)
-from neomodel.relationship import RelationshipDefinition, RelationshipFrom, RelationshipTo, RelationshipManager
+from neomodel.relationship_manager import RelationshipDefinition, RelationshipFrom, RelationshipTo
 from utils import uuidGenerator, timeStampGenerator
 
 
@@ -44,11 +44,14 @@ class CaliopeNode(SemiStructuredNode):
     :class: CaliopeNode
     """
 
+    __index__ = 'CaliopeStorage'
+
     uuid = StringProperty(default=uuidGenerator,
                           unique_index=True)
 
     #: All timestamps should be in UTC using pytz.utc
     timestamp = DateTimeProperty(default=timeStampGenerator)
+
 
 
 
@@ -124,6 +127,7 @@ class CaliopeNode(SemiStructuredNode):
 
 
 class CaliopeUser(CaliopeNode):
+    __index__ = 'CaliopeStorage'
     username = StringProperty(unique_index=True)
     domainname = StringProperty()
     password = StringProperty()
@@ -133,12 +137,14 @@ class CaliopeUser(CaliopeNode):
 
 
 class CaliopeGroup(CaliopeNode):
+    __index__ = 'CaliopeStorage'
     name = StringProperty(required=True)
     code = StringProperty(unique_index=True)
     members = RelationshipFrom('CaliopeUser', 'IS_MEMBER_OF_GROUP')
 
 
 class CaliopeDocument(CaliopeNode):
+    __index__ = 'CaliopeStorage'
     url = StringProperty()
     sha256 = StringProperty()
     insertion_date = DateTimeProperty(default=lambda: timeStampGenerator())

@@ -9,6 +9,7 @@ rjsmin==1.0.7
 pyinotify==0.9.4
 nosexcover==1.0.8
 coverage==3.6
+neomodel==0.3.6
 PIL==1.1.7
 #
 #PyExecJS==1.0.4
