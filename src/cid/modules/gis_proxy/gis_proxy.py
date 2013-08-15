@@ -35,12 +35,15 @@ import requests
 gis_proxy = Blueprint('gis_proxy', __name__, template_folder='')
 
 @gis_proxy.route('/<path:filename>', methods=['GET', 'POST', 'OPTIONS'])
-def catastrobogota(filename):    
+def catastrobogota(filename):   
     params=""
     for k in request.values.keys():
         print k + " " + request.values[k]
         params = params+'&'+k+'='+request.values[k]
 
-    r = requests.get('http://mapas.catastrobogota.gov.co/arcgiswsh/Mapa_Referencia/Mapa_referencia/MapServer/WMSServer?'+params)
+    if "wfs" in filename:
+        r = requests.get('http://localhost:8081/geoserver/mtv_gis/ows?'+params)
+    else:
+        r = requests.get('http://mapas.catastrobogota.gov.co/arcgiswsh/Mapa_Referencia/Mapa_referencia/MapServer/WMSServer?'+params)
     return r.content
 
