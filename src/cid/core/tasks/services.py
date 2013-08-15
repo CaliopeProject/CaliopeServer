@@ -45,6 +45,9 @@ class TaskServices(object):
     def getAll():
 
         user_node = CaliopeUser.index.get(username=LoginManager().get_user())
+        #: Starting from current user, match all nodes which are connected througth a HOLDER
+        #: relationship and that node is connected with a  CURRENT relationship to a task.
+        #: From the task find the FIRST node
         results, metadata = user_node.cypher("START user=node({self})"
                                              "MATCH (user)-[r:HOLDER]-(tdc)-[e:CURRENT]-(t), (t)-[:FIRST]-(tdf)"
                                              "WHERE has(r.category) and not(tdf=tdc)"
@@ -59,10 +62,15 @@ class TaskServices(object):
 
         return [list for list in sorted(tasks_list.values(), key=lambda pos: pos['pos'])]
 
+
     @staticmethod
-    @public
-    def getTemplate():
-        pass
+    @public(name='getData')
+    def get_data(uuid):
+        data = {}
+        data['uuid']= uuid['value']
+        task_controller = TaskController(**data)
+        return task_controller.get_data()
+
 
     @staticmethod
     @public(name='getModel')
