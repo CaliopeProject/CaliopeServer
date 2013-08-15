@@ -22,7 +22,7 @@ Copyright (C) 2013 Infometrika Ltda.
 from neomodel.exception import DoesNotExist
 
 #CaliopeStorage
-from cid.core.models import CaliopeUser
+from cid.core.models import CaliopeUser, CaliopeNode
 
 from cid.core.entities.services import CaliopeEntityController, CaliopeEntityService
 
@@ -58,7 +58,9 @@ class TaskServices(object):
 
         for row in results:
             tl = tasks_list[row[1]]['tasks']
-            tl.append(Task().__class__.inflate(row[0]).get_entity_data())
+            task_class = Task().__class__
+            task = task_class.inflate(row[0])
+            tl.append(task.get_entity_data())
 
         return [list for list in sorted(tasks_list.values(), key=lambda pos: pos['pos'])]
 
@@ -98,8 +100,8 @@ class TaskServices(object):
 
     @staticmethod
     @public
-    def edit(formId=None, data=None, formUUID=None):
-        task_controller = TaskController(uuid=formUUID)
+    def edit(data=None):
+        task_controller = TaskController(**data)
         task_controller.set_data(**data)
         rv = task_controller.get_data()
         return rv
@@ -110,21 +112,14 @@ class TaskServices(object):
         pass
 
 
-    @staticmethod
-    @public
-    def set_category(uuid=None, data=None):
-        task_controller = TaskController(uuid=uuid)
-        task_controller.set_data(**data)
-        rv = task_controller.get_data()
-        return rv
-
 
 class TaskController(CaliopeEntityController):
 
     def __init__(self, *args, **kwargs):
         if 'uuid' in kwargs:
             try:
-                self.task = Task.index.get(uuid=kwargs['uuid'])
+                node = CaliopeNode.index.get(uuid=kwargs['uuid'])
+                self.task = Task().__class__.inflate(node.__node__)
             except DoesNotExist as e:
                 self.task = None
             except Exception as e:
