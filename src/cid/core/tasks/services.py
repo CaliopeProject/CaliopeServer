@@ -46,8 +46,8 @@ class TaskServices(object):
 
         user_node = CaliopeUser.index.get(username=LoginManager().get_user())
         results, metadata = user_node.cypher("START user=node({self})"
-                                             "MATCH (user)-[r:HOLDER]-(td)-[e:CURRENT]-(t)"
-                                             "WHERE has(r.category)"
+                                             "MATCH (user)-[r:HOLDER]-(tdc)-[e:CURRENT]-(t), (t)-[:FIRST]-(tdf)"
+                                             "WHERE has(r.category) and not(tdf=tdc)"
                                              "return t, r.category");
         tasks_list = {'ToDo': {'pos': 0, 'category': 'ToDo', 'tasks': []},
                       'Doing': {'pos': 1, 'category': 'Doing', 'tasks': []},
