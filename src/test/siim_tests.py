@@ -196,9 +196,7 @@ class TestCaliopeStorage(unittest.TestCase):
             assert u1.member_of.is_connected(g1)
             assert g1.members.is_connected(u1)
             g1.delete()
-            g1.refresh()
             u1.delete()
-            u1.refresh()
         except UniqueProperty:
             assert False
         print "-" * 80

@@ -95,6 +95,7 @@ class CaliopeEntityData(CaliopeNode):
 
 class CaliopeEntity(CaliopeNode):
 
+    __index__ = 'CaliopeStorage'
     entity_data_type = CaliopeEntityData
 
     def __init__(self, *args, **kwargs):
@@ -102,7 +103,7 @@ class CaliopeEntity(CaliopeNode):
         first = RelationshipTo(self.entity_data_type, 'FIRST', cardinality=One)
         setattr(self.__class__, 'current',current)
         setattr(self.__class__, 'first',first)
-        super(CaliopeEntity, self).__init__(*args)
+        super(CaliopeEntity, self).__init__(*args, **kwargs)
 
     def init_entity_data(self, **data):
         empty_node = self.entity_data_type(**data)
