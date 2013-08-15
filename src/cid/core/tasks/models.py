@@ -30,7 +30,7 @@ from cid.core.entities import CaliopeEntityData, CaliopeEntity
 
 
 class TaskData(CaliopeEntityData):
-
+    __index__ = 'CaliopeStorage'
     deadline = DateTimeProperty()
     task_name = StringProperty()
     description = StringProperty()
@@ -50,9 +50,8 @@ class TaskData(CaliopeEntityData):
 
 
 class Task(CaliopeEntity):
-
+    __index__ = 'CaliopeStorage'
     entity_data_type = TaskData
-
     def __init__(self, *args, **kwargs):
         super(Task, self).__init__(*args, **kwargs)
 
