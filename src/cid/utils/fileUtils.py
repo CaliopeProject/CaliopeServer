@@ -74,10 +74,14 @@ def send_from_memory(filename):
         mimetype = 'application/octet-stream'
 
     file = open(filename, 'rb')
+    print "current_app.cache_enabled=" + str(current_app.cache_enabled)
     
-    data = jsOptimizer().get_file(os.path.abspath(filename), current_app.storekv)
-    if data:
-        print "cached"
+    if current_app.cache_enabled:
+        data = jsOptimizer().get_file(os.path.abspath(filename), current_app.storekv)
+    else:
+        data = None
+        
+    if  data:
         headers = Headers()
         headers['Content-Encoding'] = 'gzip'
         headers['Content-Length'] = len(data)
