@@ -73,9 +73,7 @@ def send_from_memory(filename):
     if mimetype is None:
         mimetype = 'application/octet-stream'
 
-    file = open(filename, 'rb')
-    print "current_app.cache_enabled=" + str(current_app.cache_enabled)
-    
+    file = open(filename, 'rb')    
     if current_app.cache_enabled:
         data = jsOptimizer().get_file(os.path.abspath(filename), current_app.storekv)
     else:
