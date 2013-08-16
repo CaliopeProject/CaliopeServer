@@ -47,7 +47,13 @@ class LoginManager(object):
                 g.connection_thread_pool_id[g.connection_thread_id] = session_uuid
                 current_app.storekv.put(prefix_session_manager + session_uuid, username)
 
-                return {'login': True, 'uuid': session_uuid, 'user': username, "first_name": userNode.first_name, "last_name": userNode.last_name}
+                return {
+                        'login': True,
+                        'uuid': session_uuid,
+                        'user': {'value':username},
+                        "first_name": {'value':userNode.first_name},
+                        "last_name": {'value':userNode.last_name}
+                        }
             else:
                 return {'login': False}
         except DoesNotExist:
