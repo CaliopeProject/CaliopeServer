@@ -73,11 +73,13 @@ def send_from_memory(filename):
     if mimetype is None:
         mimetype = 'application/octet-stream'
 
-    file = open(filename, 'rb')
-    
-    data = jsOptimizer().get_file(os.path.abspath(filename), current_app.storekv)
-    if data:
-        print "cached"
+    file = open(filename, 'rb')    
+    if current_app.cache_enabled:
+        data = jsOptimizer().get_file(os.path.abspath(filename), current_app.storekv)
+    else:
+        data = None
+        
+    if  data:
         headers = Headers()
         headers['Content-Encoding'] = 'gzip'
         headers['Content-Length'] = len(data)
@@ -121,5 +123,6 @@ class Gzip(object):
         response.data = gzip_buffer.getvalue()
         response.headers['Content-Encoding'] = 'gzip'
         response.headers['Content-Length'] = len(response.data)
-
+        response.headers['Cache-Control'] = "max-age=172800, public, must-revalidate"
+    
         return response

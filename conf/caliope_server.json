@@ -3,6 +3,7 @@
         "address": "0.0.0.0",
         "port": "9000",
         "debug": "True",
+        "cache_enabled": "False",
         "static": "../caliope_webui_beowulf/app",
         "formTemplates": "templates/formTemplates"
     },
