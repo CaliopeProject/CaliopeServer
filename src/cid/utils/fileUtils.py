@@ -125,5 +125,6 @@ class Gzip(object):
         response.data = gzip_buffer.getvalue()
         response.headers['Content-Encoding'] = 'gzip'
         response.headers['Content-Length'] = len(response.data)
-
+        response.headers['Cache-Control'] = "max-age=172800, public, must-revalidate"
+    
         return response
