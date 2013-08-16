@@ -45,8 +45,9 @@ class UsersManager(object):
                     if not isinstance(v, unicode):
                         v = unicode(v)
                     data[k] = {'value': v}
-                if 'username' in data:
-                    users_list.append({u'username': data['username']})
+                users_list.append({u'username': data['username'],
+                                   u'first_name': data['first_name'],
+                                   u'last_name': data['last_name']})
             return users_list
         except DoesNotExist as e:
             raise JSONRPCInvalidRequestError(e)

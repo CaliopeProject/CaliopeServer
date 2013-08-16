@@ -47,7 +47,7 @@ class LoginManager(object):
                 g.connection_thread_pool_id[g.connection_thread_id] = session_uuid
                 current_app.storekv.put(prefix_session_manager + session_uuid, username)
 
-                return {'login': True, 'uuid': session_uuid, 'user': username}
+                return {'login': True, 'uuid': session_uuid, 'user': username, "first_name": userNode.first_name, "last_name": userNode.last_name}
             else:
                 return {'login': False}
         except DoesNotExist:
@@ -60,9 +60,13 @@ class LoginManager(object):
     @public
     def authenticate_with_uuid(uuid, domain=None):
         if current_app.storekv.__contains__(prefix_session_manager + uuid):
-            username = current_app.storekv.get(prefix_session_manager + uuid)
-            g.connection_thread_pool_id[g.connection_thread_id] = uuid
-            return {'login': True, 'uuid': uuid, 'user': username}
+            try:
+                username = current_app.storekv.get(prefix_session_manager + uuid)
+                g.connection_thread_pool_id[g.connection_thread_id] = uuid
+                userNode = CaliopeUser.index.get(username=username)
+                return {'login': True, 'uuid': uuid, 'user': username, "first_name": userNode.first_name, "last_name": userNode.last_name}
+            except Exception as e:
+                raise JSONRPCInternalError(e)
         else:
             raise JSONRPCInternalError('No valid session found')
 
