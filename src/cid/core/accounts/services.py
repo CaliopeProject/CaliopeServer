@@ -47,7 +47,7 @@ class UsersManager(object):
                     data[k] = {'value': v}
                 users_list.append({u'username': data['username'],
                                    u'first_name': data['first_name'],
-                                   u'first_name': data['last_name']})
+                                   u'last_name': data['last_name']})
             return users_list
         except DoesNotExist as e:
             raise JSONRPCInvalidRequestError(e)
