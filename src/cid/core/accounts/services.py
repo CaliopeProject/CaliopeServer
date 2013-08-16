@@ -45,7 +45,8 @@ class UsersManager(object):
                     if not isinstance(v, unicode):
                         v = unicode(v)
                     data[k] = {'value': v}
-                users_list.append({u'name': data['first_name'] + ' ' + data['last_name'],
+                data['name'] = {'value': data['first_name']['value'] + ' ' + data['last_name']['value'] }
+                users_list.append({u'name': data['name'],
                                    u'username': data['username'],
                                    u'first_name': data['first_name'],
                                    u'last_name': data['last_name']})
