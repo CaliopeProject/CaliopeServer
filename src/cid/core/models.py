@@ -84,7 +84,7 @@ class CaliopeNode(SemiStructuredNode):
                 if self._class_properties()[k].has_default:
                     pass
                 else:
-                    self._class_properties()[k].__class__(kwargs[k])
+                    setattr(self, k, kwargs[k])
             else:
                 setattr(self, k, kwargs[k])
 
