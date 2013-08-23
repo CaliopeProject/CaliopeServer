@@ -136,17 +136,30 @@ class CaliopeEntity(CaliopeNode):
     def get_entity_data(self):
         current_node = self._get_current()
         rv = current_node._get_node_data()
-        for k, v in rv.items():
+        for k, v in rv.iteritems():
             if k == 'uuid':
                 v = self.uuid
-            if isinstance(v, datetime):
-                v = unicode(v)
-            rv[k] = {'value': v}
+            rv[k] = self._parse_entity_data(v)
 
         holders_nodes = current_node.holders.all()
         holders = [ holder_node.username for holder_node in holders_nodes]
         rv['ente_asignado'] = {'value': holders}
         return rv
+
+    def _parse_entity_data(self, v):
+        if isinstance(v, datetime):
+            v = unicode(v)
+        if isinstance(v, list):
+            rv = []
+            for item in v:
+                rv.append(self._parse_entity_data(item))
+            return rv
+        if isinstance(v, dict):
+            rv = {}
+            for kr, vr in v.iteritems():
+                rv[kr] = self._parse_entity_data(vr)
+            return rv
+        return {'value': v}
 
     def get_entity_relationships(self):
         rels = {k: v for k, v in self._get_current()._class_properties()

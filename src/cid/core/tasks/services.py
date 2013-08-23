@@ -60,7 +60,8 @@ class TaskServices(object):
             tl = tasks_list[row[1]]['tasks']
             task_class = Task().__class__
             task = task_class.inflate(row[0])
-            tl.append(task.get_entity_data())
+            entity_data = task.get_entity_data()
+            tl.append(entity_data)
 
         return [list for list in sorted(tasks_list.values(), key=lambda pos: pos['pos'])]
 
