@@ -41,14 +41,6 @@ class CaliopeEntityUtil(object):
         for entry in html:
             if entry['name'] in dictionary and 'fieldtype' in entry:
                 pass
-                #if (isinstance(dictionary[entry['name']],DateTimeProperty)):
-                    #if entry['fieldtype'] != 'datepicker':
-                        #return False
-                #elif (isinstance(dictionary[entry['name']],IntegerProperty)):
-                    #if entry['fieldtype'] != 'number':
-                        #return False
-                    #else:
-                        #pass
             else:
                 return False
         return True
