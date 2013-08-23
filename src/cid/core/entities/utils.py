@@ -29,10 +29,22 @@ class CaliopeEntityUtil(object):
                 elif (isinstance(dictionary[field],IntegerProperty)):
                     json_entry['fieldtype'] = 'number'
                 else:
-                    json_entry['fieldtype'] = 'datepicker'
+                    json_entry['fieldtype'] = 'textarea'
                 fields.append( json_entry )
         return fields
           
+    def validateTemplate(self, entity, template):
+        dictionary = entity.__class__.__dict__
+        if 'html' not in template:
+            return False
+        html = template['html']
+        for entry in html:
+            if entry['name'] in dictionary and 'fieldtype' in entry:
+                pass
+            else:
+                return False
+        return True
+    
 util = CaliopeEntityUtil()
 
 util.makeTemplate(TaskData())
@@ -40,3 +52,10 @@ util.makeTemplate(TaskData())
 f=file('test.json','w')
 f.write(json.dumps(util.json_template, sort_keys=True, indent=2))
 f.close()
+
+
+f=file('test.json','r')
+data=json.loads(f.read())
+f.close()
+
+print str(util.validateTemplate(TaskData(),data))
