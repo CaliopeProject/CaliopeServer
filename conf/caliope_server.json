@@ -55,6 +55,12 @@
                     "package": "core.accounts",
                     "service": "accounts"
                 }
+            },
+            {
+                "accounts": {
+                    "package": "modules.reg2bogota",
+                    "service": "catastro"
+                }
             }
         ]
     },
