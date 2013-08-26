@@ -2,6 +2,8 @@
 *.pyc
 build/
 dist/
+storage/
+dump.rdb
 MANIFEST
 nosetests.xml
 .coverage

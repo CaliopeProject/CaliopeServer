@@ -70,7 +70,11 @@ class LoginManager(object):
                 username = current_app.storekv.get(prefix_session_manager + uuid)
                 g.connection_thread_pool_id[g.connection_thread_id] = uuid
                 userNode = CaliopeUser.index.get(username=username)
-                return {'login': True, 'uuid': uuid, 'user': username, "first_name": userNode.first_name, "last_name": userNode.last_name}
+                return {'login': True, 'uuid': uuid,
+                        'user': {'value':username},
+                        "first_name": {'value':userNode.first_name},
+                        "last_name": {'value':userNode.last_name}
+                }
             except Exception as e:
                 raise JSONRPCInternalError(e)
         else:
