@@ -1,0 +1,94 @@
+{
+  "name": "fichaPredial",
+  "html": [ 
+	{
+	  "name" : "title",
+	  "type" : "div",
+	  "html" :
+	  [
+	    {
+	      "type" : "h1",
+	      "html" : "Información Básica"
+	    }
+	  ]
+	},        
+	  {
+		"name": "identificadorPredial",
+		"caption": "Identificador predial",
+		"type": "text",
+		"validations" : {
+		  "required" : true,
+		  "minlength" : "10"          
+		}          
+	  },
+	  {
+	    "name": "chip",
+	    "caption": "CHIP",
+	    "type": "text",
+	    "validations" : {
+	      "required" : true,
+	      "minlength" : "5"          
+	    }          
+	  },
+	  {
+	    "name": "direccion",
+	    "caption": "Dirección",
+	    "type": "text",
+	    "validations" : {
+	      "required" : true,
+	      "minlength" : "5"          
+	    }          
+	  },      
+            
+      {
+          "name": "ente_asignado",
+          "caption": "Asignar a",
+          "type": "multi-choices",
+          "options-load-server" : {
+            "method"        : "accounts.getAll",
+            "field-value"   : "username.value",
+            "field-desc"    : "username.value"
+          }
+      },      
+      {
+          "name": "descripcion",
+          "caption": "Descripción tarea",
+          "type": "textarea",
+          "rows": "5",
+          "cols": "70"
+      },
+      {
+        "name": "fch_est_ini",
+        "caption": "Fecha estima de inicio",
+        "type": "datepicker",
+        "format" : "dd/MM/yyyy"
+      },
+      {
+        "name": "fch_est_final",
+        "caption": "Fecha estima de finalización",
+        "type": "datepicker",
+        "format" : "dd/MM/yyyy"
+      }
+  ],
+  "actions" : [
+      {
+          "name": "create",
+          "method":"tasks.create"
+      },
+      {
+        "name": "edit",
+        "method":"tasks.edit"
+      }
+  ],
+  "layout" : [
+    {
+      "class" : "span12",
+      "columns" : [
+	        {
+	          "class": "span4",
+	          "elements"  : ["category", "uuidparent", "tarea", "ente_asignado", "descripcion", "fch_est_ini", "fch_est_final"]
+	        }
+        ]
+    }
+  ]
+}
