@@ -2,23 +2,34 @@
     "name": "proyectomtv",
     "html": [
       {
-        "name": "nombre",
+        "name" : "title",
+        "type" : "div",
+        "html" :
+        [
+          {
+            "type" : "h1",
+            "html" : "Crear proyecto"
+          }
+        ]
+      },
+      {
+        "name": "name",
         "caption": "Nombre Proyecto",
         "type": "text",
         "validations" : {
           "required" : true,
-          "minlength" : "10"          
+          "minlength" : "10"
         }
       },
       {
-        "name": "localizacion_general",
-        "caption": "Localizacion General Proyecto",
+        "name": "generalLocation",
+        "caption": "Localización",
         "type": "textarea",
         "rows": "5",
         "cols": "70"
       },
       {
-        "name": "localidad",
+        "name": "locality",
         "caption": "Localidad",
         "type": "select",
         "options": {
@@ -45,7 +56,7 @@
         }
       },
       {
-        "name": "tipo_proyecto",
+        "name": "projectType",
         "caption": "Tipo de Proyecto",
         "type": "select",
         "options": {
@@ -54,23 +65,55 @@
         }
       },
       {
-        "name": "res_anuncio_py",
+        "name": "profitCenter",
+        "caption": "Centro de costos del proyecto",
+        "type": "text"
+      },
+      {
+        "name": "manager",
+        "caption": "Usuario responsable",
+        "type": "select",
+        "options-load-server" : {
+            "method"        : "accounts.getAll",
+            "field-value"   : "username.value",
+            "field-desc"    : "username.value"
+        }
+      },
+      {
+        "name": "creationDate",
+        "type": "hidden"
+      },
+      {
+        "name": "recordDocumentCreation",
         "caption": "Resolución Anuncio del Proyecto",
         "type": "attachment"
       }
-
     ],
+  "actions" : [
+      {
+          "name": "Crear",
+          "method":"projects.create"
+      }
+  ],
   "layout" : [
+    {
+      "columns" : [
+        {
+          "class"   : "page-header",
+          "elements"  : ["title"]
+        }
+      ]
+    },
     {
       "class" : "span12",
       "columns" : [
         {
           "class": "span6",
-          "elements"  : ["nombre", "localizacion_general"]
+          "elements"  : ["name", "generalLocation", "manager", "creationDate"]
         },
         {
           "class": "span6",
-          "elements"  : ["localidad", "tipo_proyecto"]
+          "elements"  : ["locality", "projectType", "profitCenter"]
         }
       ]
     },
@@ -79,7 +122,7 @@
       "columns" : [
         {
           "class": "span6",
-          "elements"  : ["res_anuncio_py"]
+          "elements"  : ["recordDocumentCreation"]
         }
       ]
     }
