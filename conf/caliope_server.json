@@ -45,6 +45,12 @@
                 }
             },
             {
+                "projectsmtv": {
+                    "package": "core.projects",
+                    "service": "projects"
+                }
+            },
+            {
                 "accounts": {
                     "package": "core.accounts",
                     "service": "accounts"
