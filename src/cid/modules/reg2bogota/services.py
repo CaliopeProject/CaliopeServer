@@ -44,7 +44,7 @@ class PredioCatastros(object):
                 for k, v in rec._get_node_data().items():
                     if not isinstance(v, unicode):
                         v = unicode(v)
-                    data[k] = {'value': v}
+                    data[k] = v
                     
                 print str(data)
                 return  {'value': data}
