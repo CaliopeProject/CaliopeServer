@@ -45,7 +45,7 @@ from simplekv.memory.redisstore import RedisStore
 
 #Apps import
 from cid.core import module_manager
-from cid.utils.fileUtils import loadJSONFromFile, send_from_memory, Gzip
+from cid.utils.fileUtils import loadJSONFromFileNoPath, send_from_memory, Gzip
 
 
 #: Gevent to patch all TCP/IP connections
@@ -102,7 +102,7 @@ def _parseCommandArguments(argv):
 
 
 def configure_server_and_app(server_config_file):
-    config = loadJSONFromFile(server_config_file, app.root_path)
+    config = loadJSONFromFileNoPath(server_config_file)
     #TODO: Validate 'server' in config and load default if not present
     if 'address' in config['server']:
         app.config['address'] = config['server']['address']
@@ -148,7 +148,7 @@ def configure_server_and_app(server_config_file):
 
 
 def configure_logger(server_config_file):
-    config = loadJSONFromFile(server_config_file, app.root_path)
+    config = loadJSONFromFileNoPath(server_config_file)
     from logging.config import dictConfig
 
     dictConfig(config)
