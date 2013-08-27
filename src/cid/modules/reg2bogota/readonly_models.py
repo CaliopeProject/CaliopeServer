@@ -25,13 +25,10 @@ Copyright (C) 2013 Infometrika Ltda.
 #system, and standard library
 
 #neomodel primitives
-from neomodel.properties import (Property,
-                                 DateTimeProperty,
-                                 FloatProperty,
-                                 IntegerProperty,
-                                 StringProperty)
+from cid.core.models import (DateTimeProperty, FloatProperty, IntegerProperty, StringProperty)
 
 from cid.core.models import CaliopeNode
+
 
 class RegistroPredioCatastroTipoII(CaliopeNode):
     #: Unique and indexed properties first
