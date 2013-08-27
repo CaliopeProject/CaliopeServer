@@ -1,6 +1,8 @@
 # -*- encoding: utf-8 -*-
 """
 @authors: Nelson Daniel Ochoa ndaniel8a@gmail.com
+          Sebastián Ortiz V. neoecos@gmail.com
+
 
 SIIM2 Server is the web server of SIIM2 Framework
 Copyright (C) 2013 Infometrika Ltda.
@@ -18,46 +20,46 @@ Copyright (C) 2013 Infometrika Ltda.
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
-from neomodel.exception import DoesNotExist
 
 #CaliopeStorage
-from cid.core.models import CaliopeUser, CaliopeNode
-
+from cid.core.models import CaliopeUser, CaliopeNode, DoesNotExist
 from cid.core.entities.services import CaliopeEntityController, CaliopeEntityService
 
+#utils
+from cid.utils.fileUtils import loadJSONFromFile
 
 #tinyrpc
-from tinyrpc.protocols.jsonrpc import JSONRPCInvalidRequestError
+from tinyrpc.protocols.jsonrpc import JSONRPCInvalidRequestError, RPCError
 from tinyrpc.dispatch import public
 
 #Flask
-from cid.core.login import LoginManager
-#temporal
-from cid.core.forms import FormManager
-from models import Project
+from flask import current_app
+
+from models import Project, ProjectData
 
 
-class ProjectServices(object):
+class ProjectServices(CaliopeEntityService):
+    def __init__(self, *args, **kwargs):
+        super(ProjectServices, self).__init__(*args, **kwargs)
 
     @staticmethod
-    @public
-    def getAll():
-        return None
-
+    @public(name='getAll')
+    def get_all():
+        pass
 
     @staticmethod
     @public(name='getData')
     def get_data(uuid):
         data = {}
-        data['uuid'] = uuid
-        project_controller = ProjectController(**data)
-        return project_controller.get_data()
+        data['uuid'] = uuid['value'] if 'value' in uuid else uuid
+        task_controller = ProjectController(**data)
+        return task_controller.get_data()
 
 
     @staticmethod
     @public(name='getModel')
     def get_model():
-        rv = FormManager.get_form_template('projectmtv')
+        rv = ProjectController().get_model()
         rv['data'] = ProjectController().get_data()
         return rv
 
@@ -65,12 +67,11 @@ class ProjectServices(object):
     @public(name='getModelAndData')
     def get_model_and_data(uuid):
         data = {}
-        data['uuid'] = uuid
-        rv = FormManager.get_form_template('projectmtv')
+        data['uuid'] = uuid['value'] if 'value' in uuid else uuid
         project_controller = ProjectController(**data)
+        rv = project_controller.get_model()
         rv['data'] = project_controller.get_data()
         return rv
-
 
     @staticmethod
     @public
@@ -93,8 +94,8 @@ class ProjectServices(object):
 
 
 class ProjectController(CaliopeEntityController):
-
     def __init__(self, *args, **kwargs):
+        super(ProjectController, self).__init__(*args, **kwargs)
         if 'uuid' in kwargs:
             try:
                 node = CaliopeNode.index.get(uuid=kwargs['uuid'])
@@ -108,21 +109,50 @@ class ProjectController(CaliopeEntityController):
             self.project = None
             self.set_data(**{})
 
-    @staticmethod
-    def get_model():
-        pass
+    def get_model(self):
+        if self._check_template():
+            rv = dict()
+            rv['form'] = self._get_form()
+            rv['actions'] = self._get_actions()
+            rv['layout'] = self._get_layout()
+            return rv
+        else:
+            raise RPCError('Template error')
 
     def set_data(self, **data):
-
-        if self.project is None:
-            self.project = Project()
-            self.project.save()
-            self.project.init_entity_data(**data)
-            ownerUserNode = CaliopeUser.index.get(username=LoginManager().get_user())            
-        else:
-            self.project.set_entity_data(**data)
-                    
+        pass
 
     def get_data(self):
         return self.project.get_entity_data()
+
+    def set_holders(self, holders, category):
+        pass
+
+    def _check_template(self):
+        #: TODO: Check if form_name is valid and form_path is a file
+        #: TODO: Cache this files
+        try:
+            self.template = loadJSONFromFile('modules/projects/templates/projectmtv.json', current_app.root_path)
+            return True
+        except IOError:
+            return False
+
+    def _get_form(self):
+        return self.template
+
+    def _get_actions(self):
+        #: TODO: Implement depending on user
+        if 'actions' in self.template:
+            self.actions = self.template['actions']
+            self.template.pop('actions')
+        return self.actions
+
+    def _get_layout(self):
+        #: TODO: Implement depending on user
+        if 'layout' in self.template:
+            self.layout = self.template['layout']
+            self.template.pop('layout')
+        else:
+            self.layout = []
+        return self.layout
 

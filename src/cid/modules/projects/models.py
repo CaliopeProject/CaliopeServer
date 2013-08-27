@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 """
 @authors: Nelson Daniel Ochoa ndaniel8a@gmail.com
+          Sebastián Ortiz V. neoecos@gmail.com
 
 @license:  GNU AFFERO GENERAL PUBLIC LICENSE
 
