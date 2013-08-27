@@ -45,15 +45,15 @@
                 }
             },
             {
-                "projectsmtv": {
-                    "package": "core.projects",
-                    "service": "projects"
-                }
-            },
-            {
                 "accounts": {
                     "package": "core.accounts",
                     "service": "accounts"
+                }
+            },
+            {
+                "projectsmtv": {
+                    "package": "modules.projects",
+                    "service": "projects"
                 }
             },
             {
