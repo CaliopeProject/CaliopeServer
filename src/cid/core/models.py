@@ -30,7 +30,8 @@ Copyright (C) 2013  Fundación Correlibre
 from py2neo import neo4j
 from neomodel.contrib import SemiStructuredNode
 from neomodel.properties import ( Property, DateTimeProperty,
-                                  StringProperty )
+                                  StringProperty, FloatProperty, IntegerProperty)
+from neomodel.exception import DoesNotExist
 from neomodel.relationship_manager import RelationshipDefinition, RelationshipFrom, RelationshipTo
 from utils import uuidGenerator, timeStampGenerator
 
