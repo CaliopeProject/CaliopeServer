@@ -25,24 +25,29 @@ from neomodel.exception import DoesNotExist
 from cid.core.models import CaliopeUser, CaliopeNode
 
 from cid.core.entities.services import CaliopeEntityController, CaliopeEntityService
+from cid.utils.fileUtils import loadJSONFromFile
 
 
 #tinyrpc
-from tinyrpc.protocols.jsonrpc import JSONRPCInvalidRequestError
+from tinyrpc.protocols.jsonrpc import JSONRPCInvalidRequestError, RPCError
 from tinyrpc.dispatch import public
 
 #Flask
+from flask import current_app
+
+#SIIM2
 from cid.core.login import LoginManager
-#temporal
-from cid.core.forms import FormManager
+
 from models import Task
 
 
-class TaskServices(object):
+class TaskServices(CaliopeEntityService):
+    def __init__(self, *args, **kwargs):
+        super(TaskServices, self).__init__(*args, **kwargs)
 
     @staticmethod
-    @public
-    def getAll():
+    @public(name='getAll')
+    def get_all():
 
         user_node = CaliopeUser.index.get(username=LoginManager().get_user())
         #: Starting from current user, match all nodes which are connected througth a HOLDER
@@ -54,7 +59,7 @@ class TaskServices(object):
                                              "return t, r.category");
         tasks_list = {'ToDo': {'pos': 0, 'category': 'ToDo', 'tasks': []},
                       'Doing': {'pos': 1, 'category': 'Doing', 'tasks': []},
-                      'Done': {'pos':2, 'category': 'Done', 'tasks': []}}
+                      'Done': {'pos': 2, 'category': 'Done', 'tasks': []}}
 
         for row in results:
             tl = tasks_list[row[1]]['tasks']
@@ -70,7 +75,7 @@ class TaskServices(object):
     @public(name='getData')
     def get_data(uuid):
         data = {}
-        data['uuid'] = uuid
+        data['uuid'] = uuid['value'] if 'value' in uuid else uuid
         task_controller = TaskController(**data)
         return task_controller.get_data()
 
@@ -78,7 +83,7 @@ class TaskServices(object):
     @staticmethod
     @public(name='getModel')
     def get_model():
-        rv = FormManager.get_form_template('asignaciones')
+        rv = TaskController().get_model()
         rv['data'] = TaskController().get_data()
         return rv
 
@@ -86,17 +91,11 @@ class TaskServices(object):
     @public(name='getModelAndData')
     def get_model_and_data(uuid):
         data = {}
-        data['uuid'] = uuid
-        rv = FormManager.get_form_template('asignaciones')
+        data['uuid'] = uuid['value'] if 'value' in uuid else uuid
         task_controller = TaskController(**data)
+        rv = task_controller.get_model()
         rv['data'] = task_controller.get_data()
         return rv
-
-
-    @staticmethod
-    @public
-    def getFilteredByProject(project_id):
-        raise JSONRPCInvalidRequestError('Unimplemented')
 
     @staticmethod
     @public
@@ -119,14 +118,13 @@ class TaskServices(object):
 
     @staticmethod
     @public
-    def add_subtasks():
-        pass
-
+    def getFilteredByProject(project_id):
+        raise JSONRPCInvalidRequestError('Unimplemented')
 
 
 class TaskController(CaliopeEntityController):
-
     def __init__(self, *args, **kwargs):
+        super(TaskController, self).__init__(*args, **kwargs)
         if 'uuid' in kwargs:
             try:
                 node = CaliopeNode.index.get(uuid=kwargs['uuid'])
@@ -140,9 +138,15 @@ class TaskController(CaliopeEntityController):
             self.task = None
             self.set_data(**{})
 
-    @staticmethod
-    def get_model():
-        pass
+    def get_model(self):
+        if self._check_template():
+            rv = dict()
+            rv['form'] = self._get_form()
+            rv['actions'] = self._get_actions()
+            rv['layout'] = self._get_layout()
+            return rv
+        else:
+            raise RPCError('Template error')
 
     def set_data(self, **data):
         # Check if category type is send, else set default category to ToDo
@@ -187,6 +191,31 @@ class TaskController(CaliopeEntityController):
         for holderUser in holdersUsersNodes:
             self.task.set_holder(holderUser, properties={'category': category})
 
-    def set_category(self, category):
-        pass
+    def _check_template(self):
+        #: TODO: Check if form_name is valid and form_path is a file
+        #: TODO: Cache this files
+        try:
+            self.template = loadJSONFromFile('core/tasks/templates/tasks.json', current_app.root_path)
+            return True
+        except IOError:
+            return False
+
+    def _get_form(self):
+        return self.template
+
+    def _get_actions(self):
+        #: TODO: Implement depending on user
+        if 'actions' in self.template:
+            self.actions = self.template['actions']
+            self.template.pop('actions')
+        return self.actions
+
+    def _get_layout(self):
+        #: TODO: Implement depending on user
+        if 'layout' in self.template:
+            self.layout = self.template['layout']
+            self.template.pop('layout')
+        else:
+            self.layout = []
+        return self.layout
 
