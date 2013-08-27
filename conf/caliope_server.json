@@ -57,7 +57,7 @@
                 }
             },
             {
-                "accounts": {
+                "reg2bogota": {
                     "package": "modules.reg2bogota",
                     "service": "catastro"
                 }
