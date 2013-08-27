@@ -45,15 +45,21 @@
                 }
             },
             {
+                "accounts": {
+                    "package": "core.accounts",
+                    "service": "accounts"
+                }
+            },
+            {
                 "projectsmtv": {
-                    "package": "core.projects",
+                    "package": "modules.projects",
                     "service": "projects"
                 }
             },
             {
-                "accounts": {
-                    "package": "core.accounts",
-                    "service": "accounts"
+                "reg2bogota": {
+                    "package": "modules.reg2bogota",
+                    "service": "catastro"
                 }
             }
         ]

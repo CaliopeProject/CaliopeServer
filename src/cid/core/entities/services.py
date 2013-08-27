@@ -21,17 +21,6 @@ Copyright (C) 2013 Infometrika Ltda.
 """
 
 from tinyrpc.dispatch import public
-from tinyrpc.protocols.jsonrpc import JSONRPCInvalidParamsError, JSONRPCInvalidRequestError, JSONRPCInternalError
-
-from neomodel.exception import DoesNotExist
-
-from flask import current_app
-
-from cid.core.login import LoginManager
-from cid.utils import fileUtils
-from cid.core.models import CaliopeUser
-
-from cid.core.entities import *
 
 
 class CaliopeEntityService(object):
@@ -39,55 +28,39 @@ class CaliopeEntityService(object):
 
     This class is the base for all future forms elements.
     """
+
     @staticmethod
-    @public("getTemplate")
-    def get_form_template(formId, domain=None, version=None):
-        if formId is not None:
-            form = CaliopeEntityController(formId=formId)
-            return form.get_form_template()
-        else:
-            raise JSONRPCInvalidParamsError()
+    @public("getAll")
+    def get_all(*args, **kwargs):
+        raise NotImplementedError
+
+    @staticmethod
+    @public("getModel")
+    def get_model(*args, **kwargs):
+        raise NotImplementedError
 
     @staticmethod
     @public("getData")
-    def get_form_data(formId=None, uuid=None):
-        if formId is None or uuid is None:
-            raise JSONRPCInvalidRequestError()
-        else:
-            form = CaliopeEntityController(formId=formId)
-            return form.get_form_with_data(uuid)
+    def get_data(*args, **kwargs):
+        raise NotImplementedError
 
     @staticmethod
-    @public("getDataList")
-    def get_form_data_list(formId=None, filters=None):
-        if formId is None:
-            raise JSONRPCInvalidRequestError()
-        else:
-            form = CaliopeEntityController(formId=formId)
-            return form.get_from_with_data_list(filters)
+    @public("getModelAndData")
+    def get_model_and_data(*args, **kwargs):
+        raise NotImplementedError
 
     @staticmethod
-    @public("editFromForm")
-    #: TODO: test
-    def edit_form(formId=None, formUUID=None, data=None):
-        if formId is None or formUUID is None or data is None:
-            raise JSONRPCInvalidRequestError()
-        else:
-            form = CaliopeEntityController(formId=formId)
-            return form.update_form_data(data['uuid'], data)
+    @public("edit")
+    def edit(*args, **kwargs):
+        raise NotImplementedError
 
     @staticmethod
-    @public("createFromForm")
-    def create_form(formId, data, formUUID):
-        if formId is None or data is None or formUUID is None:
-            raise JSONRPCInvalidRequestError()
-        else:
-            form = CaliopeEntityController(formId=formId)
-            return form.create_form(data,formUUID)
+    @public("create")
+    def create(*args, **kwargs):
+        raise NotImplementedError
 
 
 class CaliopeEntityController(object):
-
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
@@ -95,8 +68,8 @@ class CaliopeEntityController(object):
     def get_model():
         raise NotImplementedError
 
-    def set_data(self,**data):
+    def set_data(self, **data):
         raise NotImplementedError
 
-    def get_data(self,**data):
+    def get_data(self, **data):
         raise NotImplementedError
