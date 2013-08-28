@@ -27,7 +27,7 @@ from cid.core.entities.services import CaliopeEntityController, CaliopeEntitySer
 
 #utils
 from cid.utils.fileUtils import loadJSONFromFile
-
+from cid.core.login.services import LoginManager
 #tinyrpc
 from tinyrpc.protocols.jsonrpc import JSONRPCInvalidRequestError, RPCError
 from tinyrpc.dispatch import public
@@ -35,7 +35,7 @@ from tinyrpc.dispatch import public
 #Flask
 from flask import current_app
 
-from models import Project, ProjectData
+from models import ProjectEntity, ProjectData
 
 
 class ProjectServices(CaliopeEntityService):
@@ -59,10 +59,9 @@ class ProjectServices(CaliopeEntityService):
     @staticmethod
     @public(name='getModel')
     def get_model():
-        rv = ProjectController().get_model()
-        data = ProjectController().get_data()
-        if data is not None:
-            rv['data']
+        project_controller = ProjectController()
+        rv = project_controller.get_model()
+        rv['data'] = project_controller.get_data()
         return rv
 
     @staticmethod
@@ -101,7 +100,7 @@ class ProjectController(CaliopeEntityController):
         if 'uuid' in kwargs:
             try:
                 node = CaliopeNode.index.get(uuid=kwargs['uuid'])
-                self.project = Project().__class__.inflate(node.__node__)
+                self.project = ProjectEntity().__class__.inflate(node.__node__)
             except DoesNotExist as e:
                 self.project = None
             except Exception as e:
@@ -122,7 +121,14 @@ class ProjectController(CaliopeEntityController):
             raise RPCError('Template error')
 
     def set_data(self, **data):
-        pass
+        if self.project is None:
+            self.project = ProjectEntity()
+            self.project.save()
+            self.project.init_entity_data(**data)
+            ownerUserNode = CaliopeUser.index.get(username=LoginManager().get_user())
+            self.project.set_owner(ownerUserNode)
+        else:
+            self.project.set_entity_data(**data)
 
     def get_data(self):
         if hasattr(self, 'project') and self.project is not None:
