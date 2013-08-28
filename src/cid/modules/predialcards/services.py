@@ -46,7 +46,6 @@ class PredialCardsServices(CaliopeEntityService):
     @staticmethod
     @public(name='getModel')
     def get_model():
-        print 'getModel'
         rv = PredialCardsController().get_model()
         return rv
 
