@@ -78,15 +78,12 @@ class PredialCardsController(CaliopeEntityController):
         #: TODO: Check if form_name is valid and form_path is a file
         #: TODO: Cache this files
         try:
-            print '_check_template'
             self.template = loadJSONFromFile('modules/predialcards/templates/predialCard.json', current_app.root_path)
-            print 'Self Template'
             return True
         except IOError:
             return False
 
     def get_model(self):
-        print 'getModel'
         if self._check_template():
             rv = dict()
             rv['form'] = self._get_form()
