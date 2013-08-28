@@ -22,34 +22,39 @@ from neomodel.exception import DoesNotExist
 
 #CaliopeStorage
 from cid.core.models import CaliopeUser, CaliopeNode
-
 from cid.core.entities.services import CaliopeEntityController, CaliopeEntityService
 
+#utils
+from cid.utils.fileUtils import loadJSONFromFile
 
 #tinyrpc
-from tinyrpc.protocols.jsonrpc import JSONRPCInvalidRequestError
+from tinyrpc.protocols.jsonrpc import JSONRPCInvalidRequestError, RPCError
 from tinyrpc.dispatch import public
 
 #Flask
-from cid.core.login import LoginManager
-#temporal
-from cid.core.forms import FormManager
+from flask import current_app
+
+
 from models import PredialCard
 
 
-class PredialCardsServices(object):
+class PredialCardsServices(CaliopeEntityService):
+
+    def __init__(self, *args, **kwargs):
+        super(PredialCardsServices, self).__init__(*args, **kwargs)
 
     @staticmethod
     @public(name='getModel')
     def get_model():
-        rv = FormManager.get_form_template('predialCard')
+        print 'getModel'
+        rv = PredialCardsController().get_model()
         return rv
-
 
 
 class PredialCardsController(CaliopeEntityController):
 
     def __init__(self, *args, **kwargs):
+        super(PredialCardsController, self).__init__(*args, **kwargs)
         if 'uuid' in kwargs:
             try:
                 node = CaliopeNode.index.get(uuid=kwargs['uuid'])
@@ -63,6 +68,49 @@ class PredialCardsController(CaliopeEntityController):
             self.predialCard = None
             self.set_data(**{})
 
+    def set_data(self, **data):
+        pass
+
     def get_data(self):
         return self.predialCard.get_entity_data()
 
+    def _check_template(self):
+        #: TODO: Check if form_name is valid and form_path is a file
+        #: TODO: Cache this files
+        try:
+            print '_check_template'
+            self.template = loadJSONFromFile('modules/predialcards/templates/predialCard.json', current_app.root_path)
+            print 'Self Template'
+            return True
+        except IOError:
+            return False
+
+    def get_model(self):
+        print 'getModel'
+        if self._check_template():
+            rv = dict()
+            rv['form'] = self._get_form()
+            rv['actions'] = self._get_actions()
+            rv['layout'] = self._get_layout()
+            return rv
+        else:
+            raise RPCError('Template error')
+
+    def _get_form(self):
+        return self.template
+
+    def _get_actions(self):
+        #: TODO: Implement depending on user
+        if 'actions' in self.template:
+            self.actions = self.template['actions']
+            self.template.pop('actions')
+        return self.actions
+
+    def _get_layout(self):
+        #: TODO: Implement depending on user
+        if 'layout' in self.template:
+            self.layout = self.template['layout']
+            self.template.pop('layout')
+        else:
+            self.layout = []
+        return self.layout
