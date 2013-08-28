@@ -1,5 +1,5 @@
 {
-  "name": "fichaPredial",
+  "name": "predialCard",
   "html": [
     {
       "name" : "title",
@@ -13,12 +13,10 @@
       ]
     },
     {
-        "name": "identificadorPredial",
+        "name": "predialIdentifier",
         "caption": "Identificador predial",
         "type": "text",
         "validations" : {
-            "required" : true,
-            "minlength" : "10"
         }
     },
     {
@@ -26,28 +24,20 @@
         "caption": "CHIP",
         "type": "text",
         "validations" : {
-            "required" : true,
-            "minlength" : "5"
         }
     },
     {
-        "name": "direccion",
+        "name": "address",
         "caption": "Dirección",
         "type": "text",
         "validations" : {
-            "required" : true,
-            "minlength" : "5"
         }
     }
     ],
   "actions" : [
       {
-          "name": "create",
+          "name": "Crear",
           "method":"tasks.create"
-      },
-      {
-        "name": "edit",
-        "method":"tasks.edit"
       }
   ],
   "layout" : [
@@ -56,7 +46,7 @@
       "columns" : [
             {
               "class": "span4",
-              "elements"  : []
+              "elements"  : ["title","predialIdentifier","chip","address"]
             }
         ]
     }

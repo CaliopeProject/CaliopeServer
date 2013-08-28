@@ -51,9 +51,15 @@
                 }
             },
             {
-                "projectsmtv": {
+                "mtvprojects": {
                     "package": "modules.projects",
                     "service": "projects"
+                }
+            },
+            {
+                "predialcards": {
+                    "package": "modules.predialcards",
+                    "service": "predialcards"
                 }
             },
             {
