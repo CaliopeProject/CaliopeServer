@@ -60,7 +60,9 @@ class ProjectServices(CaliopeEntityService):
     @public(name='getModel')
     def get_model():
         rv = ProjectController().get_model()
-        rv['data'] = ProjectController().get_data()
+        data = ProjectController().get_data()
+        if data is not None:
+            rv['data']
         return rv
 
     @staticmethod
@@ -123,7 +125,10 @@ class ProjectController(CaliopeEntityController):
         pass
 
     def get_data(self):
-        return self.project.get_entity_data()
+        if hasattr(self, 'project') and self.project is not None:
+            return self.project.get_entity_data()
+        else:
+            return None
 
     def set_holders(self, holders, category):
         pass
