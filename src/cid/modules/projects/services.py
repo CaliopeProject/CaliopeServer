@@ -57,6 +57,7 @@ class ProjectServices(object):
     @staticmethod
     @public(name='getModel')
     def get_model():
+        print 'getModel'
         rv = FormManager.get_form_template('projectmtv')
         rv['data'] = ProjectController().get_data()
         return rv
