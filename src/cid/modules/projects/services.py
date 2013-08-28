@@ -45,15 +45,15 @@ class ProjectServices(CaliopeEntityService):
     @staticmethod
     @public(name='getAll')
     def get_all():
-        pass
+        return [pe.get_entity_data() for pe in ProjectEntity.category().instance.all()]
 
     @staticmethod
     @public(name='getData')
     def get_data(uuid):
         data = {}
         data['uuid'] = uuid
-        task_controller = ProjectController(**data)
-        return task_controller.get_data()
+        project_controller = ProjectController(**data)
+        return project_controller.get_data()
 
 
     @staticmethod
