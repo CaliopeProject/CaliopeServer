@@ -146,8 +146,7 @@
     {
         "name": "property.linderos",
         "caption": "Linderos",
-        "type": "textarea",
-        "class": "input-xxlarge"
+        "type": "ckedit"
     },
     {
         "name": "property.tipoLinderos",

@@ -24,9 +24,7 @@
       {
         "name": "generalLocation",
         "caption": "Localización",
-        "type": "textarea",
-        "rows": "5",
-        "cols": "70"
+        "type": "ckedit"
       },
       {
         "name": "locality",
