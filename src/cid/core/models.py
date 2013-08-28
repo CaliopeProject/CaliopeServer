@@ -30,7 +30,8 @@ Copyright (C) 2013  Fundación Correlibre
 from py2neo import neo4j
 from neomodel.contrib import SemiStructuredNode
 from neomodel.properties import ( Property, DateTimeProperty,
-                                  StringProperty)
+                                  StringProperty, FloatProperty, IntegerProperty)
+from neomodel.exception import DoesNotExist
 from neomodel.relationship_manager import RelationshipDefinition, RelationshipFrom, RelationshipTo
 from utils import uuidGenerator, timeStampGenerator
 
@@ -53,12 +54,10 @@ class CaliopeNode(SemiStructuredNode):
     timestamp = DateTimeProperty(default=timeStampGenerator)
 
 
-
-
     def __init__(self, *args, **kwargs):
         #:RelationshipTo previous node. Root nodes should use "ROOT"
         ancestor_node = RelationshipFrom(self.__class__, 'ANCESTOR_NODE')
-        setattr(self.__class__, 'ancestor_node',ancestor_node)
+        setattr(self.__class__, 'ancestor_node', ancestor_node)
         super(CaliopeNode, self).__init__(*args, **kwargs)
         #self._set_node_attr(**kwargs)
 
@@ -105,10 +104,10 @@ class CaliopeNode(SemiStructuredNode):
     @classmethod
     def reconnect(cls, old_node, new_node):
         for key, val in old_node._class_properties().items():
-            if issubclass(val.__class__,RelationshipDefinition):
+            if issubclass(val.__class__, RelationshipDefinition):
                 if hasattr(new_node, key):
                     new_rel = getattr(new_node, key)
-                    old_rel = getattr(old_node,key)
+                    old_rel = getattr(old_node, key)
                     for n in old_rel.all():
                         new_rel.connect(n)
 

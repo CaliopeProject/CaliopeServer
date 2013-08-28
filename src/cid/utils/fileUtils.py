@@ -38,10 +38,29 @@ from werkzeug.exceptions import NotFound
 
 from cid.utils.jsOptimizer import jsOptimizer
 
+
 def loadJSONFromFile(filename, root_path):
-    #if filename is not None:
-        #if not os.path.isabs(filename):
-            #filename = os.path.join(root_path, filename)
+    if filename is not None:
+        if not os.path.isabs(filename):
+            filename = os.path.join(root_path, filename)
+    if not os.path.isfile(filename):
+        print "Error : JSON file " + filename + " not found"
+        raise NotFound("JSON file " + filename + " not found")
+    try:
+        json_data = re.sub("(?:/\\*(?:[^*]|(?:\\*+[^*/]))*\\*+/)",
+                           '', open(filename).read(), re.MULTILINE)
+        json_data = json.loads(json_data)
+    except IOError:
+        json_data = {}
+        print "Error: can\'t find file or read data"
+    except ValueError:
+        json_data = {}
+        print "Error, is not a JSON" + filename
+    else:
+        return json_data
+
+
+def loadJSONFromFileNoPath(filename):
     if not os.path.isfile(filename):
         print "Error : JSON file " + filename + " not found"
         raise NotFound("JSON file " + filename + " not found")
@@ -66,20 +85,20 @@ def send_from_memory(filename):
     """
     if not os.path.isfile(filename):
         raise NotFound()
-    #if filename is not None:
+        #if filename is not None:
         #if not os.path.isabs(filename):
-            #filename = os.path.join(current_app.root_path, filename)
+        #filename = os.path.join(current_app.root_path, filename)
     mimetype = mimetypes.guess_type(filename)[0]
     if mimetype is None:
         mimetype = 'application/octet-stream'
 
-    file = open(filename, 'rb')    
+    file = open(filename, 'rb')
     if current_app.cache_enabled:
         data = jsOptimizer().get_file(os.path.abspath(filename), current_app.storekv)
     else:
         data = None
-        
-    if  data:
+
+    if data:
         headers = Headers()
         headers['Content-Encoding'] = 'gzip'
         headers['Content-Length'] = len(data)
@@ -124,5 +143,5 @@ class Gzip(object):
         response.headers['Content-Encoding'] = 'gzip'
         response.headers['Content-Length'] = len(response.data)
         response.headers['Cache-Control'] = "max-age=172800, public, must-revalidate"
-    
+
         return response

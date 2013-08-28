@@ -28,17 +28,10 @@ from datetime import datetime
 from exceptions import RuntimeError
 
 #neomodel primitives
-from neomodel.properties import (Property,
-                                 DateTimeProperty,
-                                 FloatProperty,
-                                 IntegerProperty,
-                                 StringProperty,
-                                 JSONProperty)
-from neomodel.exception import NotConnected, DoesNotExist
-from neomodel.signals import hooks
+from neomodel.exception import NotConnected
 
 from neomodel import (RelationshipTo, RelationshipFrom,
-        Relationship, One, DoesNotExist)
+                      One )
 
 #Storage
 from cid.core.models import CaliopeNode, CaliopeUser, CaliopeDocument
@@ -46,6 +39,7 @@ from cid.core.models import RelationshipDefinition
 
 
 class CaliopeEntityData(CaliopeNode):
+    __index__ = 'CaliopeStorage'
 
     owner = RelationshipFrom(CaliopeUser, 'OWNER', cardinality=One)
     holders = RelationshipFrom(CaliopeUser, 'HOLDER')
@@ -97,15 +91,15 @@ class CaliopeEntityData(CaliopeNode):
 
 
 class CaliopeEntity(CaliopeNode):
-
     __index__ = 'CaliopeStorage'
+
     entity_data_type = CaliopeEntityData
 
     def __init__(self, *args, **kwargs):
         current = RelationshipTo(self.entity_data_type, 'CURRENT', cardinality=One)
         first = RelationshipTo(self.entity_data_type, 'FIRST', cardinality=One)
-        setattr(self.__class__, 'current',current)
-        setattr(self.__class__, 'first',first)
+        setattr(self.__class__, 'current', current)
+        setattr(self.__class__, 'first', first)
         super(CaliopeEntity, self).__init__(*args, **kwargs)
 
     def init_entity_data(self, **data):
@@ -142,7 +136,7 @@ class CaliopeEntity(CaliopeNode):
             rv[k] = self._parse_entity_data(v)
 
         holders_nodes = current_node.holders.all()
-        holders = [ holder_node.username for holder_node in holders_nodes]
+        holders = [holder_node.username for holder_node in holders_nodes]
         rv['ente_asignado'] = {'value': holders}
         return rv
 

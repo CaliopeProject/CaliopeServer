@@ -29,6 +29,9 @@ class CaliopeEntityService(object):
     This class is the base for all future forms elements.
     """
 
+    def __init__(self, *args, **kwargs):
+        pass
+
     @staticmethod
     @public("getAll")
     def get_all(*args, **kwargs):
@@ -62,7 +65,7 @@ class CaliopeEntityService(object):
 
 class CaliopeEntityController(object):
     def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+        pass
 
     @staticmethod
     def get_model():
@@ -73,3 +76,19 @@ class CaliopeEntityController(object):
 
     def get_data(self, **data):
         raise NotImplementedError
+
+    def _check_template(self):
+        raise NotImplementedError
+
+    def _get_form(self):
+        raise NotImplementedError
+
+    def _get_actions(self):
+        raise NotImplementedError
+
+    def _get_layout(self):
+        raise NotImplementedError
+
+
+
+

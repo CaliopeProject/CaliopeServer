@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 """
 @authors: Nelson Daniel Ochoa ndaniel8a@gmail.com
+          Sebastián Ortiz V. neoecos@gmail.com
 
 @license:  GNU AFFERO GENERAL PUBLIC LICENSE
 
@@ -20,27 +21,22 @@ Copyright (C) 2013 Infometrika Ltda.
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
-#neomodel primitives
-from neomodel.properties import ( DateTimeProperty,
-                                  StringProperty, IntegerProperty, JSONProperty)
-
 #Caliope Entities
+from cid.core.models import CaliopeUser, RelationshipFrom, StringProperty
 from cid.core.entities import CaliopeEntityData, CaliopeEntity
 
 
 class ProjectData(CaliopeEntityData):
     __index__ = 'CaliopeStorage'
-    
+
     name = StringProperty()
-    generalLocation = StringProperty()
+    general_location = StringProperty()
     locality = StringProperty()
-    projectType = StringProperty()
-    recordDocumentCreation = StringProperty()
-    creationDate = DateTimeProperty()
-    profitCenter = StringProperty()
-    #TODO: Cambiar propiedad manager para que sea una relación con usuario
-    manager = StringProperty()
-    
+    project_type = StringProperty()
+    record_document_creation = StringProperty()
+    profit_center = StringProperty()
+
+    managers = RelationshipFrom(CaliopeUser, 'MANAGES')
 
     def __init__(self, *args, **kwargs):
         super(ProjectData, self).__init__(*args, **kwargs)
@@ -54,7 +50,9 @@ class ProjectData(CaliopeEntityData):
 
 class Project(CaliopeEntity):
     __index__ = 'CaliopeStorage'
+
     entity_data_type = ProjectData
+
     def __init__(self, *args, **kwargs):
         super(Project, self).__init__(*args, **kwargs)
 

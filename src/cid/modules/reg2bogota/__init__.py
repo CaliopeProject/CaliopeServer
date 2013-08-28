@@ -20,8 +20,8 @@ Copyright (C) 2013 Infometrika Ltda.
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from cid.modules.reg2bogota.services import PredioCatastros
+from cid.modules.reg2bogota.services import PredioCatastroServices
 
 
 def get_service():
-    return PredioCatastros()
+    return PredioCatastroServices()

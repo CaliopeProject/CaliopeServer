@@ -21,35 +21,29 @@ Copyright (C) 2013 Infometrika Ltda.
 """
 
 #
-from neomodel import DoesNotExist
-from cid.modules.reg2bogota.readonly_models import RegistroPredioCatastroTipoII
+from cid.core.models import DoesNotExist
+from cid.core.entities import CaliopeEntityService
+from readonly_models import RegistroPredioCatastroTipoII
 
 #tinyrpc
 from tinyrpc.protocols.jsonrpc import JSONRPCInvalidRequestError
 from tinyrpc.dispatch import public
 
-#Flask
 
-#from groupmodel import GroupNode
-
-class PredioCatastros(object):
+class PredioCatastroServices(CaliopeEntityService):
     @staticmethod
     @public
     def getPredio(sector):
         try:
             rec = RegistroPredioCatastroTipoII.index.get(sector=sector)
-            
             if rec:
-                data  = {}
+                data = {}
                 for k, v in rec._get_node_data().items():
                     if not isinstance(v, unicode):
                         v = unicode(v)
                     data[k] = v
-                    
-                print str(data)
-                return  {'value': data}
+                return {'value': data}
             return {'record': False}
-
         except DoesNotExist as e:
             raise JSONRPCInvalidRequestError(e)
 
