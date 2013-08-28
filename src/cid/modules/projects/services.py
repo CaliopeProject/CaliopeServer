@@ -51,7 +51,7 @@ class ProjectServices(CaliopeEntityService):
     @public(name='getData')
     def get_data(uuid):
         data = {}
-        data['uuid'] = uuid['value'] if 'value' in uuid else uuid
+        data['uuid'] = uuid
         task_controller = ProjectController(**data)
         return task_controller.get_data()
 
@@ -68,7 +68,7 @@ class ProjectServices(CaliopeEntityService):
     @public(name='getModelAndData')
     def get_model_and_data(uuid):
         data = {}
-        data['uuid'] = uuid['value'] if 'value' in uuid else uuid
+        data['uuid'] = uuid
         project_controller = ProjectController(**data)
         rv = project_controller.get_model()
         rv['data'] = project_controller.get_data()
