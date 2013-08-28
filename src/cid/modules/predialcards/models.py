@@ -30,12 +30,13 @@ from cid.core.entities import CaliopeEntityData, CaliopeEntity
 
 class PredialCardData(CaliopeEntityData):
     __index__ = 'CaliopeStorage'
-    predialIdentifier = StringProperty()
+
+    predial_identifier = StringProperty()
     chip = StringProperty()
     # Change for Entity Address
     address = JSONProperty()
-    ownerType = StringProperty() #Propietario o poseedor
-    owner = JSONProperty()
+    owner_type = StringProperty() #Propietario o poseedor
+    owner_data = JSONProperty()
 
 
     def __init__(self, *args, **kwargs):
@@ -48,11 +49,13 @@ class PredialCardData(CaliopeEntityData):
         return self.evolve(**data)
 
 
-class PredialCard(CaliopeEntity):
+class PredialCardEntity(CaliopeEntity):
     __index__ = 'CaliopeStorage'
+
     entity_data_type = PredialCardData
+
     def __init__(self, *args, **kwargs):
-        super(PredialCard, self).__init__(*args, **kwargs)
+        super(PredialCardEntity, self).__init__(*args, **kwargs)
 
 
 

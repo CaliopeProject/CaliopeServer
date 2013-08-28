@@ -26,7 +26,7 @@ from cid.core.entities.services import CaliopeEntityController, CaliopeEntitySer
 
 #utils
 from cid.utils.fileUtils import loadJSONFromFile
-
+from cid.core.login.services import LoginManager
 #tinyrpc
 from tinyrpc.protocols.jsonrpc import JSONRPCInvalidRequestError, RPCError
 from tinyrpc.dispatch import public
@@ -34,44 +34,50 @@ from tinyrpc.dispatch import public
 #Flask
 from flask import current_app
 
-
-from models import PredialCard
+from models import PredialCardEntity
 
 
 class PredialCardsServices(CaliopeEntityService):
-
     def __init__(self, *args, **kwargs):
         super(PredialCardsServices, self).__init__(*args, **kwargs)
 
     @staticmethod
     @public(name='getModel')
     def get_model():
-        rv = PredialCardsController().get_model()
+        predial_card_controller = PredialCardsController()
+        rv = predial_card_controller.get_model()
+        rv['data'] = predial_card_controller.get_data()
         return rv
 
 
 class PredialCardsController(CaliopeEntityController):
-
     def __init__(self, *args, **kwargs):
         super(PredialCardsController, self).__init__(*args, **kwargs)
         if 'uuid' in kwargs:
             try:
                 node = CaliopeNode.index.get(uuid=kwargs['uuid'])
-                self.predialCard = PredialCard().__class__.inflate(node.__node__)
+                self.predial_card = PredialCardEntity().__class__.inflate(node.__node__)
             except DoesNotExist as e:
-                self.predialCard = None
+                self.predial_card = None
             except Exception as e:
                 raise e
         else:
             #: TODO check initialization
-            self.predialCard = None
+            self.predial_card = None
             self.set_data(**{})
 
     def set_data(self, **data):
-        pass
+        if self.predial_card is None:
+            self.predial_card = PredialCardEntity()
+            self.predial_card.save()
+            self.predial_card.init_entity_data(**data)
+            ownerUserNode = CaliopeUser.index.get(username=LoginManager().get_user())
+            self.predial_card.set_owner(ownerUserNode)
+        else:
+            self.predial_card.set_entity_data(**data)
 
     def get_data(self):
-        return self.predialCard.get_entity_data()
+        return self.predial_card.get_entity_data()
 
     def _check_template(self):
         #: TODO: Check if form_name is valid and form_path is a file

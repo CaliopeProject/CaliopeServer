@@ -57,9 +57,9 @@ class TaskServices(CaliopeEntityService):
                                              "MATCH (user)-[r:HOLDER]-(tdc)-[e:CURRENT]-(t), (t)-[:FIRST]-(tdf)"
                                              "WHERE has(r.category) and not(tdf=tdc)"
                                              "return t, r.category");
-        tasks_list = {'ToDo': {'pos': 0, 'category': 'ToDo', 'tasks': []},
-                      'Doing': {'pos': 1, 'category': 'Doing', 'tasks': []},
-                      'Done': {'pos': 2, 'category': 'Done', 'tasks': []}}
+        tasks_list = {'ToDo': {'pos': 0, 'category': {'value': 'ToDo'}, 'tasks': []},
+                      'Doing': {'pos': 1, 'category': {'value': 'Doing'}, 'tasks': []},
+                      'Done': {'pos': 2, 'category': {'value': 'Done'}, 'tasks': []}}
 
         for row in results:
             tl = tasks_list[row[1]]['tasks']
@@ -75,7 +75,7 @@ class TaskServices(CaliopeEntityService):
     @public(name='getData')
     def get_data(uuid):
         data = {}
-        data['uuid'] = uuid['value'] if 'value' in uuid else uuid
+        data['uuid'] = uuid
         task_controller = TaskController(**data)
         return task_controller.get_data()
 
@@ -83,15 +83,16 @@ class TaskServices(CaliopeEntityService):
     @staticmethod
     @public(name='getModel')
     def get_model():
-        rv = TaskController().get_model()
-        rv['data'] = TaskController().get_data()
+        task_controller = TaskController()
+        rv = task_controller.get_model()
+        rv['data'] = task_controller.get_data()
         return rv
 
     @staticmethod
     @public(name='getModelAndData')
     def get_model_and_data(uuid):
         data = {}
-        data['uuid'] = uuid['value'] if 'value' in uuid else uuid
+        data['uuid'] = uuid
         task_controller = TaskController(**data)
         rv = task_controller.get_model()
         rv['data'] = task_controller.get_data()

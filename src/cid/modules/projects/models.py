@@ -48,13 +48,13 @@ class ProjectData(CaliopeEntityData):
         return self.evolve(**data)
 
 
-class Project(CaliopeEntity):
+class ProjectEntity(CaliopeEntity):
     __index__ = 'CaliopeStorage'
 
     entity_data_type = ProjectData
 
     def __init__(self, *args, **kwargs):
-        super(Project, self).__init__(*args, **kwargs)
+        super(ProjectEntity, self).__init__(*args, **kwargs)
 
 
 
