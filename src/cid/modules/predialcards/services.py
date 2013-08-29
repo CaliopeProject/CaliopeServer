@@ -21,12 +21,13 @@ Copyright (C) 2013 Infometrika Ltda.
 from neomodel.exception import DoesNotExist
 
 #CaliopeStorage
-from cid.core.models import CaliopeUser, CaliopeNode
+from cid.core.entities import CaliopeUser, CaliopeNode
 from cid.core.entities.services import CaliopeEntityController, CaliopeEntityService
 
 #utils
 from cid.utils.fileUtils import loadJSONFromFile
 from cid.core.login.services import LoginManager
+
 #tinyrpc
 from tinyrpc.protocols.jsonrpc import JSONRPCInvalidRequestError, RPCError
 from tinyrpc.dispatch import public
@@ -34,6 +35,7 @@ from tinyrpc.dispatch import public
 #Flask
 from flask import current_app
 
+#local
 from models import PredialCardEntity
 
 

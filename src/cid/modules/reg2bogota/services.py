@@ -20,9 +20,8 @@ Copyright (C) 2013 Infometrika Ltda.
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-#
-from cid.core.models import DoesNotExist
-from cid.core.entities import CaliopeEntityService
+#models
+from cid.core.entities import CaliopeEntityService, DoesNotExist
 from readonly_models import RegistroPredioCatastroTipoII
 
 #tinyrpc

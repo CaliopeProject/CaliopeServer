@@ -24,7 +24,7 @@ from functools import wraps
 
 #CaliopeStorage
 from neomodel import DoesNotExist
-from cid.core.models import CaliopeUser
+from cid.core.entities import CaliopeUser
 
 from tinyrpc.protocols.jsonrpc import JSONRPCInternalError
 from tinyrpc.dispatch import public

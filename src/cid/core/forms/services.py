@@ -26,10 +26,10 @@ from tinyrpc.protocols.jsonrpc import JSONRPCInvalidParamsError, JSONRPCInvalidR
 from neomodel.exception import DoesNotExist
 
 from flask import current_app
+from cid.core.entities import CaliopeUser
 
 from cid.core.login import LoginManager
 from cid.utils import fileUtils
-from cid.core.models import CaliopeUser
 
 from cid.core.forms.models import SIIMForm
 

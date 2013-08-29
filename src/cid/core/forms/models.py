@@ -35,7 +35,8 @@ from neomodel import (StructuredNode, RelationshipTo, RelationshipFrom,
         Relationship, One)
 
 #CaliopeStorage
-from cid.core.models import CaliopeNode, CaliopeUser
+from cid.core.entities import CaliopeNode, CaliopeUser
+
 
 class SIIMFormData(CaliopeNode):
 

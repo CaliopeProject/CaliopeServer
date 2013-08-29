@@ -26,8 +26,7 @@ from tinyrpc.protocols.jsonrpc import JSONRPCInternalError
 from tinyrpc.dispatch import public
 
 #Flask
-
-from cid.core.models import CaliopeDocument
+from cid.core.entities import CaliopeDocument
 
 
 class DocumentManager(object):

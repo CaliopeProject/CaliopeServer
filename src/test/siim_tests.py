@@ -28,10 +28,7 @@ import uuid
 import hashlib
 
 from cid import caliope_server
-from cid.core.models import CaliopeNode, CaliopeUser, CaliopeGroup
-from neomodel import DoesNotExist, UniqueProperty
-
-from cid.core.entities import CaliopeEntity, CaliopeEntityData
+from cid.core.entities import CaliopeNode, CaliopeGroup, DoesNotExist, UniqueProperty, CaliopeEntity, CaliopeUser
 
 
 class SIIM2ServerTestCase(unittest.TestCase):

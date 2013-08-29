@@ -22,7 +22,7 @@ Copyright (C) 2013 Infometrika Ltda.
 """
 
 #CaliopeStorage
-from cid.core.models import CaliopeUser, CaliopeNode, DoesNotExist
+from cid.core.entities import CaliopeNode, CaliopeUser, DoesNotExist
 from cid.core.entities.services import CaliopeEntityController, CaliopeEntityService
 
 #utils

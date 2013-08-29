@@ -22,7 +22,7 @@ Copyright (C) 2013 Infometrika Ltda.
 
 #
 from neomodel import DoesNotExist
-from cid.core.models import CaliopeUser
+from cid.core.entities import CaliopeUser
 
 #tinyrpc
 from tinyrpc.protocols.jsonrpc import JSONRPCInvalidRequestError
