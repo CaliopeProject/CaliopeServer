@@ -25,10 +25,10 @@
           "type": "multi-choices",
           "options-load-server" : {
             "method"        : "accounts.getAll",
-            "field-value"   : "username.value",
-            "field-desc"    : "username.value"
+            "field-value"   : "username",
+            "field-desc"    : "username"
           }
-      },      
+      },
       {
           "name": "descripcion",
           "caption": "Descripción tarea",
