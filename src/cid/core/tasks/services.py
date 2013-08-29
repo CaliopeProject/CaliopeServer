@@ -100,7 +100,7 @@ class TaskServices(CaliopeEntityService):
 
     @staticmethod
     @public
-    def create(formId=None, data=None, formUUID=None):
+    def create(data=None):
         if 'uuid' in data:
             task = TaskController(uuid=data['uuid'])
         else:
@@ -156,8 +156,11 @@ class TaskController(CaliopeEntityController):
             del data['category']
         else:
             category = 'ToDo'
+        holders = []
         if 'ente_asignado' in data:
-            holders = data['ente_asignado']
+            if len(data['ente_asignado']) > 0 :
+                holders = data['ente_asignado']
+            holders = LoginManager().get_user()
             del data['ente_asignado']
         else:
             holders = LoginManager().get_user()
