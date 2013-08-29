@@ -137,6 +137,7 @@ class CaliopeEntity(CaliopeNode):
 
         holders_nodes = current_node.holders.all()
         holders = [holder_node.username for holder_node in holders_nodes]
+        #TODO: Why is this hardcored here?
         rv['ente_asignado'] = {'value': holders}
         return rv
 
@@ -156,8 +157,9 @@ class CaliopeEntity(CaliopeNode):
         return {'value': v}
 
     def get_entity_relationships(self):
-        rels = {k: v for k, v in self._get_current()._class_properties()
+        relationships = {k: v for k, v in self._get_current()._class_properties()
                 if isinstance(v, RelationshipDefinition)}
+        return relationships
 
 
 
