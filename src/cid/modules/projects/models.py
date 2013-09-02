@@ -36,7 +36,6 @@ class ProjectData(CaliopeEntityData):
     record_document_creation = StringProperty()
     profit_center = StringProperty()
 
-    managers = RelationshipFrom(CaliopeUser, 'MANAGES')
 
     def __init__(self, *args, **kwargs):
         super(ProjectData, self).__init__(*args, **kwargs)
