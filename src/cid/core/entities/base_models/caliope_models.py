@@ -123,41 +123,6 @@ class CaliopeNode(SemiStructuredNode):
         return new_node
 
 
-class CaliopeUser(CaliopeNode):
-    __index__ = 'CaliopeStorage'
-    username = StringProperty(unique_index=True)
-    domainname = StringProperty()
-    password = StringProperty()
-    first_name = StringProperty(required=True)
-    last_name = StringProperty(required=True)
-    member_of = RelationshipTo('CaliopeGroup', 'IS_MEMBER_OF_GROUP')
-
-
-class CaliopeGroup(CaliopeNode):
-    __index__ = 'CaliopeStorage'
-    name = StringProperty(required=True)
-    code = StringProperty(unique_index=True)
-    members = RelationshipFrom('CaliopeUser', 'IS_MEMBER_OF_GROUP')
-
-
-class CaliopeDocument(CaliopeNode):
-    __index__ = 'CaliopeStorage'
-    url = StringProperty()
-    sha256 = StringProperty()
-    insertion_date = DateTimeProperty(default=lambda: timeStampGenerator())
-    description = StringProperty()
-    state = StringProperty()
-    owner = RelationshipFrom(CaliopeUser, 'OWNER')
-
-    @staticmethod
-    def add_to_repo(parent_uuid, url, description):
-        pass
-        #u=urlparse(url)
-        #if u.scheme=='file':
-        #    sha256 = get_sha256(u.path)
-        #save()
-
-
 class CaliopeRelation(RelationshipDefinition):
     """
     This is the base class for relationships within CaliopeNodes, it may contain
