@@ -26,18 +26,20 @@ from tinyrpc.protocols.jsonrpc import JSONRPCInvalidParamsError, JSONRPCInvalidR
 from neomodel.exception import DoesNotExist
 
 from flask import current_app
+from cid.core.entities import CaliopeUser
 
 from cid.core.login import LoginManager
 from cid.utils import fileUtils
-from cid.core.models import CaliopeUser
 
 from cid.core.forms.models import SIIMForm
+
 
 class FormManager(object):
     """
 
     This class is the base for all future forms elements.
     """
+
     @staticmethod
     @public("getTemplate")
     def get_form_template(formId, domain=None, version=None):
@@ -82,11 +84,10 @@ class FormManager(object):
             raise JSONRPCInvalidRequestError()
         else:
             form = Form(formId=formId)
-            return form.create_form(data,formUUID)
+            return form.create_form(data, formUUID)
 
 
 class Form(object):
-
     def __init__(self, **kwargs):
         self.form_name = kwargs['formId'] if 'formId' in kwargs else None
         self.form_path = kwargs['form_path'] if 'form path' in kwargs else current_app.config['FORM_TEMPLATES']
@@ -106,7 +107,7 @@ class Form(object):
         #: TODO: Cache this files
         try:
             self.form_json = fileUtils.loadJSONFromFile(self.form_path + "/" + self.form_name + ".json",
-                                                    current_app.root_path)
+                                                        current_app.root_path)
             return True
         except IOError:
             return False
@@ -122,10 +123,10 @@ class Form(object):
             self.form_json.pop('actions')
         else:
             self.actions = [
-                            {"name": "create", "method":"form.createFromForm"},
-                            {"name": "delete", "method":"form.delete", "params":["uuid"]},
-                            {"name": "edit", "method":"form.editFromForm"}
-                           ]
+                {"name": "create", "method": "form.createFromForm"},
+                {"name": "delete", "method": "form.delete", "params": ["uuid"]},
+                {"name": "edit", "method": "form.editFromForm"}
+            ]
         return self.actions
 
     def _get_layout(self):
@@ -156,7 +157,7 @@ class Form(object):
         self.form_cls = SIIMForm
         try:
             self.node = self.form_cls.index.get(uuid=uuid)
-            self.form_data = self.node.get_form_data()
+            self.form_data = self.node.get_data()
             return self.form_data
         except DoesNotExist as e:
             self.node = None
@@ -168,7 +169,7 @@ class Form(object):
         self.form_cls = SIIMForm
         try:
             self.nodes = self.form_cls.index.search('uuid:*')
-            self.form_data_list = [node.get_form_data() for node in self.nodes]
+            self.form_data_list = [node.get_data() for node in self.nodes]
             return self.form_data_list
         except DoesNotExist as e:
             self.node = None
@@ -197,7 +198,7 @@ class Form(object):
     def update_form_data(self, uuid, data):
         if self._check_access():
             self._get_node_data(uuid)
-            self.node = self.node.set_form_data(data)
+            self.node = self.node.set_data(data)
             self.node.form_id = self.form_name
             self.node.save()
 

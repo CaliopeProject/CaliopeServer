@@ -28,14 +28,11 @@ import uuid
 import hashlib
 
 from cid import caliope_server
-from cid.core.models import CaliopeNode, CaliopeUser, CaliopeGroup
-from neomodel import DoesNotExist, UniqueProperty
-
-from cid.core.entities import CaliopeEntity, CaliopeEntityData
+from cid.core.entities import CaliopeNode, DoesNotExist, UniqueProperty, CaliopeEntity
+from cid.core.entities.base_models.entities_models import CaliopeUser, CaliopeGroup
 
 
 class SIIM2ServerTestCase(unittest.TestCase):
-
     def setUp(self):
         """Before each test, set up a blank enviroment"""
         caliope_server.app.config['TESTING'] = True
@@ -54,7 +51,7 @@ class SIIM2ServerTestCase(unittest.TestCase):
                     login=username,
                     password=password,
                     callback_id=callback_id
-                    )
+        )
         response = self.app.post('/api/rest', data=json.dumps(data),
                                  content_type='application/json')
         return response
@@ -64,8 +61,8 @@ class SIIM2ServerTestCase(unittest.TestCase):
         #: TODO: Implement
         assert True
 
-class TestCaliopeStorage(unittest.TestCase):
 
+class TestCaliopeStorage(unittest.TestCase):
     def test_CaliopeNode_init_without_args(self):
         print "Test#1"
         print "-" * 80
@@ -165,9 +162,9 @@ class TestCaliopeStorage(unittest.TestCase):
     def test_CaliopeGroup_creationMany(self):
         print "Test#9"
         print "-" * 80
-        for i in xrange(1,5):
+        for i in xrange(1, 5):
             g1 = CaliopeGroup()
-            g1.name = u'Group'+ str(i)
+            g1.name = u'Group' + str(i)
             g1.code = u'g-00' + str(i)
             try:
                 assert g1.save() is not None
@@ -266,7 +263,7 @@ class TestCaliopeStorage(unittest.TestCase):
     def test_CaliopeEntity_creationMany(self):
         print "Test#13"
         print "-" * 80
-        for i in xrange(1,5):
+        for i in xrange(1, 5):
             e1 = CaliopeEntity()
             try:
                 assert e1.save() is not None

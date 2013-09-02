@@ -24,11 +24,11 @@ from functools import wraps
 
 #CaliopeStorage
 from neomodel import DoesNotExist
-from cid.core.models import CaliopeUser
 
 from tinyrpc.protocols.jsonrpc import JSONRPCInternalError
 from tinyrpc.dispatch import public
 from flask import current_app, g
+from cid.core.entities.base_models.entities_models import CaliopeUser
 
 prefix_session_manager = "prefix_session_manager_"
 
@@ -48,12 +48,12 @@ class LoginManager(object):
                 current_app.storekv.put(prefix_session_manager + session_uuid, username)
 
                 return {
-                        'login': True,
-                        'uuid': session_uuid,
-                        'user': {'value':username},
-                        "first_name": {'value':userNode.first_name},
-                        "last_name": {'value':userNode.last_name}
-                        }
+                    'login': True,
+                    'uuid': session_uuid,
+                    'user': {'value': username},
+                    "first_name": {'value': userNode.first_name},
+                    "last_name": {'value': userNode.last_name}
+                }
             else:
                 return {'login': False}
         except DoesNotExist:
@@ -71,9 +71,9 @@ class LoginManager(object):
                 g.connection_thread_pool_id[g.connection_thread_id] = uuid
                 userNode = CaliopeUser.index.get(username=username)
                 return {'login': True, 'uuid': uuid,
-                        'user': {'value':username},
-                        "first_name": {'value':userNode.first_name},
-                        "last_name": {'value':userNode.last_name}
+                        'user': {'value': username},
+                        "first_name": {'value': userNode.first_name},
+                        "last_name": {'value': userNode.last_name}
                 }
             except Exception as e:
                 raise JSONRPCInternalError(e)

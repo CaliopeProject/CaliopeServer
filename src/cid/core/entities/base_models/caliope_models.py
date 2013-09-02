@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    cid.core.models
+    cid.core.entities.base_models
     ~~~~~~~~~~~~~~
 
     Este módulo contiene la clase CaliopeNode, que es el elemento atómico
@@ -27,11 +27,11 @@ Copyright (C) 2013  Fundación Correlibre
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
-from py2neo import neo4j
-from neomodel.contrib import SemiStructuredNode
 from neomodel import *
+from neomodel.contrib import SemiStructuredNode
 from neomodel.relationship_manager import RelationshipDefinition
-from utils import uuidGenerator, timeStampGenerator
+from py2neo import neo4j
+from cid.core.utils import uuidGenerator, timeStampGenerator
 
 
 class CaliopeNode(SemiStructuredNode):
@@ -121,41 +121,6 @@ class CaliopeNode(SemiStructuredNode):
         new_node = cls(**kwargs)
         new_node.save()
         return new_node
-
-
-class CaliopeUser(CaliopeNode):
-    __index__ = 'CaliopeStorage'
-    username = StringProperty(unique_index=True)
-    domainname = StringProperty()
-    password = StringProperty()
-    first_name = StringProperty(required=True)
-    last_name = StringProperty(required=True)
-    member_of = RelationshipTo('CaliopeGroup', 'IS_MEMBER_OF_GROUP')
-
-
-class CaliopeGroup(CaliopeNode):
-    __index__ = 'CaliopeStorage'
-    name = StringProperty(required=True)
-    code = StringProperty(unique_index=True)
-    members = RelationshipFrom('CaliopeUser', 'IS_MEMBER_OF_GROUP')
-
-
-class CaliopeDocument(CaliopeNode):
-    __index__ = 'CaliopeStorage'
-    url = StringProperty()
-    sha256 = StringProperty()
-    insertion_date = DateTimeProperty(default=lambda: timeStampGenerator())
-    description = StringProperty()
-    state = StringProperty()
-    owner = RelationshipFrom(CaliopeUser, 'OWNER')
-
-    @staticmethod
-    def add_to_repo(parent_uuid, url, description):
-        pass
-        #u=urlparse(url)
-        #if u.scheme=='file':
-        #    sha256 = get_sha256(u.path)
-        #save()
 
 
 class CaliopeRelation(RelationshipDefinition):

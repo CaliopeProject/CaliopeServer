@@ -22,11 +22,11 @@ Copyright (C) 2013 Infometrika Ltda.
 from neomodel.exception import DoesNotExist
 
 #CaliopeStorage
-from cid.core.models import CaliopeUser, CaliopeNode
-
+from cid.core.entities import CaliopeNode
+from cid.core.entities.base_models.entities_models import CaliopeUser
 from cid.core.entities.services import CaliopeEntityController, CaliopeEntityService
-from cid.utils.fileUtils import loadJSONFromFile
 
+from cid.utils.fileUtils import loadJSONFromFile
 
 #tinyrpc
 from tinyrpc.protocols.jsonrpc import JSONRPCInvalidRequestError, RPCError
@@ -158,9 +158,10 @@ class TaskController(CaliopeEntityController):
             category = 'ToDo'
         holders = []
         if 'ente_asignado' in data:
-            if len(data['ente_asignado']) > 0 :
+            if len(data['ente_asignado']) > 0:
                 holders = data['ente_asignado']
-            holders = LoginManager().get_user()
+            else:
+                holders = LoginManager().get_user()
             del data['ente_asignado']
         else:
             holders = LoginManager().get_user()
@@ -192,6 +193,7 @@ class TaskController(CaliopeEntityController):
             else:
                 query += ' OR username:' + holder
         holdersUsersNodes = CaliopeUser.index.search(query=query)
+        self.task.remove_holders()
         for holderUser in holdersUsersNodes:
             self.task.set_holder(holderUser, properties={'category': category})
 

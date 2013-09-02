@@ -19,9 +19,6 @@ Copyright (C) 2013 Infometrika Ltda.
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
-import models
-import forms
-
 from cid.core import dispatcher
 from cid.core import module_manager
 

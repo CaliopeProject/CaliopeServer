@@ -22,8 +22,9 @@ Copyright (C) 2013 Infometrika Ltda.
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 #Caliope Entities
-from cid.core.models import CaliopeUser, RelationshipFrom, StringProperty
+from cid.core.entities import RelationshipFrom, StringProperty
 from cid.core.entities import CaliopeEntityData, CaliopeEntity
+from cid.core.entities.base_models.entities_models import CaliopeUser
 
 
 class ProjectData(CaliopeEntityData):
