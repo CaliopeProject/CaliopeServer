@@ -126,8 +126,6 @@ class ProjectController(CaliopeEntityController):
             self.project = ProjectEntity()
             self.project.save()
             self.project.init_entity_data(**data)
-            ownerUserNode = CaliopeUser.index.get(username=LoginManager().get_user())
-            self.project.set_owner(ownerUserNode)
         else:
             self.project.set_entity_data(**data)
 

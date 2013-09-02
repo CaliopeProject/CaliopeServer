@@ -74,8 +74,6 @@ class PredialCardsController(CaliopeEntityController):
             self.predial_card = PredialCardEntity()
             self.predial_card.save()
             self.predial_card.init_entity_data(**data)
-            ownerUserNode = CaliopeUser.index.get(username=LoginManager().get_user())
-            self.predial_card.set_owner(ownerUserNode)
         else:
             self.predial_card.set_entity_data(**data)
 
