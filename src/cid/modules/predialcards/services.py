@@ -21,7 +21,8 @@ Copyright (C) 2013 Infometrika Ltda.
 from neomodel.exception import DoesNotExist
 
 #CaliopeStorage
-from cid.core.entities import CaliopeUser, CaliopeNode
+from cid.core.entities import CaliopeNode
+from cid.core.entities.base_models.entities_models import CaliopeUser
 from cid.core.entities.services import CaliopeEntityController, CaliopeEntityService
 
 #utils

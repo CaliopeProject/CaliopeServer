@@ -22,7 +22,6 @@ Copyright (C) 2013 Infometrika Ltda.
 
 #
 from neomodel import DoesNotExist
-from cid.core.entities import CaliopeUser
 
 #tinyrpc
 from tinyrpc.protocols.jsonrpc import JSONRPCInvalidRequestError
@@ -31,6 +30,8 @@ from tinyrpc.dispatch import public
 #Flask
 
 #from groupmodel import GroupNode
+from cid.core.entities.base_models.entities_models import CaliopeUser
+
 
 class UsersManager(object):
     @staticmethod
@@ -45,7 +46,7 @@ class UsersManager(object):
                     if not isinstance(v, unicode):
                         v = unicode(v)
                     data[k] = {'value': v}
-                data['name'] = {'value': data['first_name']['value'] + ' ' + data['last_name']['value'] }
+                data['name'] = {'value': data['first_name']['value'] + ' ' + data['last_name']['value']}
                 users_list.append({u'name': data['name'],
                                    u'username': data['username'],
                                    u'first_name': data['first_name'],
