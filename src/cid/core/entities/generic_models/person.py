@@ -21,3 +21,25 @@ Copyright (C) 2013 Infometrika Ltda.
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
+
+from ..base_models.entities_models import *
+from .contact import CaliopeContact
+from .identification_document import CaliopeIdentificationDocument
+
+
+class CaliopePersonData(CaliopeEntityData):
+    #: primer nombre
+    first_name = StringProperty()
+    #: segundo nombre
+    second_name = StringProperty()
+    #: primer apellido
+    last_name = StringProperty()
+    #: segundo_apellido
+    sur_name = StringProperty()
+    identification_document = RelationshipTo(CaliopeIdentificationDocument, 'IDENTIFIED_BY', ZeroOrOne)
+    #: información de contacto
+    contact_information = RelationshipTo(CaliopeContact, 'CONTACT_INFORMATION', ZeroOrOne)
+
+
+class CaliopePerson(CaliopeEntityData):
+    entity_data_type = CaliopePersonData

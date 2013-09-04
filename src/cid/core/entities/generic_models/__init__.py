@@ -21,3 +21,7 @@ Copyright (C) 2013 Infometrika Ltda.
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
+from .identification_document import *
+from .geolocation import *
+from .contact import *
+from .person import *

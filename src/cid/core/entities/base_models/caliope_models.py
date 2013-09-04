@@ -114,11 +114,11 @@ class CaliopeNode(SemiStructuredNode):
         return cls.index.get(uuid=id_node)
 
     @classmethod
-    def push(cls, **kwargs):
+    def push(cls, *args, **kwargs):
         """
         Creates a single node of one class and return it.
         """
-        new_node = cls(**kwargs)
+        new_node = cls(*args, **kwargs)
         new_node.save()
         return new_node
 

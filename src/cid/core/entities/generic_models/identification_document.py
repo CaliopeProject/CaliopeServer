@@ -22,3 +22,28 @@ Copyright (C) 2013 Infometrika Ltda.
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
+from ..base_models.entities_models import *
+from .geolocation import CaliopeMunicipality
+
+
+class CaliopeIdentificationDocumentTypeData(CaliopeEntityData):
+    name = StringProperty()
+    code = StringProperty()
+    maximum_length = IntegerProperty()
+    minimum_length = IntegerProperty
+
+
+class CaliopeIdentificationDocumentType(CaliopeEntity):
+    entity_data_type = CaliopeIdentificationDocumentTypeData
+
+
+class CaliopeIdentificationDocumentData(CaliopeEntityData):
+    number = StringProperty()
+    issue_date = DateTimeProperty()
+    type = RelationshipTo(CaliopeIdentificationDocumentType, 'IS_TYPE', One)
+    issue_location = RelationshipTo(CaliopeMunicipality, 'ISSUED_AT', ZeroOrOne)
+
+
+class CaliopeIdentificationDocument(CaliopeEntity):
+    entity_data_type = CaliopeIdentificationDocumentData
+
