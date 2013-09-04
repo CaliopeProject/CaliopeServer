@@ -36,12 +36,12 @@ class TaskData(CaliopeEntityData):
     holders = RelationshipFrom(CaliopeUser, 'HOLDER')
 
     deadline = DateTimeProperty()
-    task_name = StringProperty()
+    name = StringProperty()
     description = StringProperty()
     progress = IntegerProperty()
     subtasks = JSONProperty()
     comments = JSONProperty()
-    task_color = StringProperty()
+    color = StringProperty()
 
     def __init__(self, *args, **kwargs):
         super(TaskData, self).__init__(*args, **kwargs)
