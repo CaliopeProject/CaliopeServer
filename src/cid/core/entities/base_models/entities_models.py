@@ -31,7 +31,7 @@ from exceptions import RuntimeError
 from neomodel.exception import NotConnected
 
 from neomodel import (RelationshipTo, RelationshipFrom,
-                      One, StringProperty, DateTimeProperty)
+                      One, ZeroOrOne, StringProperty, DateTimeProperty)
 
 #Storage
 from .caliope_models import *
@@ -55,26 +55,17 @@ class CaliopeGroup(CaliopeNode):
     members = RelationshipFrom('CaliopeUser', 'IS_MEMBER_OF_GROUP')
 
 
-class CaliopeDocument(CaliopeNode):
-    __index__ = 'CaliopeStorage'
-    url = StringProperty()
-    sha256 = StringProperty()
-    insertion_date = DateTimeProperty(default=lambda: timeStampGenerator())
-    description = StringProperty()
-    state = StringProperty()
-    owner = RelationshipFrom(CaliopeUser, 'OWNER')
-
-    @staticmethod
-    def add_to_repo(parent_uuid, url, description):
-        pass
-        #u=urlparse(url)
-        #if u.scheme=='file':
-        #    sha256 = get_sha256(u.path)
-        #save()
-
+class CaliopeEntity(CaliopeNode):
+    pass
 
 class CaliopeEntityData(CaliopeNode):
     __index__ = 'CaliopeStorage'
+    entity_type = CaliopeEntity
+
+    def __init__(self, *args, **kwargs):
+        current = RelationshipFrom(self.entity_type, 'CURRENT', cardinality=ZeroOrOne)
+        setattr(self.__class__, 'current', current)
+        super(CaliopeEntityData, self).__init__(*args, **kwargs)
 
     def get_data(self):
         return self._get_node_data()
