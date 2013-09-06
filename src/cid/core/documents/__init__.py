@@ -26,7 +26,7 @@ from tinyrpc.protocols.jsonrpc import JSONRPCInternalError
 from tinyrpc.dispatch import public
 
 #Flask
-from cid.core.entities.generic_models import CaliopeDocument
+from cid.core.entities.generic_models.document import CaliopeDocument
 
 
 class DocumentManager(object):
@@ -37,7 +37,7 @@ class DocumentManager(object):
 
     @staticmethod
     @public
-    def getFilteredByProyect(proyect_id):
+    def getFilteredByProject(proyect_id):
         return JSONRPCInternalError('Unimplemented')
 
     @staticmethod
@@ -49,5 +49,6 @@ class DocumentManager(object):
     def addDocument(parent_uuid, url, description):
         node = CaliopeDocument()
         node.add_to_repo(parent_uuid, url, description)
+        return node
         
         

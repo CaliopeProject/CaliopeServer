@@ -89,7 +89,7 @@ class CaliopeEmail(CaliopeEntity):
 
 class CaliopeContactData(CaliopeEntityData):
     address = RelationshipTo(CaliopeAddress, 'ADDRESS', ZeroOrMore)
-    phone_number = RelationshipManager(CaliopePhone, 'PHONE', ZeroOrMore)
+    phone_number = RelationshipTo(CaliopePhone, 'PHONE', ZeroOrMore)
     email_address = RelationshipTo(CaliopeEmail, 'EMAIL', ZeroOrMore)
 
 

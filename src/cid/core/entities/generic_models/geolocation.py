@@ -43,6 +43,8 @@ class CaliopeStateData(CaliopeEntityData):
     area_code = StringProperty()
     part_of = RelationshipTo(CaliopeCountry, 'PART_OF', One)
 
+class CaliopeMunicipalityData(CaliopeEntityData):
+    pass
 
 class CaliopeState(CaliopeEntity):
     entity_data_type = CaliopeMunicipalityData
