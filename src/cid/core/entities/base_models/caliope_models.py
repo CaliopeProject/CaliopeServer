@@ -54,7 +54,7 @@ class CaliopeNode(SemiStructuredNode):
 
     def __init__(self, *args, **kwargs):
         #:RelationshipTo previous node. Root nodes should use "ROOT"
-        ancestor_node = RelationshipFrom(self.__class__, 'ANCESTOR_NODE')
+        ancestor_node = RelationshipFrom(self.__class__, 'ANCESTOR_NODE', ZeroOrOne)
         setattr(self.__class__, 'ancestor_node', ancestor_node)
         super(CaliopeNode, self).__init__(*args, **kwargs)
         #self._set_node_attr(**kwargs)
@@ -103,7 +103,7 @@ class CaliopeNode(SemiStructuredNode):
     def reconnect(cls, old_node, new_node):
         for key, val in old_node._class_properties().items():
             if issubclass(val.__class__, RelationshipDefinition):
-                if hasattr(new_node, key):
+                if (key != 'ancestor_node') and hasattr(new_node, key):
                     new_rel = getattr(new_node, key)
                     old_rel = getattr(old_node, key)
                     for n in old_rel.all():
