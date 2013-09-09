@@ -21,12 +21,11 @@ Copyright (C) 2013 Infometrika Ltda.
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
-#neomodel primitives
-from neomodel.properties import ( DateTimeProperty,
-                                  StringProperty, IntegerProperty, JSONProperty)
 
 #Caliope Entities
-from cid.core.entities import CaliopeEntityData, CaliopeEntity, RelationshipFrom, CaliopeUser, One, NotConnected
+from cid.core.entities import (CaliopeEntityData, CaliopeEntity, RelationshipFrom,
+                               CaliopeUser, One, NotConnected, DateTimeProperty,
+                               StringProperty, IntegerProperty, JSONProperty)
 
 
 class TaskData(CaliopeEntityData):
