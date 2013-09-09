@@ -22,7 +22,8 @@ Copyright (C) 2013 Infometrika Ltda.
 """
 
 #CaliopeStorage
-from cid.core.entities import CaliopeNode, CaliopeUser, DoesNotExist
+from cid.core.entities import CaliopeNode, DoesNotExist
+from cid.core.entities.base_models.entities_models import CaliopeUser
 from cid.core.entities.services import CaliopeEntityController, CaliopeEntityService
 
 #utils
@@ -45,15 +46,15 @@ class ProjectServices(CaliopeEntityService):
     @staticmethod
     @public(name='getAll')
     def get_all():
-        pass
+        return [pe.get_entity_data() for pe in ProjectEntity.category().instance.all()]
 
     @staticmethod
     @public(name='getData')
     def get_data(uuid):
         data = {}
         data['uuid'] = uuid
-        task_controller = ProjectController(**data)
-        return task_controller.get_data()
+        project_controller = ProjectController(**data)
+        return project_controller.get_data()
 
 
     @staticmethod
@@ -125,8 +126,6 @@ class ProjectController(CaliopeEntityController):
             self.project = ProjectEntity()
             self.project.save()
             self.project.init_entity_data(**data)
-            ownerUserNode = CaliopeUser.index.get(username=LoginManager().get_user())
-            self.project.set_owner(ownerUserNode)
         else:
             self.project.set_entity_data(**data)
 

@@ -22,7 +22,7 @@
         }
       },
       {
-        "name": "generalLocation",
+        "name": "general_location",
         "caption": "Localización",
         "type": "ckedit"
       },
@@ -54,7 +54,7 @@
         }
       },
       {
-        "name": "projectType",
+        "name": "project_type",
         "caption": "Tipo de Proyecto",
         "type": "select",
         "options": {
@@ -63,26 +63,16 @@
         }
       },
       {
-        "name": "profitCenter",
+        "name": "profit_center",
         "caption": "Centro de costos del proyecto",
         "type": "text"
       },
       {
-        "name": "manager",
-        "caption": "Usuario responsable",
-        "type": "select",
-        "options-load-server" : {
-            "method"        : "accounts.getAll",
-            "field-value"   : "username.value",
-            "field-desc"    : "username.value"
-        }
-      },
-      {
-        "name": "creationDate",
+        "name": "creation_date",
         "type": "hidden"
       },
       {
-        "name": "recordDocumentCreation",
+        "name": "record_document_creation",
         "caption": "Resolución Anuncio del Proyecto",
         "type": "attachment"
       }
@@ -107,11 +97,11 @@
       "columns" : [
         {
           "class": "span6",
-          "elements"  : ["name", "generalLocation", "manager", "creationDate"]
+          "elements"  : ["name", "general_location", "creation_date"]
         },
         {
           "class": "span6",
-          "elements"  : ["locality", "projectType", "profitCenter"]
+          "elements"  : ["locality", "project_type", "profit_center"]
         }
       ]
     },
@@ -120,7 +110,7 @@
       "columns" : [
         {
           "class": "span6",
-          "elements"  : ["recordDocumentCreation"]
+          "elements"  : ["record_document_creation"]
         }
       ]
     }

@@ -58,7 +58,8 @@ def register_modules(app):
                 app.register_blueprint(module_imp.getBlueprint(), url_prefix=route)
             except AttributeError as e:
                 #This modules does not contain a blueprint
-                app.logger.warning(str(e))
+                #app.logger.warning(str(e))
+                pass
             try:
                 dispatcher = getattr(app, 'dispatcher', None)
                 if dispatcher is not None:
@@ -66,7 +67,8 @@ def register_modules(app):
                 else:
                     raise Exception("No dispatcher found")
             except AttributeError as e:
-                app.logger.warning(str(e))
+                #app.logger.warning(str(e))
+                pass
             #This modules does not contain a blueprint
         except ImportError as e:
             app.logger.exception(str(e))

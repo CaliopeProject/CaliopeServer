@@ -3,7 +3,9 @@
 @authors: Andrés Felipe Calderón andres.calderon@correlibre.org
           Sebastián Ortiz V. neoecos@gmail.com
 
-SIIM2 Server is the web server of SIIM2 Framework
+@license:  GNU AFFERO GENERAL PUBLIC LICENSE
+
+SIIM Models are the data definition of SIIM2 Framework
 Copyright (C) 2013 Infometrika Ltda.
 
     This program is free software: you can redistribute it and/or modify
@@ -20,35 +22,24 @@ Copyright (C) 2013 Infometrika Ltda.
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-#CaliopeStorage
-#tinyrpc
-from tinyrpc.protocols.jsonrpc import JSONRPCInternalError
-from tinyrpc.dispatch import public
-
-#Flask
-from cid.core.entities.generic_models.document import CaliopeDocument
+from ..base_models.entities_models import *
+from .contact import CaliopeContact
+from .identification_document import CaliopeIdentificationDocument
 
 
-class DocumentManager(object):
-    @staticmethod
-    @public
-    def getAll():
-        return JSONRPCInternalError('Unimplemented')
+class CaliopePersonData(CaliopeEntityData):
+    #: primer nombre
+    first_name = StringProperty()
+    #: segundo nombre
+    second_name = StringProperty()
+    #: primer apellido
+    last_name = StringProperty()
+    #: segundo_apellido
+    sur_name = StringProperty()
+    identification_document = RelationshipTo(CaliopeIdentificationDocument, 'IDENTIFIED_BY', ZeroOrOne)
+    #: información de contacto
+    contact_information = RelationshipTo(CaliopeContact, 'CONTACT_INFORMATION', ZeroOrOne)
 
-    @staticmethod
-    @public
-    def getFilteredByProject(proyect_id):
-        return JSONRPCInternalError('Unimplemented')
 
-    @staticmethod
-    @public
-    def setState():
-        return JSONRPCInternalError('Unimplemented')
-
-    @staticmethod
-    def addDocument(parent_uuid, url, description):
-        node = CaliopeDocument()
-        node.add_to_repo(parent_uuid, url, description)
-        return node
-        
-        
+class CaliopePerson(CaliopeEntityData):
+    entity_data_type = CaliopePersonData

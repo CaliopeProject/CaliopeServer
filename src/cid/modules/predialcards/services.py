@@ -21,7 +21,8 @@ Copyright (C) 2013 Infometrika Ltda.
 from neomodel.exception import DoesNotExist
 
 #CaliopeStorage
-from cid.core.entities import CaliopeUser, CaliopeNode
+from cid.core.entities import CaliopeNode
+from cid.core.entities.base_models.entities_models import CaliopeUser
 from cid.core.entities.services import CaliopeEntityController, CaliopeEntityService
 
 #utils
@@ -73,8 +74,6 @@ class PredialCardsController(CaliopeEntityController):
             self.predial_card = PredialCardEntity()
             self.predial_card.save()
             self.predial_card.init_entity_data(**data)
-            ownerUserNode = CaliopeUser.index.get(username=LoginManager().get_user())
-            self.predial_card.set_owner(ownerUserNode)
         else:
             self.predial_card.set_entity_data(**data)
 

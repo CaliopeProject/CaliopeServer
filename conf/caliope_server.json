@@ -51,6 +51,12 @@
                 }
             },
             {
+                "search": {
+                    "package": "core.search",
+                    "service": "search"
+                }
+            },
+            {
                 "mtvprojects": {
                     "package": "modules.projects",
                     "service": "projects"

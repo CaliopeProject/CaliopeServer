@@ -22,33 +22,28 @@ Copyright (C) 2013 Infometrika Ltda.
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-#Caliope Entities
-from cid.core.entities import (CaliopeEntityData, CaliopeEntity, RelationshipFrom,
-                               CaliopeUser, One, NotConnected, DateTimeProperty,
-                               StringProperty, IntegerProperty, JSONProperty)
+from ..base_models.entities_models import *
 
 
-class TaskData(CaliopeEntityData):
+class CaliopeDocumentData(CaliopeEntityData):
     __index__ = 'CaliopeStorage'
 
     owner = RelationshipFrom(CaliopeUser, 'OWNER', cardinality=One)
     holders = RelationshipFrom(CaliopeUser, 'HOLDER')
 
-    deadline = DateTimeProperty()
-    name = StringProperty()
+    url = StringProperty()
+    sha256 = StringProperty()
+    insertion_date = DateTimeProperty(default=timeStampGenerator)
     description = StringProperty()
-    progress = IntegerProperty()
-    subtasks = JSONProperty()
-    comments = JSONProperty()
-    color = StringProperty()
+    state = StringProperty()
 
     def __init__(self, *args, **kwargs):
-        super(TaskData, self).__init__(*args, **kwargs)
+        super(CaliopeDocumentData, self).__init__(*args, **kwargs)
 
-    def get_task_data(self):
+    def get_document_data(self):
         return self.get_data()
 
-    def set_task_data(self, data):
+    def set_document_data(self, data):
         return self.set_data(**data)
 
     def set_owner(self, owner_node):
@@ -75,13 +70,13 @@ class TaskData(CaliopeEntityData):
             raise RuntimeError('No valid holder class')
 
 
-class Task(CaliopeEntity):
+class CaliopeDocument(CaliopeEntity):
     __index__ = 'CaliopeStorage'
 
-    entity_data_type = TaskData
+    entity_data_type = CaliopeDocumentData
 
     def __init__(self, *args, **kwargs):
-        super(Task, self).__init__(*args, **kwargs)
+        super(CaliopeDocument, self).__init__(*args, **kwargs)
 
     def set_owner(self, owner):
         self._get_current().set_owner(owner)
@@ -97,11 +92,9 @@ class Task(CaliopeEntity):
 
     def get_entity_data(self):
         #: Added due to extra logic of holders
-        rv = super(Task, self).get_entity_data()
+        rv = super(CaliopeDocument, self).get_entity_data()
         current_node = self._get_current()
         holders_nodes = current_node.holders.all()
         holders = [holder_node.username for holder_node in holders_nodes]
-        #TODO: Why is this hardcored here?
-        rv['ente_asignado'] = {'value': holders}
+        rv['holders'] = {'value': holders}
         return rv
-

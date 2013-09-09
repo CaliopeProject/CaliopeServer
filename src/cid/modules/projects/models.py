@@ -23,7 +23,8 @@ Copyright (C) 2013 Infometrika Ltda.
 """
 #Caliope Entities
 from cid.core.entities import RelationshipFrom, StringProperty
-from cid.core.entities import CaliopeEntityData, CaliopeEntity, CaliopeUser
+from cid.core.entities import CaliopeEntityData, CaliopeEntity
+from cid.core.entities.base_models.entities_models import CaliopeUser
 
 
 class ProjectData(CaliopeEntityData):
@@ -36,7 +37,6 @@ class ProjectData(CaliopeEntityData):
     record_document_creation = StringProperty()
     profit_center = StringProperty()
 
-    managers = RelationshipFrom(CaliopeUser, 'MANAGES')
 
     def __init__(self, *args, **kwargs):
         super(ProjectData, self).__init__(*args, **kwargs)

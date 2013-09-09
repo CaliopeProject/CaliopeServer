@@ -32,14 +32,14 @@ from neomodel.properties import (Property,
                                  StringProperty)
 
 from neomodel import (StructuredNode, RelationshipTo, RelationshipFrom,
-        Relationship, One)
+                      Relationship, One)
 
 #CaliopeStorage
-from cid.core.entities import CaliopeNode, CaliopeUser
+from cid.core.entities import CaliopeNode
+from cid.core.entities.base_models.entities_models import CaliopeUser
 
 
 class SIIMFormData(CaliopeNode):
-
     def get_form_data(self):
         return self._get_node_data()
 
@@ -47,10 +47,9 @@ class SIIMFormData(CaliopeNode):
         return self.evolve(**data)
 
 
-
 class SIIMForm(CaliopeNode):
     form_id = StringProperty(index=True)
-    owner  = RelationshipFrom(CaliopeUser, 'OWNER', cardinality=One)
+    owner = RelationshipFrom(CaliopeUser, 'OWNER', cardinality=One)
     holder = RelationshipFrom(CaliopeUser, 'HOLDER')
 
     def __init__(self, *args, **kwargs):

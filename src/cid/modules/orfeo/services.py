@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 """
 @authors: Andrés Felipe Calderón andres.calderon@correlibre.org
+          Jairo Hernan Losada jlosada@gmail.com
           Sebastián Ortiz V. neoecos@gmail.com
 
 SIIM2 Server is the web server of SIIM2 Framework
@@ -22,8 +23,9 @@ Copyright (C) 2013 Infometrika Ltda.
 from neomodel.exception import DoesNotExist
 
 #CaliopeStorage
-from cid.core.entities import (CaliopeNode, CaliopeUser, CaliopeEntityController,
-                               CaliopeEntityService)
+from cid.core.entities import CaliopeNode
+from cid.core.entities.base_models.entities_models import CaliopeUser
+from cid.core.entities.services import CaliopeEntityController, CaliopeEntityService
 
 from cid.utils.fileUtils import loadJSONFromFile
 
@@ -37,12 +39,12 @@ from flask import current_app
 #SIIM2
 from cid.core.login import LoginManager
 
-from models import Task
+from models import Orfeo
 
 
-class TaskServices(CaliopeEntityService):
+class OrfeoServices(CaliopeEntityService):
     def __init__(self, *args, **kwargs):
-        super(TaskServices, self).__init__(*args, **kwargs)
+        super(OrfeoServices, self).__init__(*args, **kwargs)
 
     @staticmethod
     @public(name='getAll')
@@ -50,24 +52,30 @@ class TaskServices(CaliopeEntityService):
 
         user_node = CaliopeUser.index.get(username=LoginManager().get_user())
         #: Starting from current user, match all nodes which are connected througth a HOLDER
-        #: relationship and that node is connected with a  CURRENT relationship to a task.
-        #: From the task find the FIRST node
+        #: relationship and that node is connected with a  CURRENT relationship to a Orfeo.
+        #: From the Orfeo find the FIRST node
         results, metadata = user_node.cypher("START user=node({self})"
                                              "MATCH (user)-[r:HOLDER]-(tdc)-[e:CURRENT]-(t), (t)-[:FIRST]-(tdf)"
                                              "WHERE has(r.category) and not(tdf=tdc)"
                                              "return t, r.category");
-        tasks_list = {'ToDo': {'pos': 0, 'category': {'value': 'ToDo'}, 'tasks': []},
-                      'Doing': {'pos': 1, 'category': {'value': 'Doing'}, 'tasks': []},
-                      'Done': {'pos': 2, 'category': {'value': 'Done'}, 'tasks': []}}
+        Orfeos_list = {'ToDo': {'pos': 0, 'category': {'value': 'ToDo'}, 'Orfeos': []},
+                      'Doing': {'pos': 1, 'category': {'value': 'Doing'}, 'Orfeos': []},
+                      'Done': {'pos': 2, 'category': {'value': 'Done'}, 'Orfeos': []}}
 
         for row in results:
-            tl = tasks_list[row[1]]['tasks']
-            task_class = Task().__class__
-            task = task_class.inflate(row[0])
-            entity_data = task.get_entity_data()
+            tl = Orfeos_list[row[1]]['Orfeos']
+            Orfeo_class = Orfeo().__class__
+            Orfeo = Orfeo_class.inflate(row[0])
+            entity_data = Orfeo.get_entity_data()
             tl.append(entity_data)
 
-        return [list for list in sorted(tasks_list.values(), key=lambda pos: pos['pos'])]
+        return [list for list in sorted(Orfeos_list.values(), key=lambda pos: pos['pos'])]
+
+    @staticmethod
+    @public(name='getColor')
+    def get_color():
+        rv = {'color':'#FFFFFF'}
+        return rv
 
 
     @staticmethod
@@ -75,16 +83,16 @@ class TaskServices(CaliopeEntityService):
     def get_data(uuid):
         data = {}
         data['uuid'] = uuid
-        task_controller = TaskController(**data)
-        return task_controller.get_data()
+        Orfeo_controller = OrfeoController(**data)
+        return Orfeo_controller.get_data()
 
 
     @staticmethod
     @public(name='getModel')
     def get_model():
-        task_controller = TaskController()
-        rv = task_controller.get_model()
-        rv['data'] = task_controller.get_data()
+        Orfeo_controller = OrfeoController()
+        rv = Orfeo_controller.get_model()
+        rv['data'] = Orfeo_controller.get_data()
         return rv
 
     @staticmethod
@@ -92,28 +100,28 @@ class TaskServices(CaliopeEntityService):
     def get_model_and_data(uuid):
         data = {}
         data['uuid'] = uuid
-        task_controller = TaskController(**data)
-        rv = task_controller.get_model()
-        rv['data'] = task_controller.get_data()
+        Orfeo_controller = OrfeoController(**data)
+        rv = Orfeo_controller.get_model()
+        rv['data'] = Orfeo_controller.get_data()
         return rv
 
     @staticmethod
     @public
     def create(data=None):
         if 'uuid' in data:
-            task = TaskController(uuid=data['uuid'])
+            Orfeo = OrfeoController(uuid=data['uuid'])
         else:
-            task = TaskController()
-        task.set_data(**data)
-        rv = task.get_data()
+            Orfeo = OrfeoController()
+        Orfeo.set_data(**data)
+        rv = Orfeo.get_data()
         return rv
 
     @staticmethod
     @public
     def edit(data=None):
-        task_controller = TaskController(**data)
-        task_controller.set_data(**data)
-        rv = task_controller.get_data()
+        Orfeo_controller = OrfeoController(**data)
+        Orfeo_controller.set_data(**data)
+        rv = Orfeo_controller.get_data()
         return rv
 
     @staticmethod
@@ -122,20 +130,20 @@ class TaskServices(CaliopeEntityService):
         raise JSONRPCInvalidRequestError('Unimplemented')
 
 
-class TaskController(CaliopeEntityController):
+class OrfeoController(CaliopeEntityController):
     def __init__(self, *args, **kwargs):
-        super(TaskController, self).__init__(*args, **kwargs)
+        super(OrfeoController, self).__init__(*args, **kwargs)
         if 'uuid' in kwargs:
             try:
                 node = CaliopeNode.index.get(uuid=kwargs['uuid'])
-                self.task = Task().__class__.inflate(node.__node__)
+                self.Orfeo = Orfeo().__class__.inflate(node.__node__)
             except DoesNotExist as e:
-                self.task = None
+                self.Orfeo = None
             except Exception as e:
                 raise e
         else:
             #: TODO check initialization
-            self.task = None
+            self.Orfeo = None
             self.set_data(**{})
 
     def get_model(self):
@@ -165,18 +173,18 @@ class TaskController(CaliopeEntityController):
         else:
             holders = LoginManager().get_user()
 
-        if self.task is None:
-            self.task = Task()
-            self.task.save()
-            self.task.init_entity_data(**data)
+        if self.Orfeo is None:
+            self.Orfeo = Orfeo()
+            self.Orfeo.save()
+            self.Orfeo.init_entity_data(**data)
             ownerUserNode = CaliopeUser.index.get(username=LoginManager().get_user())
-            self.task.set_owner(ownerUserNode)
+            self.Orfeo.set_owner(ownerUserNode)
         else:
-            self.task.set_entity_data(**data)
+            self.Orfeo.set_entity_data(**data)
         self.set_holders(holders, category)
 
     def get_data(self):
-        return self.task.get_entity_data()
+        return self.Orfeo.get_entity_data()
 
     def set_holders(self, holders, category):
 
@@ -192,15 +200,15 @@ class TaskController(CaliopeEntityController):
             else:
                 query += ' OR username:' + holder
         holdersUsersNodes = CaliopeUser.index.search(query=query)
-        self.task.remove_holders()
+        self.Orfeo.remove_holders()
         for holderUser in holdersUsersNodes:
-            self.task.set_holder(holderUser, properties={'category': category})
+            self.Orfeo.set_holder(holderUser, properties={'category': category})
 
     def _check_template(self):
         #: TODO: Check if form_name is valid and form_path is a file
         #: TODO: Cache this files
         try:
-            self.template = loadJSONFromFile('core/tasks/templates/tasks.json', current_app.root_path)
+            self.template = loadJSONFromFile('core/Orfeos/templates/Orfeos.json', current_app.root_path)
             return True
         except IOError:
             return False

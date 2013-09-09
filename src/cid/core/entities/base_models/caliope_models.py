@@ -54,7 +54,7 @@ class CaliopeNode(SemiStructuredNode):
 
     def __init__(self, *args, **kwargs):
         #:RelationshipTo previous node. Root nodes should use "ROOT"
-        ancestor_node = RelationshipFrom(self.__class__, 'ANCESTOR_NODE')
+        ancestor_node = RelationshipFrom(self.__class__, 'ANCESTOR_NODE', ZeroOrOne)
         setattr(self.__class__, 'ancestor_node', ancestor_node)
         super(CaliopeNode, self).__init__(*args, **kwargs)
         #self._set_node_attr(**kwargs)
@@ -103,7 +103,7 @@ class CaliopeNode(SemiStructuredNode):
     def reconnect(cls, old_node, new_node):
         for key, val in old_node._class_properties().items():
             if issubclass(val.__class__, RelationshipDefinition):
-                if hasattr(new_node, key):
+                if (key != 'ancestor_node') and hasattr(new_node, key):
                     new_rel = getattr(new_node, key)
                     old_rel = getattr(old_node, key)
                     for n in old_rel.all():
@@ -114,48 +114,13 @@ class CaliopeNode(SemiStructuredNode):
         return cls.index.get(uuid=id_node)
 
     @classmethod
-    def push(cls, **kwargs):
+    def push(cls, *args, **kwargs):
         """
         Creates a single node of one class and return it.
         """
-        new_node = cls(**kwargs)
+        new_node = cls(*args, **kwargs)
         new_node.save()
         return new_node
-
-
-class CaliopeUser(CaliopeNode):
-    __index__ = 'CaliopeStorage'
-    username = StringProperty(unique_index=True)
-    domainname = StringProperty()
-    password = StringProperty()
-    first_name = StringProperty(required=True)
-    last_name = StringProperty(required=True)
-    member_of = RelationshipTo('CaliopeGroup', 'IS_MEMBER_OF_GROUP')
-
-
-class CaliopeGroup(CaliopeNode):
-    __index__ = 'CaliopeStorage'
-    name = StringProperty(required=True)
-    code = StringProperty(unique_index=True)
-    members = RelationshipFrom('CaliopeUser', 'IS_MEMBER_OF_GROUP')
-
-
-class CaliopeDocument(CaliopeNode):
-    __index__ = 'CaliopeStorage'
-    url = StringProperty()
-    sha256 = StringProperty()
-    insertion_date = DateTimeProperty(default=lambda: timeStampGenerator())
-    description = StringProperty()
-    state = StringProperty()
-    owner = RelationshipFrom(CaliopeUser, 'OWNER')
-
-    @staticmethod
-    def add_to_repo(parent_uuid, url, description):
-        pass
-        #u=urlparse(url)
-        #if u.scheme=='file':
-        #    sha256 = get_sha256(u.path)
-        #save()
 
 
 class CaliopeRelation(RelationshipDefinition):

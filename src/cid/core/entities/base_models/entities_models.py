@@ -31,66 +31,50 @@ from exceptions import RuntimeError
 from neomodel.exception import NotConnected
 
 from neomodel import (RelationshipTo, RelationshipFrom,
-                      One )
+                      One, ZeroOrOne, StringProperty, DateTimeProperty)
 
 #Storage
-from caliope_models import *
+from .caliope_models import *
+from cid.core.utils import timeStampGenerator
 
 
-class CaliopeEntityData(CaliopeNode):
+class CaliopeUser(CaliopeNode):
     __index__ = 'CaliopeStorage'
+    username = StringProperty(unique_index=True)
+    domainname = StringProperty()
+    password = StringProperty()
+    first_name = StringProperty(required=True)
+    last_name = StringProperty(required=True)
+    member_of = RelationshipTo('CaliopeGroup', 'IS_MEMBER_OF_GROUP')
 
-    owner = RelationshipFrom(CaliopeUser, 'OWNER', cardinality=One)
-    holders = RelationshipFrom(CaliopeUser, 'HOLDER')
-    attachments = RelationshipTo(CaliopeDocument, 'ATTACHMENT')
 
-    def get_form_data(self):
-        return self._get_node_data()
-
-    def set_form_data(self, data):
-        return self.evolve(**data)
-
-    def set_owner(self, owner_node):
-        if isinstance(owner_node, CaliopeUser):
-            if self.owner.count() >= 1:
-                self.owner.disconnect(self.owner.single())
-            self.owner.connect(owner_node)
-        else:
-            raise RuntimeError('No valid owner class')
-
-    def add_holder(self, holder_node, **props):
-        if isinstance(holder_node, CaliopeUser):
-            self.holders.connect(holder_node, **props)
-        else:
-            raise RuntimeError('No valid holder class')
-
-    def remove_holder(self, holder_node):
-        if isinstance(holder_node, CaliopeUser):
-            if self.holders.is_connected(holder_node):
-                self.holders.disconnect(holder_node)
-            else:
-                raise NotConnected('User is not a valid holder')
-        else:
-            raise RuntimeError('No valid holder class')
-
-    def add_attachment(self, attachment):
-        if isinstance(attachment, CaliopeDocument):
-            self.attachments.connect(attachment)
-        else:
-            raise RuntimeError('No valid attachment class')
-
-    def remove_attachment(self, attachment):
-        if isinstance(attachment, CaliopeDocument):
-            if self.attachments.is_connected(attachment):
-                self.attachments.disconnect(attachment)
-            else:
-                raise NotConnected('Attachment is not valid')
-        else:
-            raise RuntimeError('Not valid attachment class')
+class CaliopeGroup(CaliopeNode):
+    __index__ = 'CaliopeStorage'
+    name = StringProperty(required=True)
+    code = StringProperty(unique_index=True)
+    members = RelationshipFrom('CaliopeUser', 'IS_MEMBER_OF_GROUP')
 
 
 class CaliopeEntity(CaliopeNode):
+    pass
 
+class CaliopeEntityData(CaliopeNode):
+    __index__ = 'CaliopeStorage'
+    entity_type = CaliopeEntity
+
+    def __init__(self, *args, **kwargs):
+        current = RelationshipFrom(self.entity_type, 'CURRENT', cardinality=ZeroOrOne)
+        setattr(self.__class__, 'current', current)
+        super(CaliopeEntityData, self).__init__(*args, **kwargs)
+
+    def get_data(self):
+        return self._get_node_data()
+
+    def set_data(self, data):
+        return self.evolve(**data)
+
+
+class CaliopeEntity(CaliopeNode):
     __index__ = 'CaliopeStorage'
 
     entity_data_type = CaliopeEntityData
@@ -117,28 +101,17 @@ class CaliopeEntity(CaliopeNode):
     def set_entity_data(self, **data):
         if 'uuid' in data:
             del data['uuid']
-        new_current = self._get_current().evolve(**data)
+        new_current = self._get_current().set_data(data)
         self._set_current(new_current)
         return self._get_current()
 
-    def set_owner(self, owner):
-        self._get_current().set_owner(owner)
-
-    def set_holder(self, holder, **props):
-        self._get_current().add_holder(holder, **props)
-
     def get_entity_data(self):
         current_node = self._get_current()
-        rv = current_node._get_node_data()
+        rv = current_node.get_data()
         for k, v in rv.iteritems():
             if k == 'uuid':
                 v = self.uuid
             rv[k] = self._parse_entity_data(v)
-
-        holders_nodes = current_node.holders.all()
-        holders = [holder_node.username for holder_node in holders_nodes]
-        #TODO: Why is this hardcored here?
-        rv['ente_asignado'] = {'value': holders}
         return rv
 
     def _parse_entity_data(self, v):
@@ -158,5 +131,5 @@ class CaliopeEntity(CaliopeNode):
 
     def get_entity_relationships(self):
         relationships = {k: v for k, v in self._get_current()._class_properties()
-                if isinstance(v, RelationshipDefinition)}
+                         if isinstance(v, RelationshipDefinition)}
         return relationships

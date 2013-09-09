@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 """
 @authors: Andrés Felipe Calderón andres.calderon@correlibre.org
+          Jairo Hernan Losada jlosada@gmail.com
           Sebastián Ortiz V. neoecos@gmail.com
 
 @license:  GNU AFFERO GENERAL PUBLIC LICENSE
@@ -21,14 +22,15 @@ Copyright (C) 2013 Infometrika Ltda.
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
+#neomodel primitives
+from neomodel.properties import ( DateTimeProperty,
+                                  StringProperty, IntegerProperty, JSONProperty)
 
 #Caliope Entities
-from cid.core.entities import (CaliopeEntityData, CaliopeEntity, RelationshipFrom,
-                               CaliopeUser, One, NotConnected, DateTimeProperty,
-                               StringProperty, IntegerProperty, JSONProperty)
+from cid.core.entities import CaliopeEntityData, CaliopeEntity, RelationshipFrom, CaliopeUser, One, NotConnected
 
 
-class TaskData(CaliopeEntityData):
+class OrfeoData(CaliopeEntityData):
     __index__ = 'CaliopeStorage'
 
     owner = RelationshipFrom(CaliopeUser, 'OWNER', cardinality=One)
@@ -38,17 +40,17 @@ class TaskData(CaliopeEntityData):
     name = StringProperty()
     description = StringProperty()
     progress = IntegerProperty()
-    subtasks = JSONProperty()
+    subOrfeos = JSONProperty()
     comments = JSONProperty()
     color = StringProperty()
 
     def __init__(self, *args, **kwargs):
-        super(TaskData, self).__init__(*args, **kwargs)
+        super(OrfeoData, self).__init__(*args, **kwargs)
 
-    def get_task_data(self):
+    def get_Orfeo_data(self):
         return self.get_data()
 
-    def set_task_data(self, data):
+    def set_Orfeo_data(self, data):
         return self.set_data(**data)
 
     def set_owner(self, owner_node):
@@ -75,13 +77,13 @@ class TaskData(CaliopeEntityData):
             raise RuntimeError('No valid holder class')
 
 
-class Task(CaliopeEntity):
+class Orfeo(CaliopeEntity):
     __index__ = 'CaliopeStorage'
 
-    entity_data_type = TaskData
+    entity_data_type = OrfeoData
 
     def __init__(self, *args, **kwargs):
-        super(Task, self).__init__(*args, **kwargs)
+        super(Orfeo, self).__init__(*args, **kwargs)
 
     def set_owner(self, owner):
         self._get_current().set_owner(owner)
@@ -97,7 +99,7 @@ class Task(CaliopeEntity):
 
     def get_entity_data(self):
         #: Added due to extra logic of holders
-        rv = super(Task, self).get_entity_data()
+        rv = super(Orfeo, self).get_entity_data()
         current_node = self._get_current()
         holders_nodes = current_node.holders.all()
         holders = [holder_node.username for holder_node in holders_nodes]

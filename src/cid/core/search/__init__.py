@@ -2,6 +2,7 @@
 """
 @authors: Andrés Felipe Calderón andres.calderon@correlibre.org
           Sebastián Ortiz V. neoecos@gmail.com
+          Julián Rolón V.  julian.rolon@gmail.com
 
 SIIM2 Server is the web server of SIIM2 Framework
 Copyright (C) 2013 Infometrika Ltda.
@@ -19,36 +20,8 @@ Copyright (C) 2013 Infometrika Ltda.
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
-
-#CaliopeStorage
-#tinyrpc
-from tinyrpc.protocols.jsonrpc import JSONRPCInternalError
-from tinyrpc.dispatch import public
-
-#Flask
-from cid.core.entities.generic_models.document import CaliopeDocument
+from services import SearchManager
 
 
-class DocumentManager(object):
-    @staticmethod
-    @public
-    def getAll():
-        return JSONRPCInternalError('Unimplemented')
-
-    @staticmethod
-    @public
-    def getFilteredByProject(proyect_id):
-        return JSONRPCInternalError('Unimplemented')
-
-    @staticmethod
-    @public
-    def setState():
-        return JSONRPCInternalError('Unimplemented')
-
-    @staticmethod
-    def addDocument(parent_uuid, url, description):
-        node = CaliopeDocument()
-        node.add_to_repo(parent_uuid, url, description)
-        return node
-        
-        
+def get_service():
+    return SearchManager()
