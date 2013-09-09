@@ -1,73 +1,107 @@
 {
   "name": "Tareas",
   "html": [
-      {
-        "name": "category",
-        "type": "hidden"
-      },
-      {
-        "name": "uuidparent",
-        "type": "hidden"
-      },
-      {
-          "name": "tarea",
-          "caption": "Tarea",
-          "type": "select",
-          "options" : {
-            "t1"    : "tarea1",
-            "t2"    : "tarea2",
-            "t3"    : "tarea3"
-          }
-      },
-      {
-          "name": "ente_asignado",
-          "caption": "Asignar a",
-          "type": "multi-choices",
-          "options-load-server" : {
-            "method"        : "accounts.getAll",
-            "field-value"   : "username",
-            "field-desc"    : "username"
-          }
-      },      
-      {
-          "name": "descripcion",
-          "caption": "Descripción tarea",
-          "type": "textarea",
-          "rows": "5",
-          "cols": "70"
-      },
-      {
-        "name": "fch_est_ini",
-        "caption": "Fecha estima de inicio",
-        "type": "datepicker",
-        "format" : "dd/MM/yyyy"
-      },
-      {
-        "name": "fch_est_final",
-        "caption": "Fecha estima de finalización",
-        "type": "datepicker",
-        "format" : "dd/MM/yyyy"
+    {
+      "name" : "title",
+      "type" : "div",
+      "html" :
+      [
+        {
+          "type" : "h1",
+          "html" : "Crear Tarea"
+        }
+      ]
+    },
+    {
+      "name": "category",
+      "caption": "Categoria",
+      "type": "select",
+      "class": "input-large",
+      "options" : {
+        "ToDo"    : "ToDo",
+        "Doing"   : "Doing",
+        "Done"    : "Done"
       }
+    },
+    {
+      "name": "uuidparent",
+      "type": "hidden"
+    },
+    {
+      "name": "tarea",
+      "caption": "Tarea",
+      "class": "input-large",
+      "type": "select",
+      "options" : {
+        "t1"    : "tarea1",
+        "t2"    : "tarea2",
+        "t3"    : "tarea3000"
+      }
+    },
+    {
+      "name": "ente_asignado",
+      "caption": "Asignar a",
+      "class": "input-large",
+      "type": "multi-choices",
+      "options-load-server" : {
+        "method"        : "accounts.getAll",
+        "field-value"   : "username",
+        "field-desc"    : "username"
+      }
+    },
+    {
+      "name": "name",
+      "caption": "Nombre",
+      "class": "input-large",
+      "type": "text"
+    },
+    {
+      "name": "descripcion",
+      "caption": "Descripción tarea",
+      "class": "input-large",
+      "type": "textarea",
+      "rows": "5",
+      "cols": "70"
+    },
+    {
+      "name": "deadline",
+      "class": "input-large",
+      "caption": "Fecha estima de finalización",
+      "type": "datepicker",
+      "format" : "dd/MM/yyyy"
+    }
   ],
   "actions" : [
-      {
-          "name": "create",
-          "method":"tasks.create"
-      },
-      {
-        "name": "edit",
-        "method":"tasks.edit"
-      }
+    {
+      "name": "create",
+      "method":"tasks.create"
+    },
+    {
+      "name": "edit",
+      "method":"tasks.edit"
+    }
   ],
   "layout" : [
     {
+      "columns" : [
+        {
+          "class"   : "page-header",
+          "elements"  : ["title"]
+        }
+      ]
+    },
+    {
       "class" : "span12",
       "columns" : [
-	        {
-	          "class": "span4",
-	          "elements"  : ["category", "uuidparent", "tarea", "ente_asignado", "descripcion", "fch_est_ini", "fch_est_final"]
-	        }
-        ]
+        {
+          "class": "span6",
+          "elements"  : ["name" ,"descripcion", "category"]
+        },
+        {
+          "class": "span6",
+          "elements"  : ["uuidparent", "deadline", "ente_asignado", "tarea"]
+        }
+      ]
     }
   ]
 }
