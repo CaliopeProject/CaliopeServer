@@ -29,6 +29,7 @@ from tinyrpc.protocols.jsonrpc import JSONRPCInternalError
 from tinyrpc.dispatch import public
 from flask import current_app, g
 from cid.core.entities.base_models.entities_models import CaliopeUser
+from cid.utils.thumbnails import get_thumbnail
 
 prefix_session_manager = "prefix_session_manager_"
 
