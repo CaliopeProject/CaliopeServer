@@ -19,6 +19,7 @@ Copyright (C) 2013 Infometrika Ltda.
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
+import os
 from uuid import uuid4
 from functools import wraps
 
@@ -30,6 +31,8 @@ from tinyrpc.dispatch import public
 from flask import current_app, g
 from cid.core.entities.base_models.entities_models import CaliopeUser
 from cid.utils.thumbnails import get_thumbnail
+from flask.globals import current_app
+
 
 prefix_session_manager = "prefix_session_manager_"
 
@@ -53,7 +56,8 @@ class LoginManager(object):
                     'uuid': session_uuid,
                     'user': {'value': username},
                     "first_name": {'value': userNode.first_name},
-                    "last_name": {'value': userNode.last_name}
+                    "last_name": {'value': userNode.last_name},
+                    "image" : get_thumbnail(os.path.join(current_app.config['STATIC_PATH'], 'common-img/avatar1.png' ))
                 }
             else:
                 return {'login': False}
@@ -74,7 +78,9 @@ class LoginManager(object):
                 return {'login': True, 'uuid': uuid,
                         'user': {'value': username},
                         "first_name": {'value': userNode.first_name},
-                        "last_name": {'value': userNode.last_name}
+                        "last_name": {'value': userNode.last_name},
+                        "image" : get_thumbnail(os.path.join(current_app.config['STATIC_PATH'], 'common-img/avatar1.png' ))
+
                 }
             except Exception as e:
                 raise JSONRPCInternalError(e)
