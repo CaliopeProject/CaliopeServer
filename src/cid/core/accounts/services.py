@@ -75,6 +75,18 @@ class UsersManager(object):
 
 
     @staticmethod
+    @public(name='getThumbnailList')
+    def get_thumbnail_list(users):
+        rv = []
+        for user in users:
+            rv.append({
+                user:
+                get_thumbnail(os.path.join(current_app.config['STATIC_PATH'], 'common-img/avatar1.png'))
+            })
+        return rv
+
+
+    @staticmethod
     @public
     def getGroups():
         raise JSONRPCInvalidRequestError('Unimplemented')
