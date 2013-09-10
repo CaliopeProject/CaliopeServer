@@ -24,7 +24,7 @@
       }
     },
     {
-      "name": "uuidparent",
+      "name": "target",
       "type": "hidden"
     },
     {
@@ -66,7 +66,7 @@
     {
       "name": "deadline",
       "class": "input-large",
-      "caption": "Fecha estima de finalización",
+      "caption": "Fecha estimada de finalización",
       "type": "datepicker",
       "format" : "dd/MM/yyyy"
     }
@@ -99,7 +99,7 @@
         },
         {
           "class": "span6",
-          "elements"  : ["uuidparent", "deadline", "ente_asignado", "tarea"]
+          "elements"  : ["target", "deadline", "ente_asignado", "tarea"]
         }
       ]
     }
