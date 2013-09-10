@@ -57,7 +57,7 @@ class LoginManager(object):
                     'user': {'value': username},
                     "first_name": {'value': userNode.first_name},
                     "last_name": {'value': userNode.last_name},
-                    "image" : get_thumbnail(os.path.join(current_app.config['STATIC_PATH'], 'common-img/avatar1.png' ))
+                    "image" : get_thumbnail(os.path.join(current_app.config['STATIC_PATH'], 'common-img/avatar1.png'))
                 }
             else:
                 return {'login': False}
@@ -79,7 +79,7 @@ class LoginManager(object):
                         'user': {'value': username},
                         "first_name": {'value': userNode.first_name},
                         "last_name": {'value': userNode.last_name},
-                        "image" : get_thumbnail(os.path.join(current_app.config['STATIC_PATH'], 'common-img/avatar1.png' ))
+                        "image" : get_thumbnail(os.path.join(current_app.config['STATIC_PATH'], 'common-img/avatar1.png'))
 
                 }
             except Exception as e:

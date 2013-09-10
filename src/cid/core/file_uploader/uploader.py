@@ -90,7 +90,7 @@ def uploader():
                     'name': filename,
                     'size': human_readable_size(uploaded_file.tell()),
                     'id':   idfile,
-                    'thumbnail' : get_thumbnail(os.path.join(UPLOAD_FOLDER, idfile))
+                    'thumbnail': get_thumbnail(os.path.join(UPLOAD_FOLDER, idfile),'data')
                 }
             else:
                 result = {

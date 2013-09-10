@@ -22,7 +22,7 @@ def make_thumbnail(im, max_height, max_width):
         th = int(float(height)*s)
     return im.resize((tw, th), Image.ANTIALIAS)
 
-def get_thumbnail(filename):
+def get_thumbnail(filename, field_name='value'):
     rv = {'data':None}
     im = _open_image(filename)
    
@@ -37,5 +37,5 @@ def get_thumbnail(filename):
         rawData = io.getvalue()
         
         encoded = base64.b64encode(rawData)
-        rv = {'data':encoded} 
+        rv = {field_name:encoded}
     return rv
