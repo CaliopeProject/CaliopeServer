@@ -31,6 +31,9 @@ from tinyrpc.dispatch import public
 
 #from groupmodel import GroupNode
 from cid.core.entities.base_models.entities_models import CaliopeUser
+from cid.utils.thumbnails import get_thumbnail
+
+from flask.globals import current_app
 
 
 class UsersManager(object):
@@ -54,6 +57,22 @@ class UsersManager(object):
             return users_list
         except DoesNotExist as e:
             raise JSONRPCInvalidRequestError(e)
+
+    @staticmethod
+    @public
+    def getGroups():
+        raise JSONRPCInvalidRequestError('Unimplemented')
+
+
+    @staticmethod
+    @public(name='getThumbnail')
+    def get_thumbnail(user):
+        rv = {
+            "image" :
+            get_thumbnail(os.path.join(current_app.config['STATIC_PATH'], 'common-img/avatar1.png'))
+        }
+        return rv
+
 
     @staticmethod
     @public
