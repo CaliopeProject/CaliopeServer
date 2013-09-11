@@ -56,10 +56,11 @@ class CaliopeGroup(CaliopeNode):
 
 
 class CaliopeEntity(CaliopeNode):
-    pass
+    def __init__(self, *args, **kwargs):
+        super(CaliopeEntity, self).__init__(*args, **kwargs)
+
 
 class CaliopeEntityData(CaliopeNode):
-    __index__ = 'CaliopeStorage'
     entity_type = CaliopeEntity
 
     def __init__(self, *args, **kwargs):
@@ -75,8 +76,6 @@ class CaliopeEntityData(CaliopeNode):
 
 
 class CaliopeEntity(CaliopeNode):
-    __index__ = 'CaliopeStorage'
-
     entity_data_type = CaliopeEntityData
 
     def __init__(self, *args, **kwargs):
@@ -115,8 +114,6 @@ class CaliopeEntity(CaliopeNode):
         return rv
 
     def _parse_entity_data(self, v):
-        if isinstance(v, datetime):
-            v = unicode(v)
         if isinstance(v, list):
             rv = []
             for item in v:

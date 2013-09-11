@@ -28,8 +28,12 @@ from cid.core.entities import (CaliopeEntityData, CaliopeEntity, RelationshipFro
                                StringProperty, IntegerProperty, JSONProperty)
 
 
+class Task(CaliopeEntity):
+    pass
+
+
 class TaskData(CaliopeEntityData):
-    __index__ = 'CaliopeStorage'
+    entity_data = Task
 
     owner = RelationshipFrom(CaliopeUser, 'OWNER', cardinality=One)
     holders = RelationshipFrom(CaliopeUser, 'HOLDER')
@@ -76,8 +80,6 @@ class TaskData(CaliopeEntityData):
 
 
 class Task(CaliopeEntity):
-    __index__ = 'CaliopeStorage'
-
     entity_data_type = TaskData
 
     def __init__(self, *args, **kwargs):
