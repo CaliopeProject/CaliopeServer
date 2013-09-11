@@ -13,7 +13,6 @@ greenlet==0.4.1
 hotqueue==0.2.7
 itsdangerous==0.23
 lucene-querybuilder==0.2
-neomodel==0.3.6
 nose==1.3.0
 nosexcover==1.0.8
 py2neo==1.5
