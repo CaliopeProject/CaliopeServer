@@ -25,8 +25,12 @@ Copyright (C) 2013 Infometrika Ltda.
 from ..base_models.entities_models import *
 
 
+class CaliopeDocument(CaliopeEntity):
+    pass
+
+
 class CaliopeDocumentData(CaliopeEntityData):
-    __index__ = 'CaliopeStorage'
+    entity_type = CaliopeDocument
 
     owner = RelationshipFrom(CaliopeUser, 'OWNER', cardinality=One)
     holders = RelationshipFrom(CaliopeUser, 'HOLDER')
@@ -71,8 +75,6 @@ class CaliopeDocumentData(CaliopeEntityData):
 
 
 class CaliopeDocument(CaliopeEntity):
-    __index__ = 'CaliopeStorage'
-
     entity_data_type = CaliopeDocumentData
 
     def __init__(self, *args, **kwargs):

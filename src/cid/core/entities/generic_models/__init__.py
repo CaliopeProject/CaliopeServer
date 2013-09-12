@@ -25,3 +25,4 @@ from .identification_document import *
 from .geolocation import *
 from .contact import *
 from .person import *
+from .document import *

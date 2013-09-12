@@ -26,10 +26,35 @@ from ..base_models.entities_models import *
 from .geolocation import CaliopeMunicipality
 
 
+class CaliopeAddressType(CaliopeEntity):
+    pass
+
+
+class CaliopePhoneType(CaliopeEntity):
+    pass
+
+
+class CaliopeAddress(CaliopeEntity):
+    pass
+
+
+class CaliopePhone(CaliopeEntity):
+    pass
+
+
+class CaliopeEmail(CaliopeEntity):
+    pass
+
+
+class CaliopeContact(CaliopeEntity):
+    pass
+
+
 class CaliopeAddressTypeData(CaliopeEntityData):
     """
     This class allows to mark as home, work, personal etc, an address
     """
+    entity_type = CaliopeAddressType
     name = StringProperty()
     code = StringProperty()
 
@@ -42,6 +67,7 @@ class CaliopePhoneTypeData(CaliopeEntityData):
     """
     This class allows to mark as home, work, personal, etc and the carrier  a phone number
     """
+    entity_type = CaliopePhoneType
     name = StringProperty()
     code = StringProperty()
     carrier = StringProperty()
@@ -52,6 +78,7 @@ class CaliopePhoneType(CaliopeEntity):
 
 
 class CaliopeAddressData(CaliopeEntityData):
+    entity_type = CaliopeAddress
     address = StringProperty(required=True)
     postal_code = StringProperty()
     latitude = FloatProperty()
@@ -65,6 +92,7 @@ class CaliopeAddress(CaliopeEntity):
 
 
 class CaliopePhoneData(CaliopeEntityData):
+    entity_type = CaliopePhone
     number = StringProperty()
     area_code = StringProperty()
     type = RelationshipTo(CaliopePhoneType, 'IS_TYPE', ZeroOrOne)
@@ -75,12 +103,9 @@ class CaliopePhone(CaliopeEntity):
 
 
 class CaliopeEmailData(CaliopeEntityData):
+    entity_type = CaliopeEmail
     email = StringProperty()
     type = RelationshipTo(CaliopeAddressType, 'IS_TYPE', ZeroOrOne)
-
-
-class CaliopePhone(CaliopeEntity):
-    entity_data_type = CaliopePhoneData
 
 
 class CaliopeEmail(CaliopeEntity):
@@ -88,6 +113,7 @@ class CaliopeEmail(CaliopeEntity):
 
 
 class CaliopeContactData(CaliopeEntityData):
+    entity_type = CaliopeContact
     address = RelationshipTo(CaliopeAddress, 'ADDRESS', ZeroOrMore)
     phone_number = RelationshipTo(CaliopePhone, 'PHONE', ZeroOrMore)
     email_address = RelationshipTo(CaliopeEmail, 'EMAIL', ZeroOrMore)

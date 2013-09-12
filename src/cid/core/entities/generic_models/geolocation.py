@@ -25,7 +25,29 @@ Copyright (C) 2013 Infometrika Ltda.
 from ..base_models.entities_models import *
 
 
+class CaliopeCountry(CaliopeEntity):
+    pass
+
+
+class CaliopeState(CaliopeEntity):
+    pass
+
+
+class CaliopeMunicipality(CaliopeEntity):
+    pass
+
+
+class CaliopePopulatedCenterType(CaliopeEntity):
+    pass
+
+
+class CaliopePopulatedCenter(CaliopeEntityData):
+    pass
+
+
 class CaliopeCountyData(CaliopeEntityData):
+    entity_type = CaliopeCountry
+
     name = StringProperty()
     code = StringProperty(index=True)
     phone_code = StringProperty()
@@ -38,19 +60,19 @@ class CaliopeCountry(CaliopeEntity):
 
 
 class CaliopeStateData(CaliopeEntityData):
+    entity_type = CaliopeState
     name = StringProperty()
     code = StringProperty(index=True)
     area_code = StringProperty()
     part_of = RelationshipTo(CaliopeCountry, 'PART_OF', One)
 
-class CaliopeMunicipalityData(CaliopeEntityData):
-    pass
 
 class CaliopeState(CaliopeEntity):
-    entity_data_type = CaliopeMunicipalityData
+    entity_data_type = CaliopeStateData
 
 
 class CaliopeMunicipalityData(CaliopeEntityData):
+    entity_type = CaliopeMunicipality
     name = StringProperty()
     code = StringProperty(index=True)
     part_of = RelationshipTo(CaliopeState, 'PART_OF', One)
@@ -61,6 +83,7 @@ class CaliopeMunicipality(CaliopeEntity):
 
 
 class CaliopePopulatedCenterTypeData(CaliopeEntityData):
+    entity_type = CaliopePopulatedCenterType
     name = StringProperty()
     code = StringProperty(index=True)
 
@@ -68,8 +91,12 @@ class CaliopePopulatedCenterTypeData(CaliopeEntityData):
 class CaliopePopulatedCenterType(CaliopeEntity):
     entity_data_type = CaliopePopulatedCenterTypeData
 
+    def __init__(self, *args, **kwargs):
+        super(CaliopePopulatedCenterType, self).__init__(*args, **kwargs)
+
 
 class CaliopePopulatedCenterData(CaliopeEntityData):
+    entity_type = CaliopePopulatedCenter
     name = StringProperty()
     code = StringProperty(index=True)
     type = RelationshipTo(CaliopePopulatedCenterType, 'IS_TYPE', One)
@@ -78,4 +105,7 @@ class CaliopePopulatedCenterData(CaliopeEntityData):
 
 class CaliopePopulatedCenter(CaliopeEntity):
     entity_data_type = CaliopePopulatedCenterData
+
+    def __init__(self, *args, **kwargs):
+        super(CaliopePopulatedCenter, self).__init__(*args, **kwargs)
 

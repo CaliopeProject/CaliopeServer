@@ -26,7 +26,16 @@ from ..base_models.entities_models import *
 from .geolocation import CaliopeMunicipality
 
 
+class CaliopeIdentificationDocumentType(CaliopeEntity):
+    pass
+
+
+class CaliopeIdentificationDocument(CaliopeEntity):
+    pass
+
+
 class CaliopeIdentificationDocumentTypeData(CaliopeEntityData):
+    entity_type = CaliopeIdentificationDocumentType
     name = StringProperty()
     code = StringProperty()
     maximum_length = IntegerProperty()
@@ -38,6 +47,7 @@ class CaliopeIdentificationDocumentType(CaliopeEntity):
 
 
 class CaliopeIdentificationDocumentData(CaliopeEntityData):
+    entity_type = CaliopeIdentificationDocument
     number = StringProperty()
     issue_date = DateTimeProperty()
     type = RelationshipTo(CaliopeIdentificationDocumentType, 'IS_TYPE', One)
