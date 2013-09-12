@@ -13,6 +13,7 @@
         "modules": [
             {
                 "file_uploader": {
+                    "base": "hyperion",
                     "package": "core.file_uploader",
                     "route": "/upload"
                 }

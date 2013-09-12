@@ -28,10 +28,10 @@ from flask import current_app
 from tinyrpc.dispatch import public
 from tinyrpc.dispatch import RPCDispatcher
 
-CORE_MODULES = ['dispatcher']
+CORE_MODULES = ['cid.core.dispatcher']
 
 
-def register_modules(app):
+def register_modules(app, package_base='cid'):
     """
     Register modules listed in the configuration of the app.
 
@@ -49,11 +49,15 @@ def register_modules(app):
         service = module_config['service'] if 'service' in module_config else \
             module_name
         service += "."
+
+        base = module_config['base'] if 'base' in module_config else package_base
+
         #:TODO  Is possible to only module to have more than 1 blueprint
         blueprint_name = module_config['module_imp'] if 'module_imp' in module_config else \
             module_config['package'].split('.')[-1]
         try:
-            module_imp = importlib.import_module('cid.' + package)
+            module_imp = importlib.import_module(base + '.' + package)
+
             try:
                 app.register_blueprint(module_imp.getBlueprint(), url_prefix=route)
             except AttributeError as e:
@@ -85,7 +89,7 @@ def _load_core_modules(app):
     setattr(app, 'dispatcher', dispatcher)
     for module in CORE_MODULES:
         try:
-            module_imp = importlib.import_module('cid.core.' + module)
+            module_imp = importlib.import_module(module)
             app.register_blueprint(module_imp.bp)
         except AttributeError as e:
             app.logger.warning(str(e))

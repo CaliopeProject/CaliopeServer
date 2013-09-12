@@ -151,7 +151,7 @@ def register_modules():
     Register modules listed in the configuration of the app.
 
     """
-    module_manager.register_modules(app)
+    module_manager.register_modules(app, 'hyperion')
 
 
 def run_server():
