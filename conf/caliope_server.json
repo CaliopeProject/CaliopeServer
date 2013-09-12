@@ -15,12 +15,6 @@
         },
         "modules": [
             {
-                "file_uploader": {
-                    "package": "core.file_uploader",
-                    "route": "/upload"
-                }
-            },
-            {
                 "gis_proxy": {
                     "package": "modules.gis_proxy",
                     "route": "/gis_proxy"
