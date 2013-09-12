@@ -54,7 +54,11 @@ class TaskServices(CaliopeEntityService):
         #: From the task find the FIRST node
         results, metadata = user_node.cypher("START user=node({self})"
                                              "MATCH (user)-[r:HOLDER]-(tdc)-[e:CURRENT]-(t), (t)-[:FIRST]-(tdf)"
-                                             "WHERE has(r.category) and not(tdf=tdc)"
+                                             "WHERE has(r.category) and "
+                                             "(r.category='ToDo' or "
+                                             "r.category='Doing' or "
+                                             "r.category='Done')"
+                                             "      and not(tdf=tdc)"
                                              "return t, r.category");
         tasks_list = {'ToDo': {'pos': 0, 'category': {'value': 'ToDo'}, 'tasks': []},
                       'Doing': {'pos': 1, 'category': {'value': 'Doing'}, 'tasks': []},
@@ -115,6 +119,21 @@ class TaskServices(CaliopeEntityService):
         task_controller.set_data(**data)
         rv = task_controller.get_data()
         return rv
+
+    @staticmethod
+    @public
+    def archive(data=None):
+        task_controller = TaskController(**data)
+        task_controller.archive()
+        return True
+
+    @staticmethod
+    @public
+    def delete(data=None):
+        task_controller = TaskController(**data)
+        task_controller.delete()
+        return True
+
 
     @staticmethod
     @public
@@ -195,6 +214,16 @@ class TaskController(CaliopeEntityController):
         self.task.remove_holders()
         for holderUser in holdersUsersNodes:
             self.task.set_holder(holderUser, properties={'category': category})
+
+    def archive(self):
+        holder_user = CaliopeUser.index.get(username=LoginManager().get_user())
+        self.task.set_holder(holder_user, 'archived')
+
+
+    def delete(self):
+        holder_user = CaliopeUser.index.get(username=LoginManager().get_user())
+        self.task.set_holder(holder_user, 'deleted')
+
 
     def _check_template(self):
         #: TODO: Check if form_name is valid and form_path is a file
