@@ -19,67 +19,49 @@ Copyright (C) 2013 Infometrika Ltda
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
+import re
+import json
+import datetime
+import dateutil.parser
 
 
-def get_json_response_base(error=False):
-    if not error:
-        rv = {
-            'result': 'ok'
-        }
-    else:
-        rv = {
-            'result': 'error',
-            'msg': ''
-        }
-    return rv
+
+class DatetimeEncoder(json.JSONEncoder):
+
+    def default(self, obj):
+        if hasattr(obj, 'isoformat'):
+            return obj.isoformat()
+        else:
+            return json.JSONEncoder.default(obj)
 
 
-def get_json_response_form_create(*args,**kwargs):
-    """
-        {
+class DatetimeDecoder(object):
 
-        "callback_id" : "request uuid4",
-        "result"      : "{ok o error}",
-        "event_id"    : "uuid4", /* entrada opcional" */
-        "msg"         : "mensaje de error, si 'result' = 'error'",
-        "class"       : "class_name",
-        "form" :
-            {
-            /* dform template */
-            },
-        "data" :
-            {
-                "field0" :
-                    {
-                        "value"   : "**********",
-                        "mandatory"  : "True o False", /* entrada opcional, en ausencia : "False" */
-                        "editable"   : "True o False", /* entrada opcional, en ausencia : "False" */
-                        "options" : ["xx","yy","zz"]   /* entrada opcional */
-                    },
-                "field1" :
-                    {
-                        "value"   : "**********",
-                        "mandatory"  : "True o False", /* entrada opcional, en ausencia : "False" */
-                        "editable"   : "True o False", /* entrada opcional, en ausencia : "False" */
-                        "options" : ["xx","yy","zz"]   /* entrada opcional */
-                    },
-                "field_n" :
-                    {
-                        "value"   : "**********",
-                        "options" : ["xx","yy","zz"]
-                    }
-            },
-        "actions" : ["create", "delete", "edit"],
-        "translations" :
-             {
-                 "key"    : "Llave",
-                 "field"  : "Campo",
-                 "create" : "Crear",
-                 "edit"   : "Editar",
-                 "delete" : "Borrar"
-             }
-        }
-    }
-    """
+    @staticmethod
+    def json_date_parser(dct):
+        for (key, value) in dct.items():
+            if isinstance(value, list):
+                tmp = []
+                for v_ in value:
+                    tmp.append(DatetimeDecoder._parser(v_))
+                dct[key] = tmp
+            elif isinstance(value, dict):
+                tmp = {}
+                for k_, v_ in value.items():
+                    tmp[k_] = DatetimeDecoder._parser(v_)
+                dct[key] = tmp
+            elif isinstance(value, datetime.datetime):
+                dct[key] = value
+            else:
+                dct[key] = DatetimeDecoder._parser(value)
+        return dct
 
 
+    @staticmethod
+    def _parser(value):
+        try:
+            if re.match("(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})[\.(\d{3,6})Z)|(\+|\-)(\d{2}):(\d{2})]", value):
+                return dateutil.parser.parse(value)
+            return value
+        except:
+            return value
