@@ -3,7 +3,7 @@ BASE=$(echo $PWD | awk -F'caliope_server_el_cid' '{print $1}')
 export PYTHONPATH=${BASE}/caliope_server_el_cid/src
 
 
-sudo apt-get install python-dev python-pip libevent-dev redis-server libjpeg-dev zlib1g-dev libpng-dev tesseract-ocr libtesseract3 tesseract-ocr-eng tesseract-ocr-spa
+sudo apt-get install virtualenvwrapper python-dev python-pip libevent-dev redis-server libjpeg-dev zlib1g-dev libpng-dev tesseract-ocr libtesseract3 tesseract-ocr-eng tesseract-ocr-spa
 
 PIL_LIBS="libjpeg.so libz.so libpng.so"
 
