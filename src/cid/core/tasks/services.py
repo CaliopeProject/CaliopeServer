@@ -120,14 +120,12 @@ class TaskServices(CaliopeEntityService):
         rv = task_controller.get_data()
         return rv
 
-
     @staticmethod
     @public
     def archive(data=None):
         task_controller = TaskController(**data)
         task_controller.archive()
         return {'result': True}
-
 
     @staticmethod
     @public
@@ -170,6 +168,12 @@ class TaskController(CaliopeEntityController):
             raise RPCError('Template error')
 
     def set_data(self, **data):
+
+        rels = []
+        for rel in CaliopeNode._get_class_relationships(Task.entity_data_type):
+            if rel[0] in data:
+                rels.append(data[rel[0]])
+
         # Check if category type is send, else set default category to ToDo
         if 'category' in data and data['category'] in ['ToDo', 'Doing', 'Done']:
             category = data['category']
@@ -217,14 +221,17 @@ class TaskController(CaliopeEntityController):
         for holderUser in holdersUsersNodes:
             self.task.set_holder(holderUser, properties={'category': category})
 
+    def set_holder(self, holder_node, category):
+        self.task.set_holder(holder_node, properties={'category': category})
+
     def archive(self):
         holder_user = CaliopeUser.index.get(username=LoginManager().get_user())
-        self.task.set_holder(holder_user, properties={'category': 'archived'})
+        self.set_holder(holder_user, 'archived')
 
 
     def delete(self):
         holder_user = CaliopeUser.index.get(username=LoginManager().get_user())
-        self.task.set_holder(holder_user, properties={'category': 'deleted'})
+        self.set_holder(holder_user, 'deleted')
 
 
     def _check_template(self):
