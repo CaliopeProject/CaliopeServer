@@ -25,7 +25,9 @@ Copyright (C) 2013 Infometrika Ltda.
 #Caliope Entities
 from cid.core.entities import (CaliopeEntityData, CaliopeEntity, RelationshipFrom,
                                CaliopeUser, One, NotConnected, DateTimeProperty,
-                               StringProperty, IntegerProperty, JSONProperty)
+                               StringProperty, IntegerProperty, CaliopeJSONProperty)
+
+from cid.modules.projects.models import ProjectEntity
 
 
 class Task(CaliopeEntity):
@@ -42,10 +44,10 @@ class TaskData(CaliopeEntityData):
     name = StringProperty()
     description = StringProperty()
     progress = IntegerProperty()
-    subtasks = JSONProperty()
-    comments = JSONProperty()
+    subtasks = CaliopeJSONProperty()
+    comments = CaliopeJSONProperty()
     color = StringProperty()
-    target = JSONProperty()
+    target = CaliopeJSONProperty()
 
     def __init__(self, *args, **kwargs):
         super(TaskData, self).__init__(*args, **kwargs)
@@ -82,6 +84,8 @@ class TaskData(CaliopeEntityData):
 
 class Task(CaliopeEntity):
     entity_data_type = TaskData
+    context_type = ProjectEntity
+
 
     def __init__(self, *args, **kwargs):
         super(Task, self).__init__(*args, **kwargs)
