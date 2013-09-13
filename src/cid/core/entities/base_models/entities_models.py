@@ -56,8 +56,7 @@ class CaliopeGroup(CaliopeNode):
 
 
 class CaliopeEntity(CaliopeNode):
-    def __init__(self, *args, **kwargs):
-        super(CaliopeEntity, self).__init__(*args, **kwargs)
+    pass
 
 
 class CaliopeEntityData(CaliopeNode):
@@ -77,10 +76,13 @@ class CaliopeEntityData(CaliopeNode):
 
 class CaliopeEntity(CaliopeNode):
     entity_data_type = CaliopeEntityData
+    context_type = None
 
     def __init__(self, *args, **kwargs):
         current = RelationshipTo(self.entity_data_type, 'CURRENT', cardinality=One)
+        context = RelationshipFrom(self.context_type, 'CONTEXT', cardinality=ZeroOrOne)
         first = RelationshipTo(self.entity_data_type, 'FIRST', cardinality=One)
+        setattr(self.__class__, 'context', context)
         setattr(self.__class__, 'current', current)
         setattr(self.__class__, 'first', first)
         super(CaliopeEntity, self).__init__(*args, **kwargs)

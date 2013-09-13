@@ -122,6 +122,18 @@ class CaliopeNode(SemiStructuredNode):
         new_node.save()
         return new_node
 
+    @staticmethod
+    def _get_class_properties(cls):
+        return [(prop, prop_inst)
+                for prop, prop_inst in cls.__dict__.items()
+                if prop and isinstance(prop_inst, Property)]
+
+    @staticmethod
+    def _get_class_relationships(cls):
+        return [(rel, rel_inst)
+                for rel, rel_inst in cls.__dict__.items()
+                if rel and isinstance(rel_inst, RelationshipDefinition)]
+
 
 class CaliopeRelation(RelationshipDefinition):
     """

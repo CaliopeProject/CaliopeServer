@@ -23,4 +23,5 @@ Copyright (C) 2013 Infometrika Ltda.
 """
 
 from caliope_models import *
+from caliope_properties import *
 from entities_models import *
