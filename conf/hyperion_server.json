@@ -17,6 +17,13 @@
                     "package": "core.file_uploader",
                     "route": "/upload"
                 }
+            },
+            {
+                "file_uploader": {
+                    "base": "hyperion",
+                    "package": "core.file_server",
+                    "route": "/d"
+                }
             }
         ]
     },

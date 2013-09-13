@@ -120,19 +120,21 @@ class TaskServices(CaliopeEntityService):
         rv = task_controller.get_data()
         return rv
 
+
     @staticmethod
     @public
     def archive(data=None):
         task_controller = TaskController(**data)
         task_controller.archive()
-        return True
+        return {'result': True}
+
 
     @staticmethod
     @public
     def delete(data=None):
         task_controller = TaskController(**data)
         task_controller.delete()
-        return True
+        return {'result': True}
 
 
     @staticmethod
@@ -217,12 +219,12 @@ class TaskController(CaliopeEntityController):
 
     def archive(self):
         holder_user = CaliopeUser.index.get(username=LoginManager().get_user())
-        self.task.set_holder(holder_user, 'archived')
+        self.task.set_holder(holder_user, properties={'category': 'archived'})
 
 
     def delete(self):
         holder_user = CaliopeUser.index.get(username=LoginManager().get_user())
-        self.task.set_holder(holder_user, 'deleted')
+        self.task.set_holder(holder_user, properties={'category': 'deleted'})
 
 
     def _check_template(self):
