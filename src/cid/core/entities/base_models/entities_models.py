@@ -78,6 +78,11 @@ class CaliopeEntity(CaliopeNode):
     entity_data_type = CaliopeEntityData
     context_type = None
 
+    def __new__(cls, *args, **kwargs):
+        setattr(cls, "context_type", cls)
+        return super(CaliopeEntity, cls).__new__(cls)
+
+
     def __init__(self, *args, **kwargs):
         current = RelationshipTo(self.entity_data_type, 'CURRENT', cardinality=One)
         context = RelationshipFrom(self.context_type, 'CONTEXT', cardinality=ZeroOrOne)
