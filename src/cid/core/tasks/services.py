@@ -44,21 +44,22 @@ class TaskServices(CaliopeEntityService):
     def __init__(self, *args, **kwargs):
         super(TaskServices, self).__init__(*args, **kwargs)
 
+    #: TODO: Valida users and return based on context
     @staticmethod
     @public(name='getAll')
     def get_all():
-        a_node = CaliopeNode()
+        a_node = CaliopeUser.category().instance.single()
         results, metadata = a_node.cypher("START user=node(*)"
                                           "MATCH (user)-[r:HOLDER]-(tdc)-[e:CURRENT]-(t), (t)-[:FIRST]-(tdf)"
                                           "WHERE has(r.category) and "
-                                          "(r.category='ToDo' or "
-                                          "r.category='Doing' or "
-                                          "r.category='Done')"
-                                          "      and not(tdf=tdc)"
+                                          "      not(tdf=tdc)"
                                           "return t, r.category");
         tasks_list = {'ToDo': {'pos': 0, 'category': {'value': 'ToDo'}, 'tasks': []},
                       'Doing': {'pos': 1, 'category': {'value': 'Doing'}, 'tasks': []},
-                      'Done': {'pos': 2, 'category': {'value': 'Done'}, 'tasks': []}}
+                      'Done': {'pos': 2, 'category': {'value': 'Done'}, 'tasks': []},
+                      'archived': {'pos': 3, 'category': {'value': 'Archived'}, 'tasks': []},
+                      'deleted': {'pos': 4, 'category': {'value': 'Deleted'}, 'tasks': []}
+        }
 
         for row in results:
             tl = tasks_list[row[1]]['tasks']
