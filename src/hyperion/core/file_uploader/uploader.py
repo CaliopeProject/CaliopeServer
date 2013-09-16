@@ -87,7 +87,7 @@ def uploader():
                 uploaded_file.save(os.path.join(UPLOAD_FOLDER, idfile))
 
                 dm = DocumentManager()
-          #      dm.addDocument()
+                dm.addLocalDocument('',os.path.join(UPLOAD_FOLDER, idfile),'')
 
                 result = {
                     'result': 'ok',
