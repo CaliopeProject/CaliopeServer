@@ -29,7 +29,7 @@ import sys
 from logging import getLogger
 
 import redis
-
+from cid.utils.crossdomain import crossdomain
 
 #gevent
 from gevent.pywsgi import WSGIServer
@@ -54,11 +54,13 @@ app = Flask(__name__)
 
 
 @app.route('/')
+@crossdomain(origin='http://localhost:9001', headers='Content-Type')
 def index():
     return send_from_memory(safe_join(app.config['STATIC_PATH'], 'index.html'))
 
 
 @app.route('/<path:filename>')
+@crossdomain(origin='http://localhost:9001', headers='Content-Type')
 def custom_static(filename):
     return send_from_memory(safe_join(app.config['STATIC_PATH'], filename))
 
