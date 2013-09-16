@@ -45,7 +45,7 @@ class TaskServices(CaliopeEntityService):
         super(TaskServices, self).__init__(*args, **kwargs)
 
     @staticmethod
-    @public(name='getAll')
+    @public(name='getCurrentUserKanban')
     def get_all():
 
         user_node = CaliopeUser.index.get(username=LoginManager().get_user())
@@ -136,8 +136,13 @@ class TaskServices(CaliopeEntityService):
 
 
     @staticmethod
-    @public
-    def getFilteredByProject(project_id):
+    @public(name='getDeletedByCurrentUser')
+    def get_deleted_by_current_user():
+        raise JSONRPCInvalidRequestError('Unimplemented')
+
+    @staticmethod
+    @public(name='getArchivedByCurrentUser')
+    def get_archived_by_current_user(project_id):
         raise JSONRPCInvalidRequestError('Unimplemented')
 
 
