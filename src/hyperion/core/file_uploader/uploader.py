@@ -33,6 +33,7 @@ from flask import ( request, Blueprint)
 
 from cid.core.login import LoginManager
 from cid.utils.thumbnails import get_thumbnail
+from cid.core.documents import DocumentManager
 
 file_uploader = Blueprint('file_uploader', __name__, template_folder='')
 
@@ -84,6 +85,9 @@ def uploader():
             if uploaded_file and allowed_file(uploaded_file.filename):
                 idfile = str(uuid.uuid4()).decode('utf-8') #TODO: change to uuid3 nither uuid5
                 uploaded_file.save(os.path.join(UPLOAD_FOLDER, idfile))
+
+                dm = DocumentManager()
+          #      dm.addDocument()
 
                 result = {
                     'result': 'ok',
