@@ -138,12 +138,38 @@ class TaskServices(CaliopeEntityService):
     @staticmethod
     @public(name='getDeletedByCurrentUser')
     def get_deleted_by_current_user():
-        raise JSONRPCInvalidRequestError('Unimplemented')
+        rv = TaskServices.get_by_category_and_by_current_user(category="deleted")
+        return rv
 
     @staticmethod
     @public(name='getArchivedByCurrentUser')
     def get_archived_by_current_user(project_id):
-        raise JSONRPCInvalidRequestError('Unimplemented')
+        rv = TaskServices.get_by_category_and_by_current_user(category="archived")
+        return rv
+
+
+    @staticmethod
+    def get_by_category_and_by_current_user(category):
+        user_node = CaliopeUser.index.get(username=LoginManager().get_user())
+        #: Starting from current user, match all nodes which are connected througth a HOLDER
+        #: relationship and that node is connected with a  CURRENT relationship to a task.
+        #: From the task find the FIRST node
+        results, metadata = user_node.cypher("START user=node({self})"
+                                             "MATCH (user)-[r:HOLDER]-(tdc)-[e:CURRENT]-(t), (t)-[:FIRST]-(tdf)"
+                                             "WHERE has(r.category) and "
+                                             "(r.category='" + category + "')"
+                                                                          "      and not(tdf=tdc)"
+                                                                          "return t, r.category");
+        tasks_list = {category: {'pos': 0, 'category': {'value': category}, 'tasks': []}}
+
+        for row in results:
+            tl = tasks_list[row[1]]['tasks']
+            task_class = Task().__class__
+            task = task_class.inflate(row[0])
+            entity_data = task.get_entity_data()
+            tl.append(entity_data)
+
+        return tasks_list
 
 
 class TaskController(CaliopeEntityController):
