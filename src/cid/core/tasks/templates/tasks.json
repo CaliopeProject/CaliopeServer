@@ -8,9 +8,13 @@
       [
         {
           "type" : "h1",
-          "html" : "Crear Tarea"
+          "html" : "Tarea"
         }
       ]
+    },
+    {
+      "name" : "empty",
+      "type" : "span"
     },
     {
       "name": "category",
@@ -24,6 +28,14 @@
       }
     },
     {
+      "name"  : "execute",
+      "type"  : "execute-task",
+      "execute-task-options" : {
+        "target-uuid-field" : "target.uuid",
+        "target-form-field" : "target.entity"
+      }
+    },
+    {
       "name": "target",
       "type": "hidden"
     },
@@ -33,9 +45,9 @@
       "class": "input-large",
       "type": "select",
       "options" : {
-        "t1"    : "tarea1",
-        "t2"    : "tarea2",
-        "t3"    : "tarea3000"
+        "predios" : "Selección de Predios",
+        "projects" : "Formulario de proyectos",
+        "t3" : "tarea3000"
       }
     },
     {
@@ -47,6 +59,10 @@
         "method"        : "accounts.getAll",
         "field-value"   : "username",
         "field-desc"    : "username"
+      },
+      "relation" : {
+        "target" : {"username": "ente_asignado"},
+        "props"  : {"category": "category"}
       }
     },
     {
@@ -85,8 +101,16 @@
     {
       "columns" : [
         {
-          "class"   : "page-header",
+          "class"   : "page-header span3",
           "elements"  : ["title"]
+        },
+        {
+          "class"   : "page-header span8",
+          "elements"  : ["execute"]
+        },
+        {
+          "class"   : "span1",
+          "elements"  : ["target"]
         }
       ]
     },
@@ -99,7 +123,7 @@
         },
         {
           "class": "span6",
-          "elements"  : ["target", "deadline", "ente_asignado", "tarea"]
+          "elements"  : ["tarea","deadline", "ente_asignado", "target"]
         }
       ]
     }
