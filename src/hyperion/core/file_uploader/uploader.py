@@ -33,7 +33,7 @@ from flask import ( request, Blueprint)
 
 from cid.core.login import LoginManager
 from cid.utils.thumbnails import get_thumbnail
-from cid.core.documents import DocumentManager
+from cid.core.documents import DocumentManager, DocumentProcess
 from cid.utils.crossdomain import crossdomain
 
 file_uploader = Blueprint('file_uploader', __name__, template_folder='')
@@ -91,7 +91,8 @@ def uploader():
                 uploaded_file.save(os.path.join(UPLOAD_FOLDER, idfile))
 
                 dm = DocumentManager()
-                dm.addLocalDocument('',os.path.join(UPLOAD_FOLDER, idfile),'')
+                doc = dm.addLocalDocument('',os.path.join(UPLOAD_FOLDER, idfile),'')
+                DocumentProcess().enqueue(doc)
 
                 result = {
                     'result': 'ok',
