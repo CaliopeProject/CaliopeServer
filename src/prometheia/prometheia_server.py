@@ -29,7 +29,7 @@ import sys
 from logging import getLogger
 
 import redis
-from cid.utils.crossdomain import crossdomain
+
 
 #gevent
 from gevent.pywsgi import WSGIServer
@@ -54,17 +54,13 @@ app = Flask(__name__)
 
 
 @app.route('/')
-@crossdomain(origin=['*'], headers=['Content-Type', 'Authorization', 'Content-Length', 'X-Requested-With'],
-             methods=['POST', 'GET', 'PUT', 'HEAD', 'OPTIONS'])
 def index():
-    return send_from_memory(safe_join(app.config['STATIC_PATH'], 'index.html'))
+    return 'Out of bounding.'
 
 
 @app.route('/<path:filename>')
-@crossdomain(origin=['*'], headers=['Content-Type', 'Authorization', 'Content-Length', 'X-Requested-With'],
-             methods=['POST', 'GET', 'PUT', 'HEAD', 'OPTIONS'])
 def custom_static(filename):
-    return send_from_memory(safe_join(app.config['STATIC_PATH'], filename))
+    return 'Out of bounding.'
 
 
 def main(argv):
@@ -115,15 +111,7 @@ def configure_server_and_app(server_config_file):
     if 'port' in config['server']:
         app.config['port'] = int(config['server']['port'])
     else:
-        app.config['port'] = 8000
-    if 'static' in config['server']:
-        app.config['STATIC_PATH'] = config['server']['static']
-    else:
-        app.config['STATIC_PATH'] = "."
-    if 'formTemplates' in config['server']:
-        app.config['FORM_TEMPLATES'] = config['server']['formTemplates']
-    else:
-        app.config['FORM_TEMPLATES'] = app.config['STATIC_PATH']
+        app.config['port'] = 8001
         #: Load app config
     if 'app' in config:
         if 'modules' in config['app']:
@@ -163,7 +151,7 @@ def register_modules():
     Register modules listed in the configuration of the app.
 
     """
-    module_manager.register_modules(app)
+    module_manager.register_modules(app, 'hyperion')
 
 
 def run_server():
@@ -172,8 +160,6 @@ def run_server():
     else:
         Flask.logger = getLogger("develop")
     app.logger.info("Starting server on: " + app.config['address'] + ":" + str(app.config['port']))
-    app.logger.info("Static Base Directory: " + app.config['STATIC_PATH'])
-    app.logger.info("Forms Template Directory : " + app.config['FORM_TEMPLATES'])
     app.storekv = RedisStore(redis.StrictRedis())
     http_server = WSGIServer((app.config['address'], app.config['port']), app,
                              handler_class=WebSocketHandler)  # @IgnorePep8

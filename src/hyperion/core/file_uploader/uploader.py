@@ -33,6 +33,8 @@ from flask import ( request, Blueprint)
 
 from cid.core.login import LoginManager
 from cid.utils.thumbnails import get_thumbnail
+from cid.core.documents import DocumentManager, DocumentProcess
+from cid.utils.crossdomain import crossdomain
 
 file_uploader = Blueprint('file_uploader', __name__, template_folder='')
 
@@ -56,7 +58,10 @@ def human_readable_size(size_bytes):
 
     return "%s %s" % (formatted_size, suffix)
 
-@file_uploader.route('/', methods=['GET', 'POST'])
+
+@file_uploader.route('/', methods=['GET', 'POST','OPTIONS'])
+@crossdomain(origin=['*'], headers=['Content-Type', 'Authorization', 'Content-Length', 'X-Requested-With'],
+             methods=['POST', 'GET', 'PUT', 'HEAD', 'OPTIONS'])
 def uploader():
     if request.method == 'POST':
         #print request.form['id']
@@ -85,6 +90,10 @@ def uploader():
                 idfile = str(uuid.uuid4()).decode('utf-8') #TODO: change to uuid3 nither uuid5
                 uploaded_file.save(os.path.join(UPLOAD_FOLDER, idfile))
 
+                dm = DocumentManager()
+                doc = dm.addLocalDocument('',os.path.join(UPLOAD_FOLDER, idfile),'')
+                DocumentProcess().enqueue(doc)
+
                 result = {
                     'result': 'ok',
                     'name': filename,
@@ -105,4 +114,4 @@ def uploader():
 
 def allowed_file(filename):
     return '.' in filename and \
-           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+           filename.lower().rsplit('.', 1)[1] in ALLOWED_EXTENSIONS

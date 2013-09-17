@@ -46,19 +46,22 @@ from simplekv.memory.redisstore import RedisStore
 #Apps import
 from cid.core import module_manager
 from cid.utils.fileUtils import loadJSONFromFileNoPath, send_from_memory, Gzip
+from cid.utils.crossdomain import crossdomain
 
 
 #: Gevent to patch all TCP/IP connections
 monkey.patch_all()
 app = Flask(__name__)
 
-
-@app.route('/')
+@app.route('/', methods=['GET', 'POST', 'OPTIONS'])
+@crossdomain(origin=['*'], headers=['Content-Type', 'Authorization', 'Content-Length', 'X-Requested-With'],
+             methods=['POST', 'GET', 'PUT', 'HEAD', 'OPTIONS'])
 def index():
     return 'Out of bounding.'
 
-
-@app.route('/<path:filename>')
+@app.route('/<path:filename>', methods=['GET', 'POST', 'OPTIONS'])
+@crossdomain(origin=['*'], headers=['Content-Type', 'Authorization', 'Content-Length', 'X-Requested-With'],
+             methods=['POST', 'GET', 'PUT', 'HEAD', 'OPTIONS'])
 def custom_static(filename):
     return 'Out of bounding.'
 

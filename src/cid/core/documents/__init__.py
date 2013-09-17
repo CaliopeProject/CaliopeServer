@@ -25,9 +25,12 @@ Copyright (C) 2013 Infometrika Ltda.
 from tinyrpc.protocols.jsonrpc import JSONRPCInternalError
 from tinyrpc.dispatch import public
 
+from hotqueue import HotQueue
+
 #Flask
 from cid.core.entities.generic_models.document import CaliopeDocument
 
+import urlparse
 
 class DocumentManager(object):
     @staticmethod
@@ -50,5 +53,21 @@ class DocumentManager(object):
         node = CaliopeDocument()
         node.add_to_repo(parent_uuid, url, description)
         return node
-        
-        
+
+    @staticmethod
+    def addLocalDocument(parent_uuid, path, description):
+        node = CaliopeDocument()
+        netloc = path = params = query = fragment = ''
+        scheme = 'localstorage'
+        url=urlparse.urlunparse((scheme, netloc, path, params,query, fragment))
+        #node.add_to_repo(parent_uuid, url, description)
+        return node
+
+
+class DocumentProcess(object):
+    @staticmethod
+    def enqueue(doc):
+        queue = HotQueue("postprocessing_queue")
+        queue.put(doc.uuid)
+        print "enqueued : " + doc.uuid
+

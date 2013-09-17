@@ -3,12 +3,12 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 ENV=caliope
 BASE=$(echo $PWD | awk -F'caliope_server_el_cid' '{print $1}')
 PYTHON=${HOME}/.virtualenvs/${ENV}/bin/python
-DAEMON=src/hyperion/hyperion_server.py
-DAEMON_ARGS="-c conf/hyperion_server.json -l conf/logger.json"
+DAEMON=src/prometheia/prometheia_server.py
+DAEMON_ARGS="-c conf/prometheia_server.json -l conf/logger.json"
 RUNDIR=./var
-PIDFILE=$RUNDIR/hyperion-server.pid
-DESC="Hyperion Server"
-NAME=Hyperion
+PIDFILE=$RUNDIR/prometheia-server.pid
+DESC="Prometheia Server"
+NAME=prometheia
 
 
 export PYTHONPATH=${BASE}/caliope_server_el_cid/src
@@ -24,7 +24,7 @@ case "$1" in
         touch $PIDFILE
 
 
-        if start-stop-daemon --start --quiet --background --umask 777 --pidfile $PIDFILE --chdir $PWD --exec  $PYTHON $PWD/$DAEMON -- $DAEMON_ARGS
+        if start-stop-daemon --start --quiet --background --umask 777 --pidfile $PIDFILE --chdir $PWD --exec  $PYTHON $PWD/$DAEMON -- $DAEMON_ARGS        
         then
                 PID=$(ps  ax|grep ${DAEMON}|grep -v grep|awk '{ print $1}')
                 echo $PID >  $PIDFILE

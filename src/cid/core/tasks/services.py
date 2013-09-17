@@ -44,9 +44,36 @@ class TaskServices(CaliopeEntityService):
     def __init__(self, *args, **kwargs):
         super(TaskServices, self).__init__(*args, **kwargs)
 
+    #: TODO: Valida users and return based on context
+    @staticmethod
+    @public(name='getAll')
+    def get_all():
+        a_node = CaliopeUser.category().instance.single()
+        results, metadata = a_node.cypher("START user=node(*)"
+                                          "MATCH (user)-[r:HOLDER]-(tdc)-[e:CURRENT]-(t), (t)-[:FIRST]-(tdf)"
+                                          "WHERE has(r.category) and "
+                                          "      not(tdf=tdc)"
+                                          "return t, r.category");
+        tasks_list = {'ToDo': {'pos': 0, 'category': {'value': 'ToDo'}, 'tasks': []},
+                      'Doing': {'pos': 1, 'category': {'value': 'Doing'}, 'tasks': []},
+                      'Done': {'pos': 2, 'category': {'value': 'Done'}, 'tasks': []},
+                      'archived': {'pos': 3, 'category': {'value': 'Archived'}, 'tasks': []},
+                      'deleted': {'pos': 4, 'category': {'value': 'Deleted'}, 'tasks': []}
+        }
+
+        for row in results:
+            tl = tasks_list[row[1]]['tasks']
+            task_class = Task().__class__
+            task = task_class.inflate(row[0])
+            entity_data = task.get_entity_data()
+            tl.append(entity_data)
+
+        return [list for list in sorted(tasks_list.values(), key=lambda pos: pos['pos'])]
+
+
     @staticmethod
     @public(name='getCurrentUserKanban')
-    def get_all():
+    def get_current_user_kanban():
 
         user_node = CaliopeUser.index.get(username=LoginManager().get_user())
         #: Starting from current user, match all nodes which are connected througth a HOLDER
