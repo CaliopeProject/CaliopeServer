@@ -34,6 +34,7 @@ from flask import ( request, Blueprint)
 from cid.core.login import LoginManager
 from cid.utils.thumbnails import get_thumbnail
 from cid.core.documents import DocumentManager
+from cid.utils.crossdomain import crossdomain
 
 file_uploader = Blueprint('file_uploader', __name__, template_folder='')
 
@@ -57,7 +58,10 @@ def human_readable_size(size_bytes):
 
     return "%s %s" % (formatted_size, suffix)
 
-@file_uploader.route('/', methods=['GET', 'POST'])
+
+@file_uploader.route('/', methods=['GET', 'POST','OPTIONS'])
+@crossdomain(origin=['*'], headers=['Content-Type', 'Authorization', 'Content-Length', 'X-Requested-With'],
+             methods=['POST', 'GET', 'PUT', 'HEAD', 'OPTIONS'])
 def uploader():
     if request.method == 'POST':
         #print request.form['id']

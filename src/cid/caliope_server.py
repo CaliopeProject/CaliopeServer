@@ -54,13 +54,15 @@ app = Flask(__name__)
 
 
 @app.route('/')
-@crossdomain(origin='http://localhost:9001', headers='Content-Type')
+@crossdomain(origin=['*'], headers=['Content-Type', 'Authorization', 'Content-Length', 'X-Requested-With'],
+             methods=['POST', 'GET', 'PUT', 'HEAD', 'OPTIONS'])
 def index():
     return send_from_memory(safe_join(app.config['STATIC_PATH'], 'index.html'))
 
 
 @app.route('/<path:filename>')
-@crossdomain(origin='http://localhost:9001', headers='Content-Type')
+@crossdomain(origin=['*'], headers=['Content-Type', 'Authorization', 'Content-Length', 'X-Requested-With'],
+             methods=['POST', 'GET', 'PUT', 'HEAD', 'OPTIONS'])
 def custom_static(filename):
     return send_from_memory(safe_join(app.config['STATIC_PATH'], filename))
 
