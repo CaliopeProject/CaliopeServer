@@ -58,5 +58,5 @@ class DocumentManager(object):
         netloc = path = params = query = fragment = ''
         scheme = 'localstorage'
         url=urlparse.urlunparse((scheme, netloc, path, params,query, fragment))
-        node.add_to_repo(parent_uuid, url, description)
+        #node.add_to_repo(parent_uuid, url, description)
         return node
