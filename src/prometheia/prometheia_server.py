@@ -47,6 +47,7 @@ from simplekv.memory.redisstore import RedisStore
 from cid.core import module_manager
 from cid.utils.fileUtils import loadJSONFromFileNoPath, send_from_memory, Gzip
 
+from prometheia.core.processor import prometheia_processor
 
 #: Gevent to patch all TCP/IP connections
 monkey.patch_all()
@@ -69,6 +70,7 @@ def main(argv):
     configure_server_and_app(server_config_file)
     configure_logger(logger_config_file)
     register_modules()
+    prometheia_processor()
     run_server()
 
 
@@ -155,6 +157,8 @@ def register_modules():
 
 
 def run_server():
+    print "Starting server..."
+
     if not app.debug:
         Flask.logger = getLogger("production")
     else:
