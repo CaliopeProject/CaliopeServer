@@ -23,15 +23,38 @@ Copyright (C) 2013 Fundación Correlibre
 """
 __author__ = 'afc'
 
+#flask
+from flask.globals import current_app
+
+import os
 import gevent
 from hotqueue import HotQueue
+import magic
 from prometheia.core.OCR import OCR
+from cid.core.documents import DocumentManager
+from urlparse import urlparse
+
+UPLOAD_FOLDER = "./storage"
 
 
 def queue_processor():
         queue = HotQueue("postprocessing_queue")
-        for item in queue.consume():
-            print str(item)
+        ocr = OCR.Engine()
+
+        for uuid in queue.consume():
+            print str(uuid)
+            dm = DocumentManager()
+            doc = dm.getDocument(uuid)
+            print str(doc.url)
+            url = urlparse(doc.url)
+            filename = os.path.join(UPLOAD_FOLDER, url.path)
+            m = magic.Magic()
+            print filename + ' ' + str(m.id_filename(filename))
+
+            if 'PDF' in  str(m.id_filename(filename)):
+                ocr.interpret(str(filename))
+
+
 
 
 def prometheia_processor():
