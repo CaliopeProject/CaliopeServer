@@ -91,7 +91,7 @@ def uploader():
                 uploaded_file.save(os.path.join(UPLOAD_FOLDER, idfile))
 
                 dm = DocumentManager()
-                doc = dm.addLocalDocument('',os.path.join(UPLOAD_FOLDER, idfile),'')
+                doc = dm.addLocalDocument('',idfile,'')
                 DocumentProcess().enqueue(doc)
 
                 result = {
