@@ -25,6 +25,7 @@ __author__ = 'afc'
 
 import gevent
 from hotqueue import HotQueue
+from prometheia.core.OCR import OCR
 
 
 def queue_processor():
