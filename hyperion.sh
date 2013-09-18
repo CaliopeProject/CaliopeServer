@@ -24,7 +24,7 @@ case "$1" in
         touch $PIDFILE
 
 
-        if start-stop-daemon --start --quiet --background --umask 777 --pidfile $PIDFILE --chdir $PWD --exec  $PYTHON $PWD/$DAEMON -- $DAEMON_ARGS
+        if start-stop-daemon --start --quiet --background --umask 002 --pidfile $PIDFILE --chdir $PWD --exec  $PYTHON $PWD/$DAEMON -- $DAEMON_ARGS
         then
                 PID=$(ps  ax|grep ${DAEMON}|grep -v grep|awk '{ print $1}')
                 echo $PID >  $PIDFILE

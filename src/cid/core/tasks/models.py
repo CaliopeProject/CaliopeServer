@@ -86,7 +86,6 @@ class Task(CaliopeEntity):
     entity_data_type = TaskData
     context_type = ProjectEntity
 
-
     def __init__(self, *args, **kwargs):
         super(Task, self).__init__(*args, **kwargs)
 
@@ -101,14 +100,3 @@ class Task(CaliopeEntity):
         holders_nodes = current_node.holders.all()
         for holder in holders_nodes:
             current_node.remove_holder(holder)
-
-    def get_entity_data(self):
-        #: Added due to extra logic of holders
-        rv = super(Task, self).get_entity_data()
-        current_node = self._get_current()
-        holders_nodes = current_node.holders.all()
-        holders = [holder_node.username for holder_node in holders_nodes]
-        #TODO: Why is this hardcored here?
-        rv['ente_asignado'] = {'value': holders}
-        return rv
-
