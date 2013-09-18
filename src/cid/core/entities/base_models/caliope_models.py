@@ -51,13 +51,16 @@ class CaliopeNode(SemiStructuredNode):
     #: All timestamps should be in UTC using pytz.utc
     timestamp = DateTimeProperty(default=timeStampGenerator)
 
+    def __new__(cls, *args, **kwargs):
+        #:RelationshipTo previous node. Root nodes should use "ROOT"
+        ancestor_node = RelationshipFrom(cls, 'ANCESTOR_NODE', ZeroOrOne)
+        setattr(cls, 'ancestor_node', ancestor_node)
+        inst = super(CaliopeNode, cls).__new__(cls, *args, **kwargs)
+        return inst
+
 
     def __init__(self, *args, **kwargs):
-        #:RelationshipTo previous node. Root nodes should use "ROOT"
-        ancestor_node = RelationshipFrom(self.__class__, 'ANCESTOR_NODE', ZeroOrOne)
-        setattr(self.__class__, 'ancestor_node', ancestor_node)
         super(CaliopeNode, self).__init__(*args, **kwargs)
-        #self._set_node_attr(**kwargs)
 
     def _get_node_data(self):
         """
@@ -70,6 +73,10 @@ class CaliopeNode(SemiStructuredNode):
             else:
                 rv[attr] = self.__node__.__metadata__['data'][attr]
         return rv
+
+    def _get_inst_data(self):
+        return self.__properties__
+
 
     def _set_node_attr(self, **kwargs):
         """
@@ -95,8 +102,9 @@ class CaliopeNode(SemiStructuredNode):
         new_node = cls(self._get_node_data())
         new_node._set_node_attr(**kwargs)
         new_node.save()
-        cls.reconnect(self, new_node)
-        new_node.ancestor_node.connect(self)
+        if self.__node__ is not None:
+            cls.reconnect(self, new_node)
+            new_node.ancestor_node.connect(self)
         return new_node
 
     @classmethod
@@ -122,13 +130,13 @@ class CaliopeNode(SemiStructuredNode):
         new_node.save()
         return new_node
 
-    @staticmethod
+    @classmethod
     def _get_class_properties(cls):
         return [(prop, prop_inst)
                 for prop, prop_inst in cls.__dict__.items()
                 if prop and isinstance(prop_inst, Property)]
 
-    @staticmethod
+    @classmethod
     def _get_class_relationships(cls):
         return [(rel, rel_inst)
                 for rel, rel_inst in cls.__dict__.items()

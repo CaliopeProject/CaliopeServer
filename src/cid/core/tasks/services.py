@@ -53,23 +53,14 @@ class TaskServices(CaliopeEntityService):
                                           "MATCH (user)-[r:HOLDER]-(tdc)-[e:CURRENT]-(t), (t)-[:FIRST]-(tdf)"
                                           "WHERE has(r.category) and "
                                           "      not(tdf=tdc)"
-                                          "return t, r.category");
-        tasks_list = {'ToDo': {'pos': 0, 'category': {'value': 'ToDo'}, 'tasks': []},
-                      'Doing': {'pos': 1, 'category': {'value': 'Doing'}, 'tasks': []},
-                      'Done': {'pos': 2, 'category': {'value': 'Done'}, 'tasks': []},
-                      'archived': {'pos': 3, 'category': {'value': 'Archived'}, 'tasks': []},
-                      'deleted': {'pos': 4, 'category': {'value': 'Deleted'}, 'tasks': []}
-        }
-
+                                          "return t, r.category")
+        task_list = []
         for row in results:
-            tl = tasks_list[row[1]]['tasks']
             task_class = Task().__class__
             task = task_class.inflate(row[0])
-            entity_data = task.get_entity_data()
-            tl.append(entity_data)
-
-        return [list for list in sorted(tasks_list.values(), key=lambda pos: pos['pos'])]
-
+            entity_data = task.serialize()
+            task_list.append(entity_data)
+        return task_list
 
     @staticmethod
     @public(name='getCurrentUserKanban')
@@ -227,10 +218,10 @@ class TaskController(CaliopeEntityController):
 
     def set_data(self, **data):
 
-        rels = []
-        for rel in CaliopeNode._get_class_relationships(Task.entity_data_type):
-            if rel[0] in data:
-                rels.append(data[rel[0]])
+        # rels = []
+        # for rel in Task.entity_data_type._get_class_relationships():
+        #     if rel[0] in data:
+        #         rels.append(data[rel[0]])
 
         # Check if category type is send, else set default category to ToDo
         if 'category' in data and data['category'] in ['ToDo', 'Doing', 'Done']:
@@ -250,13 +241,9 @@ class TaskController(CaliopeEntityController):
 
         if self.task is None:
             self.task = Task()
-            self.task.save()
-            self.task.init_entity_data(**data)
-            ownerUserNode = CaliopeUser.index.get(username=LoginManager().get_user())
-            self.task.set_owner(ownerUserNode)
         else:
             self.task.set_entity_data(**data)
-        self.set_holders(holders, category)
+            self.set_holders(holders, category)
 
     def get_data(self):
         return self.task.get_entity_data()
