@@ -37,7 +37,18 @@
     },
     {
       "name": "target",
-      "type": "hidden"
+      "type": "hidden" ,
+      "relation" : {
+        "direction" : 1,
+        "target" : {
+          "entity": "{{target.entity}}",
+          "properties"  : {
+          },
+          "entity-data" : {
+            "uuid" : "{{target.uuid}}"
+          }
+        }
+      }
     },
     {
       "name": "tarea",
@@ -65,10 +76,10 @@
         "target" : {
           "entity": "users",
           "properties"  : {
-            "category"  : "category"
+            "category"  : "{{category}}"
           },
           "entity-data" : {
-            "username" : "holders"
+            "username" : "{{holders}}"
           }
         }
       }
