@@ -30,9 +30,9 @@
     {
       "name"  : "execute",
       "type"  : "execute-task",
-      "execute-task-options" : {
+      "options" : {
         "target-uuid-field" : "target.uuid",
-        "target-form-field" : "target.entity"
+        "target-entity-field" : "target.entity"
       }
     },
     {
