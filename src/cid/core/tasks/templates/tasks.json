@@ -30,9 +30,9 @@
     {
       "name"  : "execute",
       "type"  : "execute-task",
-      "execute-task-options" : {
+      "options" : {
         "target-uuid-field" : "target.uuid",
-        "target-form-field" : "target.entity"
+        "target-entity-field" : "target.entity"
       }
     },
     {
@@ -51,7 +51,7 @@
       }
     },
     {
-      "name": "ente_asignado",
+      "name": "holders",
       "caption": "Asignar a",
       "class": "input-large",
       "type": "multi-choices",
@@ -61,8 +61,16 @@
         "field-desc"    : "username"
       },
       "relation" : {
-        "target" : {"username": "ente_asignado"},
-        "props"  : {"category": "category"}
+        "direction" : 1,
+        "target" : {
+          "entity": "users",
+          "properties"  : {
+            "category"  : "category"
+          },
+          "entity-data" : {
+            "username" : "holders"
+          }
+        }
       }
     },
     {
@@ -123,7 +131,7 @@
         },
         {
           "class": "span6",
-          "elements"  : ["tarea","deadline", "ente_asignado", "target"]
+          "elements"  : ["tarea","deadline", "holders", "target"]
         }
       ]
     }
