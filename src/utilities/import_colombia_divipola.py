@@ -91,9 +91,9 @@ def find_or_create_entity_with_data(*args, **kwargs):
             data_entities = cls_entity_data.index.search(code=code)
             if len(data_entities) == 0:
                 #: Catch this bug
-                if issubclass(cls_entity.entity_data_type, cls_entity_data):
-                    setattr(cls_entity, 'entity_data_type', cls_entity_data)
-                entity = cls_entity()
+                # if issubclass(cls_entity.entity_data_type, cls_entity_data):
+                #    setattr(cls_entity, 'entity_data_type', cls_entity_data)
+                entity = cls_entity(entity_data_type=cls_entity_data)
                 entity.save()
                 entity.init_entity_data(**kwargs)
                 return entity
