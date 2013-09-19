@@ -44,16 +44,7 @@ class UsersManager(object):
             users = CaliopeUser.index.search('username:*')
             users_list = []
             for user in users:
-                data = user._get_node_data()
-                for k, v in data.items():
-                    if not isinstance(v, unicode):
-                        v = unicode(v)
-                    data[k] = {'value': v}
-                data['name'] = {'value': data['first_name']['value'] + ' ' + data['last_name']['value']}
-                users_list.append({u'name': data['name'],
-                                   u'username': data['username'],
-                                   u'first_name': data['first_name'],
-                                   u'last_name': data['last_name']})
+                users_list.append(UsersManager.get_user_node_data(user))
             return users_list
         except DoesNotExist as e:
             raise JSONRPCInvalidRequestError(e)
@@ -68,11 +59,10 @@ class UsersManager(object):
     @public(name='getThumbnail')
     def get_thumbnail(user):
         rv = {
-            "image" :
-            get_thumbnail(os.path.join(current_app.config['STATIC_PATH'], 'common-img/avatar1.png'))
+            "image":
+                get_thumbnail(os.path.join(current_app.config['STATIC_PATH'], 'common-img/avatar1.png'))
         }
         return rv
-
 
     @staticmethod
     @public(name='getThumbnailList')
@@ -81,8 +71,21 @@ class UsersManager(object):
         for user in users:
             rv.append({
                 user:
-                get_thumbnail(os.path.join(current_app.config['STATIC_PATH'], 'common-img/avatar1.png'))
+                    get_thumbnail(os.path.join(current_app.config['STATIC_PATH'], 'common-img/avatar1.png'))
             })
+        return rv
+
+    @staticmethod
+    @public(name='getPublicInfo')
+    def get_info(uuids):
+        rv = []
+        for uuid in uuids:
+            user = CaliopeUser.index.get(uuid=uuid)
+            if len(user) == 1:
+                rv.append({
+                    UsersManager.get_user_node_data(user).items(),
+                    UsersManager.get_thumbnail(user).items()
+                })
         return rv
 
 
@@ -110,3 +113,19 @@ class UsersManager(object):
     @public
     def addGroup(groupname):
         raise JSONRPCInvalidRequestError('Unimplemented')
+
+    @staticmethod
+    def get_user_node_data(user_node):
+        rv = {}
+        data = user_node._get_node_data()
+        for k, v in data.items():
+            if not isinstance(v, unicode):
+                v = unicode(v)
+            data[k] = {'value': v}
+        data['name'] = {'value': data['first_name']['value'] + ' ' + data['last_name']['value']}
+        rv = {u'name': data['name'],
+              u'username': data['username'],
+              u'first_name': data['first_name'],
+              u'last_name': data['last_name'],
+              u'uuid': data['uuid']}
+        return rv
