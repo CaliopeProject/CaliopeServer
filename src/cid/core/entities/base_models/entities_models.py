@@ -115,21 +115,28 @@ class CaliopeEntity(CaliopeNode):
         self.init_entity_data()
 
     def init_entity_data(self, *args, **kwargs):
-        self.empty_entity_data = self.entity_data_type(args, kwargs)
+        self.__entity_data__ = self.entity_data_type(args, kwargs)
 
     def _get_current(self):
         if self.__node__ is None:
-            return self.empty_entity_data
+            return self.__entity_data__
         else:
             return self.current.single()
 
     def _set_current(self, new_current):
-        self.current.reconnect(self._get_current(), new_current)
+        if self._get_current() is not None:
+            self.current.reconnect(self._get_current(), new_current)
+        else:
+            self.current.connect(new_current)
 
-    def set_entity_data(self, **data):
-        if 'uuid' in data:
-            del data['uuid']
-        new_current = self._get_current().set_data(data)
+    def set_entity_data(self, *args, **kwargs):
+        if 'uuid' in kwargs:
+            del kwargs['uuid']
+        current = self._get_current()
+        #: When the set_data, call evolve, the new node is saved before return
+        new_current = current.set_data(kwargs)
+        if self.__node__ is None:
+            self.save()
         self._set_current(new_current)
         return self._get_current()
 
@@ -171,17 +178,29 @@ class CaliopeEntity(CaliopeNode):
     def _parse_entity_relationships(self, k, v):
         rv = {}
         current_node = self._get_current()
-        rel = getattr(current_node, k)
-        rv['direction'] = rel.definition['direction']
-        target = []
-        for t in rel.all():
+        if getattr(current_node,'__node__') is not None:
+            rel = getattr(current_node, k)
+            rv['direction'] = rel.definition['direction']
+            target = []
+            for t in rel.all():
+                rel_dct = {}
+                rel_inst = rel.relationship(t)
+                rel_dct['entity'] = repr(t.__class__)
+                rel_dct['properties'] = {k: v for k, v in rel_inst._properties.items()}
+                rel_dct['entity_data'] = {'uuid': t.uuid}
+                target.append(rel_dct)
+            rv['target'] = target
+        else:
+            rel = getattr(current_node, k)
+            rv['direction'] = rel.definition['direction']
+            target = []
             rel_dct = {}
-            rel_inst = rel.relationship(t)
-            rel_dct['entity'] = repr(t.__class__)
-            rel_dct['properties'] = {k: v for k, v in rel_inst._properties.items()}
-            rel_dct['entity_data'] = {'uuid': t.uuid}
-            target.append(rel_dct)
-        rv['target'] = target
+            for t_name, t_class in rel.target_map.items():
+                rel_dct['entity'] = repr(t_class)
+                rel_dct['properties'] = {}
+                rel_dct['entity_data'] = {}
+                target.append(rel_dct)
+            rv['target'] = target
         return rv
 
 

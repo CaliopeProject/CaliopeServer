@@ -30,6 +30,7 @@ import os
 import gevent
 from hotqueue import HotQueue
 import magic
+import PDFProcessor
 from prometheia.core.OCR import OCR
 from cid.core.documents import DocumentManager
 from urlparse import urlparse
@@ -52,6 +53,7 @@ def queue_processor():
             print filename + ' ' + str(m.id_filename(filename))
 
             if 'PDF' in  str(m.id_filename(filename)):
+                #PDFProcessor.extractContent(str(filename))
                 ocr_text = ocr.interpret(str(filename))
                 print ocr_text
 

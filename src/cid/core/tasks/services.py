@@ -41,6 +41,7 @@ from models import Task
 
 
 class TaskServices(CaliopeEntityService):
+    task_requested_uuid = set()
     def __init__(self, *args, **kwargs):
         super(TaskServices, self).__init__(*args, **kwargs)
 
@@ -50,9 +51,8 @@ class TaskServices(CaliopeEntityService):
     def get_all():
         a_node = CaliopeUser.category().instance.single()
         results, metadata = a_node.cypher("START user=node(*)"
-                                          "MATCH (user)-[r:HOLDER]-(tdc)-[e:CURRENT]-(t), (t)-[:FIRST]-(tdf)"
-                                          "WHERE has(r.category) and "
-                                          "      not(tdf=tdc)"
+                                          "MATCH (user)-[r:HOLDER]-(tdc)-[e:CURRENT]-(t)"
+                                          "WHERE has(r.category) "
                                           "return t, r.category")
         task_list = []
         for row in results:
@@ -71,12 +71,11 @@ class TaskServices(CaliopeEntityService):
         #: relationship and that node is connected with a  CURRENT relationship to a task.
         #: From the task find the FIRST node
         results, metadata = user_node.cypher("START user=node({self})"
-                                             "MATCH (user)-[r:HOLDER]-(tdc)-[e:CURRENT]-(t), (t)-[:FIRST]-(tdf)"
+                                             "MATCH (user)-[r:HOLDER]-(tdc)-[e:CURRENT]-(t)"
                                              "WHERE has(r.category) and "
                                              "(r.category='ToDo' or "
                                              "r.category='Doing' or "
                                              "r.category='Done')"
-                                             "      and not(tdf=tdc)"
                                              "return t, r.category");
         tasks_list = {'ToDo': {'pos': 0, 'category': {'value': 'ToDo'}, 'tasks': []},
                       'Doing': {'pos': 1, 'category': {'value': 'Doing'}, 'tasks': []},
@@ -86,7 +85,7 @@ class TaskServices(CaliopeEntityService):
             tl = tasks_list[row[1]]['tasks']
             task_class = Task().__class__
             task = task_class.inflate(row[0])
-            entity_data = task.get_entity_data()
+            entity_data = task.serialize()
             tl.append(entity_data)
 
         return [list for list in sorted(tasks_list.values(), key=lambda pos: pos['pos'])]
@@ -107,6 +106,7 @@ class TaskServices(CaliopeEntityService):
         task_controller = TaskController()
         rv = task_controller.get_model()
         rv['data'] = task_controller.get_data()
+        TaskServices.task_requested_uuid.add(rv['data']['uuid']['value'])
         return rv
 
     @staticmethod
@@ -123,11 +123,12 @@ class TaskServices(CaliopeEntityService):
     @public
     def create(data=None):
         if 'uuid' in data:
-            task = TaskController(uuid=data['uuid'])
+            task_controller = TaskController(uuid=data['uuid'])
         else:
-            task = TaskController()
-        task.set_data(**data)
-        rv = task.get_data()
+            task_controller = TaskController()
+        task_controller.set_data(**data)
+        task_controller.set_owner()
+        rv = task_controller.get_data()
         return rv
 
     @staticmethod
@@ -197,8 +198,12 @@ class TaskController(CaliopeEntityController):
             try:
                 node = CaliopeNode.index.get(uuid=kwargs['uuid'])
                 self.task = Task().__class__.inflate(node.__node__)
-            except DoesNotExist as e:
-                self.task = None
+            except DoesNotExist:
+                if kwargs['uuid'] in TaskServices.task_requested_uuid:
+                    TaskServices.task_requested_uuid.remove(kwargs['uuid'])
+                    self.task = Task()
+                else:
+                    raise DoesNotExist("Invalid UUID")
             except Exception as e:
                 raise e
         else:
@@ -218,10 +223,13 @@ class TaskController(CaliopeEntityController):
 
     def set_data(self, **data):
 
-        # rels = []
-        # for rel in Task.entity_data_type._get_class_relationships():
-        #     if rel[0] in data:
-        #         rels.append(data[rel[0]])
+        rels = []
+        holders = data['holders'] if 'holders' in data else [CaliopeUser.index.get(username=LoginManager().get_user())]
+
+        for rel in Task.entity_data_type._get_class_relationships():
+            if rel[0] in data:
+                rels.append(data[rel[0]])
+                del data[rel[0]]
 
         # Check if category type is send, else set default category to ToDo
         if 'category' in data and data['category'] in ['ToDo', 'Doing', 'Done']:
@@ -229,24 +237,24 @@ class TaskController(CaliopeEntityController):
             del data['category']
         else:
             category = 'ToDo'
-        holders = []
-        if 'ente_asignado' in data:
-            if len(data['ente_asignado']) > 0:
-                holders = data['ente_asignado']
-            else:
-                holders = LoginManager().get_user()
-            del data['ente_asignado']
-        else:
-            holders = LoginManager().get_user()
+
 
         if self.task is None:
             self.task = Task()
         else:
             self.task.set_entity_data(**data)
-            self.set_holders(holders, category)
+            if isinstance(holders,list):
+                self.set_holders(holders, category)
+            elif isinstance(holders, dict):
+                for target in holders['target']:
+                    # target_class = target['entity'].strip...
+                    target_class = CaliopeUser
+                    target_node = target_class.index.get(**{k: v for k, v in target['entity_data'].items()})
+                    self.set_holder(target_node, **target['properties'])
+
 
     def get_data(self):
-        return self.task.get_entity_data()
+        return self.task.serialize()
 
     def set_holders(self, holders, category):
 
@@ -265,6 +273,10 @@ class TaskController(CaliopeEntityController):
         self.task.remove_holders()
         for holderUser in holdersUsersNodes:
             self.task.set_holder(holderUser, properties={'category': category})
+
+    def set_owner(self):
+        owner = CaliopeUser.index.get(username=LoginManager().get_user())
+        self.task.set_owner(owner)
 
     def set_holder(self, holder_node, category):
         self.task.set_holder(holder_node, properties={'category': category})
