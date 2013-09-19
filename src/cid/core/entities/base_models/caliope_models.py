@@ -99,12 +99,15 @@ class CaliopeNode(SemiStructuredNode):
         with the ancestor.
         """
         cls = self.__class__
-        new_node = cls(self._get_node_data())
-        new_node._set_node_attr(**kwargs)
-        new_node.save()
         if self.__node__ is not None:
+            new_node = cls(self._get_node_data())
+            new_node._set_node_attr(**kwargs)
+            new_node.save()
             cls.reconnect(self, new_node)
             new_node.ancestor_node.connect(self)
+        else:
+            new_node = cls(**kwargs)
+            new_node.save()
         return new_node
 
     @classmethod

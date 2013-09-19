@@ -61,14 +61,14 @@
         "field-desc"    : "username"
       },
       "relation" : {
-        "direction" : 1,
+        "direction" : -1,
         "target" : {
-          "entity": "users",
+          "entity": "<class 'cid.core.entities.base_models.entities_models.CaliopeUser'>",
           "properties"  : {
-            "category"  : "category"
+            "category"  : "{{category}}"
           },
-          "entity-data" : {
-            "username" : "holders"
+          "entity_data" : {
+            "username" : "{{holders}}"
           }
         }
       }
