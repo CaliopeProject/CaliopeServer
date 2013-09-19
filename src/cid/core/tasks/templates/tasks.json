@@ -37,18 +37,7 @@
     },
     {
       "name": "target",
-      "type": "hidden" ,
-      "relation" : {
-        "direction" : 1,
-        "target" : {
-          "entity": "{{target.entity}}",
-          "properties"  : {
-          },
-          "entity-data" : {
-            "uuid" : "{{target.uuid}}"
-          }
-        }
-      }
+      "type": "hidden"
     },
     {
       "name": "tarea",
@@ -72,13 +61,13 @@
         "field-desc"    : "username"
       },
       "relation" : {
-        "direction" : 1,
+        "direction" : -1,
         "target" : {
-          "entity": "users",
+          "entity": "<class 'cid.core.entities.base_models.entities_models.CaliopeUser'>",
           "properties"  : {
             "category"  : "{{category}}"
           },
-          "entity-data" : {
+          "entity_data" : {
             "username" : "{{holders}}"
           }
         }
