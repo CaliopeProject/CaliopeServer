@@ -27,10 +27,13 @@ import PyPDF2
 
 
 def extractContent(file):
+    print "extractContent"
     pdf = PyPDF2.PdfFileReader(file)
-
-    num_pages = pdf.numPages()
-
-    for i in range(0, num_pages):
-        page = pdf.getPage(i)
-        print page.extractText()
+    i = 1
+    while 1:
+        try:
+            page = pdf.getPage(i)
+            print page.extractText()
+            i = i + 1
+        except IndexError:
+            break
