@@ -3,9 +3,10 @@ import urllib2
 import subprocess
 import tempfile
 import os
+import magic
 
 
-class OCR(object):
+class Engine(object):
 
     def __init__(self, ocr_engine='tesseract', pdf_converter='ghostscript'):
         self.ocr_engine = ocr_engine
@@ -17,9 +18,8 @@ class OCR(object):
         if type(input_file) is str:
             input_file = self.open_url_or_file(input_file)
 
-        ext = os.path.splitext(input_file.name)[1]
-
-        if ext == '.pdf':
+        m = magic.Magic()
+        if 'PDF' in  str(m.id_filename(input_file.name)):
             input_file = self.pdf_to_img(input_file.name)
 
         ocr_result = self.run_ocr(input_file)
@@ -83,9 +83,9 @@ class TesseractEngine(object):
 
         try:
             subprocess.call(['tesseract', input_file.name,
-                            tempfile.gettempdir() + '/ocr_result','-l spa'])
+                            tempfile.gettempdir() + '/ocr_result', '-l spa'])
         except OSError:
-            raise RuntimeError("Failed to run tesseract command. Is it installed? http://code.google.com/p/tesseract-ocr/")
+            raise RuntimeError("Failed to run tesseract command. Is it installed?")
 
         ocr_result = open(
             tempfile.gettempdir() + '/ocr_result' + '.txt', 'rb+').read().strip()
