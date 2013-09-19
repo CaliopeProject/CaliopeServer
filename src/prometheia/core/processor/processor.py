@@ -53,9 +53,9 @@ def queue_processor():
             print filename + ' ' + str(m.id_filename(filename))
 
             if 'PDF' in  str(m.id_filename(filename)):
-                #PDFProcessor.extractContent(str(filename))
-                ocr_text = ocr.interpret(str(filename))
-                print ocr_text
+                pdf_text = PDFProcessor.extractContent(str(filename))
+                #ocr_text = ocr.interpret(str(filename))
+                print pdf_text
 
 
 def prometheia_processor():

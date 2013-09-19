@@ -23,17 +23,40 @@ Copyright (C) 2013 Fundación Correlibre
 """
 __author__ = 'afc'
 
-import PyPDF2
-
+import sys
+import StringIO
+from pdfminer.pdfparser import PDFParser, PDFDocument
+from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
+from pdfminer.converter import TextConverter
+from pdfminer.layout import LAParams
 
 def extractContent(file):
     print "extractContent"
-    pdf = PyPDF2.PdfFileReader(file)
-    i = 1
-    while 1:
-        try:
-            page = pdf.getPage(i)
-            print page.extractText()
-            i = i + 1
-        except IndexError:
-            break
+
+    fp = open(file, 'rb')
+    parser = PDFParser(fp)
+    doc = PDFDocument()
+    parser.set_document(doc)
+    doc.set_parser(parser)
+
+    rsrcmgr = PDFResourceManager()
+    codec = 'utf-8'
+    laparams = LAParams()
+    outfp = StringIO.StringIO()
+
+    device = TextConverter(rsrcmgr, outfp, codec=codec, laparams=laparams)
+    interpreter = PDFPageInterpreter(rsrcmgr, device)
+
+    #if not doc.is_extractable:
+    #    return None
+
+    for i, page in enumerate(doc.get_pages()):
+        print "page=" + str(i)
+        if page is not None:
+            interpreter.process_page(page)
+    print "EOF"
+    device.close()
+    fp.close()
+
+    return outfp.getvalue()
+
