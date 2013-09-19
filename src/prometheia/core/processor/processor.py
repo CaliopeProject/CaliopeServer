@@ -33,6 +33,7 @@ import magic
 import PDFProcessor
 from prometheia.core.OCR import OCR
 from cid.core.documents import DocumentManager
+from cid.core.entities import ContentDocument
 from urlparse import urlparse
 
 UPLOAD_FOLDER = "./storage"
@@ -54,6 +55,9 @@ def queue_processor():
 
             if 'PDF' in  str(m.id_filename(filename)):
                 pdf_text = PDFProcessor.extractContent(str(filename))
+                cm = ContentDocument()
+                cm.content = unicode(pdf_text, encoding='utf-8')
+                cm.save()
                 #ocr_text = ocr.interpret(str(filename))
                 print pdf_text
 

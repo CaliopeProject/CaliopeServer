@@ -100,3 +100,9 @@ class CaliopeDocument(CaliopeEntity):
         holders = [holder_node.username for holder_node in holders_nodes]
         rv['holders'] = {'value': holders}
         return rv
+
+
+class ContentDocument(CaliopeNode):
+    __index__ = 'ContentFulltext'
+    content = StringProperty(index=True)
+    #uuid = StringProperty()
