@@ -40,7 +40,7 @@ def extractContent(file):
     doc.set_parser(parser)
 
     rsrcmgr = PDFResourceManager()
-    codec = 'utf-8'
+    codec = 'UTF-8'
     laparams = LAParams()
     outfp = StringIO.StringIO()
 
