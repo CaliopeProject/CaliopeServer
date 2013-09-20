@@ -41,7 +41,6 @@ from models import Task
 
 
 class TaskServices(CaliopeEntityService):
-    task_requested_uuid = set()
 
     def __init__(self, *args, **kwargs):
         super(TaskServices, self).__init__(*args, **kwargs)
@@ -107,7 +106,7 @@ class TaskServices(CaliopeEntityService):
         task_controller = TaskController()
         rv = task_controller.get_model()
         rv['data'] = task_controller.get_data()
-        TaskServices.task_requested_uuid.add(rv['data']['uuid']['value'])
+        TaskServices.service_requested_uuid.add(rv['data']['uuid']['value'])
         return rv
 
     @staticmethod
@@ -200,14 +199,11 @@ class TaskController(CaliopeEntityController):
                 node = CaliopeNode.index.get(uuid=kwargs['uuid'])
                 self.task = Task().__class__.inflate(node.__node__)
             except DoesNotExist:
-                if kwargs['uuid'] in TaskServices.task_requested_uuid:
-                    TaskServices.task_requested_uuid.remove(kwargs['uuid'])
+                if kwargs['uuid'] in TaskServices.service_requested_uuid:
+                    TaskServices.service_requested_uuid.remove(kwargs['uuid'])
                     self.task = Task()
                 else:
-                    #: TODO: Dissabe this is for debug only
-                    TaskServices.task_requested_uuid.remove(kwargs['uuid'])
-                    self.task = Task()
-                    # raise DoesNotExist("Invalid UUID")
+                    raise DoesNotExist("Invalid UUID")
             except Exception as e:
                 raise e
         else:

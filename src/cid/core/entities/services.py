@@ -29,6 +29,8 @@ class CaliopeEntityService(object):
     This class is the base for all future forms elements.
     """
 
+    service_requested_uuid = set()
+
     def __init__(self, *args, **kwargs):
         pass
 
