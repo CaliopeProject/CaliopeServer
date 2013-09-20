@@ -63,6 +63,8 @@ class ProjectServices(CaliopeEntityService):
         project_controller = ProjectController()
         rv = project_controller.get_model()
         rv['data'] = project_controller.get_data()
+        ProjectServices.service_requested_uuid.add(rv['data']['uuid']['value'])
+
         return rv
 
     @staticmethod
@@ -102,8 +104,12 @@ class ProjectController(CaliopeEntityController):
             try:
                 node = CaliopeNode.index.get(uuid=kwargs['uuid'])
                 self.project = ProjectEntity().__class__.inflate(node.__node__)
-            except DoesNotExist as e:
-                self.project = None
+            except DoesNotExist:
+                if kwargs['uuid'] in ProjectServices.service_requested_uuid:
+                    ProjectServices.service_requested_uuid.remove(kwargs['uuid'])
+                    self.project = ProjectEntity()
+                else:
+                    raise DoesNotExist("Invalid UUID")
             except Exception as e:
                 raise e
         else:
@@ -124,16 +130,11 @@ class ProjectController(CaliopeEntityController):
     def set_data(self, **data):
         if self.project is None:
             self.project = ProjectEntity()
-            self.project.save()
-            self.project.init_entity_data(**data)
         else:
             self.project.set_entity_data(**data)
 
     def get_data(self):
-        if hasattr(self, 'project') and self.project is not None:
-            return self.project.get_entity_data()
-        else:
-            return None
+        return self.project.serialize()
 
     def set_holders(self, holders, category):
         pass
