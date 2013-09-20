@@ -51,7 +51,7 @@ class ProjectData(CaliopeEntityData):
 class ProjectEntity(CaliopeEntity):
     __index__ = 'CaliopeStorage'
 
-    entity_data_type = ProjectData
+    __entity_data_type__ = ProjectData
 
     def __init__(self, *args, **kwargs):
         super(ProjectEntity, self).__init__(*args, **kwargs)

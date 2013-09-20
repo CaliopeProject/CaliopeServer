@@ -35,7 +35,7 @@ class CaliopeIdentificationDocument(CaliopeEntity):
 
 
 class CaliopeIdentificationDocumentTypeData(CaliopeEntityData):
-    entity_type = CaliopeIdentificationDocumentType
+    __entity_type__ = CaliopeIdentificationDocumentType
     name = StringProperty()
     code = StringProperty()
     maximum_length = IntegerProperty()
@@ -43,11 +43,11 @@ class CaliopeIdentificationDocumentTypeData(CaliopeEntityData):
 
 
 class CaliopeIdentificationDocumentType(CaliopeEntity):
-    entity_data_type = CaliopeIdentificationDocumentTypeData
+    __entity_data_type__ = CaliopeIdentificationDocumentTypeData
 
 
 class CaliopeIdentificationDocumentData(CaliopeEntityData):
-    entity_type = CaliopeIdentificationDocument
+    __entity_type__ = CaliopeIdentificationDocument
     number = StringProperty()
     issue_date = DateTimeProperty()
     type = RelationshipTo(CaliopeIdentificationDocumentType, 'IS_TYPE', One)
@@ -55,5 +55,5 @@ class CaliopeIdentificationDocumentData(CaliopeEntityData):
 
 
 class CaliopeIdentificationDocument(CaliopeEntity):
-    entity_data_type = CaliopeIdentificationDocumentData
+    __entity_data_type__ = CaliopeIdentificationDocumentData
 

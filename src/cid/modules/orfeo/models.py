@@ -80,7 +80,7 @@ class OrfeoData(CaliopeEntityData):
 class Orfeo(CaliopeEntity):
     __index__ = 'CaliopeStorage'
 
-    entity_data_type = OrfeoData
+    __entity_data_type__ = OrfeoData
 
     def __init__(self, *args, **kwargs):
         super(Orfeo, self).__init__(*args, **kwargs)

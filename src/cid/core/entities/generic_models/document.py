@@ -30,7 +30,7 @@ class CaliopeDocument(CaliopeEntity):
 
 
 class CaliopeDocumentData(CaliopeEntityData):
-    entity_type = CaliopeDocument
+    __entity_type__ = CaliopeDocument
 
     owner = RelationshipFrom(CaliopeUser, 'OWNER', cardinality=One)
     holders = RelationshipFrom(CaliopeUser, 'HOLDER')
@@ -75,7 +75,7 @@ class CaliopeDocumentData(CaliopeEntityData):
 
 
 class CaliopeDocument(CaliopeEntity):
-    entity_data_type = CaliopeDocumentData
+    __entity_data_type__ = CaliopeDocumentData
 
     def __init__(self, *args, **kwargs):
         super(CaliopeDocument, self).__init__(*args, **kwargs)

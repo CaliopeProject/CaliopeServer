@@ -84,7 +84,7 @@ def find_or_create_entity_with_data(*args, **kwargs):
     cls_entity_data = args[0] if len(args) > 0 else None
     cls_entity = None
     if cls_entity_data is not None and issubclass(cls_entity_data, CaliopeEntityData):
-        cls_entity = cls_entity_data.entity_type
+        cls_entity = cls_entity_data.__entity_type__
     if cls_entity is not None:
         code = kwargs['code'] if 'code' in kwargs else None
         if code is not None:
@@ -93,9 +93,9 @@ def find_or_create_entity_with_data(*args, **kwargs):
                 #: Catch this bug
                 # if issubclass(cls_entity.entity_data_type, cls_entity_data):
                 #    setattr(cls_entity, 'entity_data_type', cls_entity_data)
-                entity = cls_entity(entity_data_type=cls_entity_data)
+                entity = cls_entity(__entity_data_type__=cls_entity_data)
                 entity.save()
-                entity.init_entity_data(**kwargs)
+                entity.set_entity_data(**kwargs)
                 return entity
             else:
                 return data_entities[0].current.single()

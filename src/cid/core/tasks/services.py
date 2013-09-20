@@ -226,7 +226,7 @@ class TaskController(CaliopeEntityController):
         rels = []
         holders = data['holders'] if 'holders' in data else [CaliopeUser.index.get(username=LoginManager().get_user())]
 
-        for rel in Task.entity_data_type._get_class_relationships():
+        for rel in Task.__entity_data_type__._get_class_relationships():
             if rel[0] in data:
                 rels.append(data[rel[0]])
                 del data[rel[0]]

@@ -83,8 +83,8 @@ class TaskData(CaliopeEntityData):
 
 
 class Task(CaliopeEntity):
-    entity_data_type = TaskData
-    context_type = ProjectEntity
+    __entity_data_type__ = TaskData
+    __context_type__ = ProjectEntity
 
     def __init__(self, *args, **kwargs):
         super(Task, self).__init__(*args, **kwargs)
