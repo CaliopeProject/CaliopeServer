@@ -79,8 +79,10 @@ class CaliopeEntityData(CaliopeNode):
             return self._get_inst_data()
         return self._get_node_data()
 
-    def set_data(self, data):
+    def set_data(self, **data):
         return self.evolve(**data)
+
+
 
 
 class CaliopeEntity(CaliopeNode):
@@ -114,10 +116,10 @@ class CaliopeEntity(CaliopeNode):
 
     def __init__(self, *args, **kwargs):
         super(CaliopeEntity, self).__init__(*args, **kwargs)
-        self.init_entity_data()
+        self.init_entity_data(__entity_type__=self.__class__)
 
     def init_entity_data(self, *args, **kwargs):
-        self.__entity_data__ = self.__entity_data_type__(args, kwargs)
+        self.__entity_data__ = self.__entity_data_type__(*args, **kwargs)
 
     def _get_current(self):
         if self.__node__ is None:
@@ -125,11 +127,6 @@ class CaliopeEntity(CaliopeNode):
         else:
             return self.current.single()
 
-    def _set_current(self, new_current):
-        if self._get_current() is not None:
-            self.current.reconnect(self._get_current(), new_current)
-        else:
-            self.current.connect(new_current)
 
     def set_entity_data(self, *args, **kwargs):
         if 'uuid' in kwargs:
@@ -141,8 +138,9 @@ class CaliopeEntity(CaliopeNode):
             self.__entity_data__ = self.__entity_data_type__(args, kwargs)
             current = self.__entity_data__
             #: When the set_data, call evolve, the new node is saved before return
-        new_current = current.set_data(kwargs)
-        self._set_current(new_current)
+        new_current = current.set_data(**kwargs)
+        if current.__node__ is None:
+            self.current.connect(new_current)
         return self._get_current()
 
     def serialize(self):
@@ -182,8 +180,6 @@ class CaliopeEntity(CaliopeNode):
 
     def _parse_entity_relationships(self, k, v):
         rv = {}
-        if k == "current":
-            return rv
         current_node = self._get_current()
         if getattr(current_node, '__node__') is not None:
             rel = getattr(current_node, k)
