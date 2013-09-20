@@ -42,6 +42,7 @@ from models import Task
 
 class TaskServices(CaliopeEntityService):
     task_requested_uuid = set()
+
     def __init__(self, *args, **kwargs):
         super(TaskServices, self).__init__(*args, **kwargs)
 
@@ -203,7 +204,10 @@ class TaskController(CaliopeEntityController):
                     TaskServices.task_requested_uuid.remove(kwargs['uuid'])
                     self.task = Task()
                 else:
-                    raise DoesNotExist("Invalid UUID")
+                    #: TODO: Dissabe this is for debug only
+                    TaskServices.task_requested_uuid.remove(kwargs['uuid'])
+                    self.task = Task()
+                    # raise DoesNotExist("Invalid UUID")
             except Exception as e:
                 raise e
         else:
@@ -238,12 +242,11 @@ class TaskController(CaliopeEntityController):
         else:
             category = 'ToDo'
 
-
         if self.task is None:
             self.task = Task()
         else:
             self.task.set_entity_data(**data)
-            if isinstance(holders,list):
+            if isinstance(holders, list):
                 self.set_holders(holders, category)
             elif isinstance(holders, dict):
                 for target in holders['target']:

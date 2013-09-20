@@ -35,7 +35,7 @@ class Task(CaliopeEntity):
 
 
 class TaskData(CaliopeEntityData):
-    entity_data = Task
+    __entity_data__ = Task
 
     owner = RelationshipFrom(CaliopeUser, 'OWNER', cardinality=One)
     holders = RelationshipFrom(CaliopeUser, 'HOLDER')

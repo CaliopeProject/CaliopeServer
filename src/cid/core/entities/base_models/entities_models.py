@@ -134,14 +134,14 @@ class CaliopeEntity(CaliopeNode):
     def set_entity_data(self, *args, **kwargs):
         if 'uuid' in kwargs:
             del kwargs['uuid']
+        if self.__node__ is None:
+            self.save()
         current = self._get_current()
         if current is None:
             self.__entity_data__ = self.__entity_data_type__(args, kwargs)
             current = self.__entity_data__
-        #: When the set_data, call evolve, the new node is saved before return
+            #: When the set_data, call evolve, the new node is saved before return
         new_current = current.set_data(kwargs)
-        if self.__node__ is None:
-            self.save()
         self._set_current(new_current)
         return self._get_current()
 
@@ -182,8 +182,10 @@ class CaliopeEntity(CaliopeNode):
 
     def _parse_entity_relationships(self, k, v):
         rv = {}
+        if k == "current":
+            return rv
         current_node = self._get_current()
-        if getattr(current_node,'__node__') is not None:
+        if getattr(current_node, '__node__') is not None:
             rel = getattr(current_node, k)
             rv['direction'] = rel.definition['direction']
             target = []
