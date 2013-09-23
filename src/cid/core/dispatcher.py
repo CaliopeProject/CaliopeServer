@@ -85,9 +85,9 @@ def handle_incoming_jsonrpc_message(data, handler=None):
         rpc_response = e.error_respond()
     else:
         if hasattr(json_request, 'create_batch_response'):
-            rpc_response = json_request.create_batch_response(
-                handle_request(req) for req in json_request
-            )
+            rpc_response = json_request.create_batch_response()
+            for request in json_request:
+                rpc_response.append(handle_request(request))
         else:
             rpc_response = handle_request(json_request)
 
