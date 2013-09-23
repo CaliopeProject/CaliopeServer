@@ -57,7 +57,7 @@
       "type": "multi-choices",
       "options-load-server" : {
         "method"        : "accounts.getAll",
-        "field-value"   : "username",
+        "field-value"   : "uuid",
         "field-desc"    : "username"
       },
       "relation" : {
@@ -68,7 +68,7 @@
             "category"  : "{{category}}"
           },
           "entity_data" : {
-            "username" : "{{holders}}"
+            "uuid" : "{{holders}}"
           }
         }
       }
