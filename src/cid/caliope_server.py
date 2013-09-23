@@ -82,7 +82,8 @@ def init_flask_app():
     app.use_debbuger = False
     app.use_reloader = False
     #: load gzip compressor
-    gzip = Gzip(app)
+    gzip = Gzip()
+    app.after_request(gzip.after_request)
 
 
 def _parseCommandArguments(argv):

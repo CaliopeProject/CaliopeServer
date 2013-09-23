@@ -116,11 +116,9 @@ def send_from_memory(filename):
 #From
 #https://github.com/elasticsales/Flask-gzip/blob/master/flask_gzip.py
 class Gzip(object):
-    def __init__(self, app, compress_level=6, minimum_size=500):
-        self.app = app
+    def __init__(self, compress_level=6, minimum_size=500):
         self.compress_level = compress_level
         self.minimum_size = minimum_size
-        self.app.after_request(self.after_request)
 
     def after_request(self, response):
         accept_encoding = request.headers.get('Accept-Encoding', '')
