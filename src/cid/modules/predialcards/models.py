@@ -52,7 +52,7 @@ class PredialCardData(CaliopeEntityData):
 class PredialCardEntity(CaliopeEntity):
     __index__ = 'CaliopeStorage'
 
-    entity_data_type = PredialCardData
+    __entity_data_type__ = PredialCardData
 
     def __init__(self, *args, **kwargs):
         super(PredialCardEntity, self).__init__(*args, **kwargs)

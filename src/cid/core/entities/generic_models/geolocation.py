@@ -46,7 +46,7 @@ class CaliopePopulatedCenter(CaliopeEntityData):
 
 
 class CaliopeCountyData(CaliopeEntityData):
-    entity_type = CaliopeCountry
+    __entity_type__ = CaliopeCountry
 
     name = StringProperty()
     code = StringProperty(index=True)
@@ -56,11 +56,11 @@ class CaliopeCountyData(CaliopeEntityData):
 
 
 class CaliopeCountry(CaliopeEntity):
-    entity_data_type = CaliopeCountyData
+    __entity_data_type__ = CaliopeCountyData
 
 
 class CaliopeStateData(CaliopeEntityData):
-    entity_type = CaliopeState
+    __entity_type__ = CaliopeState
     name = StringProperty()
     code = StringProperty(index=True)
     area_code = StringProperty()
@@ -68,35 +68,35 @@ class CaliopeStateData(CaliopeEntityData):
 
 
 class CaliopeState(CaliopeEntity):
-    entity_data_type = CaliopeStateData
+    __entity_data_type__ = CaliopeStateData
 
 
 class CaliopeMunicipalityData(CaliopeEntityData):
-    entity_type = CaliopeMunicipality
+    __entity_type__ = CaliopeMunicipality
     name = StringProperty()
     code = StringProperty(index=True)
     part_of = RelationshipTo(CaliopeState, 'PART_OF', One)
 
 
 class CaliopeMunicipality(CaliopeEntity):
-    entity_data_type = CaliopeMunicipalityData
+    __entity_data_type__ = CaliopeMunicipalityData
 
 
 class CaliopePopulatedCenterTypeData(CaliopeEntityData):
-    entity_type = CaliopePopulatedCenterType
+    __entity_type__ = CaliopePopulatedCenterType
     name = StringProperty()
     code = StringProperty(index=True)
 
 
 class CaliopePopulatedCenterType(CaliopeEntity):
-    entity_data_type = CaliopePopulatedCenterTypeData
+    __entity_data_type__ = CaliopePopulatedCenterTypeData
 
     def __init__(self, *args, **kwargs):
         super(CaliopePopulatedCenterType, self).__init__(*args, **kwargs)
 
 
 class CaliopePopulatedCenterData(CaliopeEntityData):
-    entity_type = CaliopePopulatedCenter
+    __entity_type__ = CaliopePopulatedCenter
     name = StringProperty()
     code = StringProperty(index=True)
     type = RelationshipTo(CaliopePopulatedCenterType, 'IS_TYPE', One)
@@ -104,7 +104,7 @@ class CaliopePopulatedCenterData(CaliopeEntityData):
 
 
 class CaliopePopulatedCenter(CaliopeEntity):
-    entity_data_type = CaliopePopulatedCenterData
+    __entity_data_type__ = CaliopePopulatedCenterData
 
     def __init__(self, *args, **kwargs):
         super(CaliopePopulatedCenter, self).__init__(*args, **kwargs)

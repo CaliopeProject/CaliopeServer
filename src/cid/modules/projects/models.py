@@ -27,8 +27,13 @@ from cid.core.entities import CaliopeEntityData, CaliopeEntity
 from cid.core.entities.base_models.entities_models import CaliopeUser
 
 
+class ProjectEntity(CaliopeEntity):
+    pass
+
+
 class ProjectData(CaliopeEntityData):
     __index__ = 'CaliopeStorage'
+    __entity_data__ = ProjectEntity
 
     name = StringProperty()
     general_location = StringProperty()
@@ -50,8 +55,7 @@ class ProjectData(CaliopeEntityData):
 
 class ProjectEntity(CaliopeEntity):
     __index__ = 'CaliopeStorage'
-
-    entity_data_type = ProjectData
+    __entity_data_type__ = ProjectData
 
     def __init__(self, *args, **kwargs):
         super(ProjectEntity, self).__init__(*args, **kwargs)

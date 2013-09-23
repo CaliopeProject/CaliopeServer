@@ -60,11 +60,13 @@ class CaliopeEntity(CaliopeNode):
 
 
 class CaliopeEntityData(CaliopeNode):
-    entity_type = CaliopeEntity
+    __entity_type__ = CaliopeEntity
 
     def __new__(cls, *args, **kwargs):
-        entity_type = kwargs['entity_type'] if 'entity_type' in kwargs else cls.entity_type
-        setattr(cls, 'entity_type', entity_type)
+        __entity_type__ = kwargs['__entity_type__'] if '__entity_type__' in kwargs else cls.__entity_type__
+        setattr(cls, '__entity_type__', __entity_type__)
+        current = RelationshipFrom(__entity_type__, 'CURRENT', cardinality=One)
+        setattr(cls, 'current', current)
         return super(CaliopeEntityData, cls).__new__(cls, *args, **kwargs)
 
     def __init__(self, *args, **kwargs):
@@ -77,45 +79,47 @@ class CaliopeEntityData(CaliopeNode):
             return self._get_inst_data()
         return self._get_node_data()
 
-    def set_data(self, data):
+    def set_data(self, **data):
         return self.evolve(**data)
 
 
+
+
 class CaliopeEntity(CaliopeNode):
-    entity_data_type = CaliopeEntityData
-    context_type = None
+    __entity_data_type__ = CaliopeEntityData
+    __context_type__ = None
 
     def __new__(cls, *args, **kwargs):
 
-        if 'entity_data_type' in kwargs:
-            entity_data_type = kwargs['entity_data_type']
-            del kwargs['entity_data_type']
+        if '__entity_data_type__' in kwargs:
+            __entity_data_type__ = kwargs['__entity_data_type__']
+            del kwargs['__entity_data_type__']
         else:
-            entity_data_type = cls.entity_data_type
+            __entity_data_type__ = cls.__entity_data_type__
 
-        if 'context_type' in kwargs:
-            context_type = kwargs['context_type']
-            del kwargs['context_type']
-        elif cls.context_type is not None:
-            context_type = cls.context_type
+        if '__context_type__' in kwargs:
+            __context_type__ = kwargs['__context_type__']
+            del kwargs['__context_type__']
+        elif cls.__context_type__ is not None:
+            __context_type__ = cls.__context_type__
         else:
-            context_type = cls
+            __context_type__ = cls
 
-        setattr(cls, 'entity_data_type', entity_data_type)
-        setattr(cls, 'context_type', context_type)
-        current = RelationshipTo(entity_data_type, 'CURRENT', cardinality=ZeroOrOne)
+        setattr(cls, '__entity_data_type__', __entity_data_type__)
+        setattr(cls, '__context_type__', __context_type__)
+        current = RelationshipTo(__entity_data_type__, 'CURRENT', cardinality=ZeroOrOne)
         setattr(cls, 'current', current)
-        context = RelationshipFrom(context_type, 'CONTEXT', cardinality=ZeroOrOne)
+        context = RelationshipFrom(__context_type__, 'CONTEXT', cardinality=ZeroOrOne)
         setattr(cls, 'context', context)
         return super(CaliopeEntity, cls).__new__(cls, *args, **kwargs)
 
 
     def __init__(self, *args, **kwargs):
         super(CaliopeEntity, self).__init__(*args, **kwargs)
-        self.init_entity_data()
+        self.init_entity_data(__entity_type__=self.__class__)
 
     def init_entity_data(self, *args, **kwargs):
-        self.__entity_data__ = self.entity_data_type(args, kwargs)
+        self.__entity_data__ = self.__entity_data_type__(*args, **kwargs)
 
     def _get_current(self):
         if self.__node__ is None:
@@ -123,21 +127,20 @@ class CaliopeEntity(CaliopeNode):
         else:
             return self.current.single()
 
-    def _set_current(self, new_current):
-        if self._get_current() is not None:
-            self.current.reconnect(self._get_current(), new_current)
-        else:
-            self.current.connect(new_current)
 
     def set_entity_data(self, *args, **kwargs):
         if 'uuid' in kwargs:
             del kwargs['uuid']
-        current = self._get_current()
-        #: When the set_data, call evolve, the new node is saved before return
-        new_current = current.set_data(kwargs)
         if self.__node__ is None:
             self.save()
-        self._set_current(new_current)
+        current = self._get_current()
+        if current is None:
+            self.__entity_data__ = self.__entity_data_type__(args, kwargs)
+            current = self.__entity_data__
+            #: When the set_data, call evolve, the new node is saved before return
+        new_current = current.set_data(**kwargs)
+        if current.__node__ is None:
+            self.current.connect(new_current)
         return self._get_current()
 
     def serialize(self):
@@ -170,7 +173,7 @@ class CaliopeEntity(CaliopeNode):
 
     def get_entity_relationships(self):
         rv = {}
-        for k, v in self.entity_data_type._get_class_relationships():
+        for k, v in self.__entity_data_type__._get_class_relationships():
             if isinstance(v, RelationshipDefinition):
                 rv[k] = v
         return rv
@@ -178,7 +181,7 @@ class CaliopeEntity(CaliopeNode):
     def _parse_entity_relationships(self, k, v):
         rv = {}
         current_node = self._get_current()
-        if getattr(current_node,'__node__') is not None:
+        if getattr(current_node, '__node__') is not None:
             rel = getattr(current_node, k)
             rv['direction'] = rel.definition['direction']
             target = []

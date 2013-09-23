@@ -41,7 +41,7 @@ from models import Task
 
 
 class TaskServices(CaliopeEntityService):
-    task_requested_uuid = set()
+
     def __init__(self, *args, **kwargs):
         super(TaskServices, self).__init__(*args, **kwargs)
 
@@ -106,7 +106,7 @@ class TaskServices(CaliopeEntityService):
         task_controller = TaskController()
         rv = task_controller.get_model()
         rv['data'] = task_controller.get_data()
-        TaskServices.task_requested_uuid.add(rv['data']['uuid']['value'])
+        TaskServices.service_requested_uuid.add(rv['data']['uuid']['value'])
         return rv
 
     @staticmethod
@@ -199,8 +199,8 @@ class TaskController(CaliopeEntityController):
                 node = CaliopeNode.index.get(uuid=kwargs['uuid'])
                 self.task = Task().__class__.inflate(node.__node__)
             except DoesNotExist:
-                if kwargs['uuid'] in TaskServices.task_requested_uuid:
-                    TaskServices.task_requested_uuid.remove(kwargs['uuid'])
+                if kwargs['uuid'] in TaskServices.service_requested_uuid:
+                    TaskServices.service_requested_uuid.remove(kwargs['uuid'])
                     self.task = Task()
                 else:
                     raise DoesNotExist("Invalid UUID")
@@ -226,7 +226,7 @@ class TaskController(CaliopeEntityController):
         rels = []
         holders = data['holders'] if 'holders' in data else [CaliopeUser.index.get(username=LoginManager().get_user())]
 
-        for rel in Task.entity_data_type._get_class_relationships():
+        for rel in Task.__entity_data_type__._get_class_relationships():
             if rel[0] in data:
                 rels.append(data[rel[0]])
                 del data[rel[0]]
@@ -238,12 +238,11 @@ class TaskController(CaliopeEntityController):
         else:
             category = 'ToDo'
 
-
         if self.task is None:
             self.task = Task()
         else:
             self.task.set_entity_data(**data)
-            if isinstance(holders,list):
+            if isinstance(holders, list):
                 self.set_holders(holders, category)
             elif isinstance(holders, dict):
                 for target in holders['target']:

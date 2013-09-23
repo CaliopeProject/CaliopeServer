@@ -35,7 +35,7 @@ class Task(CaliopeEntity):
 
 
 class TaskData(CaliopeEntityData):
-    entity_data = Task
+    __entity_data__ = Task
 
     owner = RelationshipFrom(CaliopeUser, 'OWNER', cardinality=One)
     holders = RelationshipFrom(CaliopeUser, 'HOLDER')
@@ -83,8 +83,8 @@ class TaskData(CaliopeEntityData):
 
 
 class Task(CaliopeEntity):
-    entity_data_type = TaskData
-    context_type = ProjectEntity
+    __entity_data_type__ = TaskData
+    __context_type__ = ProjectEntity
 
     def __init__(self, *args, **kwargs):
         super(Task, self).__init__(*args, **kwargs)

@@ -118,7 +118,16 @@ class CaliopeNode(SemiStructuredNode):
                     new_rel = getattr(new_node, key)
                     old_rel = getattr(old_node, key)
                     for n in old_rel.all():
-                        new_rel.connect(n)
+                        saved = False
+                        for node_class_rel in n._get_class_relationships():
+                            node_rel = getattr(n,node_class_rel[0], None)
+                            if issubclass(node_rel.__class__, (One, ZeroOrOne)):
+                                if (getattr(node_rel, 'relation_type', None) ==
+                                    getattr(new_rel, 'relation_type', None)):
+                                    node_rel.reconnect(old_node, new_node)
+                                    saved = True
+                        if not saved:
+                            new_rel.connect(n)
 
     @classmethod
     def pull(cls, id_node):

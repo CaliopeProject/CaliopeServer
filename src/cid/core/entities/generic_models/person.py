@@ -32,7 +32,7 @@ class CaliopePerson(CaliopeEntityData):
 
 
 class CaliopePersonData(CaliopeEntityData):
-    entity_type = CaliopePerson
+    __entity_type__ = CaliopePerson
     #: primer nombre
     first_name = StringProperty()
     #: segundo nombre

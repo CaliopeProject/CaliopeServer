@@ -54,31 +54,31 @@ class CaliopeAddressTypeData(CaliopeEntityData):
     """
     This class allows to mark as home, work, personal etc, an address
     """
-    entity_type = CaliopeAddressType
+    __entity_type__ = CaliopeAddressType
     name = StringProperty()
     code = StringProperty()
 
 
 class CaliopeAddressType(CaliopeEntity):
-    entity_data_type = CaliopeAddressTypeData
+    __entity_data_type__ = CaliopeAddressTypeData
 
 
 class CaliopePhoneTypeData(CaliopeEntityData):
     """
     This class allows to mark as home, work, personal, etc and the carrier  a phone number
     """
-    entity_type = CaliopePhoneType
+    __entity_type__ = CaliopePhoneType
     name = StringProperty()
     code = StringProperty()
     carrier = StringProperty()
 
 
 class CaliopePhoneType(CaliopeEntity):
-    entity_data_type = CaliopePhoneTypeData
+    __entity_data_type__ = CaliopePhoneTypeData
 
 
 class CaliopeAddressData(CaliopeEntityData):
-    entity_type = CaliopeAddress
+    __entity_type__ = CaliopeAddress
     address = StringProperty(required=True)
     postal_code = StringProperty()
     latitude = FloatProperty()
@@ -88,36 +88,36 @@ class CaliopeAddressData(CaliopeEntityData):
 
 
 class CaliopeAddress(CaliopeEntity):
-    entity_data_type = CaliopeAddressData
+    __entity_data_type__ = CaliopeAddressData
 
 
 class CaliopePhoneData(CaliopeEntityData):
-    entity_type = CaliopePhone
+    __entity_type__ = CaliopePhone
     number = StringProperty()
     area_code = StringProperty()
     type = RelationshipTo(CaliopePhoneType, 'IS_TYPE', ZeroOrOne)
 
 
 class CaliopePhone(CaliopeEntity):
-    entity_data_type = CaliopePhoneData
+    __entity_data_type__ = CaliopePhoneData
 
 
 class CaliopeEmailData(CaliopeEntityData):
-    entity_type = CaliopeEmail
+    __entity_type__ = CaliopeEmail
     email = StringProperty()
     type = RelationshipTo(CaliopeAddressType, 'IS_TYPE', ZeroOrOne)
 
 
 class CaliopeEmail(CaliopeEntity):
-    entity_data_type = CaliopeEmailData
+    __entity_data_type__ = CaliopeEmailData
 
 
 class CaliopeContactData(CaliopeEntityData):
-    entity_type = CaliopeContact
+    __entity_type__ = CaliopeContact
     address = RelationshipTo(CaliopeAddress, 'ADDRESS', ZeroOrMore)
     phone_number = RelationshipTo(CaliopePhone, 'PHONE', ZeroOrMore)
     email_address = RelationshipTo(CaliopeEmail, 'EMAIL', ZeroOrMore)
 
 
 class CaliopeContact(CaliopeEntity):
-    entity_data_type = CaliopeContactData
+    __entity_data_type__ = CaliopeContactData
