@@ -20,47 +20,13 @@ Copyright (C) 2013 Infometrika Ltda
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
-# -*- coding: utf-8 -*-
-import os
 import unittest
 import json
-import uuid
 import hashlib
 
 from cid import caliope_server
 from cid.core.entities import CaliopeNode, DoesNotExist, UniqueProperty, CaliopeEntity
 from cid.core.entities.base_models.entities_models import CaliopeUser, CaliopeGroup
-
-
-class SIIM2ServerTestCase(unittest.TestCase):
-    def setUp(self):
-        """Before each test, set up a blank enviroment"""
-        caliope_server.app.config['TESTING'] = True
-        caliope_server.init_flask_app()
-        caliope_server.configure_server_and_app("../../conf/caliope_server.json")
-        caliope_server.configure_logger("../../conf/tests_logger.json")
-        caliope_server.register_modules()
-        self.app = caliope_server.app.test_client()
-
-    def tearDown(self):
-        """Get rid of the database again after each test."""
-        pass
-
-    def login(self, username, password, callback_id):
-        data = dict(cmd="login.autenticate",
-                    login=username,
-                    password=password,
-                    callback_id=callback_id
-        )
-        response = self.app.post('/api/rest', data=json.dumps(data),
-                                 content_type='application/json')
-        return response
-
-    # testing functions
-    def test_login(self):
-        #: TODO: Implement
-        assert True
-
 
 class TestCaliopeStorage(unittest.TestCase):
     def test_CaliopeNode_init_without_args(self):
