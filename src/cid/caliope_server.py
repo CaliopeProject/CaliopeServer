@@ -117,7 +117,17 @@ def configure_server_and_app(server_config_file):
     if 'port' in config['server']:
         app.config['port'] = int(config['server']['port'])
     else:
-        app.config['port'] = 8000
+        app.config['port'] = 9000
+
+    if 'test_address' in config['server']:
+        app.config['test_address'] = config['server']['test_address']
+    else:
+        app.config['test_address'] = 'localhost'
+
+    if 'test_port' in config['server']:
+        app.config['test_port'] = int(config['server']['test_port'])
+    else:
+        app.config['test_port'] = 9001
 
     if 'static' in config['server']:
         app.config['STATIC_PATH'] = config['server']['static']
