@@ -41,7 +41,7 @@ class FormManager(object):
     """
 
     @staticmethod
-    @public("getTemplate")
+    @public("getModel")
     def get_form_template(formId, domain=None, version=None):
         if formId is not None:
             form = Form(formId=formId)
