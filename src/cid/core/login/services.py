@@ -57,7 +57,7 @@ class LoginManager(object):
                     'user': {'value': username},
                     "first_name": {'value': userNode.first_name},
                     "last_name": {'value': userNode.last_name},
-                    "image" : get_thumbnail(os.path.join(current_app.config['STATIC_PATH'], 'common-img/avatar1.png'))
+                    "image": get_thumbnail(os.path.join(current_app.config['STATIC_PATH'], 'common-img/avatar1.png'))
                 }
             else:
                 return {'login': False}
@@ -70,22 +70,23 @@ class LoginManager(object):
     @staticmethod
     @public
     def authenticate_with_uuid(uuid, domain=None):
-        if current_app.storekv.__contains__(prefix_session_manager + uuid):
-            try:
-                username = current_app.storekv.get(prefix_session_manager + uuid)
-                g.connection_thread_pool_id[g.connection_thread_id] = uuid
-                userNode = CaliopeUser.index.get(username=username)
-                return {'login': True, 'uuid': uuid,
-                        'user': {'value': username},
-                        "first_name": {'value': userNode.first_name},
-                        "last_name": {'value': userNode.last_name},
-                        "image" : get_thumbnail(os.path.join(current_app.config['STATIC_PATH'], 'common-img/avatar1.png'))
-
-                }
-            except Exception as e:
-                raise JSONRPCInternalError(e)
-        else:
-            raise JSONRPCInternalError('No valid session found')
+        if uuid is not None:
+            if current_app.storekv.__contains__(prefix_session_manager + uuid):
+                try:
+                    username = current_app.storekv.get(prefix_session_manager + uuid)
+                    g.connection_thread_pool_id[g.connection_thread_id] = uuid
+                    userNode = CaliopeUser.index.get(username=username)
+                    return {'login': True, 'uuid': uuid,
+                            'user': {'value': username},
+                            "first_name": {'value': userNode.first_name},
+                            "last_name": {'value': userNode.last_name},
+                            "image": get_thumbnail(
+                                os.path.join(current_app.config['STATIC_PATH'], 'common-img/avatar1.png'))
+                    }
+                except Exception as e:
+                    raise JSONRPCInternalError(e)
+            #: if not returned is not a  valid session
+        return {'login': False}
 
 
     @staticmethod
