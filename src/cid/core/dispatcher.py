@@ -45,17 +45,21 @@ def ws_endpoint():
         ws = request.environ['wsgi.websocket']
         connection_thread_id = uuid.uuid1()
         connection_thread_pool_id[connection_thread_id] = None
+        #: TODO: Move the pool to redis
         g.connection_thread_pool_id = connection_thread_pool_id
         while True:
             g.connection_thread_id = connection_thread_id
             ws_message = ws.receive()
             if ws_message is None:
-                current_app.logger.warn('Request: ' + request.__str__() + '\tmessage: None')
-                break
+                if ws.socket is None:
+                    current_app.logger.info('Remote peer closed connection')
+                    break
+                else:
+                    current_app.logger.warn('Request: ' + request.__str__() + '\tmessage: None')
             else:
                 handle_incoming_jsonrpc_message(ws_message, ws)
-
         del connection_thread_pool_id[connection_thread_id]
+        return "Closed WebSocketConnection"
 
 
 @bp.route('/rest', methods=['POST'])
@@ -94,7 +98,12 @@ def handle_incoming_jsonrpc_message(data, handler=None):
     # now send the response to the client
     if rpc_response is not None:
         if handler is not None:
-            handler.send(rpc_response.serialize())
+            if handler.socket is not None:
+                handler.send(rpc_response.serialize())
+            else:
+                #:Closed connection
+                current_app.logger.warn('Connection closed', None)
+
         else:
             return rpc_response.serialize()
 
