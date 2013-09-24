@@ -82,7 +82,8 @@ def init_flask_app():
     app.use_debbuger = False
     app.use_reloader = False
     #: load gzip compressor
-    gzip = Gzip(app)
+    gzip = Gzip()
+    app.after_request(gzip.after_request)
 
 
 def _parseCommandArguments(argv):
@@ -112,19 +113,33 @@ def configure_server_and_app(server_config_file):
         app.config['address'] = config['server']['address']
     else:
         app.config['address'] = 'localhost'
+
     if 'port' in config['server']:
         app.config['port'] = int(config['server']['port'])
     else:
-        app.config['port'] = 8000
+        app.config['port'] = 9000
+
+    if 'test_address' in config['server']:
+        app.config['test_address'] = config['server']['test_address']
+    else:
+        app.config['test_address'] = 'localhost'
+
+    if 'test_port' in config['server']:
+        app.config['test_port'] = int(config['server']['test_port'])
+    else:
+        app.config['test_port'] = 9001
+
     if 'static' in config['server']:
         app.config['STATIC_PATH'] = config['server']['static']
     else:
         app.config['STATIC_PATH'] = "."
+
     if 'formTemplates' in config['server']:
         app.config['FORM_TEMPLATES'] = config['server']['formTemplates']
     else:
         app.config['FORM_TEMPLATES'] = app.config['STATIC_PATH']
-        #: Load app config
+
+    #: Load app config
     if 'app' in config:
         if 'modules' in config['app']:
             app.config['modules'] = config['app']['modules']
@@ -136,15 +151,18 @@ def configure_server_and_app(server_config_file):
     else:
         #: TODO: load default storage if not found in config
         pass
+
     if 'cache_enabled' in config['server']:
-        app.cache_enabled = True if config['server']['cache_enabled'] == 'True' else False
+        app.cache_enabled = config['server']['cache_enabled'].lower() == 'true'
     else:
         app.cache_enabled = False
+
     if 'debug' in config['server']:
-        app.debug = True if config['server']['debug'] == 'True' else False
+        app.debug = config['server']['debug'].lower() == 'true'
     else:
         app.debug = False
         #: TODO: Add a new configuration for session_storage, default volatile dict
+
     if 'session_storage' in config:
         pass
     else:
