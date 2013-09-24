@@ -20,12 +20,9 @@ Copyright (C) 2013 Infometrika Ltda
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-import os
 import unittest
-import json
-import uuid
 import hashlib
-import time
+
 #gevent
 from gevent.pywsgi import WSGIServer
 from geventwebsocket.handler import WebSocketHandler
@@ -38,7 +35,6 @@ from tinyrpc.transports.http import HttpWebSocketClientTransport
 
 #flask
 from flask import (Flask)
-from flask.helpers import safe_join
 
 #simplekv
 import redis
@@ -47,7 +43,7 @@ from simplekv.memory.redisstore import RedisStore
 from cid import caliope_server
 
 
-class CaliopeServerTestUnit(unittest.TestCase):
+class CaliopeServerTestCase(unittest.TestCase):
     def setUp(self):
         caliope_server.app.config['TESTING'] = True
         caliope_server.init_flask_app()
@@ -68,7 +64,6 @@ class CaliopeServerTestUnit(unittest.TestCase):
         self.http_server.stop()
         self.http_server = None
         caliope_server.app = Flask('caliope_server')
-        time.sleep(1)
 
 
     def login(self, username, password):
