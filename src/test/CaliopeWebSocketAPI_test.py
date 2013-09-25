@@ -84,13 +84,24 @@ class CaliopeServerTestCase(unittest.TestCase):
         rv = self.login(u'user', u'123')
         assert 'login' in rv
         assert rv['login'] is True
-        assert 'uuid' in rv
+        assert 'user_uuid' in rv
+        assert 'session_uuid' in rv
 
     def test_logout(self):
         uuid = self.login(u'user', u'123')['uuid']
         rv = self.logout(uuid=uuid)
         assert 'logout' in rv
         assert rv['logout'] is True
+
+    def test_accounts_get_public_info(self):
+        users = [self.login(u'user', u'123')['user_uuid']]
+        accounts_proxy = self.rpc_client.get_proxy(prefix="accounts.")
+        info = accounts_proxy.getPublicInfo(users)
+        assert len(info) == 1
+        assert 'uuid' in info[0]
+        for user in users:
+            info_uuid = info[0]['uuid']['value']
+            assert user == info_uuid
 
 
 if __name__ == '__main__':
