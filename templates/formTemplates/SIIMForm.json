@@ -90,7 +90,18 @@
       "name"    : "acta_creacion_proyecto",
       "caption" : "Acta creación proyecto",
       "type"    : "attachment"
+    },
+    {
+        "name" : "areas",
+        "caption"   : "Areas",
+        "type"      : "cw-grid",
+        "load-init" : "false",
+        "class"     : "height-5",
+        "cw-grid-options" : {
+            "columns"  : [{"name":"areas.descripcion","caption":"Tipo Area"},{"name":"areas.valor","caption":"Valor"}]
+        }
     }
+
   ],
   "layout" : [
     {
@@ -123,7 +134,7 @@
       "class" :  "span12",
       "columns" : [
         {
-          "elements"  : ["localizacion_general"]
+          "elements"  : ["localizacion_general", "areas"]
         }
       ]
     }
