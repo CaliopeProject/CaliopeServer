@@ -30,7 +30,7 @@ from tinyrpc.dispatch import public
 #Flask
 
 #from groupmodel import GroupNode
-from cid.core.entities.base_models.entities_models import CaliopeUser
+from cid.core.entities import CaliopeUser, CaliopeNode
 from cid.utils.thumbnails import get_thumbnail
 
 from flask.globals import current_app
@@ -77,15 +77,16 @@ class UsersManager(object):
 
     @staticmethod
     @public(name='getPublicInfo')
-    def get_info(uuids):
+    def get_public_info(uuids):
         rv = []
         for uuid in uuids:
-            user = CaliopeUser.index.get(uuid=uuid)
-            if len(user) == 1:
-                rv.append({
-                    UsersManager.get_user_node_data(user).items(),
-                    UsersManager.get_thumbnail(user).items()
-                })
+            try:
+                user = CaliopeUser.index.get(uuid=uuid)
+                rv.append(dict(UsersManager.get_user_node_data(user),
+                               **UsersManager.get_thumbnail(user)))
+            except DoesNotExist as e:
+                current_app.logger.info('CaliopeUser with uuid: ' + uuid + 'not found')
+                pass
         return rv
 
 
