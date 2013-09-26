@@ -51,6 +51,19 @@
       }
     },
     {
+      "name": "status",
+      "caption": "Estado",
+      "class": "input-large",
+      "type": "multi-choices",
+      "single": "true",
+      "options-load-server" : {
+        "method"        : "accounts.getAll",
+        "field-value"   : "estado",
+        "field-desc"    : "desc",
+        "field-image"   :  "image"
+      }
+    },
+    {
       "name": "holders",
       "caption": "Asignar a",
       "class": "input-large",
@@ -58,7 +71,8 @@
       "options-load-server" : {
         "method"        : "accounts.getAll",
         "field-value"   : "uuid",
-        "field-desc"    : "username"
+        "field-desc"    : "username",
+        "field-image"   : "image"
       },
       "relation" : {
         "direction" : -1,
@@ -131,7 +145,7 @@
         },
         {
           "class": "span6",
-          "elements"  : ["tarea","deadline", "holders", "target"]
+          "elements"  : ["tarea","deadline", "holders", "target", "status"]
         }
       ]
     }
