@@ -53,8 +53,8 @@ class LoginManager(object):
 
                 return {
                     'login': True,
-                    'session_uuid': session_uuid,
-                    'user_uuid': userNode.uuid,
+                    'session_uuid': {'value': session_uuid},
+                    'user_uuid': {'value': userNode.uuid},
                     'user': {'value': username},
                     "first_name": {'value': userNode.first_name},
                     "last_name": {'value': userNode.last_name},
@@ -78,8 +78,8 @@ class LoginManager(object):
                     g.connection_thread_pool_id[g.connection_thread_id] = session_uuid
                     userNode = CaliopeUser.index.get(username=username)
                     return {'login': True,
-                            'session_uuid': session_uuid,
-                            'user_uuid': userNode.uuid,
+                            'session_uuid': {'value': session_uuid},
+                            'user_uuid': {'value': userNode.uuid},
                             'user': {'value': username},
                             "first_name": {'value': userNode.first_name},
                             "last_name": {'value': userNode.last_name},
