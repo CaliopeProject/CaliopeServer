@@ -1,0 +1,242 @@
+{
+  "name": "derechoPreferencia",
+  "html": [
+    {
+        "name" : "title",
+        "type" : "div",
+        "html" :
+            [
+              {
+                "type" : "h1",
+                "html" : "Derecho de Preferencia-Datos Básicos"
+              }
+            ]
+    },
+    {
+        "name" : "anexar_informacion",
+        "type" : "label",
+        "html" : "RELACIÓN DE LA INFORMACIÓN QUE DEBE ANEXARSE"
+    },    
+    {
+        "name": "oferta",
+        "caption": "Formato de Oferta de predio a Metrovivienda por concepto de derecho de preferencia (diligenciado)",
+        "type": "attachment"
+    },
+    {
+        "name": "poder_apoderado",
+        "caption": "En caso de actuar mediante apoderado, se requiere el poder respectivo debidamente autenticado.",
+        "type": "attachment"
+    },
+    {
+        "name": "adquisicion_predio",
+        "caption": "Copia del documento que certifique la adquisición del predio (escritura, sentencia judicial, otros)",
+        "type": "attachment"
+    },
+    {
+        "name": "cc_propietario",
+        "caption": "Copia de la cédula de ciudadanía del propietario",
+        "type": "attachment"
+    },
+    {
+        "name": "representacion_legal",
+        "caption": "En caso de persona jurídica, acreditar existencia y representación legal mediante documento idóneo, con vigencia de expedición no mayor a un mes.",
+        "type": "attachment"
+    },
+    {
+        "name": "intencion_compra",
+        "caption": "Información  que acredite o certifique la intención de compra del interesado (valor de la oferta, condiciones de pago, datos de contacto del posible comprador y cualquier otra que considere necesaria.",
+        "type": "attachment"
+    },
+    {
+        "name" : "informacion_propietario",
+        "type" : "label",
+        "html" : "TINFORMACIÓN DEL PROPIETARIO"
+    },
+    {
+        "name": "relacion_predio",
+        "caption": "Relación con el predio",
+        "type": "radiobuttons",
+        "options" : {
+            "propietario" : "Propietario",
+            "apoderado" : "Apoderado"
+        }
+    },
+    {
+        "name": "tipo_propietario",
+        "caption": "Tipo de propietario de suelo",
+        "type": "radiobuttons",
+        "options" : {
+            "persona_natural" : "Persona Natural",
+            "persona_juridica" : "Persona Jurídica"
+        }
+    },
+    {
+        "name": "propietario_actual",  
+        "caption": "Nombre entidad o persona propietaria del predio",
+        "type": "text",
+        "validations" : {
+            "required" : true
+        }
+    },
+    {
+        "name": "doc_propietario",  
+        "caption": "NIT o CC",
+        "type": "text",
+        "validations" : {
+            "required" : true
+        }
+    },
+    {
+        "name": "direccion_notifiacion",  
+        "caption": "Dirección para la notificación",
+        "type": "text",
+        "validations" : {
+            "required" : true
+        }
+    },
+    {
+        "name": "telefono",
+        "caption": "Teléfono y celular",
+        "type": "text"
+    },
+    {
+        "name": "representante_legal",
+        "caption": "En caso de persona jurídica, nombre representante legal",
+        "type": "text"
+    },
+    {
+        "name": "cc_representante",
+        "caption": "CC representante legal",
+        "type": "text"
+    },
+    {
+        "name" : "datos_apoderado",
+        "type" : "label",
+        "html" : "Si es apoderado, adicionalmente solicitamos:"
+    }, 
+    {
+        "name": "nombre_apoderado",
+        "caption": "Nombre del apoderado:",
+        "type": "text"
+    },  
+    {
+        "name": "cc_apoderado",
+        "caption": "C.C.:",
+        "type": "text"
+    },   
+    {
+        "name": "direccion_apoderado",
+        "caption": "Dirección de notificación:",
+        "type": "text"
+    },
+    {
+        "name": "telefono_apoderado",
+        "caption": "Teléfono:",
+        "type": "text"
+    },
+    {
+        "name": "celular_apoderado",
+        "caption": "No. De celular:",
+        "type": "text"
+    },
+    {
+        "name" : "informacion_predio",
+        "type" : "label",
+        "html" : "INFORMACIÓN GENERAL DEL PREDIO OFERTADO"
+    },
+    {
+        "name": "nombre_predio",
+        "caption": "Nombre del predio (si existe)",
+        "type": "text"
+    },
+    {
+        "name": "direccion_predio",
+        "caption": "Dirección",
+        "type": "text"
+    },
+    {
+        "name": "ubicacion_predio",
+        "caption": "Ubicación del predio (vereda)",
+        "type": "text"
+    },
+    {
+        "name": "telefono_predio",
+        "caption": "Teléfono",
+        "type": "text"
+    },
+    {
+        "name": "matricula_inmobiliaria",
+        "caption": "Número Matrícula inmobiliaria",
+        "type": "text"
+    },
+    {
+        "name": "area_predio",
+        "caption": "Área (extensión) del predio",
+        "type": "number",
+        "class": "input-medium"
+    },
+    {
+        "name": "tramite_en_curso",
+        "caption": "¿Se encuentra en curso algún trámite o proceso de carácter jurídico sobre su predio?",
+        "type": "radiobuttons",
+        "options" : {
+            "si" : "SI",
+            "no" : "NO"
+        }
+    },
+    {
+        "name" : "informacion_comprador",
+        "type" : "label",
+        "html" : "Información del (los) posible (s) comprador (es)"
+    },
+    {
+        "name": "nombre_comprador",
+        "caption": "Nombre:",
+        "type": "text",
+        "validations" : {
+            "required" : true
+        }
+    },
+    {
+        "name": "cc_comprador",
+        "caption": "C.C.:",
+        "type": "text",
+        "validations" : {
+            "required" : true
+        }
+    },
+    {
+        "name": "direccion_comprador",
+        "caption": "Dirección:",
+        "type": "text",
+        "validations" : {
+            "required" : true
+        }
+    },
+    {
+        "name": "telefono_comprador",
+        "caption": "Teléfono:",
+        "type": "text",
+        "validations" : {
+            "required" : true
+        }
+    },
+    {
+        "name" : "firmas",
+        "type" : "label",
+        "html" : "Firma(s) del(los) ofertante(s) o su(s) representante(s)"
+    },
+    {
+        "name": "estado_ficha",
+        "caption": "Estado de la Ficha",
+        "type": "radiobuttons",
+        "options" : {
+            "rechazado" : "Rechazado",
+	    "aprobado" : "Aprobado",
+	    "revisado" : "Revisado",
+	    "anulado" : "Anulado",
+            "completado" : "Completado"
+        }
+    }
+  ]
+}

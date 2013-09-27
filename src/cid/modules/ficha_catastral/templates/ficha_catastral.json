@@ -1,0 +1,637 @@
+Ficha Catastral sin Subtítulos, Actions ni Layout
+
+{
+  "name": "fichaCatastral",
+  "html": [
+    {
+        "name" : "title",
+        "type" : "div",
+        "html" :
+            [
+              {
+                "type" : "h1",
+                "html" : "FICHA DE ANÁLISIS CATASTRAL Y CONDICIONES FÍSICAS Y AMBIENTALES DEL PROYECTO"
+              }
+            ]
+    },
+    {
+        "name" : "imagenes_generales",
+        "type" : "label",
+        "html" : "IMÁGENES GENERALES DEL PROYECTO"
+    },
+    {
+        "name": "localización_general",
+        "caption": "Localización general",
+        "type": "attachment"
+    },
+    {
+        "name": "topografia",
+        "caption": "Topografía",
+        "type": "attachment"
+    },
+    {
+        "name": "imagen_satelite",
+        "caption": "Imagen de Satélite",
+        "type": "attachment"
+    },
+    {
+        "name": "consideraciones_ambientales",
+        "caption": "Consideraciones ambientales",
+        "type": "attachment"
+    },
+    {
+        "name" : "info_gestion",
+        "type" : "label",
+        "html" : "INFORMACIÓN PARA GESTIÓN Y FINANCIACIÓN"
+    },  
+    {
+        "name": "fuente_proyecto",  
+        "caption": "Fuente Proyecto",
+        "type": "text",
+        "validations" : {
+            "required" : true
+        }
+    },
+    {
+        "name": "tipo_predio",  
+        "caption": "Tipo de Predio",
+        "type": "text",
+        "validations" : {
+            "required" : true
+        }
+    },
+    {
+        "name": "tiempo_gestion",  
+        "caption": "Año de Gestión",
+        "type": "text",
+        "validations" : {
+            "required" : true
+        }
+    },
+    {
+        "name": "tipo_gestion",
+        "caption": "Tipo de Gestión",
+        "type": "text",
+        "validations" : {
+	    "required" : true
+        }
+    },
+    {
+        "name": "fuente_recursos",
+        "caption": "Fuente de Recursos",
+        "type": "text",
+        "validations" : {
+	    "required" : true
+        }
+    },
+    {
+        "name": "desarrollo_prioritario",
+        "caption": "Declarat Desarrollo Prioritario",
+        "type": "text",
+        "validations" : {
+        }
+    },
+    {
+        "name": "fecha_vencimiento_dp",
+        "caption": "Fecha de Vencimiento DP",
+        "type": "datepicker",
+        "format" : "dd/MM/yyyy"
+        "validations" : {
+	    "required" : true
+        }
+    },
+    {
+        "name" : "localizacion",
+        "type" : "label",
+        "html" : "LOCALIZACIÓN"
+    },
+    {
+        "name": "teritorio_habitat",
+        "caption": "Territorio Hábitat",
+        "type": "text",
+        "validations" : {
+	    "required" : true
+        }
+    },
+    {
+        "name": "linea_intevencion",
+        "caption": "Línea de Intervención",
+        "type": "text",
+        "validations" : {
+	    "required" : true
+        }
+    },
+    {
+        "name": "localidad",
+        "caption": "Localidad",
+        "type": "text",
+        "validations" : {
+	    "required" : true
+        }
+    },
+    {
+        "name": "upz",
+        "caption": "UPZ",
+        "type": "text",
+        "validations" : {
+	    "required" : true
+        }
+    },
+    {
+        "name": "barrio",
+        "caption": "Barrio",
+        "type": "text",
+        "validations" : {
+	    "required" : true
+        }
+    },
+    {
+        "name": "observaciones_localizacion",
+        "caption": "Observaciones",
+        "type": "text",
+        "validations" : {
+        }
+    },
+    {
+        "name" : "info_catastral",
+        "type" : "label",
+        "html" : "INFORMACIÓN CATASTRAL"
+    },
+    {
+        "name": "vigencia_info_catastral",
+        "caption": "Vigencia Información Catastral",
+        "type": "text",
+        "validations" : {
+	    "required" : true
+        }
+    },
+    {
+        "name": "barmanpre",
+        "caption": "BARMANPRE",
+        "type": "text",
+        "validations" : {
+	    "required" : true
+        }
+    },
+    {
+        "name": "chip",
+        "caption": "CHIP",
+        "type": "text",
+        "validations" : {
+	    "required" : true
+        }
+    },
+    {
+        "name": "direccion",
+        "caption": "Dirección",
+        "type": "text",
+        "validations" : {
+	    "required" : true
+        }
+    },
+    {
+        "name": "propietario",
+        "caption": "Propietario",
+        "type": "text",
+        "validations" : {
+	    "required" : true
+        }
+    },
+    {
+        "name": "matricula_inmobiliaria",
+        "caption": "Matricula Inmobiliaria",
+        "type": "text",
+        "validations" : {
+	    "required" : true
+        }
+    },
+    {
+        "name": "area_terreno_catastral",
+        "caption": "AREA TERRENO (Catastral)",
+        "type": "number",
+        "class": "input-medium"
+    },
+    {
+        "name": "area_construida",
+        "caption": "AREA CONSTRUIDA",
+        "type": "number",
+        "class": "input-medium"
+    },
+    {
+        "name": "altura_pisos_actuales",
+        "caption": "ALTURA (pisos actuales)",
+        "type": "number",
+        "class": "input-medium"
+    },
+    {
+        "name": "destino_economico",
+        "caption": "Destino Económico",
+        "type": "text",
+        "validations" : {
+        }
+    },
+    {
+        "name" : "areas",
+        "type" : "label",
+        "html" : "ÁREAS"
+    },
+    {
+        "name": "area_SIG",
+        "caption": "Area SIG/m²",
+        "type": "number",
+        "class": "input-medium"
+    },
+    {
+        "name": "area_bruta",
+        "caption": "Area Bruta/m² **",
+        "type": "number",
+        "class": "input-medium"
+    },
+    {
+        "name": "area_neta",
+        "caption": "Area Neta/m² **",
+        "type": "number",
+        "class": "input-medium"
+    },
+    {
+        "name": "area_util",
+        "caption": "Area Util/m² **",
+        "type": "number",
+        "class": "input-medium"
+    },
+    {
+        "name": "observaciones_areas",
+        "caption": "Observaciones",
+        "type": "text",
+        "validations" : {
+        }
+    },
+    {
+        "name" : "condiciones_fis_amb",
+        "type" : "label",
+        "html" : "CONDICIONES FÍSICAS Y AMBIENTALES DEL PREDIO"
+    },
+    {
+        "name" : "estructura_eco_ppal",
+        "type" : "label",
+        "html" : "ESTRUCTURA ECOLOGICA PRINCIPAL"
+    },
+    {
+        "name": "estructura_ecologica_desc",
+        "caption": "Estructura Ecológica Principal - Descripción",
+        "type": "text",
+        "validations" : {
+        }
+    },
+    {
+        "name": "estructura_ecologica_valor",
+        "caption": "Estructura Ecológica Principal - Valor",
+        "type": "number",
+        "class": "input-medium"
+    },
+    {
+        "name": "areas_protegidas_desc",
+        "caption": "Áreas Protegidas - Descripción",
+        "type": "text",
+        "validations" : {
+        }
+    },
+    {
+        "name": "areas_protegidas_valor",
+        "caption": "Áreas Protegidas - Valor",
+        "type": "number",
+        "class": "input-medium"
+    },
+    {
+        "name": "parques_urbanos_desc",
+        "caption": "Parques Urbanos - Descripción",
+        "type": "text",
+        "validations" : {
+        }
+    },
+    {
+        "name": "parques_urbanos_valor",
+        "caption": "Parques Urbanos - Valor",
+        "type": "number",
+        "class": "input-medium"
+    },
+    {
+        "name": "corredores_ecologicos_desc",
+        "caption": "Corredores Ecológicos - Descripción",
+        "type": "text",
+        "validations" : {
+        }
+    },
+    {
+        "name": "corredores_ecologicos_valor",
+        "caption": "Corredores Ecológicos - Valor",
+        "type": "number",
+        "class": "input-medium"
+    },
+    {
+        "name": "rio_bogota_desc",
+        "caption": "AME Río Bogotá - Descripción",
+        "type": "text",
+        "validations" : {
+        }
+    },
+    {
+        "name": "rio_bogota_valor",
+        "caption": "AME Río Bogotá - Valor",
+        "type": "number",
+        "class": "input-medium"
+    },
+    {
+        "name": "otras_condiciones_fisicas_desc",
+        "caption": "Otros - Descripción",
+        "type": "text",
+        "validations" : {
+        }
+    },
+    {
+        "name": "otras_condiciones_fisicas_valor",
+        "caption": "Otros - Valor",
+        "type": "number",
+        "class": "input-medium"
+    },  
+    {
+        "name" : "afectacion_riesgo",
+        "type" : "label",
+        "html" : "AFECTACION POR RIESGO"
+    },
+    {
+        "name": "aglomeraciones_desc",
+        "caption": "Aglomeraciones - Descripción",
+        "type": "text",
+        "validations" : {
+        }
+    },
+    {
+        "name": "aglomeraciones_valor",
+        "caption": "Aglomeraciones - Valor",
+        "type": "number",
+        "class": "input-medium"
+    }, 
+    {
+        "name": "deslizamientos_desc",
+        "caption": "Deslizamientos - Descripción",
+        "type": "text",
+        "validations" : {
+        }
+    },
+    {
+        "name": "deslizamientos_valor",
+        "caption": "Deslizamientos - Valor",
+        "type": "number",
+        "class": "input-medium"
+    },       
+    {
+        "name": "incendios_desc",
+        "caption": "Incendios - Descripción",
+        "type": "text",
+        "validations" : {
+        }
+    },
+    {
+        "name": "incendios_valor",
+        "caption": "Incendios - Valor",
+        "type": "number",
+        "class": "input-medium"
+    },  
+    {
+        "name": "inundaciones_desc",
+        "caption": "Inundaciones - Descripción",
+        "type": "text",
+        "validations" : {
+        }
+    },
+    {
+        "name": "inundaciones_valor",
+        "caption": "Inundaciones - Valor",
+        "type": "number",
+        "class": "input-medium"
+    },
+    {
+        "name": "riesgos_tecnologicos_desc",
+        "caption": "Riesgos Tecnológicos - Descripción",
+        "type": "text",
+        "validations" : {
+        }
+    },
+    {
+        "name": "riesgos_tecnologicos_valor",
+        "caption": "Riesgos Tecnológicos - Valor",
+        "type": "number",
+        "class": "input-medium"
+    },
+    {
+        "name": "sismos_desc",
+        "caption": "Sismos - Descripción",
+        "type": "text",
+        "validations" : {
+        }
+    },
+    {
+        "name": "sismos_valor",
+        "caption": "Sismos - Valor",
+        "type": "number",
+        "class": "input-medium"
+    },
+    {
+        "name" : "afectacion_vias",
+        "type" : "label",
+        "html" : "AFECTACION POR VIAS O REDES"
+    },
+    {
+        "name": "malla_vial_desc",
+        "caption": "Malla Vial - Descripción",
+        "type": "text",
+        "validations" : {
+        }
+    },
+    {
+        "name": "malla_vial_valor",
+        "caption": "Malla Vial - Valor",
+        "type": "number",
+        "class": "input-medium"
+    },    
+    {
+        "name": "red_acueducto_desc",
+        "caption": "Malla Vial - Descripción",
+        "type": "text",
+        "validations" : {
+        }
+    },
+    {
+        "name": "red_acueducto_valor",
+        "caption": "Malla Vial - Valor",
+        "type": "number",
+        "class": "input-medium"
+    },
+    {
+        "name": "red_alcantarillado_desc",
+        "caption": "Red de Alcantarillado - Descripción",
+        "type": "text",
+        "validations" : {
+        }
+    },
+    {
+        "name": "red_alcantarillado_valor",
+        "caption": "Red de Alcantarillado - Valor",
+        "type": "number",
+        "class": "input-medium"
+    },
+    {
+        "name": "red_gas_desc",
+        "caption": "Red de Gas Natural - Descripción",
+        "type": "text",
+        "validations" : {
+        }
+    },
+    {
+        "name": "red_gas_valor",
+        "caption": "Red de Gas Natural - Valor",
+        "type": "number",
+        "class": "input-medium"
+    },
+    {
+        "name": "red_energia_desc",
+        "caption": "Red Energia - Descripción",
+        "type": "text",
+        "validations" : {
+        }
+    },
+    {
+        "name": "red_energia_valor",
+        "caption": "Red Energia - Valor",
+        "type": "number",
+        "class": "input-medium"
+    },
+    {
+        "name": "otra_afectacion_desc",
+        "caption": "Otro - Descripción",
+        "type": "text",
+        "validations" : {
+        }
+    },
+    {
+        "name": "otra_afectacion_valor",
+        "caption": "Otro - Valor",
+        "type": "number",
+        "class": "input-medium"
+    },
+    {
+        "name" : "condiciones_industriales",
+        "type" : "label",
+        "html" : "CONDICIONES INDUSTRIALES DE LA ZONA"
+    },
+    {
+        "name": "zopra_desc",
+        "caption": "ZOPRA - Descripción",
+        "type": "text",
+        "validations" : {
+        }
+    },
+    {
+        "name": "zopra_valor",
+        "caption": "ZOPRA - Valor",
+        "type": "number",
+        "class": "input-medium"
+    },
+    {
+        "name": "residuos_solidos_desc",
+        "caption": "Residuos Sólidos Peligrosos - Descripción",
+        "type": "text",
+        "validations" : {
+        }
+    },
+    {
+        "name": "residuos_solidos_valor",
+        "caption": "Residuos Sólidos Peligrosos - Valor",
+        "type": "number",
+        "class": "input-medium"
+    },
+    {
+        "name": "pasivos_ambientales_desc",
+        "caption": "Pasivos Ambientales - Descripción",
+        "type": "text",
+        "validations" : {
+        }
+    },
+    {
+        "name": "pasivos_ambientales_valor",
+        "caption": "Pasivos Ambientales - Valor",
+        "type": "number",
+        "class": "input-medium"
+    },
+    {
+        "name": "otras_condiciones_indust_desc",
+        "caption": "Otras condiciones industriales - Descripción",
+        "type": "text",
+        "validations" : {
+        }
+    },
+    {
+        "name": "otras_condiciones_indust_valor",
+        "caption": "Otras condiciones industriales - Valor",
+        "type": "number",
+        "class": "input-medium"
+    },
+    {
+        "name" : "calidad",
+        "type" : "label",
+        "html" : "CALIDAD DE AIRE Y RUIDO"
+    },
+    {
+        "name": "calidad_aire_desc",
+        "caption": "Calidad del aire - Descripción",
+        "type": "text",
+        "validations" : {
+        }
+    },
+    {
+        "name": "calidad_aire_valor",
+        "caption": "Calidad del aire - Valor",
+        "type": "number",
+        "class": "input-medium"
+    },
+    {
+        "name": "ruido_desc",
+        "caption": "Ruido - Descripción",
+        "type": "text",
+        "validations" : {
+        }
+    },
+    {
+        "name": "ruido_valor",
+        "caption": "Ruido - Valor",
+        "type": "number",
+        "class": "input-medium"
+    },
+    {
+        "name": "elaboro",
+        "caption": "Elaboró - Descripción",
+        "type": "text",
+        "validations" : {
+        }
+    },
+    {
+        "name": "reviso",
+        "caption": "Revisó - Descripción",
+        "type": "text",
+        "validations" : {
+        }
+    },
+    {
+        "name": "estado_ficha",
+        "caption": "Estado de la Ficha",
+        "type": "radiobuttons",
+        "options" : {
+            "rechazado" : "Rechazado",
+	    "aprobado" : "Aprobado",
+	    "revisado" : "Revisado",
+	    "anulado" : "Anulado",
+            "completado" : "Completado"
+        }
+    }
+}

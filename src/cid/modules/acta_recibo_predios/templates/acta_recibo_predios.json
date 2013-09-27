@@ -1,0 +1,280 @@
+{
+    "name": "actaReciboPredios",
+    "html": [
+        {
+            "name": "title",
+            "type": "div",
+            "html": [
+                {
+                    "type": "h1",
+                    "html": "ACTA DE RECIBO DE PREDIOS"
+                }
+            ]
+        },
+        {
+            "name": "fecha_acta",
+            "caption": "FECHA",
+            "type": "datepicker",
+            "format": "dd/MM/yyyy"
+        },
+        {
+            "name": "hora_acta",
+            "caption": "HORA",
+            "type": "text"
+        },
+        {
+            "name": "comentario1",
+            "type": "label",
+            "html": "Presentes con el objeto de hacer  entrega real y efectiva  del inmueble,  las siguientes personas :"
+        },
+        {
+            "name": "nombre_entrega1",
+            "caption": "NOMBRE",
+            "type": "text",
+            "class": "input-xlarge"
+        },
+        {
+            "name": "identificacion_entrega1",
+            "caption": "IDENTIFICACIÓN",
+            "type": "text",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "cargo_calidad_entrega1",
+            "caption": "CARGO / CALIDAD",
+            "type": "textarea",
+            "rows": "2",
+            "cols": "70",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "nombre_entrega2",
+            "caption": "NOMBRE",
+            "type": "text",
+            "class": "input-xlarge"
+        },
+        {
+            "name": "identificacion_entrega2",
+            "caption": "IDENTIFICACIÓN",
+            "type": "text",
+            "validations": {}
+        },
+        {
+            "name": "cargo_calidad_entrega2",
+            "caption": "CARGO / CALIDAD",
+            "type": "textarea",
+            "rows": "2",
+            "cols": "70",
+            "validations": {}
+        },
+        {
+            "name": "nombre_entrega3",
+            "caption": "NOMBRE",
+            "type": "text",
+            "class": "input-xlarge"
+        },
+        {
+            "name": "identificacion_entrega3",
+            "caption": "IDENTIFICACIÓN",
+            "type": "text",
+            "validations": {}
+        },
+        {
+            "name": "cargo_calidad_entrega3",
+            "caption": "CARGO / CALIDAD",
+            "type": "textarea",
+            "rows": "2",
+            "cols": "70",
+            "validations": {}
+        },
+        {
+            "name": "nombre_entrega4",
+            "caption": "NOMBRE",
+            "type": "text",
+            "class": "input-xlarge"
+        },
+        {
+            "name": "identificacion_entrega4",
+            "caption": "IDENTIFICACIÓN",
+            "type": "text",
+            "validations": {}
+        },
+        {
+            "name": "cargo_calidad_entrega4",
+            "caption": "CARGO / CALIDAD",
+            "type": "textarea",
+            "rows": "2",
+            "cols": "70",
+            "validations": {}
+        },
+        {
+            "name": "id_predio",
+            "type": "label",
+            "html": "1. IDENTIFICACIÓN DEL PREDIO"
+        },
+        {
+            "name": "nombre_predio",
+            "caption": "NOMBRE",
+            "type": "text",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "nomenclatura_predio",
+            "caption": "NOMENCLATURA",
+            "type": "text",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "area_predio",
+            "caption": "ÁREA",
+            "type": "text",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "cedula_catastral",
+            "caption": "Cédula Catastral",
+            "type": "text",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "folio_matricula",
+            "caption": "FOLIO DE MATRICULA",
+            "type": "text",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "localidad_predio",
+            "caption": "LOCALIDAD",
+            "type": "text",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "coordenadas_alinderacion",
+            "caption": "COORDENADAS DE ALINDERACION",
+            "type": "attachment"
+        },
+        {
+            "name": "construcciones",
+            "type": "label",
+            "html": "2. CONSTRUCCIONES:"
+        },
+        {
+            "name": "servicios_instalados",
+            "type": "label",
+            "html": "3. SERVICIOS INSTALADOS"
+        },
+        {
+            "name": "servicio",
+            "caption": "Servicio",
+            "type": "radiobuttons",
+            "options": {
+                "acueducto_alcantarillado": "Acueducto y Alcantarillado",
+                "energia": "Energía",
+                "telefono": "Teléfono"
+            }
+        },
+        {
+            "name": "contador_acueducto",
+            "caption": "Contador",
+            "type": "text",
+            "validations": {}
+        },
+        {
+            "name": "contador_energia",
+            "caption": "Contador",
+            "type": "text",
+            "validations": {}
+        },
+        {
+            "name": "contador_telefono",
+            "caption": "Contador",
+            "type": "text",
+            "validations": {}
+        },
+        {
+            "name": "lectura_acueducto",
+            "caption": "Contador",
+            "type": "text",
+            "validations": {}
+        },
+        {
+            "name": "lectura_energia",
+            "caption": "Contador",
+            "type": "text",
+            "validations": {}
+        },
+        {
+            "name": "lectura_telefono",
+            "caption": "Contador",
+            "type": "text",
+            "validations": {}
+        },
+        {
+            "name": "comentario1",
+            "type": "label",
+            "html": "Determinado el inmueble y constatados  los correspondientes linderos, EL (LOS) VENDEDOR (ES)  hace entrega real, material y efectiva del inmueble en mención, libre y limpio de ocupaciones de toda índole (personas, semovientes, maquinarias, materiales, etc.), a buen recibo y satisfacción por parte del COMPRADOR.   Clausurada la anterior diligencia, se da por terminada  y se recibe oficialmente el inmueble a favor de METROVIVIENDA"
+        },
+        {
+            "name": "observaciones_acta",
+            "caption": "Observaciones",
+            "type": "text",
+            "validations": {}
+        },
+        {
+            "name": "vendedor",
+            "caption": "EL VENDEDOR",
+            "type": "text",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "cc_vendedor",
+            "caption": "CC",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "comprador",
+            "caption": "POR EL COMPRADOR",
+            "type": "text",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "cc_comprador",
+            "caption": "CC",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "estado_ficha",
+            "caption": "Estado de la Ficha",
+            "type": "radiobuttons",
+            "options": {
+                "rechazado": "Rechazado",
+                "aprobado": "Aprobado",
+                "revisado": "Revisado",
+                "anulado": "Anulado",
+                "completado": "Completado"
+            }
+        }
+    ]
+}
