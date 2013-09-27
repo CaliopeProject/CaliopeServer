@@ -29,7 +29,7 @@ Copyright (C) 2013  Fundación Correlibre
 """
 from neomodel import *
 from neomodel.contrib import SemiStructuredNode
-from neomodel.relationship_manager import RelationshipDefinition
+from neomodel import RelationshipDefinition
 from py2neo import neo4j
 from cid.core.utils import uuidGenerator, timeStampGenerator
 
@@ -53,8 +53,8 @@ class CaliopeNode(SemiStructuredNode):
 
     def __new__(cls, *args, **kwargs):
         #:RelationshipTo previous node. Root nodes should use "ROOT"
-        ancestor_node = RelationshipFrom(cls, 'ANCESTOR_NODE', ZeroOrOne)
-        setattr(cls, 'ancestor_node', ancestor_node)
+        __ancestor_node__ = RelationshipFrom(cls, 'ANCESTOR_NODE', ZeroOrOne)
+        setattr(cls, 'ancestor_node', __ancestor_node__)
         inst = super(CaliopeNode, cls).__new__(cls, *args, **kwargs)
         return inst
 

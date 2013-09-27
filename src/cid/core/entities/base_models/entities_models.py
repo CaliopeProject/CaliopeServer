@@ -86,6 +86,9 @@ class CaliopeEntityData(CaliopeNode):
 
 
 class CaliopeEntity(CaliopeNode):
+    """
+    This class allow the data model to maintain integrity of a
+    """
     __entity_data_type__ = CaliopeEntityData
     __context_type__ = None
 
