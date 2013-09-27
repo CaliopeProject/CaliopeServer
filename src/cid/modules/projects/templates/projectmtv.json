@@ -75,7 +75,25 @@
         "name": "record_document_creation",
         "caption": "Resolución Anuncio del Proyecto",
         "type": "attachment"
-      }
+      },
+        {
+            "name" : "areas",
+            "caption"   : "Areas",
+            "type"      : "cw-grid",
+            "class"     : "input-xxlarge height-1",
+            "cw-grid-options" : {
+                "columns"  : [
+                    {
+                        "name":"tipo",
+                        "caption":"Tipo Area"
+                    },
+                    {
+                        "name":"valor",
+                        "caption":"Valor"
+                    }
+                ]
+            }
+        }
     ],
   "actions" : [
       {
@@ -115,6 +133,10 @@
         {
           "class": "span6",
           "elements"  : ["record_document_creation"]
+        },
+        {
+          "class": "span6",
+          "elements"  : ["areas"]
         }
       ]
     }

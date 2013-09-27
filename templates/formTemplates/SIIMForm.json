@@ -1,5 +1,6 @@
 {
   "name": "SIIMForm",
+  "novalidate" : "novalidate",
   "html": [
     {
       "name" : "title",
@@ -30,7 +31,6 @@
       "caption" : "Estado",
       "class"   : "input-xxlarge",
       "type"    : "select",
-
       "options": {
         "en_estudio"   : "En Estudio",
         "en_ejecucion" : "En Ejecución",
@@ -95,10 +95,22 @@
         "name" : "areas",
         "caption"   : "Areas",
         "type"      : "cw-grid",
-        "load-init" : "false",
-        "class"     : "height-5",
+        "class"     : "input-xxlarge height-1",
         "cw-grid-options" : {
-            "columns"  : [{"name":"areas.descripcion","caption":"Tipo Area"},{"name":"areas.valor","caption":"Valor"}]
+            "columns"  : [
+                {
+                    "name":"areas.descripcion",
+                    "caption":"Tipo Area"
+                },
+                {
+                    "name":"areas.valor",
+                    "caption":"Valor"
+                },
+                {
+                    "name":"areas.desc",
+                    "caption":"Descripción"
+                }
+            ]
         }
     }
 
@@ -131,10 +143,14 @@
       ]
     },
     {
-      "class" :  "span12",
       "columns" : [
         {
-          "elements"  : ["localizacion_general", "areas"]
+          "class" :  "span6",
+          "elements"  : ["localizacion_general"]
+        },
+        {
+          "class" :  "span6",
+          "elements"  : ["areas"]
         }
       ]
     }
