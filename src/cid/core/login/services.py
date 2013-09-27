@@ -53,7 +53,8 @@ class LoginManager(object):
 
                 return {
                     'login': True,
-                    'uuid': session_uuid,
+                    'session_uuid': {'value': session_uuid},
+                    'user_uuid': {'value': userNode.uuid},
                     'user': {'value': username},
                     "first_name": {'value': userNode.first_name},
                     "last_name": {'value': userNode.last_name},
@@ -69,14 +70,16 @@ class LoginManager(object):
 
     @staticmethod
     @public
-    def authenticate_with_uuid(uuid, domain=None):
-        if uuid is not None:
-            if current_app.storekv.__contains__(prefix_session_manager + uuid):
+    def authenticate_with_uuid(session_uuid, domain=None):
+        if session_uuid is not None:
+            if current_app.storekv.__contains__(prefix_session_manager + session_uuid):
                 try:
-                    username = current_app.storekv.get(prefix_session_manager + uuid)
-                    g.connection_thread_pool_id[g.connection_thread_id] = uuid
+                    username = current_app.storekv.get(prefix_session_manager + session_uuid)
+                    g.connection_thread_pool_id[g.connection_thread_id] = session_uuid
                     userNode = CaliopeUser.index.get(username=username)
-                    return {'login': True, 'uuid': uuid,
+                    return {'login': True,
+                            'session_uuid': {'value': session_uuid},
+                            'user_uuid': {'value': userNode.uuid},
                             'user': {'value': username},
                             "first_name": {'value': userNode.first_name},
                             "last_name": {'value': userNode.last_name},
