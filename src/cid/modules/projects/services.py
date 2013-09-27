@@ -46,7 +46,7 @@ class ProjectServices(CaliopeEntityService):
     @staticmethod
     @public(name='getAll')
     def get_all():
-        return [pe.get_entity_data() for pe in ProjectEntity.category().instance.all()]
+        return [pe.serialize() for pe in ProjectEntity.category().instance.all()]
 
     @staticmethod
     @public(name='getData')
