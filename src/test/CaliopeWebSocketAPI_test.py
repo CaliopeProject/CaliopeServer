@@ -88,13 +88,13 @@ class CaliopeServerTestCase(unittest.TestCase):
         assert 'session_uuid' in rv
 
     def test_logout(self):
-        uuid = self.login(u'user', u'123')['uuid']
+        uuid = self.login(u'user', u'123')['user_uuid']['value']
         rv = self.logout(uuid=uuid)
         assert 'logout' in rv
-        assert rv['logout'] is True
+        assert rv['logout']
 
     def test_accounts_get_public_info(self):
-        users = [self.login(u'user', u'123')['user_uuid']]
+        users = [self.login(u'user', u'123')['user_uuid']['value']]
         accounts_proxy = self.rpc_client.get_proxy(prefix="accounts.")
         info = accounts_proxy.getPublicInfo(users)
         assert len(info) == 1
@@ -102,6 +102,31 @@ class CaliopeServerTestCase(unittest.TestCase):
         for user in users:
             info_uuid = info[0]['uuid']['value']
             assert user == info_uuid
+
+    def test_projects_create(self):
+        user = self.login(u'user', u'123')
+        projects_proxy = self.rpc_client.get_proxy(prefix="projects.")
+        model = projects_proxy.getModel()
+        data = {"name": "PROYECTO 305",
+                "general_location": "<p><em><strong>ASDASDASD</strong></em><br></p>",
+                "locality": "suba",
+                "project_type": "py_gr_escala",
+                "profit_center": "ASDASDADS",
+                "areas": [{"tipo": "A1", "valor": "121"}, {"tipo": "A2", "valor": "13"}],
+                "uuid": model['data']['uuid']['value']
+        }
+        #: TODO Check for real asserts
+        try:
+            rv = projects_proxy.create(data=data)
+            assert True
+        except BaseException:
+            assert False
+
+    def test_projects_get_all(self):
+        user = self.login(u'user', u'123')
+        projects_proxy = self.rpc_client.get_proxy(prefix="projects.")
+        rv = projects_proxy.getAll()
+        self.assertIsNotNone(rv)
 
 
 if __name__ == '__main__':

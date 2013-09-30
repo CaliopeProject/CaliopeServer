@@ -1,0 +1,263 @@
+{
+    "name": "aplicacionTraslado",
+    "html": [
+        {
+            "name": "title",
+            "type": "div",
+            "html": [
+                {
+                    "type": "h1",
+                    "html": "FORMULARIO APLICACIÓN DE TRASLADO"
+                }
+            ]
+        },
+        {
+            "name": "decreto_327",
+            "type": "label",
+            "html": "TRASLADO DEC 327 / 04"
+        },
+        {
+            "name": "radicado",
+            "caption": "Radicado",
+            "type": "text",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "solicitante",
+            "caption": "Solicitante ",
+            "type": "text",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "valor_predio",
+            "caption": "Valor Predio",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "m2",
+            "caption": "Metros Cuadrados",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "m2",
+            "caption": "Valor Catastral M2",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "area_util_proyecto",
+            "caption": "Area Util Proyecto",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "area_vis",
+            "caption": "Area VIS",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "vis",
+            "type": "label",
+            "html": "VIS"
+        },
+        {
+            "name": "a1_label",
+            "type": "label",
+            "html": "VIS"
+        },
+        {
+            "name": "a1_valor",
+            "caption": " ",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "a2_label",
+            "type": "label",
+            "html": "VIS"
+        },
+        {
+            "name": "a2_valor",
+            "caption": " ",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "v1_label",
+            "type": "label",
+            "html": "VIS"
+        },
+        {
+            "name": "v1_valor",
+            "caption": " ",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "v2_label",
+            "type": "label",
+            "html": "VIS"
+        },
+        {
+            "name": "v2_valor",
+            "caption": " ",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "area_etapa_desc",
+            "caption": " ",
+            "type": "text",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "area_etapa_valor",
+            "caption": "Valor",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "avaluo_comercial",
+            "caption": "Avaluo comercial Predio",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "valor_a_pagar",
+            "caption": "Valor a Pagar",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "valores_catastrales",
+            "type": "label",
+            "html": "VALORES CATASTRALES"
+        },
+        {
+            "name": "valor_catastral_predio",
+            "type": "label",
+            "html": "VALOR CASTASTRAL PREDIO"
+        },
+        {
+            "name": "year1_desc",
+            "caption": " ",
+            "type": "text",
+            "validations": {}
+        },
+        {
+            "name": "year1_valor",
+            "caption": "",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "year2_desc",
+            "caption": "",
+            "type": "text",
+            "validations": {}
+        },
+        {
+            "name": "year2_valor",
+            "caption": "",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "total_avaluos",
+            "caption": "",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "area1_m2",
+            "caption": "AREAM2",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "valor_catastral1_m2",
+            "caption": "VALORCATASTRALM2",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "year3_desc",
+            "caption": "",
+            "type": "text",
+            "validations": {}
+        },
+        {
+            "name": "year3_valor",
+            "caption": "",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "year4_desc",
+            "caption": "",
+            "type": "text",
+            "validations": {}
+        },
+        {
+            "name": "year4_valor",
+            "caption": "",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "promedio",
+            "caption": "PROMEDIO",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "area2_m2",
+            "caption": "",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "valor_catastral2_m2",
+            "caption": "VALORCATASTRALM2",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "elaboro",
+            "caption": "ElaboradoPor: ",
+            "type": "text",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "reviso",
+            "caption": "Revisadospor: ",
+            "type": "text",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "estado_ficha",
+            "caption": "EstadodelaFicha",
+            "type": "radiobuttons",
+            "options": {
+                "rechazado": "Rechazado",
+                "aprobado": "Aprobado",
+                "revisado": "Revisado",
+                "anulado": "Anulado",
+                "completado": "Completado"
+            }
+        }
+    ]
+}

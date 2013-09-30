@@ -1,0 +1,136 @@
+{
+  "name": "listaChequeo",
+  "html": [
+    {
+        "name" : "title",
+        "type" : "div",
+        "html" :
+            [
+              {
+                "type" : "h1",
+                "html" : "LISTA DE CHEQUEO PARA LA REALIZACIÓN DEL TRASLADO DE PROVISIÓN VIS/VIP EN PROYECTOS DE METROVIVIENDA"
+              }
+            ]
+    },  
+    {
+        "name" : "documentacion",
+        "type" : "label",
+        "html" : "DOCUMENTACIÓN"
+    },
+    {
+        "name" : "entrega",
+        "type" : "label",
+        "html" : "ENTREGA"
+    },
+    {
+        "name" : "observacion",
+        "type" : "label",
+        "html" : "OBSERVACION"
+    },
+    {
+        "name": "solicitud_traslado",
+        "caption": "Solicitud de traslado",
+        "type": "radiobuttons",
+        "options" : {
+            "si" : "SI",
+            "no" : "NO"
+        }
+    },
+    {
+        "name": "observaciones_solicitud_traslado",
+        "caption": "  ",
+        "type": "textarea",
+        "class": "input-xxlarge"
+    },
+    {
+        "name": "certificado_tradicion",
+        "caption": "Copia del certificado de Libertad de tradición y libertad predio original",
+        "type": "radiobuttons",
+        "options" : {
+            "si" : "SI",
+            "no" : "NO"
+        }
+    },
+    {
+        "name": "observaciones_certificado_tradicion",
+        "caption": "  ",
+        "type": "textarea",
+        "class": "input-xxlarge"
+    },
+    {
+        "name": "cuadro_areas",
+        "caption": "Copia del cuadro de áreas del proyecto",
+        "type": "radiobuttons",
+        "options" : {
+            "si" : "SI",
+            "no" : "NO"
+        }
+    },
+    {
+        "name": "observaciones_cuadro_areas",
+        "caption": "  ",
+        "type": "textarea",
+        "class": "input-xxlarge"
+    },
+    {
+        "name": "representacion_legal",
+        "caption": "Certificado de Existencia y Representación Legal",
+        "type": "radiobuttons",
+        "options" : {
+            "si" : "SI",
+            "no" : "NO"
+        }
+    },
+    {
+        "name": "observaciones_representacion_legal",
+        "caption": "  ",
+        "type": "textarea",
+        "class": "input-xxlarge"
+    },
+    {
+        "name": "curaduria_urbana",
+        "caption": "Certificación de la Curaduría Urbana donde se indiquen las áreas del proyecto, el tipo de proyecto y se estime la provisión de VIS o VIP",
+        "type": "radiobuttons",
+        "options" : {
+            "si" : "SI",
+            "no" : "NO"
+        }
+    },
+    {
+        "name": "observaciones_curaduria_urbana",
+        "caption": "  ",
+        "type": "textarea",
+        "class": "input-xxlarge"
+    },    
+    {
+        "name": "poder_si_aplica",
+        "caption": "En caso de de que aplique: poder o copia del mismo.",
+        "type": "radiobuttons",
+        "options" : {
+            "si" : "SI",
+            "no" : "NO"
+        }
+    },
+    {
+        "name": "observaciones_poder_si_aplica",
+        "caption": "  ",
+        "type": "textarea",
+        "class": "input-xxlarge"
+    },       
+    {
+        "name": "estado_ficha",
+        "caption": "Estado de la Ficha",
+        "type": "radiobuttons",
+        "options" : {
+            "rechazado" : "Rechazado",
+	    "aprobado" : "Aprobado",
+	    "revisado" : "Revisado",
+	    "anulado" : "Anulado",
+            "completado" : "Completado"
+        }
+    }
+  ]
+}
+
+    
+    
