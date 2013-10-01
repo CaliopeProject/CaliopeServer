@@ -31,13 +31,24 @@
       "name"  : "execute",
       "type"  : "execute-task",
       "options" : {
-        "target-uuid-field" : "target.uuid",
-        "target-entity-field" : "target.entity"
+        "target-uuid-field" : "target.target.0.entity_data.uuid",
+        "target-entity-field" : "target.target.0.entity"
       }
     },
     {
       "name": "target",
-      "type": "hidden"
+      "type": "hidden",
+      "relation": {
+        "direction" : -1,
+        "target" : {
+            "entity": "{{tarea}}",
+            "properties": {
+            },
+            "entity_data" : {
+                "uuid"  : "{{target.uuid}}"
+            }
+        }
+      }
     },
     {
       "name": "tarea",
@@ -48,19 +59,6 @@
         "predios" : "Selección de Predios",
         "projects" : "Formulario de proyectos",
         "t3" : "tarea3000"
-      }
-    },
-    {
-      "name": "status",
-      "caption": "Estado",
-      "class": "input-large",
-      "type": "multi-choices",
-      "single": "true",
-      "options-load-server" : {
-        "method"        : "accounts.getAll",
-        "field-value"   : "estado",
-        "field-desc"    : "desc",
-        "field-image"   :  "image"
       }
     },
     {
@@ -85,6 +83,19 @@
             "uuid" : "{{holders}}"
           }
         }
+      }
+    },
+    {
+      "name": "status",
+      "caption": "Estado",
+      "class": "input-large",
+      "type": "multi-choices",
+      "single": "true",
+      "options-load-server" : {
+        "method"        : "accounts.getAll",
+        "field-value"   : "estado",
+        "field-desc"    : "desc",
+        "field-image"   :  "image"
       }
     },
     {
