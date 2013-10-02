@@ -47,6 +47,12 @@
                 }
             },
             {
+                "accounts": {
+                    "package": "core.access_control",
+                    "service": "ac"
+                }
+            },
+            {
                 "search": {
                     "package": "core.search",
                     "service": "search"
