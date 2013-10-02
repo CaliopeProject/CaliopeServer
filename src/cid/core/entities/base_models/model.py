@@ -59,7 +59,19 @@ class VersionedNode(SemiStructuredNode):
     timestamp = DateTimeProperty(default = timeStampGenerator)
 
     def save(self, *args, **kwargs):
-        print 'Running save'
+        try:
+          # Check if we have a stored version of this object.
+          current_node = self.__class__.index.get(uuid = self.uuid)
+          print current_node
+          for d in current_node.__dict__:
+            if d[:1] != '_': # Avoid attributes that start with _.
+              if getattr(self, d) != getattr(current_node, d):
+                print d, 'is different'
+                print 'Now',  getattr(self, d)
+                print 'Before', getattr(current_node, d)
+        except: # TODO(nel): How to catch the exceptions?
+          print 'Node does not exist'
+          pass
         super(VersionedNode, self).save(*args, **kwargs)
 
     def __init__(self, *args, **kwargs):
@@ -71,10 +83,8 @@ class SamplePerson(VersionedNode):
 
 person = SamplePerson()
 person.name = 'Nelson'
-person.birdth = 'Some time ago'
+person.birth = 'Some time ago'
 person.save()
 
-current_node = SamplePerson.index.get(uuid = person.uuid)
-print current_node
-
 person.name = 'New nelson'
+person.save()
