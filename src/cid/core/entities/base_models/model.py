@@ -58,21 +58,45 @@ class VersionedNode(SemiStructuredNode):
     #: All timestamps should be in UTC using pytz.utc
     timestamp = DateTimeProperty(default = timeStampGenerator)
 
-    def save(self, *args, **kwargs):
-        try:
-          # Check if we have a stored version of this object.
-          current_node = self.__class__.index.get(uuid = self.uuid)
-          print current_node
-          for d in current_node.__dict__:
-            if d[:1] != '_': # Avoid attributes that start with _.
-              if getattr(self, d) != getattr(current_node, d):
-                print d, 'is different'
-                print 'Now',  getattr(self, d)
-                print 'Before', getattr(current_node, d)
-        except: # TODO(nel): How to catch the exceptions?
-          print 'Node does not exist'
-          pass
-        super(VersionedNode, self).save(*args, **kwargs)
+
+    def attributes_to_save(self):
+      ret = []
+      for field in self.__dict__:
+        # Timestamp issue.
+        if field[:1] != '_' and field != 'timestamp':
+          ret.append(field)
+      return ret
+
+    def should_save_history(self, stored_node):
+            print 'should have history?'
+	    for field in self.attributes_to_save():
+              # TODO(nel): In some cases the new objec will have less/more fields than the old one. Fix.
+	      if getattr(self, field) != getattr(stored_node, field):
+                # TODO(nel): Delete this code.
+	        print field, 'is different'
+	        print 'Now',  getattr(self, field)
+	        print 'Before', getattr(stored_node, field)
+                return True
+            return False
+
+    def save(self, skip_difference = False):
+        if not skip_difference:
+          stored_node = None
+          try:
+            stored_node = self.__class__.index.get(uuid = self.uuid)
+          except:
+            pass
+          if stored_node and self.should_save_history(stored_node):
+            print 'should save history'
+            # The following operations need to be atomic.
+            # 1. Create a copy of the stored node and save it.
+            copy = stored_node.__class__()
+	    for field in stored_node.attributes_to_save():
+              setattr(copy, field, getattr(stored_node, field))
+            copy.uuid = uuidGenerator() # TODO(nel): This is wrong. Fix.
+            copy.save(skip_difference = True)
+            self.parent_uuid = copy.uuid
+        super(VersionedNode, self).save()
 
     def __init__(self, *args, **kwargs):
         super(VersionedNode, self).__init__(*args, **kwargs)
@@ -82,9 +106,10 @@ class SamplePerson(VersionedNode):
     birth = StringProperty()
 
 person = SamplePerson()
-person.name = 'Nelson'
+person.name = 'Name'
 person.birth = 'Some time ago'
 person.save()
-
-person.name = 'New nelson'
+person.name = 'Name 1'
+person.save()
+person.name = 'Name 2'
 person.save()
