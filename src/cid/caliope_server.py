@@ -67,6 +67,11 @@ def custom_static(filename):
     return send_from_memory(safe_join(app.config['STATIC_PATH'], filename))
 
 
+@app.errorhandler(404)
+def page_not_found(error):
+    return send_from_memory(safe_join(app.config['STATIC_PATH'], 'error.html'))
+
+
 def main(argv):
     init_flask_app()
     server_config_file, logger_config_file = _parseCommandArguments(argv)
