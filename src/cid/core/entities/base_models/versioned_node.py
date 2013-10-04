@@ -45,12 +45,12 @@ class VersionedNode(SemiStructuredNode):
     #: All timestamps should be in UTC using pytz.utc
     timestamp = DateTimeProperty(default = timeStampGenerator)
 
-    def _attributes_to_save(self):
+    def _attributes_to_diff(self):
         return [a for a in self.__dict__ if a[:1] != '_' and a != 'timestamp']
 
     def _should_save_history(self, stored_node):
-        for field in set(self._attributes_to_save() +
-                         stored_node._attributes_to_save()):
+        for field in set(self._attributes_to_diff() +
+                         stored_node._attributes_to_diff()):
             # Versioned nodes have different fields, so they are different.
            if not hasattr(stored_node, field) or not hasattr(self, field):
                return True
@@ -72,7 +72,7 @@ class VersionedNode(SemiStructuredNode):
                 # The following operations need to be atomic.
                 # 1. Create a copy of the stored node and save it.
                 copy = stored_node.__class__()
-	        for field in stored_node._attributes_to_save():
+	        for field in stored_node._attributes_to_diff():
                     setattr(copy, field, getattr(stored_node, field))
                 copy.uuid = uuidGenerator() # TODO(nel): This is wrong. Fix.
                 copy.save(skip_difference = True)
