@@ -29,18 +29,7 @@ from neomodel.contrib import SemiStructuredNode
 from neomodel import RelationshipDefinition
 from py2neo import neo4j
 
-#from cid.core.utils import uuidGenerator, timeStampGenerator
-# TODO(nel): Remove the following imports and uncomment the previous line.
-import uuid
-import hashlib
-from datetime import datetime
-from pytz import utc
-
-def uuidGenerator():
-    return str(uuid.uuid4()).decode('utf-8')
-#: All timestamps should be in UTC
-def timeStampGenerator():
-    return datetime.now(utc)
+from cid.core.utils import uuidGenerator, timeStampGenerator
 
 class VersionedNode(SemiStructuredNode):
     """
@@ -83,7 +72,7 @@ class VersionedNode(SemiStructuredNode):
                 # 1. Create a copy of the stored node and save it.
                 copy = stored_node.__class__()
 	        for field in stored_node._attributes_to_save():
-                  setattr(copy, field, getattr(stored_node, field))
+                    setattr(copy, field, getattr(stored_node, field))
                 copy.uuid = uuidGenerator() # TODO(nel): This is wrong. Fix.
                 copy.save(skip_difference = True)
                 self.parent_uuid = copy.uuid
@@ -91,16 +80,3 @@ class VersionedNode(SemiStructuredNode):
 
     def __init__(self, *args, **kwargs):
         super(VersionedNode, self).__init__(*args, **kwargs)
-
-class SamplePerson(VersionedNode):
-    name = StringProperty()
-    birth = StringProperty()
-
-person = SamplePerson()
-person.name = 'Name'
-person.birth = 'Some time ago'
-person.save()
-person.name = 'Name 1'
-person.save()
-person.name = 'Name 2'
-person.save()
