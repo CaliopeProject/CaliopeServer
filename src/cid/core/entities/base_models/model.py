@@ -1,13 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-    cid.core.entities.base_models
+    cid.core.entities.model
     ~~~~~~~~~~~~~~
 
-    Este módulo contiene la clase CaliopeNode, que es el elemento atómico
-    de la arquitectura de almancenamiento. Toda la información del sistema
-    es contenida en elementos que heredan de  CaliopeNode.
-
-    :author: Sebastián Ortiz <neoecos@gmail.com>
+    :author: Nelson Castillo <nelsoneci@gmail.com>
     :copyright: (c) 2013 por Fundación CorreLibre
     :license:  GNU AFFERO GENERAL PUBLIC LICENSE
 
@@ -27,6 +23,7 @@ Copyright (C) 2013  Fundación Correlibre
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
+
 from neomodel import *
 from neomodel.contrib import SemiStructuredNode
 from neomodel import RelationshipDefinition
@@ -49,6 +46,7 @@ class VersionedNode(SemiStructuredNode):
     """
     :class: VersionedNode
     """
+
     __index__ = 'CaliopeStorage'
 
     uuid = StringProperty(default = uuidGenerator, unique_index = True)
@@ -58,44 +56,37 @@ class VersionedNode(SemiStructuredNode):
     #: All timestamps should be in UTC using pytz.utc
     timestamp = DateTimeProperty(default = timeStampGenerator)
 
+    def _attributes_to_save(self):
+        return [a for a in self.__dict__ if a[:1] != '_' and a != 'timestamp']
 
-    def attributes_to_save(self):
-      ret = []
-      for field in self.__dict__:
-        # Timestamp issue.
-        if field[:1] != '_' and field != 'timestamp':
-          ret.append(field)
-      return ret
-
-    def should_save_history(self, stored_node):
-            print 'should have history?'
-	    for field in self.attributes_to_save():
-              # TODO(nel): In some cases the new objec will have less/more fields than the old one. Fix.
-	      if getattr(self, field) != getattr(stored_node, field):
-                # TODO(nel): Delete this code.
-	        print field, 'is different'
-	        print 'Now',  getattr(self, field)
-	        print 'Before', getattr(stored_node, field)
-                return True
-            return False
+    def _should_save_history(self, stored_node):
+        for field in set(self._attributes_to_save() +
+                         stored_node._attributes_to_save()):
+            # Versioned nodes have different fields, so they are different.
+           if not hasattr(stored_node, field) or not hasattr(self, field):
+               return True
+           # A field has a different value.
+	   if getattr(self, field) != getattr(stored_node, field):
+               return True
+        # Versioned nodes have the save fields and field values.
+        return False
 
     def save(self, skip_difference = False):
         if not skip_difference:
-          stored_node = None
-          try:
-            stored_node = self.__class__.index.get(uuid = self.uuid)
-          except:
-            pass
-          if stored_node and self.should_save_history(stored_node):
-            print 'should save history'
-            # The following operations need to be atomic.
-            # 1. Create a copy of the stored node and save it.
-            copy = stored_node.__class__()
-	    for field in stored_node.attributes_to_save():
-              setattr(copy, field, getattr(stored_node, field))
-            copy.uuid = uuidGenerator() # TODO(nel): This is wrong. Fix.
-            copy.save(skip_difference = True)
-            self.parent_uuid = copy.uuid
+            stored_node = None
+            try:
+                stored_node = self.__class__.index.get(uuid = self.uuid)
+            except:
+                pass
+            if stored_node and self._should_save_history(stored_node):
+                # The following operations need to be atomic.
+                # 1. Create a copy of the stored node and save it.
+                copy = stored_node.__class__()
+	        for field in stored_node._attributes_to_save():
+                  setattr(copy, field, getattr(stored_node, field))
+                copy.uuid = uuidGenerator() # TODO(nel): This is wrong. Fix.
+                copy.save(skip_difference = True)
+                self.parent_uuid = copy.uuid
         super(VersionedNode, self).save()
 
     def __init__(self, *args, **kwargs):
