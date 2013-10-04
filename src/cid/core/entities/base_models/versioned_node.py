@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    cid.core.entities.model
+    cid.core.entities.versioned_node
     ~~~~~~~~~~~~~~
 
     :author: Nelson Castillo <nelsoneci@gmail.com>
