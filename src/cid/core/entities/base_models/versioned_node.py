@@ -62,6 +62,7 @@ class VersionedNode(SemiStructuredNode):
 
     def save(self, skip_difference = False):
         if not skip_difference:
+            # TODO(nel): Don't use an exception here.
             stored_node = None
             try:
                 stored_node = self.__class__.index.get(uuid = self.uuid)
