@@ -69,12 +69,11 @@ class VersionedNode(SemiStructuredNode):
             except:
                 pass
             if stored_node and self._should_save_history(stored_node):
-                # The following operations need to be atomic.
-                # 1. Create a copy of the stored node and save it.
+                # The following operations should be atomic.
                 copy = stored_node.__class__()
 	        for field in stored_node._attributes_to_diff():
                     setattr(copy, field, getattr(stored_node, field))
-                copy.uuid = uuidGenerator() # TODO(nel): This is wrong. Fix.
+                copy.uuid = uuidGenerator()
                 copy.save(skip_difference = True)
                 self.parent_uuid = copy.uuid
         super(VersionedNode, self).save()
