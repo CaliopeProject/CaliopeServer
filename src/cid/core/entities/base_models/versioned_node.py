@@ -24,10 +24,8 @@ Copyright (C) 2013  Fundación Correlibre
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from neomodel import *
+from neomodel import StringProperty, DateTimeProperty, RelationshipTo, ZeroOrOne, DoesNotExist
 from neomodel.contrib import SemiStructuredNode
-from neomodel import RelationshipDefinition
-from py2neo import neo4j
 
 from cid.core.utils import uuidGenerator, timeStampGenerator
 
@@ -96,7 +94,7 @@ class VersionedNode(SemiStructuredNode):
 # Sample use:
 #class Person(VersionedNode):
 #   name = StringProperty()
-#   age = IntegerProperty()
+#   age = StringProperty()
 #person = Person(name = 'Alice')
 #person.age = 10
 #person.save()
