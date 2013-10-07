@@ -47,14 +47,15 @@ class VersionedNode(SemiStructuredNode):
     # 2) Check that the timestamp is updated when needed.
     timestamp = DateTimeProperty(default = timeStampGenerator)
 
+    __special_fields__ = set(['timestamp', 'parent', 'uuid'])
+
     def __new__(cls, *args, **kwargs):
         cls.parent = RelationshipTo(cls, 'PARENT', ZeroOrOne)
         return super(VersionedNode, cls).__new__(cls, *args, **kwargs)
 
     def _attributes_to_diff(self):
         return [a for a in self.__dict__ if a[:1] != '_' \
-                                            and a != 'timestamp' \
-                                            and a != 'parent']
+                                         and a not in self.__special_fields__]
 
     def _should_save_history(self, stored_node):
         for field in set(self._attributes_to_diff() +
@@ -80,7 +81,6 @@ class VersionedNode(SemiStructuredNode):
                 copy = stored_node.__class__()
 	        for field in stored_node._attributes_to_diff():
                     setattr(copy, field, getattr(stored_node, field))
-                copy.uuid = uuidGenerator()
 		copy.save(skip_difference = True)
                 if len(self.parent):
                     copy.parent.connect(self.parent.get())
@@ -92,16 +92,17 @@ class VersionedNode(SemiStructuredNode):
     def __init__(self, *args, **kwargs):
         super(VersionedNode, self).__init__(*args, **kwargs)
 
-class Person(VersionedNode):
-  name = StringProperty()
-  age = IntegerProperty()
-
-person = Person(name = 'Alice')
-person.age = 10
-person.save()
-person.age = 20
-person.save()
-person.age = 30
-person.save()
-person.age = 40
-person.save()
+# TODO(nel): Make this a test.
+# Sample use:
+#class Person(VersionedNode):
+#   name = StringProperty()
+#   age = IntegerProperty()
+#person = Person(name = 'Alice')
+#person.age = 10
+#person.save()
+#person.age = 20
+#person.save()
+#person.age = 30
+#person.save()
+#person.age = 40
+#person.save()
