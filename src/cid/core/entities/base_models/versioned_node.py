@@ -79,11 +79,12 @@ class VersionedNode(SemiStructuredNode):
                 # The following operations should be atomic.
                 copy = stored_node.__class__()
 	        for field in stored_node._attributes_to_diff():
-                    setattr(copy, field, getattr(stored_node, field))
-                print 'copy.parent', id(copy.parent)
-                print 'self.parent', id(self.parent)
+                    if field != 'parent':
+                      setattr(copy, field, getattr(stored_node, field))
                 copy.uuid = uuidGenerator()
 		copy.save(skip_difference = True)
+                if len(self.parent):
+                    copy.parent.connect(self.parent.get())
                 self.parent_uuid = copy.uuid
                 if len(self.parent):
                     self.parent.disconnect(self.parent.get())
