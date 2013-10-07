@@ -43,7 +43,15 @@ class VersionedNode(SemiStructuredNode):
     parent_uuid  = StringProperty(default = '')
 
     #: All timestamps should be in UTC using pytz.utc
+    # TODO:
+    # 1) When a timestamp is stored and then loaded the value is different.
+    #    Timezone issue.
+    # 2) Check that the timestamp is updated when needed.
     timestamp = DateTimeProperty(default = timeStampGenerator)
+
+    def __new__(cls, *args, **kwargs):
+        cls.parent = RelationshipFrom(cls, 'PARENT_NODE', ZeroOrOne)
+        return super(VersionedNode, cls).__new__(cls, *args, **kwargs)
 
     def _attributes_to_diff(self):
         return [a for a in self.__dict__ if a[:1] != '_' and a != 'timestamp']
@@ -51,7 +59,7 @@ class VersionedNode(SemiStructuredNode):
     def _should_save_history(self, stored_node):
         for field in set(self._attributes_to_diff() +
                          stored_node._attributes_to_diff()):
-            # Versioned nodes have different fields, so they are different.
+            # If versioned nodes have different fields they are different.
            if not hasattr(stored_node, field) or not hasattr(self, field):
                return True
            # A field has a different value.
@@ -63,20 +71,38 @@ class VersionedNode(SemiStructuredNode):
     def save(self, skip_difference = False):
         if not skip_difference:
             # TODO(nel): Don't use an exception here.
-            stored_node = None
             try:
                 stored_node = self.__class__.index.get(uuid = self.uuid)
-            except:
-                pass
+            except DoesNotExist:
+                stored_node = None
             if stored_node and self._should_save_history(stored_node):
                 # The following operations should be atomic.
                 copy = stored_node.__class__()
 	        for field in stored_node._attributes_to_diff():
                     setattr(copy, field, getattr(stored_node, field))
+                print 'copy.parent', id(copy.parent)
+                print 'self.parent', id(self.parent)
                 copy.uuid = uuidGenerator()
-                copy.save(skip_difference = True)
+		copy.save(skip_difference = True)
                 self.parent_uuid = copy.uuid
+                if len(self.parent):
+                    self.parent.disconnect(self.parent.get())
+                self.parent.connect(copy)
         super(VersionedNode, self).save()
 
     def __init__(self, *args, **kwargs):
         super(VersionedNode, self).__init__(*args, **kwargs)
+
+class Person(VersionedNode):
+  name = StringProperty()
+  age = IntegerProperty()
+
+person = Person(name = 'Alice')
+person.age = 10
+person.save()
+person.age = 20
+person.save()
+person.age = 30
+person.save()
+person.age = 40
+person.save()
