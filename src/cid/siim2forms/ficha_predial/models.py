@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 
 #Caliope Entities
 from cid.core.entities import (CaliopeEntityData, CaliopeEntity, RelationshipFrom,
@@ -7,7 +8,7 @@ from cid.core.entities import (CaliopeEntityData, CaliopeEntity, RelationshipFro
 from cid.core.entities.base_models.versioned_node import VersionedNode
 
 
-class FichaPredialData(VersionedNode):
+class FichaPredial(VersionedNode):
 
     #Definición de datos para la ficha predial
 
