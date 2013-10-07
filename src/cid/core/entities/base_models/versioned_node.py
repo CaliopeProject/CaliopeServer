@@ -40,8 +40,6 @@ class VersionedNode(SemiStructuredNode):
 
     uuid = StringProperty(default = uuidGenerator, unique_index = True)
 
-    parent_uuid  = StringProperty(default = '')
-
     #: All timestamps should be in UTC using pytz.utc
     # TODO:
     # 1) When a timestamp is stored and then loaded the value is different.
@@ -50,11 +48,13 @@ class VersionedNode(SemiStructuredNode):
     timestamp = DateTimeProperty(default = timeStampGenerator)
 
     def __new__(cls, *args, **kwargs):
-        cls.parent = RelationshipFrom(cls, 'PARENT_NODE', ZeroOrOne)
+        cls.parent = RelationshipTo(cls, 'PARENT', ZeroOrOne)
         return super(VersionedNode, cls).__new__(cls, *args, **kwargs)
 
     def _attributes_to_diff(self):
-        return [a for a in self.__dict__ if a[:1] != '_' and a != 'timestamp']
+        return [a for a in self.__dict__ if a[:1] != '_' \
+                                            and a != 'timestamp' \
+                                            and a != 'parent']
 
     def _should_save_history(self, stored_node):
         for field in set(self._attributes_to_diff() +
@@ -79,16 +79,14 @@ class VersionedNode(SemiStructuredNode):
                 # The following operations should be atomic.
                 copy = stored_node.__class__()
 	        for field in stored_node._attributes_to_diff():
-                    if field != 'parent':
-                      setattr(copy, field, getattr(stored_node, field))
+                    setattr(copy, field, getattr(stored_node, field))
                 copy.uuid = uuidGenerator()
 		copy.save(skip_difference = True)
                 if len(self.parent):
                     copy.parent.connect(self.parent.get())
-                self.parent_uuid = copy.uuid
-                if len(self.parent):
                     self.parent.disconnect(self.parent.get())
                 self.parent.connect(copy)
+                self.timestamp = timeStampGenerator()
         super(VersionedNode, self).save()
 
     def __init__(self, *args, **kwargs):
