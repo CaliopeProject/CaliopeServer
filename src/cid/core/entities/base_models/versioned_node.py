@@ -111,27 +111,31 @@ class VersionedNode(SemiStructuredNode):
     #            if rel and isinstance(rel_inst, RelationshipDefinition)]
 
 
-#class Person(VersionedNode):
-#    name = StringProperty()
-#    age = StringProperty()
-#    #car = RelationshipTo(Car, 'CAR')
+"""class Person(VersionedNode):
+    name = StringProperty()
+    age = StringProperty()
+    #car = RelationshipTo(Car, 'CAR')
 
-#class Car(VersionedNode):
-#    plate = StringProperty()
-#    owner = RelationshipFrom(Person, 'OWNER', ZeroOrOne)
+class Car(VersionedNode):
+    plate = StringProperty()
+    owner = RelationshipFrom(Person, 'OWNER', ZeroOrOne)
 
-#person = Person(name='Bob')
-#person.age = 10
-#person.save()
+person = Person(name='Bob')
+person.age = 10
+person.save()
 
-#car = Car(plate='7777')
-#car.save()
-#car.owner.connect(person)
+car = Car(plate='7777')
+car.save()
+car.owner.connect(person)
+print car.owner.single().__node__
 
-#person.age = 20
-#person.save()
+person.age = 20
+person.save()
+print car.owner.single().__node__
+
 #person.age = 30
 #person.save()
 #person.age = 40
 #person.save()
 #print person.__node__
+"""
