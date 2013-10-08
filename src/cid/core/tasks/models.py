@@ -48,6 +48,7 @@ class TaskData(CaliopeEntityData):
     comments = CaliopeJSONProperty()
     color = StringProperty()
     target = CaliopeJSONProperty()
+    status = StringProperty()
 
     def __init__(self, *args, **kwargs):
         super(TaskData, self).__init__(*args, **kwargs)
