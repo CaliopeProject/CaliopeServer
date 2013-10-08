@@ -22,6 +22,7 @@ Copyright (C) 2013 Infometrika Ltda.
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 import importlib
+from cid.utils.fileUtils import loadJSONFromFileNoPath
 
 from flask import current_app
 #tinyrpc
@@ -29,6 +30,22 @@ from tinyrpc.dispatch import public
 from tinyrpc.dispatch import RPCDispatcher
 
 CORE_MODULES = ['cid.core.dispatcher']
+
+
+def register_form_modules(app):
+    app.caliope_forms = dict()
+    config = loadJSONFromFileNoPath(app.config['FORM_MODULES'])
+    for m in config['modules']:
+        try:
+            form = dict()
+            form['name'] = m['module']
+            module = importlib.import_module( m['package'])
+            form['module'] = getattr(module, m['module'])
+            app.caliope_forms[m['module']] = form
+        except ImportError as e:
+            print m['package']+'.'+m['module']
+            app.logger.exception(str(e))
+        pass
 
 
 def register_modules(app, package_base='cid'):

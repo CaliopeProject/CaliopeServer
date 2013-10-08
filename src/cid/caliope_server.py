@@ -144,6 +144,11 @@ def configure_server_and_app(server_config_file):
     else:
         app.config['FORM_TEMPLATES'] = app.config['STATIC_PATH']
 
+    if 'formModules' in config['server']:
+        app.config['FORM_MODULES'] = config['server']['formModules']
+    else:
+        app.config['FORM_MODULES'] = None
+
     #: Load app config
     if 'app' in config:
         if 'modules' in config['app']:
@@ -187,6 +192,7 @@ def register_modules():
 
     """
     module_manager.register_modules(app)
+    module_manager.register_form_modules(app)
 
 
 def run_server():
