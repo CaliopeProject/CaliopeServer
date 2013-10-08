@@ -121,7 +121,7 @@ class TaskServices(CaliopeEntityService):
 
     @staticmethod
     @public
-    def create(data=None):
+    def create(formId=None, data=None):
         if 'uuid' in data:
             task_controller = TaskController(uuid=data['uuid'])
         else:
@@ -133,7 +133,7 @@ class TaskServices(CaliopeEntityService):
 
     @staticmethod
     @public
-    def edit(data=None):
+    def edit(formId=None, data=None):
         task_controller = TaskController(**data)
         task_controller.set_data(**data)
         rv = task_controller.get_data()
@@ -141,14 +141,14 @@ class TaskServices(CaliopeEntityService):
 
     @staticmethod
     @public
-    def archive(data=None):
+    def archive(formId=None, data=None):
         task_controller = TaskController(**data)
         task_controller.archive()
         return {'result': True}
 
     @staticmethod
     @public
-    def delete(data=None):
+    def delete(formId=None, data=None):
         task_controller = TaskController(**data)
         task_controller.delete()
         return {'result': True}

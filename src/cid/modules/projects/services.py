@@ -90,7 +90,7 @@ class ProjectServices(CaliopeEntityService):
 
     @staticmethod
     @public
-    def edit(data=None):
+    def edit(formId=None, data=None):
         project_controller = ProjectController(**data)
         project_controller.set_data(**data)
         rv = project_controller.get_data()
