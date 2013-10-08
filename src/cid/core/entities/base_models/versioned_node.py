@@ -72,10 +72,6 @@ class VersionedNode(SemiStructuredNode):
                 # Versioned nodes have the save fields and field values.
         return False
 
-    #def _relationships_to_diff(self):
-
-
-
     @classmethod
     def _copy_relationships(cls, old_node, new_node):
         for key, val in cls.__dict__.items():
@@ -84,16 +80,7 @@ class VersionedNode(SemiStructuredNode):
                     new_rel = getattr(new_node, key)
                     old_rel = getattr(old_node, key)
                     for related_node in old_rel.all():
-                        saved = False
-                        for node_class_rel in related_node._get_class_relationships():
-                            node_rel = getattr(related_node, node_class_rel[0], None)
-                            if issubclass(node_rel.__class__, (One, ZeroOrOne)):
-                                if (getattr(node_rel, 'relation_type') ==
-                                        getattr(new_rel, 'relation_type')):
-                                    node_rel.reconnect(old_node, new_node)
-                                    saved = True
-                        if not saved:
-                            new_rel.connect(related_node)
+                        new_rel.connect(related_node)
 
     def save(self, skip_difference=False):
         if not skip_difference:
@@ -117,43 +104,34 @@ class VersionedNode(SemiStructuredNode):
                 self.timestamp = timeStampGenerator()
         super(VersionedNode, self).save()
 
-    @classmethod
-    def _get_class_relationships(cls):
-        return [(rel, rel_inst)
-                for rel, rel_inst in cls.__dict__.items()
-                if rel and isinstance(rel_inst, RelationshipDefinition)]
+    #@classmethod
+    #def _get_class_relationships(cls):
+    #    return [(rel, rel_inst)
+    #            for rel, rel_inst in cls.__dict__.items()
+    #            if rel and isinstance(rel_inst, RelationshipDefinition)]
 
 
-class Person(object):
-    pass
+#class Person(VersionedNode):
+#    name = StringProperty()
+#    age = StringProperty()
+#    #car = RelationshipTo(Car, 'CAR')
 
+#class Car(VersionedNode):
+#    plate = StringProperty()
+#    owner = RelationshipFrom(Person, 'OWNER', ZeroOrOne)
 
-class Car(VersionedNode):
-    plate = StringProperty()
-    owner = RelationshipFrom(Person, 'CAR', ZeroOrOne)
+#person = Person(name='Bob')
+#person.age = 10
+#person.save()
 
+#car = Car(plate='7777')
+#car.save()
+#car.owner.connect(person)
 
-class Person(VersionedNode):
-    name = StringProperty()
-    age = StringProperty()
-    car = RelationshipTo(Car, 'CAR')
-
-
-person = Person(name='Alice')
-person.age = 10
-person.save()
-person = Person(name='Bob')
-person.age = 10
-
-car = Car(plate='7777')
-car.save()
-person.save()
-person.car.connect(car)
-
-person.age = 20
-person.save()
-person.age = 30
-person.save()
-person.age = 40
-person.save()
-print person.__node__
+#person.age = 20
+#person.save()
+#person.age = 30
+#person.save()
+#person.age = 40
+#person.save()
+#print person.__node__
