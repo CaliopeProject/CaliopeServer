@@ -1,0 +1,8 @@
+{
+    "modules": [
+        {
+            "package": "cid.siim2forms.ficha_predial",
+            "module": "FichaPredial"
+        }
+    ]
+}

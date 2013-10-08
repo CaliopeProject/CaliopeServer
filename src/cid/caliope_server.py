@@ -67,6 +67,11 @@ def custom_static(filename):
     return send_from_memory(safe_join(app.config['STATIC_PATH'], filename))
 
 
+@app.errorhandler(404)
+def page_not_found(error):
+    return send_from_memory(safe_join(app.config['STATIC_PATH'], 'error.html'))
+
+
 def main(argv):
     init_flask_app()
     server_config_file, logger_config_file = _parseCommandArguments(argv)
@@ -139,6 +144,11 @@ def configure_server_and_app(server_config_file):
     else:
         app.config['FORM_TEMPLATES'] = app.config['STATIC_PATH']
 
+    if 'formModules' in config['server']:
+        app.config['FORM_MODULES'] = config['server']['formModules']
+    else:
+        app.config['FORM_MODULES'] = None
+
     #: Load app config
     if 'app' in config:
         if 'modules' in config['app']:
@@ -182,6 +192,7 @@ def register_modules():
 
     """
     module_manager.register_modules(app)
+    module_manager.register_form_modules(app)
 
 
 def run_server():

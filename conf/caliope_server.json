@@ -7,7 +7,8 @@
         "debug": "True",
         "cache_enabled": "False",
         "static": "../caliope_webui_beowulf/app",
-        "formTemplates": "../../templates/formTemplates"
+        "formTemplates": "../../templates/formTemplates",
+        "formModules": "conf/siim2_forms.json"    
     },
     /* Added fo app configurations */
     "app": {
@@ -44,6 +45,12 @@
                 "accounts": {
                     "package": "core.accounts",
                     "service": "accounts"
+                }
+            },
+            {
+                "accounts": {
+                    "package": "core.access_control",
+                    "service": "ac"
                 }
             },
             {

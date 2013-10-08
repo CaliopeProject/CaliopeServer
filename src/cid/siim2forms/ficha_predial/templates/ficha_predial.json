@@ -1,7 +1,8 @@
-Formulario editado: 
+/*
+Formulario editado:
 https://proyectos.correlibre.org/caliope/caliope_server_el_cid/blob/master/src/cid/modules/predialcards/templates/predialCard.json
 
-
+*/
 {
   "name": "fichaPredial",
   "html": [
