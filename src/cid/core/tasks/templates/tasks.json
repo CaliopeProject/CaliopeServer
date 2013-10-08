@@ -41,7 +41,7 @@
       "relation": {
         "direction" : -1,
         "target" : {
-            "entity": "{{tarea}}",
+            "entity": "{{formtask}}",
             "properties": {
             },
             "entity_data" : {
@@ -51,8 +51,8 @@
       }
     },
     {
-      "name": "tarea",
-      "caption": "Tarea",
+      "name": "formtask",
+      "caption": "Formulario",
       "class": "input-large",
       "type": "select",
       "options" : {
@@ -156,7 +156,7 @@
         },
         {
           "class": "span6",
-          "elements"  : ["tarea","deadline", "holders", "target", "status"]
+          "elements"  : ["formtask","deadline", "holders", "target", "status"]
         }
       ]
     }
