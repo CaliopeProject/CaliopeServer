@@ -26,15 +26,13 @@ from tinyrpc.protocols.jsonrpc import JSONRPCInvalidParamsError, JSONRPCInvalidR
 from neomodel.exception import DoesNotExist
 
 from flask import current_app
-from cid.core.entities import CaliopeUser
 
+from cid.core.entities import CaliopeUser
 from cid.core.login import LoginManager
 from cid.utils import fileUtils
-
 from cid.core.forms.models import SIIMForm
-
-from cid.siim2forms.ficha_predial import FichaPredial
 from cid.core.entities.utils import CaliopeEntityUtil
+
 
 class FormManager(object):
     """
@@ -45,12 +43,14 @@ class FormManager(object):
     @staticmethod
     @public("getModel")
     def get_form_template(formId, domain=None, version=None):
-        if formId == "ficha_predial":
+
+        if formId in current_app.caliope_forms:
             util = CaliopeEntityUtil()
+            module = current_app.caliope_forms[formId]['module']
 
             rv = dict()
-            rv['form'] = util.makeFormTemplate(FichaPredial())
-            rv['layout'] = util.makeLayoutTemplate(FichaPredial())
+            rv['form'] = util.makeFormTemplate(module())
+            rv['layout'] = util.makeLayoutTemplate(module())
             rv['actions'] = []
             return rv
         if formId is not None:
