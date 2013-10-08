@@ -43,7 +43,6 @@ class FormManager(object):
     @staticmethod
     @public("getModel")
     def get_form_template(formId, domain=None, version=None):
-
         if formId in current_app.caliope_forms:
             util = CaliopeEntityUtil()
             module = current_app.caliope_forms[formId]['module']
@@ -51,7 +50,11 @@ class FormManager(object):
             rv = dict()
             rv['form'] = util.makeFormTemplate(module())
             rv['layout'] = util.makeLayoutTemplate(module())
-            rv['actions'] = []
+            rv['actions'] = [
+                {"name": "create", "method": "form.createFromForm"},
+                {"name": "delete", "method": "form.delete", "params": ["uuid"]},
+                {"name": "edit", "method": "form.editFromForm"}
+            ]
             return rv
         if formId is not None:
             form = Form(formId=formId)
