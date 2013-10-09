@@ -63,7 +63,6 @@ class FormManager(object):
 
             rv = dict()
             rv['form'] = util.makeFormTemplate(module(), form['html'])
-           # rv['layout'] = util.makeLayoutTemplate(module())
             rv['layout'] = form['layout'] if form['layout'] else util.makeLayoutTemplate(module())
             rv['actions'] = [
                 {"name": "create", "method": "form.createFromForm"},
