@@ -29,17 +29,12 @@
             "module": "FichaPrejuridica"
         },
         {
-            "package": "cid.siim2forms.ficha_prejuridica",
-            "module": "FichaPrejuridica"
-        },
-        {
             "package": "cid.siim2forms.ficha_urbanistica",
             "module": "FichaUrbanistica"
+        },
+        {
+            "package": "cid.siim2forms.viabilidad_normativa",
+            "module": "ViabilidadNormativa"
         }
-
-
-
-
-
     ]
 }

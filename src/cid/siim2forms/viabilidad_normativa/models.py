@@ -1,19 +1,13 @@
+# -*- encoding: utf-8 -*-
 
 #Caliope Entities
 from cid.core.entities import (CaliopeEntityData, CaliopeEntity, RelationshipFrom,
                                CaliopeUser, One, NotConnected, DateTimeProperty,
-                               StringProperty, IntegerProperty, CaliopeJSONProperty)
+                               StringProperty, IntegerProperty, FloatProperty, CaliopeJSONProperty)
 
-from cid.modules.projects.models import ProjectEntity
+from cid.core.entities.base_models.versioned_node import VersionedNode
 
-
-class ViabilidadNormativa(CaliopeEntity):
-    pass
-
-
-class ViabilidadNormativaData(CaliopeEntityData):
-    __entity_data__ = ViabilidadNormativa
-
+class ViabilidadNormativa(VersionedNode):
     #Definición de datos para la ficha de viabilidad normativa 
     #nombre_proyecto NOMBRE DEL PROYECTO - Se define como label en el formulario
     #localización = tipo adjunto
@@ -41,9 +35,9 @@ class ViabilidadNormativaData(CaliopeEntityData):
     #uso1 USO - título de la columna 
     #uso1_categoria -  CATEGORIA - Subtítulo de USO (uso1)
     #uso1_vivienda_familiar -  VIVIENDA UNIFAMILIAR Y BIFAMILIAR - Subtítulo de USO (uso1)
-    familiar_categoria = StringListProperty() # opciones escritas por el usuario: Se permite, No se permite
+#    familiar_categoria = StringListProperty() # opciones escritas por el usuario: Se permite, No se permite
     #uso1_vivienda_multifamiliar -  VIVIENDA MULTIFAMILIAR - Subtítulo de USO (uso1)
-    multifamiliar_categoria = StringListProperty() # opciones escritas por el usuario: Se permite, No se permite
+#    multifamiliar_categoria = StringListProperty() # opciones escritas por el usuario: Se permite, No se permite
     #uso1_estacionamientos - ESTACIONAMIENTOS Sector de Demanda - Título
     estacionamiento_privado_familiar =  StringProperty() #Estacionamientos - Privados - Vivienda Unifamiliar y Bifamiliar
     estacionamiento_visitante_familiar =  StringProperty() #Estacionamientos - Visitantes - Vivienda Unifamiliar y Bifamiliar
@@ -52,11 +46,11 @@ class ViabilidadNormativaData(CaliopeEntityData):
     #uso2 USO - título de la columna
     #uso2_categoria -  CATEGORIA - Subtítulo de USO (uso2)   
     #uso2_dotacional -  DOTACIONAL - Subtítulo de USO (uso2)
-    dotacional_categoria = StringListProperty() # opciones escritas por el usuario: Se permite, No se permite
+#    dotacional_categoria = StringListProperty() # opciones escritas por el usuario: Se permite, No se permite
     #uso2_comercio_servicios -  COMERCIO Y SERVICIOS - Subtítulo de USO (uso2)
-    comercio_categoria = StringListProperty() # opciones escritas por el usuario: Se permite, No se permite
+#    comercio_categoria = StringListProperty() # opciones escritas por el usuario: Se permite, No se permite
     #uso2_industria -  INDUSTRIA - Subtítulo de USO (uso2)
-    industria_categoria = StringListProperty() # opciones: Se permite, No se permite
+#    industria_categoria = StringListProperty() # opciones: Se permite, No se permite
     #uso2_condiciones_observaciones - CONDICIONES Y OBSERVACIONES
     uso2_condiciones_observaciones =  StringProperty()
     #edificabilidad - EDIFICABILIDAD Opciones lista de chequeo: SUBSECTOR, ACTO ADMINISTRATIVO, DECRETO, OTROS
@@ -88,5 +82,5 @@ class ViabilidadNormativaData(CaliopeEntityData):
     elaboro = StringProperty()
     reviso = StringProperty()
     #fecha_creacion = DateProperty() # Generacion Automatica pero no se ha definido en el formulario
-    estado_ficha = StringListProperty() # Opciones: Rechazado, Aprobado, Revisado, Anulado, Completado
+ #   estado_ficha = StringListProperty() # Opciones: Rechazado, Aprobado, Revisado, Anulado, Completado
 
