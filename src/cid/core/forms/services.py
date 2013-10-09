@@ -92,12 +92,23 @@ class FormManager(object):
 
     @staticmethod
     @public("createFromForm")
-    def create_form(formId, data, formUUID):
-        if formId is None or data is None or formUUID is None:
-            raise JSONRPCInvalidRequestError()
+    def create_form(formId, data):
+        if formId in current_app.caliope_forms:
+            module = current_app.caliope_forms[formId]['module']
+            node = module()
+            map(lambda k, v: setattr(node, k, v), data.keys(), data.values())
+            node.save()
+
+            rv = {'uuid': node.uuid}
+            return rv
         else:
-            form = Form(formId=formId)
-            return form.create_form(data, formUUID)
+            raise JSONRPCInvalidRequestError()
+
+#        if formId is None or data is None or formUUID is None:
+#            raise JSONRPCInvalidRequestError()
+#        else:
+#            form = Form(formId=formId)
+#            return form.create_form(data, formUUID)
 
 
 class Form(object):
