@@ -1,19 +1,14 @@
+# -*- encoding: utf-8 -*-
 
 #Caliope Entities
 from cid.core.entities import (CaliopeEntityData, CaliopeEntity, RelationshipFrom,
                                CaliopeUser, One, NotConnected, DateTimeProperty,
-                               StringProperty, IntegerProperty, CaliopeJSONProperty)
+                               StringProperty, IntegerProperty, FloatProperty, CaliopeJSONProperty)
 
-from cid.modules.projects.models import ProjectEntity
-
-
-class ActaReciboPredios(CaliopeEntity):
-    pass
+from cid.core.entities.base_models.versioned_node import VersionedNode
 
 
-class ActaReciboPrediosData(CaliopeEntityData):
-    __entity_data__ = ActaReciboPredios
-
+class ActaReciboPredios(VersionedNode):
     #Definición de datos para el ACTA DE RECIBO DE PREDIOS
     fecha_acta = DateTimeProperty() # FECHA definido en el formulario como "datepicker"
     hora_acta = StringProperty() # HORA:
@@ -56,4 +51,4 @@ class ActaReciboPrediosData(CaliopeEntityData):
     comprador = StringProperty() # Por el Comprador (es una firma)
     cc_comprador = StringProperty() # cc_comprador - CC
     # fecha_creacion = DateProperty() # Generacion Automatica pero no se ha definido en el formulario
-    estado_ficha = StringListProperty() # Opciones: Rechazado, Aprobado, Revisado, Anulado, Completado
+#    estado_ficha = StringListProperty() # Opciones: Rechazado, Aprobado, Revisado, Anulado, Completado

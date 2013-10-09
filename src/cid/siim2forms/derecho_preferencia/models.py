@@ -1,19 +1,15 @@
+# -*- encoding: utf-8 -*-
 
 #Caliope Entities
 from cid.core.entities import (CaliopeEntityData, CaliopeEntity, RelationshipFrom,
                                CaliopeUser, One, NotConnected, DateTimeProperty,
-                               StringProperty, IntegerProperty, CaliopeJSONProperty)
+                               StringProperty, IntegerProperty, FloatProperty, CaliopeJSONProperty)
 
-from cid.modules.projects.models import ProjectEntity
-
-
-class DerechoPreferencia(CaliopeEntity):
-    pass
+from cid.core.entities.base_models.versioned_node import VersionedNode
 
 
-class DerechoPreferenciaData(CaliopeEntityData):
-    __entity_data__ = DerechoPreferencia
 
+class DerechoPreferencia(CaliopeEntityData):
     #Definición de datos para el Derecho de Preferencia-Datos Básicos
 
     #anexar_informacion RELACIÓN DE LA INFORMACIÓN QUE DEBE ANEXARSE - Tipo Label
@@ -24,8 +20,8 @@ class DerechoPreferenciaData(CaliopeEntityData):
     # representacion_legal - En caso de persona jurídica, acreditar existencia y representación legal mediante documento idóneo, con vigencia de expedición no mayor a un mes.  - Tipo Adjunto
     # intencion_compra - Información  que acredite o certifique la intención de compra del interesado (valor de la oferta, condiciones de pago, datos de contacto del posible comprador y cualquier otra que considere necesaria.  - Tipo Adjunto
     #informacion_propietario INFORMACIÓN DEL PROPIETARIO - Tipo Label
-    relacion_predio = ListProperty() #Relación con el predio - opciones: Propietario, Apoderado
-    tipo_propietario = ListProperty() #Tipo de propietario de suelo - opciones: Persona Natural, Persona Jurídica
+#    relacion_predio = ListProperty() #Relación con el predio - opciones: Propietario, Apoderado
+#    tipo_propietario = ListProperty() #Tipo de propietario de suelo - opciones: Persona Natural, Persona Jurídica
     propietario_actual = StringProperty() # Nombre entidad o persona propietaria del predio
     doc_propietario = StringProperty() # NIT o CC
     direccion_notifiacion = StringProperty() # Dirección para la notificación
@@ -45,7 +41,7 @@ class DerechoPreferenciaData(CaliopeEntityData):
     telefono_predio = StringProperty() # Teléfono
     matricula_inmobiliaria = StringProperty() # Número matricula inmobiliaria
     area_predio = FloatProperty()# Área (extensión) del predio
-    tramite_en_curso = StringListProperty() # ¿Se encuentra en curso algún trámite o proceso de carácter jurídico sobre su predio? Opciones SI, NO 
+#    tramite_en_curso = StringListProperty() # ¿Se encuentra en curso algún trámite o proceso de carácter jurídico sobre su predio? Opciones SI, NO
     # informacion_comprador - Información del (los) posible (s) comprador (es) - Tipo Label
     nombre_comprador = StringProperty() # Nombre:
     cc_comprador = StringProperty() # C.C.:
@@ -53,4 +49,4 @@ class DerechoPreferenciaData(CaliopeEntityData):
     telefono_comprador = StringProperty() # Teléfono: 
     # firmas - Firma(s) del(los) ofertante(s) o su(s) representante(s) - no definidas en el formulario.
     # fecha_creacion = DateProperty() # Generacion Automatica pero no se ha definido en el formulario
-    estado_ficha = StringListProperty() # Opciones: Rechazado, Aprobado, Revisado, Anulado, Completado
+#    estado_ficha = StringListProperty() # Opciones: Rechazado, Aprobado, Revisado, Anulado, Completado

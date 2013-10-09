@@ -1,18 +1,14 @@
+# -*- encoding: utf-8 -*-
 
 #Caliope Entities
 from cid.core.entities import (CaliopeEntityData, CaliopeEntity, RelationshipFrom,
                                CaliopeUser, One, NotConnected, DateTimeProperty,
-                               StringProperty, IntegerProperty, CaliopeJSONProperty)
+                               StringProperty, IntegerProperty, FloatProperty, CaliopeJSONProperty)
 
-from cid.modules.projects.models import ProjectEntity
-
-
-class AplicacionTraslado(CaliopeEntity):
-    pass
+from cid.core.entities.base_models.versioned_node import VersionedNode
 
 
-class AplicacionTrasladoData(CaliopeEntityData):
-    __entity_data__ = AplicacionTraslado
+class AplicacionTraslado(VersionedNode):
 
     #Definición de datos para el FORMULARIO APLICACIÓN DE TRASLADO
   
@@ -56,4 +52,4 @@ class AplicacionTrasladoData(CaliopeEntityData):
     elaboro = StringProperty() # Elaborado Por: 
     reviso = StringProperty() # Revisados por: 
     # fecha_creacion = DateProperty() # Generacion Automatica pero no se ha definido en el formulario
-    estado_ficha = StringListProperty() # Opciones: Rechazado, Aprobado, Revisado, Anulado, Completado
+#    estado_ficha = StringListProperty() # Opciones: Rechazado, Aprobado, Revisado, Anulado, Completado
