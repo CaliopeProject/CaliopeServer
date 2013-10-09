@@ -10,10 +10,10 @@ from neomodel.properties import (Property,
 
       
 class CaliopeEntityUtil(object):
-    def makeFormTemplate(self, node_type):
+    def makeFormTemplate(self, node_type, html=None):
         json_template = dict()
         json_template['name'] = node_type.__class__.__name__
-        json_template['html'] = self.show_dictionary(node_type.__class__.__dict__)
+        json_template['html'] = html if html else self.show_dictionary(node_type.__class__.__dict__)
         return json_template
 
     def makeLayoutTemplate(self, node_type):

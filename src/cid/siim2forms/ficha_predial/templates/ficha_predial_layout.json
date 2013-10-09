@@ -1,0 +1,207 @@
+{
+    "layout": [
+        {
+            "columns": [
+                {
+                    "class": "page-header",
+                    "elements": [
+                        "title"
+                    ]
+                }
+            ]
+        },
+        {
+            "columns": [
+                {
+                    "class": "widget-header",
+                    "elements": [
+                        "subTitleInfoBas"
+                    ]
+                }
+            ]
+        },
+        {
+            "columns": [
+                {
+                    "class": "span6",
+                    "elements": [
+                        "identificador_predial",
+                        "direccion_fuente"
+                    ]
+                },
+                {
+                    "class": "span6",
+                    "elements": [
+                        "chip"
+                    ]
+                }
+            ]
+        },
+        {
+            "columns": [
+                {
+                    "class": "widget-header",
+                    "elements": [
+                        "subTitleDatBasPro"
+                    ]
+                }
+            ]
+        },
+        {
+            "columns": [
+                {
+                    "class": "span6",
+                    "elements": [
+                        "tipo_propietario",
+                        "propietario_actual",
+                        "direccion_notificacion"
+                    ]
+                },
+                {
+                    "class": "span6",
+                    "elements": [
+                        "tipo_persona",
+                        "tipo_doc_propietario",
+                        "telefono"
+                    ]
+                }
+            ]
+        },
+        {
+            "columns": [
+                {
+                    "class": "widget-header",
+                    "elements": [
+                        "subTitleInfoGenPredio"
+                    ]
+                }
+            ]
+        },
+        {
+            "columns": [
+                {
+                    "class": "span6",
+                    "elements": [
+                        "sector_predio",
+                        "matricula_inmobiliaria",
+                        "titulo_adquisicion"
+                    ]
+                },
+                {
+                    "class": "span6",
+                    "elements": [
+                        "cedula_catastral",
+                        "cabida_superficiaria"
+                    ]
+                }
+            ]
+        },
+        {
+            "columns": [
+                {
+                    "class": "span7",
+                    "elements": [
+                        "linderos"
+                    ]
+                },
+                {
+                    "class": "span5",
+                    "elements": [
+                        "tipo_linderos"
+                    ]
+                }
+            ]
+        },
+        {
+            "columns": [
+                {
+                    "class": "span3",
+                    "elements": [
+                        "incorporacion_topografica",
+                        "registro_topografico"
+                    ]
+                },
+                {
+                    "class": "span9",
+                    "elements": [
+                        "incoroporacion_topografica_desc"
+                    ]
+                }
+            ]
+        },
+        {
+            "columns": [
+                {
+                    "class": "span12",
+                    "elements": [
+                        "tradicion",
+                        "vigencia_informacion"
+                    ]
+                }
+            ]
+        },
+        {
+            "columns": [
+                {
+                    "class": "span3",
+                    "elements": [
+                        "componente_espacial"
+                    ]
+                },
+                {
+                    "class": "span3",
+                    "elements": [
+                        "componente_espacial_registral"
+                    ]
+                },
+                {
+                    "class": "span3",
+                    "elements": [
+                        "componente_espacial_catastral"
+                    ]
+                },
+                {
+                    "class": "span3",
+                    "elements": [
+                        "componente_espacial_topografica"
+                    ]
+                }
+            ]
+        },
+        {
+            "columns": [
+                {
+                    "class": "span4",
+                    "elements": [
+                        "area_registral"
+                    ]
+                },
+                {
+                    "class": "span4",
+                    "elements": [
+                        "area_catastral"
+                    ]
+                },
+                {
+                    "class": "span4",
+                    "elements": [
+                        "area_topografica"
+                    ]
+                }
+            ]
+        },
+        {
+            "columns": [
+                {
+                    "class": "span12",
+                    "elements": [
+                        "observaciones_componente_espacial",
+                        "elaboro",
+                        "informacion_unica_predial",
+                        "mapa_tradicion_predial"
+                    ]
+                }
+            ]
+        }
+    ]
+}

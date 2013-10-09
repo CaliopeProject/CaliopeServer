@@ -58,10 +58,11 @@ class FormManager(object):
     def get_form_template(formId, domain=None, version=None):
         if formId in current_app.caliope_forms:
             util = CaliopeEntityUtil()
-            module = current_app.caliope_forms[formId]['module']
+            form = current_app.caliope_forms[formId]
+            module = form['module']
 
             rv = dict()
-            rv['form'] = util.makeFormTemplate(module())
+            rv['form'] = util.makeFormTemplate(module(), form['html'])
             rv['layout'] = util.makeLayoutTemplate(module())
             rv['actions'] = [
                 {"name": "create", "method": "form.createFromForm"},
