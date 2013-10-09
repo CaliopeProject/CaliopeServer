@@ -40,6 +40,7 @@ def register_form_modules(app):
             form = dict()
             form['name'] = m['module']
             module = importlib.import_module( m['package'])
+            form['label'] = m['label']
             form['module'] = getattr(module, m['module'])
             app.caliope_forms[m['module']] = form
         except ImportError as e:

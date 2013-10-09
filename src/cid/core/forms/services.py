@@ -47,7 +47,7 @@ class FormManager(object):
         for formId in current_app.caliope_forms:
             f = {
                 'formId': {'value': formId},
-                'label': {'value': formId}
+                'label': {'value': current_app.caliope_forms[formId]['label']}
             }
             rv.append(f)
         return rv
