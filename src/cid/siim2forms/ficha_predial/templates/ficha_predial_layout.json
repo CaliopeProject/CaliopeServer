@@ -134,8 +134,7 @@
                 {
                     "class": "span12",
                     "elements": [
-                        "tradicion",
-                        "vigencia_informacion"
+                        "tradicion"
                     ]
                 }
             ]
@@ -196,7 +195,6 @@
                     "class": "span12",
                     "elements": [
                         "observaciones_componente_espacial",
-                        "elaboro",
                         "informacion_unica_predial",
                         "mapa_tradicion_predial"
                     ]
