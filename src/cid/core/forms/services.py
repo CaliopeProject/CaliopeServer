@@ -41,6 +41,19 @@ class FormManager(object):
     """
 
     @staticmethod
+    @public("getForms")
+    def get_forms():
+        rv = []
+        for formId in current_app.caliope_forms:
+            f = {
+                'formId': {'value': formId},
+                'label': {'value': formId}
+            }
+            rv.append(f)
+        return rv
+
+
+    @staticmethod
     @public("getModel")
     def get_form_template(formId, domain=None, version=None):
         if formId in current_app.caliope_forms:
