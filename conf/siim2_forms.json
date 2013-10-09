@@ -2,39 +2,49 @@
     "modules": [
         {
             "package": "cid.siim2forms.ficha_predial",
-            "module": "FichaPredial"
+            "module": "FichaPredial",
+            "label":  "Ficha predial"
         },
         {
             "package": "cid.siim2forms.acta_recibo_predios",
-            "module": "ActaReciboPredios"
+            "module": "ActaReciboPredios",
+            "label":  "Acta de recibo de predios"
         },
         {
             "package": "cid.siim2forms.aplicacion_traslado",
-            "module": "AplicacionTraslado"
+            "module": "AplicacionTraslado",
+            "label":  "Aplicación de traslado"
         },
         {
             "package": "cid.siim2forms.chequeo_traslado_provision_VIS_VIP",
-            "module": "ChequeoTrasladoProvision"
+            "module": "ChequeoTrasladoProvision",
+            "label":  "Chequeo de traslado provisión"
         },
         {
             "package": "cid.siim2forms.derecho_preferencia",
-            "module": "DerechoPreferencia"
+            "module": "DerechoPreferencia",
+            "label":  "Derecho de preferencia"
+
         },
         {
             "package": "cid.siim2forms.ficha_catastral",
-            "module": "FichaCatastral"
+            "module": "FichaCatastral",
+            "label":  "Ficha catastral"
         },
         {
             "package": "cid.siim2forms.ficha_prejuridica",
-            "module": "FichaPrejuridica"
+            "module": "FichaPrejuridica",
+            "label":  "Ficha prejurídica"
         },
         {
             "package": "cid.siim2forms.ficha_urbanistica",
-            "module": "FichaUrbanistica"
+            "module": "FichaUrbanistica",
+            "label":  "Ficha urbanistica"
         },
         {
             "package": "cid.siim2forms.viabilidad_normativa",
-            "module": "ViabilidadNormativa"
+            "module": "ViabilidadNormativa",
+            "label":  "Viabilidad normativa"
         }
     ]
 }
