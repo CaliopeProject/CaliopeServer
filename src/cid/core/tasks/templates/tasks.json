@@ -57,9 +57,8 @@
       "type": "select",
       "options-load-server" : {
         "method"        : "form.getForms",
-        "field-value"   : "formID",
-        "field-desc"    : "label",
-        "field-image"   : "image"
+        "field-value"   : "formId",
+        "field-desc"    : "label"
       },
       "options" : {
         "predios" : "Selección de Predios",
