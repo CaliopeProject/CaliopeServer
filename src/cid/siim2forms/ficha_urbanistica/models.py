@@ -1,19 +1,14 @@
+# -*- encoding: utf-8 -*-
 
 #Caliope Entities
 from cid.core.entities import (CaliopeEntityData, CaliopeEntity, RelationshipFrom,
                                CaliopeUser, One, NotConnected, DateTimeProperty,
-                               StringProperty, IntegerProperty, CaliopeJSONProperty)
+                               StringProperty, IntegerProperty, FloatProperty, CaliopeJSONProperty)
 
-from cid.modules.projects.models import ProjectEntity
-
-
-class FichaUrbanistica(CaliopeEntity):
-    pass
+from cid.core.entities.base_models.versioned_node import VersionedNode
 
 
-class FichaUrbanisticaData(CaliopeEntityData):
-    __entity_data__ = FichaUrbanistica
-
+class FichaUrbanistica(CaliopeEntityData):
     #Definición de datos para la ficha urbanística
     #modelacion_urbanistica - MODELACIÓN URBANÍSTICA - Tipo Label
     nombre_proyecto = StringProperty() # nombre proyecto  
@@ -36,7 +31,7 @@ class FichaUrbanisticaData(CaliopeEntityData):
     # areas_construccionm2 - RESUMEN ÁREAS DE CONSTRUCCIÓN m2 - Tipo Label
     vivienda = FloatProperty() # VIVIENDA =D84-E34
     comercio_primer_piso = FloatProperty()
-    servicios IDU  = FloatProperty() # =D85 AREA TOTAL CONSTRUIDA IDU
+#    servicios IDU  = FloatProperty() # =D85 AREA TOTAL CONSTRUIDA IDU
     # espacio_publico - ESTANDARES DE ESPACIO PÚBLICO - Tipo Label
     parques_viviendam2 = FloatProperty() # Parques por vivienda m2 . =D60/C21
     equipamentos_vivienda = FloatProperty() #Equipamientos por vivienda =D65/C21
@@ -53,7 +48,7 @@ class FichaUrbanisticaData(CaliopeEntityData):
     area_bruta_valor = FloatProperty() #  ÁREA BRUTA - Subtítulo
     area_bruta_desc = StringProperty() # observaciones
     afectaciones_valor = FloatProperty() #AFECTACIONES ó reservas como está en plaza de la hoja, sumatoria de otros campos adicionados  (Avenida del Ferrocarril V-1, Avenida NQS V-1, Intersección Av. N.Q.S y, Av.Ferrocarril, Intersección Av. N.Q.S y Av.19)
-    afectaciones_desc StringProperty() # observaciones
+#    afectaciones_desc StringProperty() # observaciones
     area_urbanizable_valor = FloatProperty()#AREA NETA URBANIZABLE
     area_urbanizable_desc = StringProperty() # observaciones
     area_edificabilidad_valor = FloatProperty()#AREA NETA BASE PARA CALCULO DE EDIFICABILIDAD
@@ -136,4 +131,4 @@ class FichaUrbanisticaData(CaliopeEntityData):
     #grafico_areas GRÁFICO DE ÁREAS = tipo adjunto
     elaboro = StringProperty()
     # fecha_creacion = DateProperty() # Generacion Automatica pero no se ha definido en el formulario
-    estado_ficha = StringListProperty() # Opciones: Rechazado, Aprobado, Revisado, Anulado, Completado
+#    estado_ficha = StringListProperty() # Opciones: Rechazado, Aprobado, Revisado, Anulado, Completado

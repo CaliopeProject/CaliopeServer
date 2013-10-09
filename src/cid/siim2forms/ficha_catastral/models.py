@@ -1,18 +1,14 @@
+# -*- encoding: utf-8 -*-
 
 #Caliope Entities
 from cid.core.entities import (CaliopeEntityData, CaliopeEntity, RelationshipFrom,
                                CaliopeUser, One, NotConnected, DateTimeProperty,
-                               StringProperty, IntegerProperty, CaliopeJSONProperty)
+                               StringProperty, IntegerProperty, FloatProperty, CaliopeJSONProperty)
 
-from cid.modules.projects.models import ProjectEntity
-
-
-class FichaCatastral(CaliopeEntity):
-    pass
+from cid.core.entities.base_models.versioned_node import VersionedNode
 
 
-class FichaCatastralData(CaliopeEntityData):
-    __entity_data__ = FichaCatastral
+class FichaCatastral(VersionedNode):
     #Definición de datos para la ficha predial
 
     #imagenes_generales - IMÁGENES GENERALES DEL PROYECTO - Titulo1 - Se define como label en el formulario: imagenes_generales
@@ -27,7 +23,7 @@ class FichaCatastralData(CaliopeEntityData):
     tipo_gestion = StringProperty()
     fuente_recursos = StringProperty()
     desarrollo_prioritario = StringProperty()
-    fecha_vencimiento_dp = DateProperty() 
+    fecha_vencimiento_dp = DateTimeProperty()
     #localizacion - LOCALIZACIÓN Subtitulo de IMÁGENES GENERALES DEL PROYECTO - Se define como label en el formulario
     teritorio_habitat = StringProperty()
     linea_intevencion = StringProperty()
@@ -121,4 +117,4 @@ class FichaCatastralData(CaliopeEntityData):
     elaboro = StringProperty()
     reviso = StringProperty()
     # fecha_creacion = DateProperty() # Generacion Automatica pero no se ha definido en el formulario
-    estado_ficha = StringListProperty() # Opciones: Rechazado, Aprobado, Revisado, Anulado, Completado
+ #   estado_ficha = StringListProperty() # Opciones: Rechazado, Aprobado, Revisado, Anulado, Completado

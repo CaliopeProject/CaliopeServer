@@ -3,6 +3,43 @@
         {
             "package": "cid.siim2forms.ficha_predial",
             "module": "FichaPredial"
+        },
+        {
+            "package": "cid.siim2forms.acta_recibo_predios",
+            "module": "ActaReciboPredios"
+        },
+        {
+            "package": "cid.siim2forms.aplicacion_traslado",
+            "module": "AplicacionTraslado"
+        },
+        {
+            "package": "cid.siim2forms.chequeo_traslado_provision_VIS_VIP",
+            "module": "ChequeoTrasladoProvision"
+        },
+        {
+            "package": "cid.siim2forms.derecho_preferencia",
+            "module": "DerechoPreferencia"
+        },
+        {
+            "package": "cid.siim2forms.ficha_catastral",
+            "module": "FichaCatastral"
+        },
+        {
+            "package": "cid.siim2forms.ficha_prejuridica",
+            "module": "FichaPrejuridica"
+        },
+        {
+            "package": "cid.siim2forms.ficha_prejuridica",
+            "module": "FichaPrejuridica"
+        },
+        {
+            "package": "cid.siim2forms.ficha_urbanistica",
+            "module": "FichaUrbanistica"
         }
+
+
+
+
+
     ]
 }
