@@ -55,10 +55,14 @@
       "caption": "Formulario",
       "class": "input-large",
       "type": "select",
+      "options-load-server" : {
+        "method"        : "form.getForms",
+        "field-value"   : "formId",
+        "field-desc"    : "label"
+      },
       "options" : {
         "predios" : "Selección de Predios",
-        "projects" : "Formulario de proyectos",
-        "t3" : "tarea3000"
+        "projects" : "Formulario de proyectos"
       }
     },
     {
