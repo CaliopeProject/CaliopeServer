@@ -66,6 +66,12 @@
             "module": "EvaluacionProducto",
             "label": "Evaluación del producto",
             "html": "templates/evaluacion_producto_html.json"
+        },
+        {
+            "package": "cid.siim2forms.control_ajustes",
+            "module": "ControlAjustes",
+            "label": "Control de ajustes",
+            "html": "templates/control_ajustes_html.json"
         }
     ]
 }
