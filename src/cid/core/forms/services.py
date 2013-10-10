@@ -88,7 +88,6 @@ class FormManager(object):
             rv['layout'] = form['layout'] if form['layout'] else util.makeLayoutTemplate(module())
             rv['actions'] = FormManager._get_default_actions()
             rv['data'] = node.serialize()
-
             return rv
 
     @staticmethod
@@ -104,11 +103,24 @@ class FormManager(object):
     @public("editFromForm")
     #: TODO: test
     def edit_form(formId=None, formUUID=None, data=None):
-        if formId is None or formUUID is None or data is None:
+        if formId is None or formId not in current_app.caliope_forms or uuid is None:
             raise JSONRPCInvalidRequestError()
         else:
-            form = Form(formId=formId)
-            return form.update_form_data(data['uuid'], data)
+            form = current_app.caliope_forms[formId]
+            module = form['module']
+            node = module.index.get(uuid=uuid)
+
+            try:
+                map(lambda k, v: setattr(node, k, v), data.keys(), data.values())
+            except:
+                pass
+            util = CaliopeEntityUtil()
+            rv = dict()
+            rv['form'] = util.makeFormTemplate(module(), form['html'])
+            rv['layout'] = form['layout'] if form['layout'] else util.makeLayoutTemplate(module())
+            rv['actions'] = FormManager._get_default_actions()
+            rv['data'] = node.serialize()
+            return rv
 
     @staticmethod
     @public("createFromForm")
