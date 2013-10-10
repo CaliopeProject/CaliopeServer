@@ -1,0 +1,376 @@
+{
+    "html": [
+        {
+            "name": "title",
+            "type": "div",
+            "html": [
+                {
+                    "type": "h1",
+                    "html": "CONCEPTO DE VIABILIDAD TECNICA DE PROYECTOS VIP"
+                }
+            ]
+        },
+        {
+            "name": "id_proyecto",
+            "caption": "ID proyecto:",
+            "type": "text",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "nombre_proyecto",
+            "caption": "Nombre del Proyecto:",
+            "type": "text",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "responsable_proyecto",
+            "caption": "Responsable del Proyecto:",
+            "type": "text",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "fecha_concepto",
+            "caption": "Fecha del concepto:",
+            "type": "datepicker",
+            "format": "dd/MM/yyyy"
+        },
+        {
+            "name": "imagen_proyecto",
+            "caption": "Tipo Adjunto",
+            "type": "attachment"
+        },
+        {
+            "name" : "justificacion",
+            "type" : "label",
+            "html" : "1. JUSTIFICACIÓN"
+        },
+        {
+            "name": "justificacion_desc",
+            "caption": " ",
+            "type": "textarea",
+            "rows": "3",
+            "cols": "80",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name" : "id_inmuebles",
+            "type" : "label",
+            "html" : "2. IDENTIFICACIÓN DE INMUEBLES"
+        },     
+        {
+            "name": "id_inmuebles_desc",
+            "caption": " ",
+            "type": "textarea",
+            "rows": "3",
+            "cols": "80",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "informacion_predial",
+            "caption": "2.1. Información predial",
+            "type": "textarea",
+            "rows": "2",
+            "cols": "70",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "anexo1",
+            "caption": "Anexo 1.: Ficha Predial",
+            "type": "attachment"
+        },     
+        {
+            "name": "informacion_juridica",
+            "caption": "2.2. Información jurídica",
+            "type": "textarea",
+            "rows": "2",
+            "cols": "70",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "anexo2",
+            "caption": "Anexo 2.: Ficha prejurídica",
+            "type": "attachment"
+        },    
+        {
+            "name" : "propuesta",
+            "type" : "label",
+            "html" : "3. PROPUESTA"
+        },         
+        {
+            "name": "localizacion",
+            "caption": "3.1. Localización",
+            "type": "textarea",
+            "rows": "2",
+            "cols": "70",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "norma_aplicable",
+            "caption": "3.2. Norma aplicable",
+            "type": "textarea",
+            "rows": "2",
+            "cols": "70",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "anexo3",
+            "caption": "Anexo 3.: Ficha normativa",
+                "type": "attachment"
+        }, 
+        {
+            "name": "descripcion_proyecto",
+            "caption": "3.3. Descripción del proyecto",
+            "type": "textarea",
+            "rows": "2",
+            "cols": "70",
+            "validations": {
+            "required": true
+            }
+        },
+        {
+            "name": "estructura_urbana",
+            "caption": "3.4. Estructura urbana",
+            "type": "textarea",
+            "rows": "2",
+            "cols": "70",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "estructura_ecologica",
+            "caption": "3.4.1. Estructura Ecológica Principal",
+            "type": "textarea",
+            "rows": "2",
+            "cols": "70",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "estructura_funcional1",
+            "caption": "3.4.2. Estructura Funcional y de servicios",
+            "type": "textarea",
+            "rows": "2",
+            "cols": "70",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "sistema_espacio_publico",
+            "caption": "3.4.2.1. Sistema de Espacio Público",
+            "type": "textarea",
+            "rows": "2",
+            "cols": "70",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "sistema_equipamentos",
+            "caption": "3.4.2.2. Sistema de Equipamientos",
+            "type": "textarea",
+            "rows": "2",
+            "cols": "70",
+            "validations": {
+                "required": true
+            }
+        },   
+        {
+            "name": "sistema_movilidad",
+            "caption": "3.4.2.3. Sistema de Movilidad y Accesibilidad",
+            "type": "textarea",
+            "rows": "2",
+            "cols": "70",
+            "validations": {
+                "required": true
+            }
+        }, 
+        {
+            "name": "malla_vial",
+            "caption": "3.4.2.3.1. Malla vial",
+            "type": "textarea",
+            "rows": "2",
+            "cols": "70",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "subsistema_transporte",
+            "caption": "3.4.2.3.2. Subsistema de Transporte",
+            "type": "textarea",
+            "rows": "2",
+            "cols": "70",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "servicios_publicos",
+            "caption": "3.4.2.4. Sistema de Servicios Públicos",
+            "type": "textarea",
+            "rows": "2",
+            "cols": "70",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "estructura_funcional2",
+            "caption": "3.4.3. Estructura Funcional y de servicios",
+            "type": "textarea",
+            "rows": "2",
+            "cols": "70",
+            "validations": {
+                "required": true
+            }
+        },    
+        {
+            "name": "modelacion_urbanistica",
+            "caption": "3.5. Modelación urbanística",
+            "type": "textarea",
+            "rows": "2",
+            "cols": "70",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "anexo4",
+            "caption": "Anexo 4.: Ficha de modelación urbanística",
+            "type": "attachment"
+        },
+        {
+            "name": "modelacion_financiera",
+            "caption": "3.6. Modelación financiera",
+            "type": "textarea",
+            "rows": "3",
+            "cols": "80",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "costos_urbanismo",
+            "caption": "3.6.1. Costos de Urbanismo",
+            "type": "textarea",
+            "rows": "3",
+            "cols": "80",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "balance_proyecto",
+            "caption": "3.6.2. Balance del proyecto",
+            "type": "textarea",
+            "rows": "3",
+            "cols": "80",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "anexo5",
+            "caption": "Anexo 5.: Ficha de modelación Financiera, responsable DGI",
+            "type": "attachment"
+        }, 
+        {
+            "name": "cronograma_proyecto",
+            "caption": "3.7. Cronograma de ejecución del proyecto",
+            "type": "textarea",
+            "rows": "3",
+            "cols": "80",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "anexo6",
+            "caption": "Anexo 6: Cronograma de ejecución del proyecto",
+            "type": "attachment"
+        },     
+        {
+            "name": "conclusion_proyecto",
+            "caption": "3.8. Conclusión del concepto",
+            "type": "textarea",
+            "rows": "2",
+            "cols": "70",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name" : "anexos",
+            "type" : "label",
+            "html" : "Anexos"
+        },
+        {
+            "name": "anexo_391",
+            "caption": "1. Ficha Predial",
+            "type": "attachment"
+        },
+        {
+            "name": "anexo_392",
+            "caption": "2. Ficha Normativa (y sus respectivos anexos que deben ser listados)",
+            "type": "attachment"
+        },
+        {
+            "name": "anexo_393",
+            "caption": "3. Ficha Prejuridica (y sus respectivos anexos que deben ser listados)",
+            "type": "attachment"
+        }, 
+        {
+            "name": "anexo_394",
+            "caption": "4. Ficha Urbanística",
+            "type": "attachment"
+        },
+        {
+            "name": "anexo_395",
+            "caption": "5. Ficha Financiera",
+            "type": "attachment"
+        },
+        {
+            "name": "anexo_396",
+            "caption": "6. Cronograma de ejecución del proyecto",
+            "type": "attachment"
+        },
+        {
+            "name": "elaboro",
+            "caption": "Concepto elaborado por:",
+            "type": "text"
+        },     
+        {
+            "name": "estado_ficha",
+            "caption": "Estado de la Ficha",
+            "type": "radiobuttons",
+            "options": {
+                "rechazado": "Rechazado",
+                "aprobado": "Aprobado",
+                "revisado": "Revisado",
+                "anulado": "Anulado",
+                "completado": "Completado"
+            }
+        }
+    ]
+}
