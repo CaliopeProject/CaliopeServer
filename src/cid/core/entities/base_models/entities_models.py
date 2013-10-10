@@ -36,10 +36,10 @@ from neomodel import (RelationshipTo, RelationshipFrom,
 #Storage
 from .caliope_models import *
 from cid.core.utils import timeStampGenerator
+from .versioned_node import *
 
 
-class CaliopeUser(CaliopeNode):
-    __index__ = 'CaliopeStorage'
+class CaliopeUser(VersionedNode):
     username = StringProperty(unique_index=True)
     domainname = StringProperty()
     password = StringProperty()
@@ -48,8 +48,7 @@ class CaliopeUser(CaliopeNode):
     member_of = RelationshipTo('CaliopeGroup', 'IS_MEMBER_OF_GROUP')
 
 
-class CaliopeGroup(CaliopeNode):
-    __index__ = 'CaliopeStorage'
+class CaliopeGroup(VersionedNode):
     name = StringProperty(required=True)
     code = StringProperty(unique_index=True)
     members = RelationshipFrom('CaliopeUser', 'IS_MEMBER_OF_GROUP')
