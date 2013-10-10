@@ -33,39 +33,42 @@ class TestVersionedNodeStorage(unittest.TestCase):
     def tearDown(self):
         neo4j.GraphDatabaseService().clear()
 
+    def printLine():
+        print "-" * 80
+
     def test_VersionedNode_init_without_args(self):
         print "Test#1"
-        print "-" * 80
+        printLine()
         node = VersionedNode()
         node.save()
         print node.uuid, node.timestamp
         node2 = VersionedNode.pull(node.uuid)
         assert node2.uuid == node.uuid
-        print u"-" * 80
+        printLine()
 
     def test_VersionedNode_init_with_args(self):
         print "Test#2"
-        print "-" * 80
+        printLine()
         props = {'foo': 'bar', 'other': 2}
         node = VersionedNode(**props)
         node.save()
         print node.uuid, node.timestamp
         node.refresh()
         assert node.foo == 'bar' and node.other == 2
-        print "-" * 80
+        printLine()
 
     def test_VersionedNode_push(self):
         print "Test#3"
-        print "-" * 80
+        printLine()
         props = {'foo': 'bar', 'other': 2}
         node = VersionedNode.push(**props)
         print node.uuid, node.timestamp
         assert node.foo == 'bar' and node.other == 2
-        print u"-" * 80
+        printLine()
 
     def test_VersionedNode_change(self):
         print "Test#4"
-        print "-" * 80
+        printLine()
         props = {'foo': 'bar', 'other': 2}
         node = VersionedNode.push(**props)
         print node.uuid, node.timestamp
@@ -73,11 +76,11 @@ class TestVersionedNodeStorage(unittest.TestCase):
         setattr(node, 'other', 4)
         node.save()
         assert node.foo == 'no_bar' and node.other == 4
-        print "-" * 80
+        printLine()
 
     def test_VersionedNode_parent(self):
         print "Test#5"
-        print "-" * 80
+        printLine()
         props = {'foo': 'bar', 'other': 2}
         node = VersionedNode.push(**props)
         print node.uuid, node.timestamp
@@ -87,10 +90,11 @@ class TestVersionedNodeStorage(unittest.TestCase):
         node_prev = node.parent.single()
         assert node_prev.foo == props['foo']
         assert node_prev.other == props['other']
+        printLine()
 
     def test_CaliopeUser_creation(self):
         print "Test#6"
-        print "-" * 80
+        printLine()
         u1 = CaliopeUser()
         u1.username = 'userTmp'
         u1.password = hashlib.sha256(u'123').hexdigest()
@@ -98,11 +102,11 @@ class TestVersionedNodeStorage(unittest.TestCase):
         u1.first_name = "UserTmp"
         u1.last_name = "Test"
         assert u1.save() is not None
-        print "-" * 80
+        printLine()
 
     def test_CaliopeUser_creationMany(self):
         print "Test#7"
-        print "-" * 80
+        printLine()
         for i in xrange(20):
             u1 = CaliopeUser()
             u1.username = 'userTmp' + str(i)
@@ -111,21 +115,21 @@ class TestVersionedNodeStorage(unittest.TestCase):
             u1.first_name = "UserTmp" + str(i)
             u1.last_name = "Test"
             assert u1.save() is not None
-        print "-" * 80
+        printLine()
 
     def test_CaliopeGroup_creation(self):
         print "Test#8"
-        print "-" * 80
+        printLine()
         g1 = CaliopeGroup()
         g1.name = 'GroupTmp'
         g1.code = 'g-000Tmp'
         assert g1.save() is not None
         g1.delete()
-        print "-" * 80
+        printLine()
 
     def test_CaliopeGroup_creationMany(self):
         print "Test#9"
-        print "-" * 80
+        printLine()
         for i in xrange(1, 5):
             g1 = CaliopeGroup()
             g1.name = u'Group' + str(i)
@@ -135,11 +139,11 @@ class TestVersionedNodeStorage(unittest.TestCase):
                 g1.delete()
             except UniqueProperty:
                 assert True
-        print "-" * 80
+        printLine()
 
     def test_CaliopeGroup_connectOne(self):
         print "Test#10"
-        print "-" * 80
+        printLine()
         try:
             u1 = CaliopeUser()
             u1.username = 'userTmp'
@@ -160,11 +164,11 @@ class TestVersionedNodeStorage(unittest.TestCase):
             u1.delete()
         except UniqueProperty:
             assert False
-        print "-" * 80
+        printLine()
 
     def test_CaliopeStorage_defaultUserGroupOne(self):
         print "Test#11"
-        print "-" * 80
+        printLine()
         try:
             u1 = CaliopeUser()
             u1.username = 'user'
@@ -190,11 +194,11 @@ class TestVersionedNodeStorage(unittest.TestCase):
                 assert g1.members.is_connected(u1)
             except DoesNotExist:
                 assert False
-        print "-" * 80
+        printLine()
 
     def test_CaliopeStorage_defaultUserGroupMany(self):
         print "Test#12"
-        print "-" * 80
+        printLine()
         try:
             for i in xrange(1, 5):
                 u1 = CaliopeUser()
@@ -222,7 +226,7 @@ class TestVersionedNodeStorage(unittest.TestCase):
                     assert g1.members.is_connected(u1)
             except DoesNotExist:
                 assert False
-        print "-" * 80
+        printLine()
 
 
 if __name__ == '__main__':
