@@ -8,7 +8,6 @@ from cid.core.entities import (CaliopeEntityData, CaliopeEntity, RelationshipFro
 from cid.core.entities.base_models.versioned_node import VersionedNode
 
 
-
 class EvaluacionProducto(VersionedNode):
     #Definición de datos para el formato EVALUACIÓN DEL PRODUCTO
 
@@ -18,9 +17,9 @@ class EvaluacionProducto(VersionedNode):
     fecha_evaluacion = DateTimeProperty() # definido en el formulario como "datepicker"
     producto = StringProperty() # PRODUCTO O SERVICIO    
     incumplimiento = StringProperty() # DESCRIPCIÓN DEL REQUISITO INCUMPLIDO
-    cumple = StringListProperty() # CUMPLE con Opciones: SI - NO  
+#    cumple = StringListProperty() # CUMPLE con Opciones: SI - NO
     # tratamiento - TRATAMIENTO - Tipo Label
-    opcion_tratamiento = StringListProperty() # Opciones: Lista de chequeo: Reproceso, Concesión, Identificación para su no uso, Eliminación
+#    opcion_tratamiento = StringListProperty() # Opciones: Lista de chequeo: Reproceso, Concesión, Identificación para su no uso, Eliminación
     reproceso = StringProperty()
     concesion = StringProperty()
     identificacion_no_uso = StringProperty()
@@ -31,6 +30,6 @@ class EvaluacionProducto(VersionedNode):
     nombre_responsable = StringProperty() # NOMBRES Y APELLIDOS RESPONSABLE
     cargo_responsable = StringProperty() # CARGO Y  AREA
     observaciones = StringProperty() # OBSERVACIONES
-    iniciar_acciones = StringListProperty() # Opciones: SI - NO
+#    iniciar_acciones = StringListProperty() # Opciones: SI - NO
     # fecha_creacion = DateProperty() # Generacion Automatica pero no se ha definido en el formulario
-    estado_ficha = StringListProperty() # Opciones: Rechazado, Aprobado, Revisado, Anulado, Completado
+#    estado_ficha = StringListProperty() # Opciones: Rechazado, Aprobado, Revisado, Anulado, Completado
