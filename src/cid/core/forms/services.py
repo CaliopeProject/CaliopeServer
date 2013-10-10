@@ -64,11 +64,7 @@ class FormManager(object):
             rv = dict()
             rv['form'] = util.makeFormTemplate(module(), form['html'])
             rv['layout'] = form['layout'] if form['layout'] else util.makeLayoutTemplate(module())
-            rv['actions'] = [
-                {"name": "create", "method": "form.createFromForm"},
-                {"name": "delete", "method": "form.delete", "params": ["uuid"]},
-                {"name": "edit", "method": "form.editFromForm"}
-            ]
+            rv['actions'] = FormManager._get_default_actions()
             return rv
         if formId is not None:
             form = Form(formId=formId)
@@ -86,8 +82,14 @@ class FormManager(object):
             module = form['module']
             node = module.index.get(uuid=uuid)
 
-            form = Form(formId=formId)
-            return form.get_form_with_data(uuid)
+            util = CaliopeEntityUtil()
+            rv = dict()
+            rv['form'] = util.makeFormTemplate(module(), form['html'])
+            rv['layout'] = form['layout'] if form['layout'] else util.makeLayoutTemplate(module())
+            rv['actions'] = FormManager._get_default_actions()
+            rv['data'] = node.serialize()
+
+            return rv
 
     @staticmethod
     @public("getDataList")
@@ -132,6 +134,14 @@ class FormManager(object):
             return rv
         else:
             return None
+
+    @staticmethod
+    def _get_default_actions():
+        return [
+                {"name": "create", "method": "form.createFromForm"},
+                {"name": "delete", "method": "form.delete", "params": ["uuid"]},
+                {"name": "edit", "method": "form.editFromForm"}
+            ]
 
 class Form(object):
     def __init__(self, **kwargs):
