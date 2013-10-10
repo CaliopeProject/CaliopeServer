@@ -46,9 +46,9 @@
             "type": "attachment"
         },
         {
-            "name" : "justificacion",
-            "type" : "label",
-            "html" : "1. JUSTIFICACIÓN"
+            "name": "justificacion",
+            "type": "label",
+            "html": "1. JUSTIFICACIÓN"
         },
         {
             "name": "justificacion_desc",
@@ -61,10 +61,10 @@
             }
         },
         {
-            "name" : "id_inmuebles",
-            "type" : "label",
-            "html" : "2. IDENTIFICACIÓN DE INMUEBLES"
-        },     
+            "name": "id_inmuebles",
+            "type": "label",
+            "html": "2. IDENTIFICACIÓN DE INMUEBLES"
+        },
         {
             "name": "id_inmuebles_desc",
             "caption": " ",
@@ -89,7 +89,7 @@
             "name": "anexo1",
             "caption": "Anexo 1.: Ficha Predial",
             "type": "attachment"
-        },     
+        },
         {
             "name": "informacion_juridica",
             "caption": "2.2. Información jurídica",
@@ -104,12 +104,12 @@
             "name": "anexo2",
             "caption": "Anexo 2.: Ficha prejurídica",
             "type": "attachment"
-        },    
+        },
         {
-            "name" : "propuesta",
-            "type" : "label",
-            "html" : "3. PROPUESTA"
-        },         
+            "name": "propuesta",
+            "type": "label",
+            "html": "3. PROPUESTA"
+        },
         {
             "name": "localizacion",
             "caption": "3.1. Localización",
@@ -133,8 +133,8 @@
         {
             "name": "anexo3",
             "caption": "Anexo 3.: Ficha normativa",
-                "type": "attachment"
-        }, 
+            "type": "attachment"
+        },
         {
             "name": "descripcion_proyecto",
             "caption": "3.3. Descripción del proyecto",
@@ -142,7 +142,7 @@
             "rows": "2",
             "cols": "70",
             "validations": {
-            "required": true
+                "required": true
             }
         },
         {
@@ -194,7 +194,7 @@
             "validations": {
                 "required": true
             }
-        },   
+        },
         {
             "name": "sistema_movilidad",
             "caption": "3.4.2.3. Sistema de Movilidad y Accesibilidad",
@@ -204,7 +204,7 @@
             "validations": {
                 "required": true
             }
-        }, 
+        },
         {
             "name": "malla_vial",
             "caption": "3.4.2.3.1. Malla vial",
@@ -244,7 +244,7 @@
             "validations": {
                 "required": true
             }
-        },    
+        },
         {
             "name": "modelacion_urbanistica",
             "caption": "3.5. Modelación urbanística",
@@ -294,7 +294,7 @@
             "name": "anexo5",
             "caption": "Anexo 5.: Ficha de modelación Financiera, responsable DGI",
             "type": "attachment"
-        }, 
+        },
         {
             "name": "cronograma_proyecto",
             "caption": "3.7. Cronograma de ejecución del proyecto",
@@ -309,7 +309,7 @@
             "name": "anexo6",
             "caption": "Anexo 6: Cronograma de ejecución del proyecto",
             "type": "attachment"
-        },     
+        },
         {
             "name": "conclusion_proyecto",
             "caption": "3.8. Conclusión del concepto",
@@ -321,9 +321,9 @@
             }
         },
         {
-            "name" : "anexos",
-            "type" : "label",
-            "html" : "Anexos"
+            "name": "anexos",
+            "type": "label",
+            "html": "Anexos"
         },
         {
             "name": "anexo_391",
@@ -339,7 +339,7 @@
             "name": "anexo_393",
             "caption": "3. Ficha Prejuridica (y sus respectivos anexos que deben ser listados)",
             "type": "attachment"
-        }, 
+        },
         {
             "name": "anexo_394",
             "caption": "4. Ficha Urbanística",
@@ -359,7 +359,7 @@
             "name": "elaboro",
             "caption": "Concepto elaborado por:",
             "type": "text"
-        },     
+        },
         {
             "name": "estado_ficha",
             "caption": "Estado de la Ficha",

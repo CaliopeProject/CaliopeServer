@@ -14,16 +14,16 @@
             "html": "templates/acta_recibo_predios_html.json"
         },
         {
-            "package": "cid.siim2forms.aplicacion_traslado",
-            "module": "AplicacionTraslado",
-            "label": "Aplicación de traslado",
-            "html": "templates/formulario_aplicacion_traslado_html.json"
-        },
-        {
             "package": "cid.siim2forms.chequeo_traslado_provision_VIS_VIP",
             "module": "ChequeoTrasladoProvision",
             "label": "Lista de chequeo para la realización del traslado de provisión VIS/VIP",
             "html": "templates/chequeo_traslado_provision_VIS-VIP_html.json"
+        },
+        {
+            "package": "cid.siim2forms.aplicacion_traslado",
+            "module": "AplicacionTraslado",
+            "label": "Aplicación de traslado",
+            "html": "templates/formulario_aplicacion_traslado_html.json"
         },
         {
             "package": "cid.siim2forms.derecho_preferencia",
@@ -54,6 +54,12 @@
             "module": "ViabilidadNormativa",
             "label": "Viabilidad normativa",
             "html": "templates/viabilidad_normativa_html.json"
+        },
+        {
+            "package": "cid.siim2forms.concepto_viabilidad",
+            "module": "ConceptoViabilidad",
+            "label": "Concepto viabilidad",
+            "html": "templates/concepto_viabilidad_html.json"
         }
     ]
 }
