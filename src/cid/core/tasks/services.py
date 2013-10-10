@@ -36,7 +36,7 @@ from flask import current_app
 
 #SIIM2
 from cid.core.login import LoginManager
-
+from cid.core.forms.services import FormManager
 from models import Task
 
 
@@ -126,9 +126,19 @@ class TaskServices(CaliopeEntityService):
             task_controller = TaskController(uuid=data['uuid'])
         else:
             task_controller = TaskController()
+
+        for target in data['target']['target']:
+            form = target['entity']
+            res = FormManager.create_form_from_id(form, None)
+            if res:
+                target['entity_data'] = res
+
         task_controller.set_data(**data)
         task_controller.set_owner()
         rv = task_controller.get_data()
+
+
+
         return rv
 
     @staticmethod
