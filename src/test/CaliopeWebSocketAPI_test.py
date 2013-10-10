@@ -47,12 +47,12 @@ class CaliopeServerTestCase(unittest.TestCase):
     def setUp(self):
         caliope_server.app.config['TESTING'] = True
         caliope_server.init_flask_app()
-        caliope_server.configure_server_and_app("../../conf/caliope_server.json")
+        caliope_server.configure_server_and_app("../../conf/test_caliope_server.json")
         caliope_server.configure_logger("../../conf/tests_logger.json")
         caliope_server.register_modules()
         caliope_server.app.storekv = RedisStore(redis.StrictRedis())
-        self.http_server = WSGIServer((caliope_server.app.config['test_address'],
-                                       caliope_server.app.config['test_port']),
+        self.http_server = WSGIServer((caliope_server.app.config['address'],
+                                       caliope_server.app.config['port']),
                                       caliope_server.app,
                                       handler_class=WebSocketHandler)  # @IgnorePep8
         self.http_server.start()

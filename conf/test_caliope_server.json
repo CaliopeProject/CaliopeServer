@@ -1,14 +1,12 @@
 {
     "server": {
-        "address": "0.0.0.0",
-        "test_address": "127.0.0.1",
-        "port": "9000",
-        "test_port": "9001",
+        "address": "127.0.0.1",
+        "port": "9001",
         "debug": "True",
         "cache_enabled": "False",
         "static": "../caliope_webui_beowulf/app",
-        "formTemplates": "../../templates/formTemplates",
-        "formModules": "conf/siim2_forms.json"
+        "formTemplates": "../templates/formTemplates",
+        "formModules": "../../conf/siim2_forms.json"
     },
     /* Added fo app configurations */
     "app": {
