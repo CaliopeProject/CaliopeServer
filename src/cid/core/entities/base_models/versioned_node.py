@@ -82,12 +82,25 @@ class VersionedNode(SemiStructuredNode):
                     for related_node in old_rel.all():
                         new_rel.connect(related_node)
 
+    @classmethod
+    def pull(cls, id_node):
+        return cls.index.get(uuid=id_node)
+
+    @classmethod
+    def push(cls, *args, **kwargs):
+        """
+        Creates a single node of one class and return it.
+        """
+        new_node = cls(*args, **kwargs)
+        new_node.save()
+        return new_node
+
     def _get_node_data(self):
         return self.__properties__
 
     def _get_data(self):
-        return {k : self._parse_data(v) \
-                      for k, v in self._get_node_data().iteritems()}
+        return {k: self._parse_data(v) \
+                for k, v in self._get_node_data().iteritems()}
 
     def _parse_data(self, value):
         if isinstance(value, list):
@@ -104,21 +117,21 @@ class VersionedNode(SemiStructuredNode):
             for rel_target in rel.all():
                 rel_inst = rel.relationship(rel_target)  # Returns relationship instance.
                 target.append({
-                    'entity' : repr(rel_target.__class__),
-                    'properties' : dict(rel_inst._properties),
-                    'entity_data' : {'uuid': rel_target.uuid},
+                    'entity': repr(rel_target.__class__),
+                    'properties': dict(rel_inst._properties),
+                    'entity_data': {'uuid': rel_target.uuid},
                 })
-        # If there is no target to return, return an empty target with the entity class name.
+                # If there is no target to return, return an empty target with the entity class name.
         if len(target) == 0:
             for t_name, t_class in rel.target_map.items():
                 target.append({
-                    'entity' : repr(t_class),
-                    'properties' : {},
-                    'entity_data' : {},
+                    'entity': repr(t_class),
+                    'properties': {},
+                    'entity_data': {},
                 })
         rv = {
-            'target' : target,
-            'direction' : rel.definition['direction'],
+            'target': target,
+            'direction': rel.definition['direction'],
         }
         return rv
 
@@ -158,6 +171,8 @@ class VersionedNode(SemiStructuredNode):
                 self._copy_relationships(self, copy)
                 self.timestamp = timeStampGenerator()
         super(VersionedNode, self).save()
+        return self
+
 
 """
 class Person(VersionedNode):
