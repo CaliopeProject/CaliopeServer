@@ -82,12 +82,12 @@ class FormManager(object):
             module = form['module']
             node = module.index.get(uuid=uuid)
 
-            util = CaliopeEntityUtil()
-            rv = dict()
-            rv['form'] = util.makeFormTemplate(module(), form['html'])
-            rv['layout'] = form['layout'] if form['layout'] else util.makeLayoutTemplate(module())
-            rv['actions'] = FormManager._get_default_actions()
-            rv['data'] = node.serialize()
+            #util = CaliopeEntityUtil()
+            #rv = dict()
+            #rv['form'] = util.makeFormTemplate(module(), form['html'])
+            #rv['layout'] = form['layout'] if form['layout'] else util.makeLayoutTemplate(module())
+            #rv['actions'] = FormManager._get_default_actions()
+            rv = node.serialize()
             return rv
 
     @staticmethod
