@@ -33,7 +33,7 @@ class TestVersionedNodeStorage(unittest.TestCase):
     def tearDown(self):
         neo4j.GraphDatabaseService().clear()
 
-    def printLine():
+    def printLine(self):
         print "-" * 80
 
     def test_VersionedNode_init_without_args(self):
