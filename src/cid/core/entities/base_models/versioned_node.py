@@ -82,6 +82,74 @@ class VersionedNode(SemiStructuredNode):
                     for related_node in old_rel.all():
                         new_rel.connect(related_node)
 
+    @classmethod
+    def pull(cls, id_node):
+        return cls.index.get(uuid=id_node)
+
+    @classmethod
+    def push(cls, *args, **kwargs):
+        """
+        Creates a single node of one class and return it.
+        """
+        new_node = cls(*args, **kwargs)
+        new_node.save()
+        return new_node
+
+    def _get_node_data(self):
+        return self.__properties__
+
+    def _get_data(self):
+        return {k: self._parse_data(v) \
+                for k, v in self._get_node_data().iteritems()}
+
+    def _parse_data(self, value):
+        if isinstance(value, list):
+            return [self._parse_data(item) for item in value]
+        if isinstance(value, dict):
+            return {k: self._parse_data(v) for k, v in value.iteritems()}
+        return {'value': value}
+
+    def _parse_relationships(self, rel_name):
+        # TODO: Document.
+        rel = getattr(self, rel_name)
+        target = []
+        if self.__node__ is not None:
+            for rel_target in rel.all():
+                rel_inst = rel.relationship(rel_target)  # Returns relationship instance.
+                target.append({
+                    'entity': repr(rel_target.__class__),
+                    'properties': dict(rel_inst._properties),
+                    'entity_data': {'uuid': rel_target.uuid},
+                })
+                # If there is no target to return, return an empty target with the entity class name.
+        if len(target) == 0:
+            for t_name, t_class in rel.target_map.items():
+                target.append({
+                    'entity': repr(t_class),
+                    'properties': {},
+                    'entity_data': {},
+                })
+        rv = {
+            'target': target,
+            'direction': rel.definition['direction'],
+        }
+        return rv
+
+    def _get_relationships(self):
+        rv = {}
+        for k, v in self.__class__.__dict__.items():
+            if isinstance(v, RelationshipDefinition):
+                rv[k] = v
+        return rv
+
+    def serialize(self):
+        rv = self._get_data()
+        for rel_name in self._get_relationships():
+            assert not rel_name in rv  # TODO : remove
+            if rel_name not in self.__special_fields__:
+                rv[rel_name] = self._parse_relationships(rel_name)
+        return rv
+
     def save(self, skip_difference=False):
         if not skip_difference:
             # TODO(nel): Don't use an exception here.
@@ -103,15 +171,11 @@ class VersionedNode(SemiStructuredNode):
                 self._copy_relationships(self, copy)
                 self.timestamp = timeStampGenerator()
         super(VersionedNode, self).save()
-
-    #@classmethod
-    #def _get_class_relationships(cls):
-    #    return [(rel, rel_inst)
-    #            for rel, rel_inst in cls.__dict__.items()
-    #            if rel and isinstance(rel_inst, RelationshipDefinition)]
+        return self
 
 
-"""class Person(VersionedNode):
+"""
+class Person(VersionedNode):
     name = StringProperty()
     age = StringProperty()
     #car = RelationshipTo(Car, 'CAR')
@@ -124,18 +188,14 @@ person = Person(name='Bob')
 person.age = 10
 person.save()
 
+print  person.serialize()
+
 car = Car(plate='7777')
 car.save()
 car.owner.connect(person)
-print car.owner.single().__node__
 
-person.age = 20
-person.save()
-print car.owner.single().__node__
+print car.serialize()
 
-#person.age = 30
-#person.save()
-#person.age = 40
-#person.save()
-#print person.__node__
+import sys
+sys.exit(1)
 """

@@ -8,7 +8,6 @@ from cid.core.entities import (CaliopeEntityData, CaliopeEntity, RelationshipFro
 from cid.core.entities.base_models.versioned_node import VersionedNode
 
 
-
 class ControlAjustes(VersionedNode):
     #Definición de datos para el CONTROL DE AJUSTES DE DISEÑO
 
@@ -40,4 +39,4 @@ class ControlAjustes(VersionedNode):
     fecha = DateTimeProperty() # FECHA
     cambio_realizado = StringProperty() # CAMBIO REALIZADO
     # fecha_creacion = DateProperty() # Generacion Automatica pero no se ha definido en el formulario
-    estado_ficha = StringListProperty() # Opciones: Rechazado, Aprobado, Revisado, Anulado, Completado
+#    estado_ficha = StringListProperty() # Opciones: Rechazado, Aprobado, Revisado, Anulado, Completado

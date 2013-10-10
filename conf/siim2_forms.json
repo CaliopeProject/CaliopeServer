@@ -60,6 +60,18 @@
             "module": "ConceptoViabilidad",
             "label": "Concepto viabilidad",
             "html": "templates/concepto_viabilidad_html.json"
+        },
+        {
+            "package": "cid.siim2forms.evaluacion_producto",
+            "module": "EvaluacionProducto",
+            "label": "Evaluación del producto",
+            "html": "templates/evaluacion_producto_html.json"
+        },
+        {
+            "package": "cid.siim2forms.control_ajustes",
+            "module": "ControlAjustes",
+            "label": "Control de ajustes",
+            "html": "templates/control_ajustes_html.json"
         }
     ]
 }
