@@ -77,9 +77,9 @@ class UsersManager(object):
 
     @staticmethod
     @public(name='getPublicInfo')
-    def get_public_info(uuids):
+    def get_public_info(users):
         rv = []
-        for uuid in uuids:
+        for uuid in users:
             try:
                 user = CaliopeUser.index.get(uuid=uuid)
                 rv.append(dict(UsersManager.get_user_node_data(user),
