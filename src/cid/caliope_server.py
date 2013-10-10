@@ -124,15 +124,12 @@ def configure_server_and_app(server_config_file):
     else:
         app.config['port'] = 9000
 
-    if 'test_address' in config['server']:
-        app.config['test_address'] = config['server']['test_address']
-    else:
-        app.config['test_address'] = 'localhost'
+    import os
 
-    if 'test_port' in config['server']:
-        app.config['test_port'] = int(config['server']['test_port'])
+    if 'cid_base_directory' in config['server']:
+        app.config['cid_base_directory'] = os.path.join(os.getcwd(), config['server']['cid_base_directory'])
     else:
-        app.config['test_port'] = 9001
+        app.config['cid_base_directory'] = os.path.join(os.getcwd(), "src/cid")
 
     if 'static' in config['server']:
         app.config['STATIC_PATH'] = config['server']['static']
@@ -203,6 +200,8 @@ def run_server():
     app.logger.info("Starting server on: " + app.config['address'] + ":" + str(app.config['port']))
     app.logger.info("Static Base Directory: " + app.config['STATIC_PATH'])
     app.logger.info("Forms Template Directory : " + app.config['FORM_TEMPLATES'])
+    app.logger.info("Cid Base Directory : " + app.config['cid_base_directory'])
+
     app.storekv = RedisStore(redis.StrictRedis())
     http_server = WSGIServer((app.config['address'], app.config['port']), app,
                              handler_class=WebSocketHandler)  # @IgnorePep8

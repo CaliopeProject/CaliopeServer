@@ -20,7 +20,6 @@ Copyright (C) 2013 Infometrika Ltda.
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
-
 #CaliopeStorage
 from cid.core.entities import CaliopeNode, DoesNotExist
 from cid.core.entities.base_models.entities_models import CaliopeUser
@@ -143,7 +142,8 @@ class ProjectController(CaliopeEntityController):
         #: TODO: Check if form_name is valid and form_path is a file
         #: TODO: Cache this files
         try:
-            self.template = loadJSONFromFile('modules/projects/templates/projectmtv.json', current_app.root_path)
+            self.template = loadJSONFromFile('modules/projects/templates/projectmtv.json',
+                                             current_app.config['cid_base_directory'])
             return True
         except IOError:
             return False
