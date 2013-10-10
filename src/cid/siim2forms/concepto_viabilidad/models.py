@@ -8,8 +8,7 @@ from cid.core.entities import (CaliopeEntityData, CaliopeEntity, RelationshipFro
 from cid.core.entities.base_models.versioned_node import VersionedNode
 
 
-
-class ConceptoViabilidad(CaliopeEntityData):
+class ConceptoViabilidad(VersionedNode):
 
     #Definición de datos para el CONCEPTO DE VIABILIDAD TECNICA DE PROYECTOS VIP
 
@@ -59,4 +58,4 @@ class ConceptoViabilidad(CaliopeEntityData):
     #anexo_396 6. Cronograma de ejecución del proyecto
     elaboro = StringProperty() # Concepto elaborado por: 
     firma = StringProperty() # Directora de Operaciones Estratégicas y Proyectos - No definido en el formulario
-    estado_ficha = StringListProperty() # Opciones: Rechazado, Aprobado, Revisado, Anulado, Completado
+#    estado_ficha = StringListProperty() # Opciones: Rechazado, Aprobado, Revisado, Anulado, Completado

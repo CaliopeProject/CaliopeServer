@@ -79,9 +79,13 @@ class FormManager(object):
     @staticmethod
     @public("getData")
     def get_form_data(formId=None, uuid=None):
-        if formId is None or uuid is None:
+        if formId is None or formId not in current_app.caliope_forms or uuid is None:
             raise JSONRPCInvalidRequestError()
         else:
+            form = current_app.caliope_forms[formId]
+            module = form['module']
+            node = module.index.get(uuid=uuid)
+
             form = Form(formId=formId)
             return form.get_form_with_data(uuid)
 
