@@ -9,7 +9,7 @@
         "static": "../caliope_webui_beowulf/app",
         "formTemplates": "../../templates/formTemplates",
         "formModules": "conf/siim2_forms.json",
-        "base_directory": "."
+        "cid_base_directory": "src/cid"
 
     },
     /* Added fo app configurations */
