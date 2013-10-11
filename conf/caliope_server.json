@@ -5,7 +5,6 @@
         "port": "9000",
         "test_port": "9001",
         "debug": "True",
-        "cache_enabled": "False",
         "static": "../caliope_webui_beowulf/app",
         "formTemplates": "../../templates/formTemplates",
         "formModules": "conf/siim2_forms.json",

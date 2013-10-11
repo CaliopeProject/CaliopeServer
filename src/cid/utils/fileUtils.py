@@ -93,10 +93,8 @@ def send_from_memory(filename):
         mimetype = 'application/octet-stream'
 
     file = open(filename, 'rb')
-    if current_app.cache_enabled:
-        data = jsOptimizer().get_file(os.path.abspath(filename), current_app.storekv)
-    else:
-        data = None
+
+    data = jsOptimizer().get_file(os.path.abspath(filename), current_app.storekv)
 
     if data:
         headers = Headers()

@@ -51,7 +51,7 @@ class StaticsChangesProcessor(ProcessEvent):
     def process_IN_ACCESS(self, event):
         #print "in access: %s" %  path.join(event.path, event.name)
         #print dir(path)
-        self.jso.js_put_file_cache(path.join(event.path, event.name),self.store)
+        #self.jso.js_put_file_cache(path.join(event.path, event.name),self.store)
         pass
 
 
@@ -92,7 +92,7 @@ def main(argv):
     try:
         wm = WatchManager()
         notifier = Notifier(wm, StaticsChangesProcessor(jso,store))
-        wm.add_watch(static_path, IN_ACCESS|IN_CREATE|IN_MODIFY|IN_DELETE, rec=True)
+        wm.add_watch(static_path, IN_CREATE|IN_MODIFY|IN_DELETE, rec=True)
         notifier.loop()
     finally:
         pass

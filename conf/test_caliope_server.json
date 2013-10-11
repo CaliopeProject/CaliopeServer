@@ -3,7 +3,6 @@
         "address": "127.0.0.1",
         "port": "9001",
         "debug": "True",
-        "cache_enabled": "False",
         "static": "../caliope_webui_beowulf/app",
         "formTemplates": "../templates/formTemplates",
         "formModules": "../../conf/siim2_forms.json",
