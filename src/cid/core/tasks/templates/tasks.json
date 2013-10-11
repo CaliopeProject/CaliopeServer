@@ -51,6 +51,14 @@
       }
     },
     {
+      "name": "subtasks",
+      "type": "hidden"
+    },
+    {
+      "name": "comments",
+      "type": "hidden"
+    },
+    {
       "name": "formtask",
       "caption": "Formulario",
       "class": "input-large",
@@ -59,6 +67,9 @@
         "method"        : "form.getForms",
         "field-value"   : "formId",
         "field-desc"    : "label"
+      },
+      "validation" : {
+        "required" : true
       },
       "options" : {
         "predios" : "Selección de Predios",
@@ -156,7 +167,7 @@
       "columns" : [
         {
           "class": "span6",
-          "elements"  : ["name" ,"descripcion", "category"]
+          "elements"  : ["name" ,"descripcion", "category", "comments", "subtasks"]
         },
         {
           "class": "span6",
