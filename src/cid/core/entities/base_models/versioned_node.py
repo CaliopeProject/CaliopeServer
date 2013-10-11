@@ -99,18 +99,33 @@ class VersionedNode(SemiStructuredNode):
         return self.__properties__
 
     def _get_data(self):
-        return {k: self._parse_data(v) \
+        return {k: self._format_data(v) \
                 for k, v in self._get_node_data().iteritems()}
 
-    def _parse_data(self, value):
+    def _format_data(self, value):
         if isinstance(value, list):
-            return [self._parse_data(item) for item in value]
+            return [self._format_data(item) for item in value]
         if isinstance(value, dict):
-            return {k: self._parse_data(v) for k, v in value.iteritems()}
+            return {k: self._format_data(v) for k, v in value.iteritems()}
         return {'value': value}
 
-    def _parse_relationships(self, rel_name):
-        # TODO: Document.
+    def _format_relationships(self, rel_name):
+        """
+        Format in a json friendly way a relationship, including direction, and target.
+        Target contains the class, the properties and the uuid of the object
+
+        :param rel_name: The name of the relationship to be parsed
+        :return: A relationship in json friendly dict, example
+        `{'direction':0,
+         'target':[
+                    {'entity':'class name',
+                     'entity_data': {'uuid': 'UUID4', 'other':'some'},
+                     'properties':{'category':'prop1', 'other_prop':'foo'}
+                    },
+                    ...
+                  ]
+        }`
+        """
         rel = getattr(self, rel_name)
         target = []
         if self.__node__ is not None:
@@ -147,8 +162,33 @@ class VersionedNode(SemiStructuredNode):
         for rel_name in self._get_relationships():
             assert not rel_name in rv  # TODO : remove
             if rel_name not in self.__special_fields__:
-                rv[rel_name] = self._parse_relationships(rel_name)
+                rv[rel_name] = self._format_relationships(rel_name)
         return rv
+
+    def update_relationship(self, rel_name, new_rel_dict):
+
+        def dict_diff(dict_a, dict_b):
+            """
+            :return Return the keys of the dict_a that are not in the dict_b
+            """
+            return set(dict_a).difference(dict_b)
+
+        def dict_intersection(dict_a, dict_b):
+            """
+            :return Return the keys of the dict_a that also are in dict_b
+            """
+            return set(dict_a).intersection(dict_b)
+
+        current_rel_dict = self._format_relationships(rel_name)
+        assert current_rel_dict['direction'] == new_rel_dict['direction']
+        for key_not_in_new in dict_diff(current_rel_dict, new_rel_dict):
+            pass
+        for key_not_in_current in dict_diff(new_rel_dict, current_rel_dict):
+            pass
+        for key_in_both in dict_intersection(current_rel_dict, new_rel_dict):
+            pass
+
+
 
     def save(self, skip_difference=False):
         if not skip_difference:
