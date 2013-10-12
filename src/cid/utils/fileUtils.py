@@ -94,7 +94,8 @@ def send_from_memory(filename):
 
     file = open(filename, 'rb')
 
-    data = jsOptimizer().get_file(os.path.abspath(filename), current_app.storekv)
+    #data = jsOptimizer().get_file(os.path.abspath(filename), current_app.storekv)
+    data = None
 
     if data:
         headers = Headers()
