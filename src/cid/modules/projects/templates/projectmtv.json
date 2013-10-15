@@ -82,7 +82,7 @@
           "method":"projects.create"
       },
       {
-          "name": "Editar",
+          "name": "Actualizar",
           "method":"projects.edit"
       }
   ],
