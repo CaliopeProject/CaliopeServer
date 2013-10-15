@@ -45,7 +45,7 @@
             "properties": {
             },
             "entity_data" : {
-                "uuid"  : "{{target.uuid}}"
+                "uuid"  : "{{target}}"
             }
         }
       }
