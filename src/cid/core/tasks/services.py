@@ -53,7 +53,7 @@ class TaskServices(CaliopeEntityService):
         results, metadata = a_node.cypher("START user=node(*)"
                                           "MATCH (user)-[r:HOLDER]-(tdc)-[e:CURRENT]-(t)"
                                           "WHERE has(r.category) "
-                                          "return t, r.category")
+                                          "return distinct t, r.category")
         task_list = []
         for row in results:
             task_class = Task().__class__
