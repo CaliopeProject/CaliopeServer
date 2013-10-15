@@ -137,11 +137,11 @@
   ],
   "actions" : [
     {
-      "name": "create",
+      "name": "Crear",
       "method":"tasks.create"
     },
     {
-      "name": "edit",
+      "name": "Editar",
       "method":"tasks.edit"
     }
   ],
