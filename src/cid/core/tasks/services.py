@@ -128,16 +128,15 @@ class TaskServices(CaliopeEntityService):
             task_controller = TaskController()
 
         for target in data['target']['target']:
-            form = target['entity']
-            res = FormManager.create_form_from_id(form, None)
-            if res:
-                target['entity_data'] = res
+            if 'entity' in target:
+                form = target['entity']
+                res = FormManager.create_form_from_id(form, None)
+                if res:
+                    target['entity_data'] = res
 
         task_controller.set_data(**data)
         task_controller.set_owner()
         rv = task_controller.get_data()
-
-
 
         return rv
 
