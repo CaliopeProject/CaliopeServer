@@ -25,6 +25,7 @@ Copyright (C) 2013 Fundación Correlibre
 import os
 import json
 import uuid
+import requests
 
 #flask
 from flask.globals import current_app
@@ -36,13 +37,14 @@ gis_proxy = Blueprint('gis_proxy', __name__, template_folder='')
 
 @gis_proxy.route('/<path:filename>', methods=['GET', 'POST', 'OPTIONS'])
 def catastrobogota(filename):   
-    params=""
+    params=""         
     for k in request.values.keys():
         print k + " " + request.values[k]
-        params = params+'&'+k+'='+request.values[k]
-
+        params = params+'&'+k+'='+request.values[k]    
     if "wfs" in filename:
-        r = requests.get('http://localhost:8081/geoserver/mtv_gis/ows?'+params)
+        r = requests.post('http://siim2.infometrika.net:8080/geoserver/mtv_gis/ows?',data=request.data)
+    elif "wms" in filename:
+        r = requests.get('http://siim2.infometrika.net:8080/geoserver/mtv_gis/wms?'+params)
     else:
         r = requests.get('http://mapas.catastrobogota.gov.co/arcgiswsh/Mapa_Referencia/Mapa_referencia/MapServer/WMSServer?'+params)
     return r.content
