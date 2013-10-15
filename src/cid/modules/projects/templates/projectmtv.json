@@ -38,7 +38,7 @@
           {"html":"engativa","value":"Engativá"},
           {"html":"fontibon","value":"Fontibón"},
           {"html":"kennedy","value":"Kennedy"},
-          {"html":"la_candelaria","value":"la_candelaria"},
+          {"html":"la_candelaria","value":"La Candelaria"},
           {"html":"los_martires","value":"Los Mártires"},
           {"html":"puente_aranda","value":"Puente Aranda"},
           {"html":"rafael_uribe","value":"Rafael Uribe Uribe"},
@@ -82,7 +82,7 @@
           "method":"projects.create"
       },
       {
-          "name": "Editar",
+          "name": "Actualizar",
           "method":"projects.edit"
       }
   ],
