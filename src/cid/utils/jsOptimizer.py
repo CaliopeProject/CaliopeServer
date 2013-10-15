@@ -31,7 +31,7 @@ import rjsmin
  
 class jsOptimizer(object):
     def __init__(self, prefix="static_cache_"):
-        self.jstype = re.compile(".*js$")
+        self.jstype = re.compile(".*(\.js)$")
         self.prefix = prefix 
 
     def compress(self,path):
