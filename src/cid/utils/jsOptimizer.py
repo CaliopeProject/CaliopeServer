@@ -29,17 +29,18 @@ import gzip
 import StringIO
 import rjsmin
  
-class jsOptimizer(object):
-    def __init__(self, prefix="static_cache_"):
+class jsOptimizer(object,):
+    def __init__(self, minify_enabled=True, prefix="static_cache_"):
         self.jstype = re.compile(".*(\.js)$")
-        self.prefix = prefix 
+        self.prefix = prefix
+        self.minify_enabled = minify_enabled
 
-    def compress(self,path):
-        str = open(path,'r').read()
+    def compress(self, path):
+        str = open(path, 'r').read()
         js = unicode(str, errors='ignore')
         if len(js):
             try:
-                js = rjsmin.jsmin(js)
+                js = rjsmin.jsmin(js) if self.minify_enabled else js
                 gzip_buffer = StringIO.StringIO()
                 gzip_file = gzip.GzipFile(mode='wb', compresslevel=9, fileobj=gzip_buffer)
                 gzip_file.write(js)
@@ -63,10 +64,9 @@ class jsOptimizer(object):
                 value = self.compress(path)
                 if value:
                     print path + " :Added to cache" 
-                    cache_store.put(key,value)
+                    cache_store.put(key, value)
                     return value
         return None
-    
 
     def js_put_file_cache(self, path, cache_store):
         if self.jstype.match(path) is not None:
@@ -75,10 +75,9 @@ class jsOptimizer(object):
             value = self.compress(path)
             if value:
                 print path + " :Added to cache" 
-                cache_store.put(key,value)
+                cache_store.put(key, value)
                 return value                    
         return None
-
 
     def get_file(self, path, cache_store):
         h = hashlib.sha1(os.path.abspath(path)).hexdigest()
@@ -88,15 +87,14 @@ class jsOptimizer(object):
             return value
         return None
 
-
-    def watch(self,rootdir,cache_store,force=False):
+    def watch(self, rootdir, cache_store, force=False):
         put_in_cache = self.js_put_file_cache if force else self.js_file_cache
         for root, subFolders, files in os.walk(rootdir):
             for file in files:
                 path = root+'/'+file
-                put_in_cache(path,cache_store)
+                put_in_cache(path, cache_store)
             
             for folder in subFolders:
                 for file in files:
                     path = root+'/'+file
-                    put_in_cache(path,cache_store)
+                    put_in_cache(path, cache_store)

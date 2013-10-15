@@ -146,6 +146,11 @@ def configure_server_and_app(server_config_file):
     else:
         app.config['FORM_MODULES'] = None
 
+    if 'cache_enabled' in config['server']:
+        app.config['cache_enabled'] = config['server']['cache_enabled'].lower() == 'true'
+    else:
+        app.config['cache_enabled'] = False
+
     #: Load app config
     if 'app' in config:
         if 'modules' in config['app']:
