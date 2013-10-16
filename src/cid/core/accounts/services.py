@@ -131,5 +131,7 @@ class UsersManager(object):
               u'username': data['username'],
               u'first_name': data['first_name'],
               u'last_name': data['last_name'],
-              u'uuid': data['uuid']}
+              u'uuid': data['uuid'],
+              u'image': get_thumbnail(os.path.join(current_app.config['STATIC_PATH'], data.avatar))
+              }
         return rv
