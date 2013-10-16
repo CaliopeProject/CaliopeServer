@@ -58,10 +58,9 @@ class UsersManager(object):
     @staticmethod
     @public(name='getThumbnail')
     def get_thumbnail(user):
-        caliope_user = CaliopeUser.index.get(username=user)
         rv = {
             "image":
-                get_thumbnail(os.path.join(current_app.config['STATIC_PATH'], caliope_user.avatar))
+                get_thumbnail(os.path.join(current_app.config['STATIC_PATH'], user.avatar))
         }
         return rv
 
