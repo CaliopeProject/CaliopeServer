@@ -174,6 +174,7 @@ class TestCaliopeStorage(unittest.TestCase):
             u1.domainname = 'correlibre.org'
             u1.first_name = "User"
             u1.last_name = "Test"
+            u1.avatar = "common-img/avatar.png"
             u1.save()
             g1 = CaliopeGroup()
             g1.name = 'Group'
@@ -205,6 +206,7 @@ class TestCaliopeStorage(unittest.TestCase):
                 u1.domainname = 'correlibre.org'
                 u1.first_name = "User" + str(i)
                 u1.last_name = "Test"
+                u1.avatar = "common-img/avatar" + str(i) + ".png"
                 u1.save()
                 g1 = CaliopeGroup()
                 g1.name = 'Group' + str(i)
