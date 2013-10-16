@@ -60,7 +60,7 @@ class UsersManager(object):
     def get_thumbnail(user):
         rv = {
             "image":
-                get_thumbnail(os.path.join(current_app.config['STATIC_PATH'], 'common-img/avatar1.png'))
+                get_thumbnail(os.path.join(current_app.config['STATIC_PATH'], user.avatar))
         }
         return rv
 
@@ -68,12 +68,15 @@ class UsersManager(object):
     @public(name='getThumbnailList')
     def get_thumbnail_list(users):
         rv = []
-        for user in users:
-            rv.append({
-                user:
-                    get_thumbnail(os.path.join(current_app.config['STATIC_PATH'], 'common-img/avatar1.png'))
-            })
+        for uuid in users:
+            try:
+                user = CaliopeUser.index.get(uuid=uuid)
+                get_thumbnail(os.path.join(current_app.config['STATIC_PATH'], user.avatar))
+            except DoesNotExist as e:
+                current_app.logger.info('CaliopeUser with uuid: ' + uuid + 'not found')
+                pass
         return rv
+
 
     @staticmethod
     @public(name='getPublicInfo')

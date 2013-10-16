@@ -129,8 +129,11 @@ class TaskServices(CaliopeEntityService):
 
         for target in data['target']['target']:
             if 'entity' in target:
-                form = target['entity']
-                res = FormManager.create_form_from_id(form, None)
+                if 'uuid' in target['entity_data']:
+                    res = target['entity_data']
+                else:
+                    form = target['entity']
+                    res = FormManager.create_form_from_id(form, None)
                 if res:
                     target['entity_data'] = res
 

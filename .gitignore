@@ -16,3 +16,5 @@ src/SIIM2_Server.egg-info/
 .project
 .pydevproject
 .idea/
+var/
+!var/dummy.pid
