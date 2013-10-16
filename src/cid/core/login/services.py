@@ -58,7 +58,7 @@ class LoginManager(object):
                     'user': {'value': username},
                     "first_name": {'value': userNode.first_name},
                     "last_name": {'value': userNode.last_name},
-                    "image": get_thumbnail(os.path.join(current_app.config['STATIC_PATH'], 'common-img/avatar1.png'))
+                    "image": get_thumbnail(os.path.join(current_app.config['STATIC_PATH'], userNode.avatar))
                 }
             else:
                 return {'login': False}
@@ -84,7 +84,7 @@ class LoginManager(object):
                             "first_name": {'value': userNode.first_name},
                             "last_name": {'value': userNode.last_name},
                             "image": get_thumbnail(
-                                os.path.join(current_app.config['STATIC_PATH'], 'common-img/avatar1.png'))
+                                os.path.join(current_app.config['STATIC_PATH'], userNode.avatar))
                     }
                 except Exception as e:
                     raise JSONRPCInternalError(e)
