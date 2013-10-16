@@ -45,6 +45,7 @@ class CaliopeUser(CaliopeNode):
     password = StringProperty()
     first_name = StringProperty(required=True)
     last_name = StringProperty(required=True)
+    avatar = StringProperty()
     member_of = RelationshipTo('CaliopeGroup', 'IS_MEMBER_OF_GROUP')
 
 
