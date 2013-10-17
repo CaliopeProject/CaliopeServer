@@ -20,43 +20,310 @@
             }
           ]
         },
+        {
+          "columns": [
+            {
+              "class": "widget-header widget-header-flat widget-header-small",
+              "elements": [
+                "datos_modelacion"
+              ]
+            }
+          ]
+        },
+        {
+          "columns": [
+              {
+                  "class": "span3",
+                  "elements": [
+                      "total_viviendas", "viv", "total_habitantes"
+                  ]
+              },
+              {
+                  "class": "span3",
+                  "elements": [
+                      "vip_70_smmlv", "viviendas_hectarea_bruta"
+                  ]
+              },
+              {
+                "class": "span3",
+                "elements": [
+                  "vip_50smmlv", "viviendas_hectarea_neta"
+                ]
+              },
+              {
+                "class": "span3",
+                "elements": [
+                  "vis", "viviendas_hectarea_util"
+                ]
+              }
+          ]
+        },
+        {
+          "columns": [
+            {
+              "class": "span12  widget-header widget-header-flat widget-header-small",
+              "elements": [
+                "espacio_publico"
+              ]
+            }
+          ]
+        },
+        {
+          "columns": [
+            {
+              "class": "span3",
+              "elements": [
+                "parques_viviendam2"
+              ]
+            },
+            {
+              "class": "span3",
+              "elements": [
+                "equipamentos_vivienda"
+              ]
+            }
+          ]
+        },
+        {
+          "columns": [
+            {
+              "class": "span12  widget-header widget-header-flat widget-header-small",
+              "elements": [
+                "estacionamientos"
+              ]
+            }
+          ]
+        },
+        {
+          "columns": [
+            {
+              "class": "span3",
+              "elements": [
+                "estacionamientos_vip", "area_estacionamientos_vip"
+              ]
+            },
+            {
+              "class": "span3",
+              "elements": [
+                "estacionamientos_comercio", "area_estacionamientos_comercio"
+              ]
+            },
+            {
+              "class": "span3",
+              "elements": [
+                "estacionamientos_servicios", "area_estacionamientos_vip"
+              ]
+            },
+            {
+              "class": "span3",
+              "elements": [
+                "area_estacionamientos_servicios"
+              ]
+            }
+          ]
+        },
+        {
+          "columns": [
+            {
+              "class": "span12  widget-header widget-header-flat widget-header-small",
+              "elements": [
+                "observaciones"
+              ]
+            }
+          ]
+        },
+        {
+          "columns": [
+            {
+              "class": "span3",
+              "elements": [
+                "observaciones_datos_basicos"
+              ]
+            }
+          ]
+        },
+        {
+          "columns": [
+            {
+              "class": "span12  widget-header widget-header-flat widget-header-small",
+              "elements": [
+                "cuadro_areas"
+              ]
+            }
+          ]
+        },
+        {
+          "columns": [
+            {
+              "class": "span6",
+              "elements": [
+                "area_bruta_valor", "afectaciones_valor", "area_cesiones_valor", "control_ambiental_valor", "zmpa_valor", "parque_adicional_valor", "zona_verde_adicional_valor", "vias_locales_valor", "vip_con_comercio_valor"
+              ]
+            },
+            {
+              "class": "span6",
+              "elements": [
+                "area_bruta_desc", "afectaciones_desc", "area_cesiones_desc", "control_ambiental_desc" , "zmpa_desc", "parque_adicional_desc", "zona_verde_adicional_desc", "vias_locales_desc", "vip_con_comercio_desc"
+              ]
+            }
+          ]
+        },
+        {
+          "columns": [
+            {
+              "class": "span6",
+              "elements": [
+                "area_urbanizable_valor", "area_edificabilidad_valor", "cesiones_publicas_valor", "cesiones_parques1_valor", "area_parque_adicional_valor", "cesiones_publicas_eq_valor", "pago_sesionesm2_valor", "area_util_valor", "area_institucional_valor"
+              ]
+            },
+            {
+              "class": "span6",
+              "elements": [
+                "area_urbanizable_desc", "area_edificabilidad_desc", "cesiones_publicas_desc", "cesiones_parques1_desc", "area_parque_adicional_desc", "cesiones_publicas_eq_desc", "pago_sesionesm2_desc", "area_util_desc", "area_institucional_desc"
+              ]
+            }
+          ]
+        },
+        {
+          "columns": [
+            {
+              "class": "span12  widget-header widget-header-flat widget-header-small",
+              "elements": [
+                "indice_ocupacion"
+              ]
+            }
+          ]
+        },
+        {
+          "columns": [
+            {
+              "class": "span6",
+              "elements": [
+                "area_vivienda_comercial_valor", "area_ocupada_comercio_valor", "area_ocupada_idu_valor", "area_total_ocupada_valor", "io_valor"
+              ]
+            },
+            {
+              "class": "span6",
+              "elements": [
+                "area_vivienda_comercial_desc", "area_ocupada_comercio_desc", "area_ocupada_idu_desc", "area_total_ocupada_desc", "io_desc"
+              ]
+            }
+          ]
+        },
+        {
+          "columns": [
+            {
+              "class": "span12  widget-header widget-header-flat widget-header-small",
+              "elements": [
+                "indice_construccion"
+              ]
+            }
+          ]
+        },
+        {
+          "columns": [
+            {
+              "class": "span6",
+              "elements": [
+                "construida_comercial_valor", "pisos_valor", "total_construida_residencial_valor", "total_construida_idu_valor", "area_construida_ic_valor", "ic_valor"
+              ]
+            },
+            {
+              "class": "span6",
+              "elements": [
+                "construida_comercial_desc", "pisos_desc", "total_construida_residencial_desc", "total_construida_idu_desc", "area_construida_ic_desc", "ic_desc"
+              ]
+            }
+          ]
+        },
       {
         "columns": [
           {
-            "class": "lead",
+            "class": "span12  widget-header widget-header-flat widget-header-small",
             "elements": [
-              "datos_modelacion"
+              "indice_construccion"
             ]
           }
         ]
       },
       {
         "columns": [
-            {
-                "class": "span4",
-                "elements": [
-                    "total_viviendas"
-                ]
-            },
-            {
-                "class": "span4",
-                "elements": [
-                    "vip_50smmlv"
-                ]
-            },
-            {
-              "class": "span4",
-              "elements": [
-                "vip_70_smmlv"
-              ]
-            },
-            {
-              "class": "span4",
-              "elements": [
-                "vis"
-              ]
-            }
+          {
+            "class": "span6",
+            "elements": [
+              "viviendas_piso_valor", "total_viviendas_valor", "area_comercio_valor", "total_viviendas_valor", "area_ventas_valor"
+            ]
+          },
+          {
+            "class": "span6",
+            "elements": [
+              "viviendas_piso_desc", "total_viviendas_desc", "area_comercio_desc", "total_construida_idu_desc", "area_ventas_desc"
+            ]
+          }
+        ]
+      },
+      {
+        "columns": [
+          {
+            "class": "span12  widget-header widget-header-flat widget-header-small",
+            "elements": [
+              "uso_residencial"
+            ]
+          }
+        ]
+      },
+      {
+        "columns": [
+          {
+            "class": "span6",
+            "elements": [
+              "zonas_recreativas", "otros_equipamentos"
+            ]
+          },
+          {
+            "class": "span6",
+            "elements": [
+              "servicios_comunales", "observaciones_equipamentos"
+            ]
+          }
+        ]
+      },
+      {
+        "columns": [
+          {
+            "class": "span12  widget-header widget-header-flat widget-header-small",
+            "elements": [
+              "uso_institucional"
+            ]
+          }
+        ]
+      },
+      {
+        "columns": [
+          {
+            "class": "span6",
+            "elements": [
+              "zonas_inst_recreativas", "otros_usos_institucionales"
+            ]
+          },
+          {
+            "class": "span6",
+            "elements": [
+              "servicios_inst_comunales"
+            ]
+          }
+        ]
+      },
+      {
+        "columns": [
+          {
+            "class": "span12",
+            "elements": [
+              "grafico_areas"
+            ]
+          }
         ]
       }
+
     ]
 }
