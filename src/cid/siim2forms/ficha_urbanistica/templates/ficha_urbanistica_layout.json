@@ -1,0 +1,62 @@
+{
+    "layout": [
+        {
+            "columns": [
+                {
+                    "class": "page-header",
+                    "elements": [
+                        "title"
+                    ]
+                }
+            ]
+        },
+        {
+          "columns": [
+            {
+              "class": "span12",
+              "elements": [
+                "nombre_proyecto"
+              ]
+            }
+          ]
+        },
+      {
+        "columns": [
+          {
+            "class": "lead",
+            "elements": [
+              "datos_modelacion"
+            ]
+          }
+        ]
+      },
+      {
+        "columns": [
+            {
+                "class": "span4",
+                "elements": [
+                    "total_viviendas"
+                ]
+            },
+            {
+                "class": "span4",
+                "elements": [
+                    "vip_50smmlv"
+                ]
+            },
+            {
+              "class": "span4",
+              "elements": [
+                "vip_70_smmlv"
+              ]
+            },
+            {
+              "class": "span4",
+              "elements": [
+                "vis"
+              ]
+            }
+        ]
+      }
+    ]
+}
