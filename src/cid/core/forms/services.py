@@ -202,9 +202,9 @@ class Form(object):
             self.form_json.pop('actions')
         else:
             self.actions = [
-                {"name": "create", "method": "form.createFromForm"},
-                {"name": "delete", "method": "form.delete", "params": ["uuid"]},
-                {"name": "edit", "method": "form.editFromForm"}
+                #{"name": "create", "method": "form.createFromForm"},
+                #{"name": "delete", "method": "form.delete", "params": ["uuid"]},
+                {"name": "guardar", "method": "form.editFromForm"}
             ]
         return self.actions
 
