@@ -149,9 +149,9 @@ class FormManager(object):
     @staticmethod
     def _get_default_actions():
         return [
-                {"name": "create", "method": "form.createFromForm"},
-                {"name": "delete", "method": "form.delete", "params": ["uuid"]},
-                {"name": "edit", "method": "form.editFromForm"}
+                #{"name": "create", "method": "form.createFromForm"},
+                #{"name": "delete", "method": "form.delete", "params": ["uuid"]},
+                {"name": "guardar", "method": "form.editFromForm"}
             ]
 
 class Form(object):
