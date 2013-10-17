@@ -1,5 +1,5 @@
 {
-  "name": "Tareas",
+  "name": "Tasks",
   "html": [
     {
       "name" : "title",
@@ -117,7 +117,10 @@
       "name": "name",
       "caption": "Nombre",
       "class": "input-large",
-      "type": "text"
+      "type": "text",
+      "validations" : {
+        "required" : true
+      }
     },
     {
       "name": "descripcion",
