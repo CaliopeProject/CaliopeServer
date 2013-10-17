@@ -775,13 +775,13 @@
         ]
       },
         {
-            "name": "zonas_recreativas",
+            "name": "zonas_inst_recreativas",
             "caption": "zonas verdes recreativas",
             "type": "number",
             "class": "input-medium"
         },
         {
-            "name": "servicios_comunales",
+            "name": "servicios_inst_comunales",
             "caption": "servicios comunales",
             "type": "number",
             "class": "input-medium"
