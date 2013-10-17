@@ -22,6 +22,16 @@
             ]
         },
         {
+            "name": "separador",
+            "type": "div",
+            "html": [
+                {
+                    "type": "h4",
+                    "html": ""
+                }
+            ]
+        },
+        {
             "name": "subTitleDatBasPro",
             "type": "div",
             "html": [
@@ -79,7 +89,6 @@
             "name": "direccion_fuente",
             "caption": "Dirección (Dirección UACED - Fuente: FMI)",
             "type": "textarea",
-            "rows": "2",
             "cols": "70",
             "validations": {}
         },
@@ -156,7 +165,6 @@
             "name": "direccion_notificacion",
             "caption": "Dirección de notificación",
             "type": "textarea",
-            "rows": "2",
             "cols": "70"
         },
         {
@@ -187,14 +195,12 @@
         {
             "name": "titulo_adquisicion",
             "caption": "Título de adquisición",
-            "type": "textarea",
-            "class": "input-xlarge"
+            "type": "textarea"
         },
         {
             "name": "cabida_superficiaria",
             "caption": "Cabida superficiaria",
-            "type": "textarea",
-            "class": "input-xlarge"
+            "type": "textarea"
         },
         {
             "name": "linderos",
@@ -221,9 +227,8 @@
         },
         {
             "name": "incoroporacion_topografica_desc",
-            "caption": "  ",
-            "type": "textarea",
-            "class": "input-xxlarge"
+            "caption": "Incoroporacion topografica desc",
+            "type": "textarea"
         },
         {
             "name": "registro_topografico",
@@ -238,7 +243,6 @@
             "name": "tradicion",
             "caption": "Tradición",
             "type": "textarea",
-            "class": "input-xxlarge",
             "rows": 8
         },
         {
@@ -270,26 +274,22 @@
         {
             "name": "area_registral",
             "caption": "Área registral",
-            "type": "number",
-            "class": "input-medium"
+            "type": "number"
         },
         {
             "name": "area_catastral",
             "caption": "Area catastral",
-            "type": "number",
-            "class": "input-medium"
+            "type": "number"
         },
         {
             "name": "area_topografica",
             "caption": "Area topográfica",
-            "type": "number",
-            "class": "input-medium"
+            "type": "number"
         },
         {
             "name": "observaciones_componente_espacial",
             "caption": "Observaciones y Recomendaciones",
             "type": "textarea",
-            "class": "input-xxlarge",
             "rows": 8
         },
         {
@@ -301,16 +301,6 @@
             "name": "mapa_tradicion_predial",
             "caption": "Mapa De Tradición Predial",
             "type": "attachment"
-        },
-        {
-            "name": "profesional",
-            "caption": "Profesional",
-            "type": "text"
-        },
-        {
-            "name": "tarjeta_professional",
-            "caption": "Tarjeta Profesional",
-            "type": "text"
         },
         {
             "name": "estado_ficha",
@@ -329,211 +319,6 @@
         {
             "name": "Crear",
             "method": "tasks.create"
-        }
-    ],
-    "layout": [
-        {
-            "columns": [
-                {
-                    "class": "page-header",
-                    "elements": [
-                        "title"
-                    ]
-                }
-            ]
-        },
-        {
-            "columns": [
-                {
-                    "class": "widget-header",
-                    "elements": [
-                        "subTitleInfoBas"
-                    ]
-                }
-            ]
-        },
-        {
-            "columns": [
-                {
-                    "class": "span6",
-                    "elements": [
-                        "identificador_predial",
-                        "direccion_fuente"
-                    ]
-                },
-                {
-                    "class": "span6",
-                    "elements": [
-                        "chip"
-                    ]
-                }
-            ]
-        },
-        {
-            "columns": [
-                {
-                    "class": "widget-header",
-                    "elements": [
-                        "subTitleDatBasPro"
-                    ]
-                }
-            ]
-        },
-        {
-            "columns": [
-                {
-                    "class": "span6",
-                    "elements": [
-                        "tipo_propietario",
-                        "propietario_actual",
-                        "direccion_notificacion"
-                    ]
-                },
-                {
-                    "class": "span6",
-                    "elements": [
-                        "tipo_persona",
-                        "tipo_doc_propietario",
-                        "telefono"
-                    ]
-                }
-            ]
-        },
-        {
-            "columns": [
-                {
-                    "class": "widget-header",
-                    "elements": [
-                        "subTitleInfoGenPredio"
-                    ]
-                }
-            ]
-        },
-        {
-            "columns": [
-                {
-                    "class": "span6",
-                    "elements": [
-                        "sector_predio",
-                        "matricula_inmobiliaria",
-                        "titulo_adquisicion"
-                    ]
-                },
-                {
-                    "class": "span6",
-                    "elements": [
-                        "cedula_catastral",
-                        "cabida_superficiaria"
-                    ]
-                }
-            ]
-        },
-        {
-            "columns": [
-                {
-                    "class": "span7",
-                    "elements": [
-                        "linderos"
-                    ]
-                },
-                {
-                    "class": "span5",
-                    "elements": [
-                        "tipo_linderos"
-                    ]
-                }
-            ]
-        },
-        {
-            "columns": [
-                {
-                    "class": "span3",
-                    "elements": [
-                        "incorporacion_topografica",
-                        "registro_topografico"
-                    ]
-                },
-                {
-                    "class": "span9",
-                    "elements": [
-                        "incoroporacion_topografica_desc"
-                    ]
-                }
-            ]
-        },
-        {
-            "columns": [
-                {
-                    "class": "span12",
-                    "elements": [
-                        "tradicion",
-                        "vigencia_informacion"
-                    ]
-                }
-            ]
-        },
-        {
-            "columns": [
-                {
-                    "class": "span3",
-                    "elements": [
-                        "componente_espacial"
-                    ]
-                },
-                {
-                    "class": "span3",
-                    "elements": [
-                        "componente_espacial_registral"
-                    ]
-                },
-                {
-                    "class": "span3",
-                    "elements": [
-                        "componente_espacial_catastral"
-                    ]
-                },
-                {
-                    "class": "span3",
-                    "elements": [
-                        "componente_espacial_topografica"
-                    ]
-                }
-            ]
-        },
-        {
-            "columns": [
-                {
-                    "class": "span4",
-                    "elements": [
-                        "area_registral"
-                    ]
-                },
-                {
-                    "class": "span4",
-                    "elements": [
-                        "area_catastral"
-                    ]
-                },
-                {
-                    "class": "span4",
-                    "elements": [
-                        "area_topografica"
-                    ]
-                }
-            ]
-        },
-        {
-            "columns": [
-                {
-                    "class": "span12",
-                    "elements": [
-                        "observaciones_componente_espacial",
-                        "elaboro",
-                        "informacion_unica_predial",
-                        "mapa_tradicion_predial"
-                    ]
-                }
-            ]
         }
     ]
 }
