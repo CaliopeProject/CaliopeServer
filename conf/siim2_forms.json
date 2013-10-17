@@ -41,13 +41,15 @@
             "package": "cid.siim2forms.ficha_prejuridica",
             "module": "FichaPrejuridica",
             "label": "Ficha prejurídica",
-            "html": "templates/ficha_prejuridica_html.json"
+            "html": "templates/ficha_prejuridica_html.json",
+            "layout": "templates/ficha_prejuridica_layout.json"
         },
         {
             "package": "cid.siim2forms.ficha_urbanistica",
             "module": "FichaUrbanistica",
             "label": "Ficha urbanistica",
-            "html": "templates/ficha_urbanistica_html.json"
+            "html": "templates/ficha_urbanistica_html.json",
+            "layout": "templates/ficha_urbanistica_layout.json"
         },
         {
             "package": "cid.siim2forms.viabilidad_normativa",
