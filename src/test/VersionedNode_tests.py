@@ -27,6 +27,7 @@ import hashlib
 
 from py2neo import neo4j
 from cid.core.entities import VersionedNode, DoesNotExist, UniqueProperty, CaliopeUser, CaliopeGroup, CaliopeJSONProperty
+from neomodel import StringProperty, RelationshipFrom, ZeroOrOne
 
 
 class TestVersionedNodeStorage(unittest.TestCase):
@@ -140,6 +141,65 @@ class TestVersionedNodeStorage(unittest.TestCase):
         print node.uuid, node.timestamp, node.foo
         node.update_field("foo", "bar", field_id="foo")
         assert node.foo["foo"] == "bar"
+        self.printLine()
+
+    def test_Versioned_Format_Relationships_OnlyOne(self):
+	class Person(VersionedNode):
+	    name = StringProperty()
+	    age = StringProperty()
+
+	class Car(VersionedNode):
+	    plate = StringProperty()
+	    owner = RelationshipFrom(Person, 'OWNER', ZeroOrOne)
+
+        self.printLine()
+
+	person = Person(name='Bob')
+	person.age = 10
+	person.save()
+
+	car = Car(plate='7777')
+	car.save()
+
+        # Test empty relationship
+        assert {} == car._format_relationships('owner')
+        # Create the relationship with attributes
+	car.owner.connect(person, {'km' : 0, 'brand' : 'BMW'})
+        #Expected value for relationships (with different UID):
+        #{'Person': {u'21b04fc6-3e97-4584-926a-28497d997447': {u'brand': u'BMW', u'km': 0}}}
+        relationships = car._format_relationships('owner')
+        assert 'Person' in relationships
+        assert len(relationships['Person']) == 1
+        assert person.uuid in relationships['Person']
+        assert relationships['Person'][person.uuid] == {u'brand': u'BMW', u'km': 0}
+        self.printLine()
+
+    def test_Versioned_Format_Relationships_Many(self):
+	class Car(VersionedNode):
+	    plate = StringProperty()
+
+        class ParkingLot(VersionedNode):
+	    parked = RelationshipFrom(Car, 'PARKED')
+
+        self.printLine()
+
+        car_uids = []
+        parking_lot = ParkingLot()
+        parking_lot.save()
+        for i in range(5):
+	  car = Car(plate=str(i))
+	  car.save()
+          parking_lot.parked.connect(car, {'i' : i})
+          car_uids.append(car.uuid)
+
+        relationships = parking_lot._format_relationships('parked')
+
+        assert 'Car' in relationships
+        assert len(car_uids) == len(relationships['Car'])
+        for i, uuid in enumerate(car_uids):
+          assert uuid in relationships['Car']
+          assert {'i' : i} == relationships['Car'][uuid]
+
         self.printLine()
 
     def test_CaliopeUser_creation(self):
