@@ -184,7 +184,7 @@ class TestVersionedNodeStorage(unittest.TestCase):
                 assert g1.save() is not None
                 g1.delete()
             except UniqueProperty:
-                assert True
+                pass
         self.printLine()
 
     def test_CaliopeGroup_connectOne(self):
