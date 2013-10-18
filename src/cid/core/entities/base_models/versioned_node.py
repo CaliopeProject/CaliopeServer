@@ -25,10 +25,20 @@ Copyright (C) 2013  Fundación Correlibre
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from neomodel import StringProperty, DateTimeProperty, RelationshipTo, ZeroOrOne, One, DoesNotExist, RelationshipDefinition, RelationshipManager, RelationshipFrom
+from neomodel import (StringProperty,
+                      DateTimeProperty,
+                      RelationshipTo,
+                      ZeroOrOne,
+                      One,
+                      DoesNotExist,
+                      RelationshipDefinition,
+                      RelationshipManager,
+                      RelationshipFrom)
+
 from neomodel.contrib import SemiStructuredNode
 
 from cid.core.utils import uuidGenerator, timeStampGenerator
+
 from caliope_properties import CaliopeJSONProperty
 
 
@@ -58,8 +68,8 @@ class VersionedNode(SemiStructuredNode):
         super(VersionedNode, self).__init__(*args, **kwargs)
 
     def _attributes_to_diff(self):
-        return [a for a in self.__dict__ if a[:1] != '_' \
-            and a not in self.__special_fields__]
+        return [a for a in self.__dict__ if a[:1] != '_'
+        and a not in self.__special_fields__]
 
     def _should_save_history(self, stored_node):
         for field in set(self._attributes_to_diff() +
@@ -100,7 +110,7 @@ class VersionedNode(SemiStructuredNode):
         return self.__properties__
 
     def _get_data(self):
-        return {k: self._format_data(v) \
+        return {k: self._format_data(v)
                 for k, v in self._get_node_data().iteritems()}
 
     def _format_data(self, value):
@@ -112,28 +122,28 @@ class VersionedNode(SemiStructuredNode):
 
     def _format_relationships(self, rel_name):
         """
-        Format relationship in JSON frendly way.
+        Format relationship in JSON friendly way.
         :param rel_name: The name of the relationship to be parsed
         :return: A relationship in json friendly dict, example
-		{
-		  'class_1': {'uid_1': {'a': 1, 'b': 2},
-			      'uid_2': {'a': 2, 'b': 3}
-		             },
-		  'class_2': {'uid_3': {'a': 1, 'b': 2},
-			      'uid_4': {'a': 2, 'b': 3}
-		             },
+        {
+            'class_1': {'uuid_1': {'property_a': 1, 'property_b': 2},
+                        'uuid_2': {'property_a': 2, 'property_b': 3}
+                        },
+            'class_2': {'uuid_3': {'property_a': 1, 'property_b': 2},
+                        'uuid_4': {'property_a': 2, 'property_b': 3}
+                        },
                 }
         """
         rv = {}
         if self.__node__ and hasattr(self, rel_name):
             relations = getattr(self, rel_name)
             assert issubclass(relations.__class__, RelationshipManager)
-	    for target in relations.all():
-	        target_class_name = target.__class__.__name__
-	        if not target_class_name in rv:
+            for target in relations.all():
+                target_class_name = target.__class__.__name__
+                if not target_class_name in rv:
                     rv[target_class_name] = {}
-	        rel_inst = relations.relationship(target)
-	        rv[target_class_name][target.uuid] = dict(rel_inst._properties)
+                rel_inst = relations.relationship(target)
+                rv[target_class_name][target.uuid] = dict(rel_inst._properties)
         return rv
 
     def _get_relationships(self):
@@ -152,6 +162,7 @@ class VersionedNode(SemiStructuredNode):
         return rv
 
     def update_relationship(self, rel_name, new_rel_dict):
+        #: TODO: Review
 
         def dict_diff(dict_a, dict_b):
             """
@@ -174,8 +185,16 @@ class VersionedNode(SemiStructuredNode):
         for key_in_both in dict_intersection(current_rel_dict, new_rel_dict):
             pass
 
-
     def save(self, skip_difference=False):
+        """
+        This will save a copy of the previous version of the new, and update
+        the changes.
+
+        :param skip_difference: True when saving a previous version, should
+                                not be modified unless you know what you're
+                                doing.
+        :return: The saved object.
+        """
         if not skip_difference:
             # TODO(nel): Don't use an exception here.
             try:
@@ -186,7 +205,8 @@ class VersionedNode(SemiStructuredNode):
                 # The following operations should be atomic.
                 copy = stored_node.__class__()
                 for field in stored_node._attributes_to_diff():
-                    if not isinstance(getattr(stored_node, field), RelationshipManager):
+                    if not isinstance(getattr(stored_node, field),
+                                      RelationshipManager):
                         setattr(copy, field, getattr(stored_node, field))
                 copy.save(skip_difference=True)
                 if len(self.parent):
@@ -206,15 +226,17 @@ class VersionedNode(SemiStructuredNode):
         Also, allows to update specific index within lists or keys within dicts.
         If the field_name is of type `list` the field_id should be the index to
         be update, if index is -1 a new value will be appended at the end of the
-        list. In case the index is not a valid index, will raise a BaseException.
+        list. In case the index is not a valid index, will raise an exception.
         If the type of field_name is `dict` the field_id will be the key,
         if the key already exists will be updated if does not exists will be
         create.
 
+        If field_name is not a property or attribute, raise an exception.
+
         :param field_name: Name of the field to update
-        :param new_value: Value that need to be saved
-        :param field_id: Optional: If is a list the index to be updated -1 to add a new item, if a
-                        dict the key to be updated or added.
+        :param new_value: Value that needs to be saved or updated
+        :param field_id: <Optional>: If is a list the index to be updated -1 to
+                        add a new item, if a dict the key to be updated or added.
         """
 
         if field_name in self._attributes_to_diff() or \
@@ -227,8 +249,10 @@ class VersionedNode(SemiStructuredNode):
                     elif len(curr_value) >= field_id:
                         curr_value[field_id] = new_value
                     else:
-                        raise IndexError("Index does {} not exists in {}".format(field_id, field_name))
-                elif isinstance(curr_value, dict) and isinstance(field_id, (str, unicode)):
+                        raise IndexError("Index does {} not exists in {}"
+                        .format(field_id, field_name))
+                elif isinstance(curr_value, dict) \
+                    and isinstance(field_id, (str, unicode)):
                     curr_value[field_id] = new_value
                 elif isinstance(curr_value, CaliopeJSONProperty):
                     #: Empty dict property
@@ -236,6 +260,10 @@ class VersionedNode(SemiStructuredNode):
             else:
                 setattr(self, field_name, new_value)
             self.save()
+        else:
+            raise BaseException("{} not a property or attribute"
+            .format(field_name))
+
 
 """
 class Person(VersionedNode):
