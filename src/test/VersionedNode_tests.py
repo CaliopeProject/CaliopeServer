@@ -37,7 +37,6 @@ class TestVersionedNodeStorage(unittest.TestCase):
         print "-" * 80
 
     def test_VersionedNode_init_without_args(self):
-        print "Test#1"
         self.printLine()
         node = VersionedNode()
         node.save()
@@ -47,7 +46,6 @@ class TestVersionedNodeStorage(unittest.TestCase):
         self.printLine()
 
     def test_VersionedNode_init_with_args(self):
-        print "Test#2"
         self.printLine()
         props = {'foo': 'bar', 'other': 2}
         node = VersionedNode(**props)
@@ -58,7 +56,6 @@ class TestVersionedNodeStorage(unittest.TestCase):
         self.printLine()
 
     def test_VersionedNode_push(self):
-        print "Test#3"
         self.printLine()
         props = {'foo': 'bar', 'other': 2}
         node = VersionedNode.push(**props)
@@ -67,7 +64,6 @@ class TestVersionedNodeStorage(unittest.TestCase):
         self.printLine()
 
     def test_VersionedNode_change(self):
-        print "Test#4"
         self.printLine()
         props = {'foo': 'bar', 'other': 2}
         node = VersionedNode.push(**props)
@@ -79,7 +75,6 @@ class TestVersionedNodeStorage(unittest.TestCase):
         self.printLine()
 
     def test_VersionedNode_parent(self):
-        print "Test#5"
         self.printLine()
         props = {'foo': 'bar', 'other': 2}
         node = VersionedNode.push(**props)
@@ -148,7 +143,6 @@ class TestVersionedNodeStorage(unittest.TestCase):
         self.printLine()
 
     def test_CaliopeUser_creation(self):
-        print "Test#6"
         self.printLine()
         u1 = CaliopeUser()
         u1.username = 'userTmp'
@@ -160,7 +154,6 @@ class TestVersionedNodeStorage(unittest.TestCase):
         self.printLine()
 
     def test_CaliopeUser_creationMany(self):
-        print "Test#7"
         self.printLine()
         for i in xrange(20):
             u1 = CaliopeUser()
@@ -173,7 +166,6 @@ class TestVersionedNodeStorage(unittest.TestCase):
         self.printLine()
 
     def test_CaliopeGroup_creation(self):
-        print "Test#8"
         self.printLine()
         g1 = CaliopeGroup()
         g1.name = 'GroupTmp'
@@ -183,7 +175,6 @@ class TestVersionedNodeStorage(unittest.TestCase):
         self.printLine()
 
     def test_CaliopeGroup_creationMany(self):
-        print "Test#9"
         self.printLine()
         for i in xrange(1, 5):
             g1 = CaliopeGroup()
@@ -197,7 +188,6 @@ class TestVersionedNodeStorage(unittest.TestCase):
         self.printLine()
 
     def test_CaliopeGroup_connectOne(self):
-        print "Test#10"
         self.printLine()
         try:
             u1 = CaliopeUser()
@@ -222,7 +212,6 @@ class TestVersionedNodeStorage(unittest.TestCase):
         self.printLine()
 
     def test_CaliopeStorage_defaultUserGroupOne(self):
-        print "Test#11"
         self.printLine()
         try:
             u1 = CaliopeUser()
@@ -252,7 +241,6 @@ class TestVersionedNodeStorage(unittest.TestCase):
         self.printLine()
 
     def test_CaliopeStorage_defaultUserGroupMany(self):
-        print "Test#12"
         self.printLine()
         try:
             for i in xrange(1, 5):
