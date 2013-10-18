@@ -26,7 +26,7 @@ import unittest
 import hashlib
 
 from py2neo import neo4j
-from cid.core.entities import VersionedNode, DoesNotExist, UniqueProperty, CaliopeUser, CaliopeGroup
+from cid.core.entities import VersionedNode, DoesNotExist, UniqueProperty, CaliopeUser, CaliopeGroup, CaliopeJSONProperty
 
 
 class TestVersionedNodeStorage(unittest.TestCase):
@@ -90,6 +90,61 @@ class TestVersionedNodeStorage(unittest.TestCase):
         node_prev = node.parent.single()
         assert node_prev.foo == props['foo']
         assert node_prev.other == props['other']
+        self.printLine()
+
+    def test_versionednode_update_field(self):
+        self.printLine()
+        node = VersionedNode()
+        node.foo = 'bar'
+        node.save()
+        print node.uuid, node.timestamp, node.foo
+        node.update_field("foo", "new_bar")
+        assert node.foo == "new_bar"
+        self.printLine()
+
+    def test_VersionedNode_update_field_list_append(self):
+        self.printLine()
+        node = VersionedNode()
+        node.foo = ['item0', "item1"]
+        node.save()
+        print node.uuid, node.timestamp, node.foo
+        node.update_field("foo", "bar", 0)
+        assert node.foo[0] == "bar"
+        assert node.foo[1] == "item1"
+        self.printLine()
+
+    def test_VersionedNode_update_field_list_update(self):
+        self.printLine()
+        node = VersionedNode()
+        node.foo = ['item0', "item1"]
+        node.save()
+        print node.uuid, node.timestamp, node.foo
+        node.update_field("foo", "bar", -1)
+        assert node.foo[2] == "bar"
+        assert node.foo[0] == "item0"
+        assert node.foo[1] == "item1"
+        self.printLine()
+
+
+    def test_VersionedNode_update_field_dict_update(self):
+        self.printLine()
+        setattr(VersionedNode, "foo", CaliopeJSONProperty())
+        node = VersionedNode()
+        node.foo = {"foo": "bar", "a": 1}
+        node.save()
+        print node.uuid, node.timestamp, node.foo
+        node.update_field("foo", "new_bar", "foo")
+        assert node.foo["foo"] == "new_bar"
+        self.printLine()
+
+    def test_VersionedNode_update_field_dict_append(self):
+        self.printLine()
+        setattr(VersionedNode, "foo", CaliopeJSONProperty())
+        node = VersionedNode()
+        node.save()
+        print node.uuid, node.timestamp, node.foo
+        node.update_field("foo", "bar", field_id="foo")
+        assert node.foo["foo"] == "bar"
         self.printLine()
 
     def test_CaliopeUser_creation(self):
