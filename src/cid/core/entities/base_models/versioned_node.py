@@ -111,43 +111,28 @@ class VersionedNode(SemiStructuredNode):
 
     def _format_relationships(self, rel_name):
         """
-        Format in a json friendly way a relationship, including direction, and target.
-        Target contains the class, the properties and the uuid of the object
-
+        Format relationship in JSON frendly way.
         :param rel_name: The name of the relationship to be parsed
         :return: A relationship in json friendly dict, example
-        `{'direction':0,
-         'target':[
-                    {'entity':'class name',
-                     'entity_data': {'uuid': 'UUID4', 'other':'some'},
-                     'properties':{'category':'prop1', 'other_prop':'foo'}
-                    },
-                    ...
-                  ]
-        }`
+		{
+		  'class_1': {'uid_1': {'a': 1, 'b': 2},
+			      'uid_2': {'a': 2, 'b': 3}
+		             },
+		  'class_2': {'uid_3': {'a': 1, 'b': 2},
+			      'uid_4': {'a': 2, 'b': 3}
+		             },
+                }
         """
-        rel = getattr(self, rel_name)
-        target = []
-        if self.__node__ is not None:
-            for rel_target in rel.all():
-                rel_inst = rel.relationship(rel_target)  # Returns relationship instance.
-                target.append({
-                    'entity': repr(rel_target.__class__),
-                    'properties': dict(rel_inst._properties),
-                    'entity_data': {'uuid': rel_target.uuid},
-                })
-                # If there is no target to return, return an empty target with the entity class name.
-        if len(target) == 0:
-            for t_name, t_class in rel.target_map.items():
-                target.append({
-                    'entity': repr(t_class),
-                    'properties': {},
-                    'entity_data': {},
-                })
-        rv = {
-            'target': target,
-            'direction': rel.definition['direction'],
-        }
+        rv = {}
+        if self.__node__ and hasattr(self, rel_name):
+            relations = getattr(self, rel_name)
+            assert issubclass(relations.__class__, RelationshipManager)
+	    for target in relations.all():
+	        target_class_name = target.__class__.__name__
+	        if not target_class_name in rv:
+                    rv[target_class_name] = {}
+	        rel_inst = relations.relationship(target)
+	        rv[target_class_name][target.uuid] = dict(rel_inst._properties)
         return rv
 
     def _get_relationships(self):
@@ -189,7 +174,6 @@ class VersionedNode(SemiStructuredNode):
             pass
 
 
-
     def save(self, skip_difference=False):
         if not skip_difference:
             # TODO(nel): Don't use an exception here.
@@ -213,12 +197,10 @@ class VersionedNode(SemiStructuredNode):
         super(VersionedNode, self).save()
         return self
 
-
 """
 class Person(VersionedNode):
     name = StringProperty()
     age = StringProperty()
-    #car = RelationshipTo(Car, 'CAR')
 
 class Car(VersionedNode):
     plate = StringProperty()
@@ -227,15 +209,10 @@ class Car(VersionedNode):
 person = Person(name='Bob')
 person.age = 10
 person.save()
-
-print  person.serialize()
-
 car = Car(plate='7777')
 car.save()
-car.owner.connect(person)
+car.owner.connect(person, {'km' : 0, 'brand' : 'BMW'})
 
-print car.serialize()
-
-import sys
-sys.exit(1)
+print '_format_relationships', car._format_relationships('owner')
+print '_get_relationships', car._get_relationships()
 """
