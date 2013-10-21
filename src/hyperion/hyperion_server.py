@@ -127,10 +127,7 @@ def configure_server_and_app(server_config_file):
     else:
         #: TODO: load default storage if not found in config
         pass
-    if 'cache_enabled' in config['server']:
-        app.cache_enabled = True if config['server']['cache_enabled'] == 'True' else False
-    else:
-        app.cache_enabled = False
+
     if 'debug' in config['server']:
         app.debug = True if config['server']['debug'] == 'True' else False
     else:

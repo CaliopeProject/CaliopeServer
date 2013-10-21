@@ -53,7 +53,7 @@ class TaskServices(CaliopeEntityService):
         results, metadata = a_node.cypher("START user=node(*)"
                                           "MATCH (user)-[r:HOLDER]-(tdc)-[e:CURRENT]-(t)"
                                           "WHERE has(r.category) "
-                                          "return t, r.category")
+                                          "return distinct t")
         task_list = []
         for row in results:
             task_class = Task().__class__
@@ -128,16 +128,18 @@ class TaskServices(CaliopeEntityService):
             task_controller = TaskController()
 
         for target in data['target']['target']:
-            form = target['entity']
-            res = FormManager.create_form_from_id(form, None)
-            if res:
-                target['entity_data'] = res
+            if 'entity' in target:
+                if 'uuid' in target['entity_data']:
+                    res = target['entity_data']
+                else:
+                    form = target['entity']
+                    res = FormManager.create_form_from_id(form, None)
+                if res:
+                    target['entity_data'] = res
 
         task_controller.set_data(**data)
         task_controller.set_owner()
         rv = task_controller.get_data()
-
-
 
         return rv
 
@@ -232,9 +234,11 @@ class TaskController(CaliopeEntityController):
             raise RPCError('Template error')
 
     def set_data(self, **data):
-
-        rels = []
-        holders = data['holders'] if 'holders' in data else [CaliopeUser.index.get(username=LoginManager().get_user())]
+        rels = list()
+        if 'holders' in data and 'target' in data['holders'] and len(data['holders']['target']) > 0:
+            holders = data['holders']
+        else:
+            holders = [CaliopeUser.index.get(username=LoginManager().get_user()).username]
 
         for rel in Task.__entity_data_type__._get_class_relationships():
             if rel[0] in data:

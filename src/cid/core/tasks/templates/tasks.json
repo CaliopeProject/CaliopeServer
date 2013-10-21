@@ -1,5 +1,5 @@
 {
-  "name": "Tareas",
+  "name": "Tasks",
   "html": [
     {
       "name" : "title",
@@ -45,10 +45,18 @@
             "properties": {
             },
             "entity_data" : {
-                "uuid"  : "{{target.uuid}}"
+                "uuid"  : "{{target}}"
             }
         }
       }
+    },
+    {
+      "name": "subtasks",
+      "type": "hidden"
+    },
+    {
+      "name": "comments",
+      "type": "hidden"
     },
     {
       "name": "formtask",
@@ -59,6 +67,9 @@
         "method"        : "form.getForms",
         "field-value"   : "formId",
         "field-desc"    : "label"
+      },
+      "validation" : {
+        "required" : true
       },
       "options" : {
         "predios" : "Selección de Predios",
@@ -106,7 +117,10 @@
       "name": "name",
       "caption": "Nombre",
       "class": "input-large",
-      "type": "text"
+      "type": "text",
+      "validations" : {
+        "required" : true
+      }
     },
     {
       "name": "descripcion",
@@ -126,11 +140,11 @@
   ],
   "actions" : [
     {
-      "name": "create",
+      "name": "Crear",
       "method":"tasks.create"
     },
     {
-      "name": "edit",
+      "name": "Editar",
       "method":"tasks.edit"
     }
   ],
@@ -156,7 +170,7 @@
       "columns" : [
         {
           "class": "span6",
-          "elements"  : ["name" ,"descripcion", "category"]
+          "elements"  : ["name" ,"descripcion", "category", "comments", "subtasks"]
         },
         {
           "class": "span6",

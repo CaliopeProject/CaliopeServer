@@ -18,7 +18,7 @@
         "type": "text",
         "validations" : {
           "required" : true,
-          "minlength" : "10"
+          "minlength" : "3"
         }
       },
       {
@@ -30,37 +30,36 @@
         "name": "locality",
         "caption": "Localidad",
         "type": "select",
-        "options": {
-          "antonio_nar" : "Antonio Nariño",
-          "barrios_unidos"  : "Barrios Unidos",
-          "bosa"  : "Bosa",
-          "chapinero": "Chapinero",
-          "ciudad_bol": "Ciudad Bolivar",
-          "engativa": "Engativá",
-          "fontibon": "Fontibón",
-          "kennedy" : "Kennedy",
-          "la_candelaria" : "La Candelaria",
-          "los_martires" : "Los Mártires",
-          "puente_aranda" : "Puente Aranda",
-          "rafael_uribe"  : "Rafael Uribe Uribe",
-          "san_cristobal" : "San Cristóbal",
-          "santa_fe" : "Santa Fe",
-          "suba"  : "Suba",
-          "sumapaz"  : "Sumapaz",
-          "teusaquillo"  : "Teusaquillo",
-          "tunjuelito"  : "Tunjuelito",
-          "usaquen": "Usaquén",
-          "usme": "Usme"
-        }
+        "options": [
+          {"html":"antonio_nar","value":"Antonio Nariño"},
+          {"html":"barrios_unidos","value":"Barrios Unidos"},
+          {"html":"chapinero","value":"Chapinero"},
+          {"html":"ciudad_bol","value":"Ciudad Bolivar"},
+          {"html":"engativa","value":"Engativá"},
+          {"html":"fontibon","value":"Fontibón"},
+          {"html":"kennedy","value":"Kennedy"},
+          {"html":"la_candelaria","value":"La Candelaria"},
+          {"html":"los_martires","value":"Los Mártires"},
+          {"html":"puente_aranda","value":"Puente Aranda"},
+          {"html":"rafael_uribe","value":"Rafael Uribe Uribe"},
+          {"html":"san_cristobal","value":"San Cristóbal"},
+          {"html":"santa_fe","value":"Santa Fe"},
+          {"html":"suba","value":"Suba"},
+          {"html":"sumapaz","value":"Sumapaz"},
+          {"html":"teusaquillo","value":"Teusaquillo"},
+          {"html":"tunjuelito","value":"Tunjuelito"},
+          {"html":"usaquen","value":"Usaquén"},
+          {"html":"usme","value":"Usme"}
+        ]
       },
       {
         "name": "project_type",
         "caption": "Tipo de Proyecto",
         "type": "select",
-        "options": {
-          "py_pq_escala": "Proyecto Pequeña Escala",
-          "py_gr_escala": "Proyecto Gran Escala"
-        }
+        "options": [
+          {"html":"py_gr_escala","value":"Proyecto Gran Escala"},
+          {"html":"py_pq_escala","value":"Proyecto Pequeña Escala"}
+        ]
       },
       {
         "name": "profit_center",
@@ -75,25 +74,7 @@
         "name": "record_document_creation",
         "caption": "Resolución Anuncio del Proyecto",
         "type": "attachment"
-      },
-        {
-            "name" : "areas",
-            "caption"   : "Areas",
-            "type"      : "cw-grid",
-            "class"     : "input-xxlarge height-1",
-            "cw-grid-options" : {
-                "columns"  : [
-                    {
-                        "name":"tipo",
-                        "caption":"Tipo Area"
-                    },
-                    {
-                        "name":"valor",
-                        "caption":"Valor"
-                    }
-                ]
-            }
-        }
+      }
     ],
   "actions" : [
       {
@@ -101,7 +82,7 @@
           "method":"projects.create"
       },
       {
-          "name": "Editar",
+          "name": "Actualizar",
           "method":"projects.edit"
       }
   ],
@@ -133,10 +114,6 @@
         {
           "class": "span6",
           "elements"  : ["record_document_creation"]
-        },
-        {
-          "class": "span6",
-          "elements"  : ["areas"]
         }
       ]
     }

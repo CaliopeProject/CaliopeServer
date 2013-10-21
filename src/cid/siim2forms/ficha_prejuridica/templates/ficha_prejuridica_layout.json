@@ -1,0 +1,142 @@
+{
+    "layout": [
+        {
+            "columns": [
+                {
+                    "class": "page-header",
+                    "elements": [
+                        "title"
+                    ]
+                }
+            ]
+        },
+        {
+            "columns": [
+                {
+                    "class":"span12 widget-header widget-header-flat widget-header-small",
+                    "elements": [
+                        "subTitleInfoBas"
+                    ]
+                }
+            ]
+        },
+        {
+            "columns": [
+                {
+                    "class": "span4",
+                    "elements": [
+                        "chip"
+                    ]
+                },
+                {
+                    "class": "span4",
+                    "elements": [
+                        "direccion_fuente"
+                    ]
+                },
+                {
+                    "class": "span4",
+                    "elements": [
+                        "identificador_predial"
+                    ]
+                }
+            ]
+        },
+        {
+            "columns": [
+                {
+                    "class":"span12 widget-header widget-header-flat widget-header-small",
+                    "elements": [
+                        "subTitleDatBasPro"
+                    ]
+                }
+            ]
+        },
+        {
+            "columns": [
+                {
+                    "class": "span6",
+                    "elements": [
+                        "tipo_persona"
+                    ]
+                },
+                {
+                    "class": "span6",
+                    "elements": [
+                        "tipo_propietario"
+                    ]
+                }
+
+            ]
+        },
+        {
+            "columns": [
+                {
+                    "class":"span12 widget-header widget-header-flat widget-header-small",
+                    "elements": [
+                        "separador"
+                    ]
+                }
+            ]
+        },
+        {
+            "columns": [
+                {
+                    "class": "span3",
+                    "elements": [
+                        "propietario_actual","telefono","cedula_catastral","matricula_inmobiliaria","incorporacion_topografica","vigenciaInformacion", "area_topografica", "estado_ficha"
+
+                    ]
+                },
+                {
+                    "class": "span3",
+                    "elements": [
+                        "doc_propietario", "predio","registro_topografico", "incoroporacion_topografica_desc", "componente_espacial_topografica","observaciones_componente_espacial"
+
+                    ]
+                },
+                {
+                    "class": "span3",
+                    "elements": [
+                        "cabida_superficiaria","acto_traslativo","sector_predio","titulo_adquisicion", "tradicion","componente_espacial_registral"
+                    ]
+                },
+                {
+                    "class": "span3",
+                    "elements": [
+                        "direccion_notificacion", "linderos", "tipo_linderos","vigenciaInformacion","area_catastral","componente_espacial_catastral", "area_registral"
+
+
+                    ]
+                }
+            ]
+        },
+        {
+            "columns": [
+                {
+                    "class":"span12 widget-header widget-header-flat widget-header-small",
+                    "elements": [
+                        "separador"
+                    ]
+                }
+            ]
+        },
+        {
+            "columns": [
+                {
+                    "class": "span5",
+                    "elements": [
+                      "mapa_tradicion_predial"
+                    ]
+                },
+                {
+                    "class": "span5",
+                    "elements": [
+                      "informacion_unica_predial"
+                    ]
+                }
+
+            ]
+        }
+    ]
+}

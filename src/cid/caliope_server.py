@@ -146,6 +146,11 @@ def configure_server_and_app(server_config_file):
     else:
         app.config['FORM_MODULES'] = None
 
+    if 'cache_enabled' in config['server']:
+        app.config['cache_enabled'] = config['server']['cache_enabled'].lower() == 'true'
+    else:
+        app.config['cache_enabled'] = False
+
     #: Load app config
     if 'app' in config:
         if 'modules' in config['app']:
@@ -158,11 +163,6 @@ def configure_server_and_app(server_config_file):
     else:
         #: TODO: load default storage if not found in config
         pass
-
-    if 'cache_enabled' in config['server']:
-        app.cache_enabled = config['server']['cache_enabled'].lower() == 'true'
-    else:
-        app.cache_enabled = False
 
     if 'debug' in config['server']:
         app.debug = config['server']['debug'].lower() == 'true'

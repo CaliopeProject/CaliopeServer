@@ -26,33 +26,30 @@ import sys
 import getopt
 from simplekv.memory.redisstore import RedisStore
 from os import path
-from pyinotify import (WatchManager, Notifier, ProcessEvent, IN_ACCESS,IN_CREATE, IN_MODIFY, IN_DELETE)
+from pyinotify import (WatchManager, Notifier, ProcessEvent, IN_MOVED_TO,IN_ACCESS,IN_CREATE, IN_MODIFY, IN_DELETE)
 from cid.utils.jsOptimizer import *
 from cid.utils.fileUtils import loadJSONFromFile
 
 
 class StaticsChangesProcessor(ProcessEvent):
-    def __init__(self, jso,store):
+    def __init__(self, jso, store):
         self.jso = jso
         self.store = store
 
     def process_IN_CREATE(self, event):
-        #print "Create: %s" %  path.join(event.path, event.name)
-        self.jso.js_put_file_cache(path.join(event.path, event.name),self.store)
+        print "Create: %s" % path.join(event.path, event.name)
+        self.jso.js_put_file_cache(path.join(event.path, event.name), self.store)
 
     def process_IN_MODIFY(self, event):
-        #print "Modify: %s" %  path.join(event.path, event.name)
-        self.jso.js_put_file_cache(path.join(event.path, event.name),self.store)
+        print "Modify: %s" % path.join(event.path, event.name)
+        self.jso.js_put_file_cache(path.join(event.path, event.name), self.store)
 
     def process_IN_DELETE(self, event):
         pass
 
-
-    def process_IN_ACCESS(self, event):
-        #print "in access: %s" %  path.join(event.path, event.name)
-        #print dir(path)
-        self.jso.js_put_file_cache(path.join(event.path, event.name),self.store)
-        pass
+    def process_IN_MOVED_TO(self, event):
+        print "in moved: %s" % path.join(event.path, event.name)
+        self.jso.js_put_file_cache(path.join(event.path, event.name), self.store)
 
 
 def _parseCommandArguments(argv):
@@ -72,6 +69,7 @@ def _parseCommandArguments(argv):
             server_config_file = arg
     return server_config_file
 
+
 def configure_server_and_app(server_config_file):
     config = loadJSONFromFile(server_config_file, '')
     print config['server']
@@ -79,20 +77,28 @@ def configure_server_and_app(server_config_file):
         static_path = config['server']['static']
     else:
         static_path = "."
-    return static_path
-    
+
+    if 'minify_enabled' in config['server']:
+        minify_enabled = config['server']['minify_enabled'].lower() == 'true'
+    else:
+        minify_enabled = False
+
+    return [static_path, minify_enabled]
+
+
 def main(argv):
     server_config_file = _parseCommandArguments(argv)
-    static_path = configure_server_and_app(server_config_file)
-    print "server_config_file = "+ server_config_file
-    print "static_path = "+ static_path
+    [static_path, minify_enabled] = configure_server_and_app(server_config_file)
+    print "server_config_file = " + server_config_file
+    print "static_path = " + static_path
+    print "minify_enabled = " + str(minify_enabled)
     store = RedisStore(redis.StrictRedis())
-    jso = jsOptimizer()
-    jso.watch(static_path,store,force=True)
+    jso = jsOptimizer(minify_enabled)
+    jso.watch(static_path, store, force=True)
     try:
         wm = WatchManager()
-        notifier = Notifier(wm, StaticsChangesProcessor(jso,store))
-        wm.add_watch(static_path, IN_ACCESS|IN_CREATE|IN_MODIFY|IN_DELETE, rec=True)
+        notifier = Notifier(wm, StaticsChangesProcessor(jso, store))
+        wm.add_watch(static_path, IN_CREATE | IN_MODIFY | IN_DELETE | IN_MOVED_TO, rec=True)
         notifier.loop()
     finally:
         pass
