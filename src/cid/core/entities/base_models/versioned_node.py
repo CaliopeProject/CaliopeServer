@@ -29,6 +29,7 @@ from neomodel import StringProperty, DateTimeProperty, RelationshipTo, ZeroOrOne
 from neomodel.contrib import SemiStructuredNode
 
 from cid.core.utils import uuidGenerator, timeStampGenerator
+from .caliope_properties import CaliopeJSONProperty
 
 
 class VersionedNode(SemiStructuredNode):
@@ -189,7 +190,6 @@ class VersionedNode(SemiStructuredNode):
             pass
 
 
-
     def save(self, skip_difference=False):
         if not skip_difference:
             # TODO(nel): Don't use an exception here.
@@ -212,6 +212,45 @@ class VersionedNode(SemiStructuredNode):
                 self.timestamp = timeStampGenerator()
         super(VersionedNode, self).save()
         return self
+
+    def update_field(self, field_name, new_value, field_id=None):
+        """
+        Allow granular update of individual fields, including granular items
+        and specific keys within dicts.
+
+        Also, allows to update specific index within lists or keys within dicts.
+        If the field_name is of type `list` the field_id should be the index to
+        be update, if index is -1 a new value will be appended at the end of the
+        list. In case the index is not a valid index, will raise a BaseException.
+        If the type of field_name is `dict` the field_id will be the key,
+        if the key already exists will be updated if does not exists will be
+        create.
+
+        :param field_name: Name of the field to update
+        :param new_value: Value that need to be saved
+        :param field_id: Optional: If is a list the index to be updated -1 to add a new item, if a
+                        dict the key to be updated or added.
+        """
+
+        if field_name in self._attributes_to_diff() or \
+                        getattr(self, field_name, None) is not None:
+            if field_id is not None:
+                curr_value = getattr(self, field_name)
+                if isinstance(curr_value, list) and isinstance(field_id, int):
+                    if field_id == -1:
+                        curr_value.append(new_value)
+                    elif len(curr_value) >= field_id:
+                        curr_value[field_id] = new_value
+                    else:
+                        raise IndexError("Index does {} not exists in {}".format(field_id, field_name))
+                elif isinstance(curr_value, dict) and isinstance(field_id, (str, unicode)):
+                    curr_value[field_id] = new_value
+                elif isinstance(curr_value, CaliopeJSONProperty):
+                    #: Empty dict property
+                    setattr(self, field_name, {field_id: new_value})
+            else:
+                setattr(self, field_name, new_value)
+            self.save()
 
 
 """
