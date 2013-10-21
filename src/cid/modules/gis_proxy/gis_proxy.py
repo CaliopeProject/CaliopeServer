@@ -30,22 +30,24 @@ import requests
 #flask
 from flask.globals import current_app
 from flask import (session, request, Blueprint)
- 
+
 import requests
 
 gis_proxy = Blueprint('gis_proxy', __name__, template_folder='')
 
+
 @gis_proxy.route('/<path:filename>', methods=['GET', 'POST', 'OPTIONS'])
-def catastrobogota(filename):   
-    params=""         
+def catastrobogota(filename):
+    params = ""
     for k in request.values.keys():
         print k + " " + request.values[k]
-        params = params+'&'+k+'='+request.values[k]    
+        params = params + '&' + k + '=' + request.values[k]
     if "wfs" in filename:
-        r = requests.post('http://siim2.infometrika.net:8080/geoserver/mtv_gis/ows?',data=request.data)
+        r = requests.post('http://siim2.infometrika.net:8080/geoserver/mtv_gis/ows?', data=request.data)
     elif "wms" in filename:
-        r = requests.get('http://siim2.infometrika.net:8080/geoserver/mtv_gis/wms?'+params)
+        r = requests.get('http://siim2.infometrika.net:8080/geoserver/mtv_gis/wms?' + params)
     else:
-        r = requests.get('http://mapas.catastrobogota.gov.co/arcgiswsh/Mapa_Referencia/Mapa_referencia/MapServer/WMSServer?'+params)
+        r = requests.get(
+            'http://mapas.catastrobogota.gov.co/arcgiswsh/Mapa_Referencia/Mapa_referencia/MapServer/WMSServer?' + params)
     return r.content
 

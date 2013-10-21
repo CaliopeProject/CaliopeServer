@@ -41,7 +41,6 @@ from models import Task
 
 
 class TaskServices(CaliopeEntityService):
-
     def __init__(self, *args, **kwargs):
         super(TaskServices, self).__init__(*args, **kwargs)
 

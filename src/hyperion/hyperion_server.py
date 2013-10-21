@@ -53,11 +53,13 @@ from cid.utils.crossdomain import crossdomain
 monkey.patch_all()
 app = Flask(__name__)
 
+
 @app.route('/', methods=['GET', 'POST', 'OPTIONS'])
 @crossdomain(origin=['*'], headers=['Content-Type', 'Authorization', 'Content-Length', 'X-Requested-With'],
              methods=['POST', 'GET', 'PUT', 'HEAD', 'OPTIONS'])
 def index():
     return 'Out of bounding.'
+
 
 @app.route('/<path:filename>', methods=['GET', 'POST', 'OPTIONS'])
 @crossdomain(origin=['*'], headers=['Content-Type', 'Authorization', 'Content-Length', 'X-Requested-With'],

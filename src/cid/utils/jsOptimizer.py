@@ -28,8 +28,9 @@ import re
 import gzip
 import StringIO
 import rjsmin
- 
-class jsOptimizer(object,):
+
+
+class jsOptimizer(object, ):
     def __init__(self, minify_enabled=True, prefix="static_cache_"):
         self.jstype = re.compile(".*(\.js)$")
         self.prefix = prefix
@@ -52,18 +53,18 @@ class jsOptimizer(object,):
             else:
                 return ujs
         return None
-                       
+
     def js_file_cache(self, path, cache_store):
         if self.jstype.match(path) is not None:
             h = hashlib.sha1(path).hexdigest()
-            key = self.prefix+h
+            key = self.prefix + h
             if cache_store.__contains__(key):
                 value = cache_store.get(key)
                 return value
             else:
                 value = self.compress(path)
                 if value:
-                    print path + " :Added to cache" 
+                    print path + " :Added to cache"
                     cache_store.put(key, value)
                     return value
         return None
@@ -71,17 +72,17 @@ class jsOptimizer(object,):
     def js_put_file_cache(self, path, cache_store):
         if self.jstype.match(path) is not None:
             h = hashlib.sha1(os.path.abspath(path)).hexdigest()
-            key = self.prefix+h
+            key = self.prefix + h
             value = self.compress(path)
             if value:
-                print path + " :Added to cache" 
+                print path + " :Added to cache"
                 cache_store.put(key, value)
-                return value                    
+                return value
         return None
 
     def get_file(self, path, cache_store):
         h = hashlib.sha1(os.path.abspath(path)).hexdigest()
-        key = self.prefix+h
+        key = self.prefix + h
         if cache_store.__contains__(key):
             value = cache_store.get(key)
             return value
@@ -91,10 +92,10 @@ class jsOptimizer(object,):
         put_in_cache = self.js_put_file_cache if force else self.js_file_cache
         for root, subFolders, files in os.walk(rootdir):
             for file in files:
-                path = root+'/'+file
+                path = root + '/' + file
                 put_in_cache(path, cache_store)
-            
+
             for folder in subFolders:
                 for file in files:
-                    path = root+'/'+file
+                    path = root + '/' + file
                     put_in_cache(path, cache_store)

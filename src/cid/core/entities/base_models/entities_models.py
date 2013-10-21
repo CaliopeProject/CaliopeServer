@@ -83,8 +83,6 @@ class CaliopeEntityData(CaliopeNode):
         return self.evolve(**data)
 
 
-
-
 class CaliopeEntity(CaliopeNode):
     """
     This class allow the data model to maintain integrity of a
