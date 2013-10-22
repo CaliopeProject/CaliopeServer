@@ -33,6 +33,7 @@ from cid.core.entities.base_models.entities_models import CaliopeUser
 from cid.utils.thumbnails import get_thumbnail
 from flask.globals import current_app
 
+from gevent.local import local
 
 prefix_session_manager = "prefix_session_manager_"
 
@@ -47,7 +48,6 @@ class LoginManager(object):
             if userNode.password == password:
                 session_uuid = str(uuid4()).decode('utf-8')
 
-                #!!!!!!!!!!!!!!!!!!!!thread safe untested!!!!!!!!!!!!!!!!!!
                 g.connection_thread_pool_id[g.connection_thread_id] = session_uuid
                 current_app.storekv.put(prefix_session_manager + session_uuid, username)
 

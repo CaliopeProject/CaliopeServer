@@ -25,20 +25,75 @@ from functools import wraps
 
 #flask
 from flask.globals import current_app
-from flask import ( request, Blueprint, g)
+from flask import (request, Blueprint, g, copy_current_request_context)
 
 #tinyrpc
 from tinyrpc.protocols.jsonrpc import JSONRPCProtocol
 from tinyrpc import BadRequestError
 
+from gevent.local import local
+import gevent
+import redis
 
 bp = Blueprint('api', __name__, template_folder='pages')
 
 jsonrpc = JSONRPCProtocol()
 
-connection_thread_pool_id = {}
+connection_thread_pool_id = dict()
 
 
+@bp.route('/api/ws')
+def ws_endpoint():
+    @copy_current_request_context
+    def cmd_greenlet(ws):
+        print('Running in cmd_greenlet')
+        connection_thread_id = uuid.uuid1()
+        connection_thread_pool_id[connection_thread_id] = None
+        #: TODO: Move the pool to redis
+        g.connection_thread_pool_id = connection_thread_pool_id
+
+        while True:
+            g.connection_thread_id = connection_thread_id
+            ws_message = ws.receive()
+            if ws_message is None:
+                if ws.socket is None:
+                    current_app.logger.info('Remote peer closed connection')
+                    break
+                else:
+                    current_app.logger.warn('Request: ' + request.__str__() + '\tmessage: None')
+            else:
+                handle_incoming_jsonrpc_message(ws_message, ws)
+        del connection_thread_pool_id[connection_thread_id]
+
+
+    @copy_current_request_context
+    def notifications_greenlet(ws):
+        print('Running in notifications_greenlet')
+        r = redis.Redis()
+
+        pubsub = r.pubsub()
+        pubsub.subscribe('test')
+        for item in pubsub.listen():
+            ws.send(str(item['data']))
+            print "sending.... " + str(item['data'])
+
+    if request.environ.get('wsgi.websocket'):
+        ws = request.environ['wsgi.websocket']
+        connection_thread_id = uuid.uuid1()
+        connection_thread_pool_id[connection_thread_id] = None
+        #: TODO: Move the pool to redis
+        g.connection_thread_pool_id = connection_thread_pool_id
+
+
+        cmd = gevent.spawn(cmd_greenlet, ws)
+        notifications = gevent.spawn(notifications_greenlet, ws)
+
+        gevent.joinall([cmd])
+        gevent.kill(notifications)
+
+        return "Closed WebSocketConnection"
+
+'''
 @bp.route('/api/ws')
 def ws_endpoint():
     if request.environ.get('wsgi.websocket'):
@@ -60,7 +115,7 @@ def ws_endpoint():
                 handle_incoming_jsonrpc_message(ws_message, ws)
         del connection_thread_pool_id[connection_thread_id]
         return "Closed WebSocketConnection"
-
+'''
 
 @bp.route('/rest', methods=['POST'])
 def rest_endpoint():
