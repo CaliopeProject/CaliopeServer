@@ -19,4 +19,3 @@ src/SIIM2_Server.egg-info/
 var/
 !var/dummy.pid
 docs/_build
-docs/Makefile
