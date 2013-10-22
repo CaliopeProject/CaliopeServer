@@ -44,7 +44,9 @@ from caliope_properties import CaliopeJSONProperty
 
 class VersionedNode(SemiStructuredNode):
     """
-    :class: VersionedNode
+    :class: cid.core.entities.VersionedNode
+
+    This class is the base for all data in the SIIM2 project.
     """
 
     __index__ = 'CaliopeStorage'

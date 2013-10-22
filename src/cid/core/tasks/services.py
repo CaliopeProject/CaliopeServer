@@ -22,7 +22,9 @@ Copyright (C) 2013 Infometrika Ltda.
 from neomodel.exception import DoesNotExist
 
 #CaliopeStorage
-from cid.core.entities import (CaliopeNode, CaliopeUser, CaliopeEntityController,
+from cid.core.entities import (CaliopeNode,
+                               CaliopeUser,
+                               CaliopeEntityController,
                                CaliopeEntityService)
 
 from cid.utils.fileUtils import loadJSONFromFile
@@ -76,9 +78,10 @@ class TaskServices(CaliopeEntityService):
                                              "r.category='Doing' or "
                                              "r.category='Done')"
                                              "return t, r.category");
-        tasks_list = {'ToDo': {'pos': 0, 'category': {'value': 'ToDo'}, 'tasks': []},
-                      'Doing': {'pos': 1, 'category': {'value': 'Doing'}, 'tasks': []},
-                      'Done': {'pos': 2, 'category': {'value': 'Done'}, 'tasks': []}}
+        tasks_list = {
+            'ToDo': {'pos': 0, 'category': {'value': 'ToDo'}, 'tasks': []},
+            'Doing': {'pos': 1, 'category': {'value': 'Doing'}, 'tasks': []},
+            'Done': {'pos': 2, 'category': {'value': 'Done'}, 'tasks': []}}
 
         for row in results:
             tl = tasks_list[row[1]]['tasks']
@@ -87,7 +90,8 @@ class TaskServices(CaliopeEntityService):
             entity_data = task.serialize()
             tl.append(entity_data)
 
-        return [list for list in sorted(tasks_list.values(), key=lambda pos: pos['pos'])]
+        return [list for list in
+                sorted(tasks_list.values(), key=lambda pos: pos['pos'])]
 
 
     @staticmethod
@@ -168,13 +172,15 @@ class TaskServices(CaliopeEntityService):
     @staticmethod
     @public(name='getDeletedByCurrentUser')
     def get_deleted_by_current_user():
-        rv = TaskServices.get_by_category_and_by_current_user(category="deleted")
+        rv = TaskServices.get_by_category_and_by_current_user(
+            category="deleted")
         return rv
 
     @staticmethod
     @public(name='getArchivedByCurrentUser')
     def get_archived_by_current_user(project_id):
-        rv = TaskServices.get_by_category_and_by_current_user(category="archived")
+        rv = TaskServices.get_by_category_and_by_current_user(
+            category="archived")
         return rv
 
 
@@ -190,7 +196,8 @@ class TaskServices(CaliopeEntityService):
                                              "(r.category='" + category + "')"
                                                                           "      and not(tdf=tdc)"
                                                                           "return t, r.category");
-        tasks_list = {category: {'pos': 0, 'category': {'value': category}, 'tasks': []}}
+        tasks_list = {
+            category: {'pos': 0, 'category': {'value': category}, 'tasks': []}}
 
         for row in results:
             tl = tasks_list[row[1]]['tasks']
@@ -234,10 +241,12 @@ class TaskController(CaliopeEntityController):
 
     def set_data(self, **data):
         rels = list()
-        if 'holders' in data and 'target' in data['holders'] and len(data['holders']['target']) > 0:
+        if 'holders' in data and 'target' in data['holders'] and len(
+                data['holders']['target']) > 0:
             holders = data['holders']
         else:
-            holders = [CaliopeUser.index.get(username=LoginManager().get_user()).username]
+            holders = [CaliopeUser.index.get(
+                username=LoginManager().get_user()).username]
 
         for rel in Task.__entity_data_type__._get_class_relationships():
             if rel[0] in data:
@@ -261,7 +270,8 @@ class TaskController(CaliopeEntityController):
                 for target in holders['target']:
                     # target_class = target['entity'].strip...
                     target_class = CaliopeUser
-                    target_node = target_class.index.get(**{k: v for k, v in target['entity_data'].items()})
+                    target_node = target_class.index.get(
+                        **{k: v for k, v in target['entity_data'].items()})
                     self.set_holder(target_node, **target['properties'])
 
 
@@ -307,7 +317,8 @@ class TaskController(CaliopeEntityController):
         #: TODO: Check if form_name is valid and form_path is a file
         #: TODO: Cache this files
         try:
-            self.template = loadJSONFromFile('core/tasks/templates/tasks.json', current_app.root_path)
+            self.template = loadJSONFromFile('core/tasks/templates/tasks.json',
+                                             current_app.root_path)
             return True
         except IOError:
             return False

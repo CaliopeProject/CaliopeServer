@@ -23,12 +23,19 @@ Copyright (C) 2013 Infometrika Ltda.
 """
 
 #Caliope Entities
-from cid.core.entities import (VersionedNode, RelationshipFrom,
-                               CaliopeUser, One, NotConnected, DateTimeProperty,
-                               StringProperty, IntegerProperty, CaliopeJSONProperty)
+from cid.core.entities import (VersionedNode,
+                               RelationshipFrom,
+                               CaliopeUser,
+                               DateTimeProperty,
+                               StringProperty,
+                               IntegerProperty,
+                               CaliopeJSONProperty)
 
 
 class Task(VersionedNode):
+    """
+
+    """
 
     holders = RelationshipFrom(CaliopeUser, 'HOLDER')
 
