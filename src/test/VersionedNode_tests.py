@@ -26,7 +26,12 @@ import unittest
 import hashlib
 
 from py2neo import neo4j
-from cid.core.entities import VersionedNode, DoesNotExist, UniqueProperty, CaliopeUser, CaliopeGroup, CaliopeJSONProperty
+from cid.core.entities import (VersionedNode,
+                               DoesNotExist,
+                               UniqueProperty,
+                               CaliopeUser,
+                               CaliopeGroup,
+                               CaliopeJSONProperty)
 from neomodel import StringProperty, RelationshipFrom, ZeroOrOne
 
 
@@ -166,7 +171,8 @@ class TestVersionedNodeStorage(unittest.TestCase):
         # Create the relationship with attributes
         car.owner.connect(person, {'km': 0, 'brand': 'BMW'})
         #Expected value for relationships (with different UID):
-        #{'Person': {u'21b04fc6-3e97-4584-926a-28497d997447': {u'brand': u'BMW', u'km': 0}}}
+        #{'Person': {u'21b04fc6-3e97-4584-926a-28497d997447':
+        #{u'brand': u'BMW', u'km': 0}}}
         relationships = car._format_relationships('owner')
         assert 'Person' in relationships
         assert len(relationships['Person']) == 1
