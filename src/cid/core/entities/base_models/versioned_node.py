@@ -151,7 +151,8 @@ class VersionedNode(SemiStructuredNode):
     def _get_relationships(self):
         rv = {}
         for k, v in self.__class__.__dict__.items():
-            if isinstance(v, RelationshipDefinition):
+            if k not in self.__special_fields__ and \
+                    isinstance(v, RelationshipDefinition):
                 rv[k] = v
         return rv
 
@@ -179,7 +180,7 @@ class VersionedNode(SemiStructuredNode):
             return set(dict_a).intersection(dict_b)
 
         current_rel_dict = self._format_relationships(rel_name)
-        assert current_rel_dict['direction'] == new_rel_dict['direction']
+
         for key_not_in_new in dict_diff(current_rel_dict, new_rel_dict):
             pass
         for key_not_in_current in dict_diff(new_rel_dict, current_rel_dict):
@@ -267,7 +268,6 @@ class VersionedNode(SemiStructuredNode):
             .format(field_name))
 
 
-"""
 class Person(VersionedNode):
     name = StringProperty()
     age = StringProperty()
@@ -282,7 +282,8 @@ person.save()
 car = Car(plate='7777')
 car.save()
 car.owner.connect(person, {'km' : 0, 'brand' : 'BMW'})
+rel = car._get_relationships()
+print '_get_relationships', rel
+print '_format_relationships', car._format_relationships(rel.keys()[0])
 
-print '_format_relationships', car._format_relationships('owner')
-print '_get_relationships', car._get_relationships()
-"""
+car.update_relationship('owner', {})
