@@ -32,9 +32,10 @@ from flask import (request, Blueprint, g, copy_current_request_context)
 from tinyrpc.protocols.jsonrpc import JSONRPCProtocol
 from tinyrpc import BadRequestError
 
-from gevent.local import local
 import gevent
 import redis
+
+from cid.core.pubsub import pubsub
 
 bp = Blueprint('api', __name__, template_folder='pages')
 
@@ -69,11 +70,8 @@ def ws_endpoint():
     @copy_current_request_context
     def notifications_greenlet(ws):
         #print('Running in notifications_greenlet')
-        r = redis.Redis()
-
-        pubsub = r.pubsub()
-        pubsub.subscribe('broadcast')
-        for item in pubsub.listen():
+        pubsub().subscribe('broadcast')
+        for item in pubsub().listen():
             msg = {"jsonrpc":"2.0", "method": "message", "params": str(item['data']), "id": 0}
             ws.send(json.dumps(msg))
 
@@ -86,6 +84,7 @@ def ws_endpoint():
 
         cmd = gevent.spawn(cmd_greenlet, ws)
         notifications = gevent.spawn(notifications_greenlet, ws)
+
 
         gevent.joinall([cmd])
         gevent.kill(notifications)

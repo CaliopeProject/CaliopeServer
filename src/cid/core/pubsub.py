@@ -20,24 +20,34 @@ Copyright (C) 2013 Infometrika Ltda.
 """
 import redis
 
+r = redis.Redis()
+ps = r.pubsub()
+
 
 class pubsub(object):
     @staticmethod
+    def subscribe(channel):
+        ps.subscribe(channel)
+        return ps
+
+
+    @staticmethod
     def subscribe_with_uuid(uuid):
         if True: #TODO: check uuid
-            r = redis.Redis()
-            pubsub = r.pubsub()
-            pubsub.subscribe('uuid='+uuid)
-            return pubsub
+            ps.subscribe('uuid=' + uuid)
+            return ps
         else:
             return None
 
     @staticmethod
     def unsubscribe_with_uuid(uuid):
         if True: #TODO: check uuid
-            r = redis.Redis()
-            pubsub = r.pubsub()
-            pubsub.unsubscribe('uuid='+uuid)
-            return pubsub
+            ps.unsubscribe('uuid=' + uuid)
+            return ps
         else:
             return None
+
+
+    @staticmethod
+    def listen():
+        return ps.listen()
