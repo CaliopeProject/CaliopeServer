@@ -47,9 +47,8 @@ connection_thread_pool_id = dict()
 @bp.route('/api/ws')
 def ws_endpoint():
     @copy_current_request_context
-    def cmd_greenlet(ws):
+    def cmd_greenlet(ws, connection_thread_id):
         #print('Running in cmd_greenlet')
-        connection_thread_id = uuid.uuid1()
         connection_thread_pool_id[connection_thread_id] = None
         #: TODO: Move the pool to redis
         g.connection_thread_pool_id = connection_thread_pool_id
@@ -68,23 +67,22 @@ def ws_endpoint():
         del connection_thread_pool_id[connection_thread_id]
 
     @copy_current_request_context
-    def notifications_greenlet(ws):
+    def notifications_greenlet(ws, connection_thread_id):
         #print('Running in notifications_greenlet')
-        pubsub().subscribe('broadcast')
-        for item in pubsub().listen():
+        r = redis.Redis()
+        ps = r.pubsub()
+        ps.subscribe('connection_thread_id=' + str(connection_thread_id))
+        print 'connection_thread_id=' + str(connection_thread_id)
+        for item in ps.listen():
             msg = {"jsonrpc":"2.0", "method": "message", "params": str(item['data']), "id": 0}
             ws.send(json.dumps(msg))
 
     if request.environ.get('wsgi.websocket'):
         ws = request.environ['wsgi.websocket']
         connection_thread_id = uuid.uuid1()
-        connection_thread_pool_id[connection_thread_id] = None
-        #: TODO: Move the pool to redis
-        g.connection_thread_pool_id = connection_thread_pool_id
 
-        cmd = gevent.spawn(cmd_greenlet, ws)
-        notifications = gevent.spawn(notifications_greenlet, ws)
-
+        notifications = gevent.spawn(notifications_greenlet, ws, connection_thread_id)
+        cmd = gevent.spawn(cmd_greenlet, ws, connection_thread_id)
 
         gevent.joinall([cmd])
         gevent.kill(notifications)

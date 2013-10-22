@@ -49,7 +49,7 @@ class LoginManager(object):
 
                 g.connection_thread_pool_id[g.connection_thread_id] = session_uuid
                 current_app.storekv.put(prefix_session_manager + session_uuid, username)
-                pubsub().subscribe_with_uuid(userNode.uuid)
+                pubsub().subscribe_uuid(userNode.uuid)
                 return {
                     'login': True,
                     'session_uuid': {'value': session_uuid},
@@ -76,7 +76,7 @@ class LoginManager(object):
                     username = current_app.storekv.get(prefix_session_manager + session_uuid)
                     g.connection_thread_pool_id[g.connection_thread_id] = session_uuid
                     userNode = CaliopeUser.index.get(username=username)
-                    pubsub().subscribe_with_uuid(userNode.uuid)
+                    pubsub().subscribe_uuid(userNode.uuid)
                     return {'login': True,
                             'session_uuid': {'value': session_uuid},
                             'user_uuid': {'value': userNode.uuid},
