@@ -26,12 +26,14 @@ import hashlib
 #gevent
 from gevent.pywsgi import WSGIServer
 from geventwebsocket.handler import WebSocketHandler
-from gevent import monkey
 
 #tinyrpc
 from tinyrpc.protocols.jsonrpc import JSONRPCProtocol
 from tinyrpc.client import RPCClient
 from tinyrpc.transports.http import HttpWebSocketClientTransport
+
+#neo4j
+from py2neo import neo4j
 
 #flask
 from flask import (Flask)
@@ -41,6 +43,8 @@ import redis
 from simplekv.memory.redisstore import RedisStore
 
 from cid import caliope_server
+from cid.utils.DefaultDatabase import DefaultDatabase
+
 
 
 class CaliopeServerTestCase(unittest.TestCase):
@@ -56,6 +60,7 @@ class CaliopeServerTestCase(unittest.TestCase):
                                       caliope_server.app,
                                       handler_class=WebSocketHandler)  # @IgnorePep8
         self.http_server.start()
+        self.create_default_database()
 
     def tearDown(self):
         """Get rid of the database again after each test."""
@@ -64,6 +69,12 @@ class CaliopeServerTestCase(unittest.TestCase):
         self.http_server.stop()
         self.http_server = None
         caliope_server.app = Flask('caliope_server')
+        #:Delete database
+        neo4j.GraphDatabaseService().clear()
+
+
+    def create_default_database(self):
+        DefaultDatabase().test_defaultUserGroupOne()
 
 
     def login(self, username, password):

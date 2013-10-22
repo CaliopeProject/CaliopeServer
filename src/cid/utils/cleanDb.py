@@ -24,4 +24,5 @@ Copyright (C) 2013 Infometrika
 
 from py2neo import neo4j
 
+print "Cleaning database"
 neo4j.GraphDatabaseService().clear()

@@ -23,3 +23,4 @@ from helpers import *
 from fileUtils import *
 from jsOptimizer import *
 from jsOptimizerProcess import *
+from DefaultDatabase import *
