@@ -148,6 +148,30 @@ class VersionedNode(SemiStructuredNode):
                 rv[target_class_name][target.uuid] = dict(rel_inst._properties)
         return rv
 
+    def add_or_update_relationship_target(self, rel_name, target_uuid, new_properties = None):
+        """
+        Add or update  a relationship target. If the relationship target exists, the
+        properties get overwritten. Otherwise the relationship target is created with
+        the new properties.
+
+        :param rel_name: The name of the relationship.
+        :param target_uuid: The uuid of the target node.
+        :param new_properties : If set, a dictionary with the new properties.
+        """
+        
+        relationship = getattr(self, rel_name)
+        assert issubclass(relationship.__class__, RelationshipManager)
+
+        try:
+            print 'relationship.definition => ', relationship.definition
+            print 'relationship.__class__ => ', relationship.__class__
+            rel = relationship.get(**{'uuid' : target_uuid})
+            print 'rel.__class__', rel.__class__
+            # TODO(nel): Modify the properties.
+        except DoesNotExist:
+	    destination = self.pull(target_uid)
+	    relationship.connect(destination, new_properties)
+
     def _get_relationships(self):
         rv = {}
         for k, v in self.__class__.__dict__.items():
@@ -163,30 +187,6 @@ class VersionedNode(SemiStructuredNode):
             if rel_name not in self.__special_fields__:
                 rv[rel_name] = self._format_relationships(rel_name)
         return rv
-
-    def update_relationship(self, rel_name, new_rel_dict):
-        #: TODO: Review
-
-        def dict_diff(dict_a, dict_b):
-            """
-            :return Return the keys of the dict_a that are not in the dict_b
-            """
-            return set(dict_a).difference(dict_b)
-
-        def dict_intersection(dict_a, dict_b):
-            """
-            :return Return the keys of the dict_a that also are in dict_b
-            """
-            return set(dict_a).intersection(dict_b)
-
-        current_rel_dict = self._format_relationships(rel_name)
-
-        for key_not_in_new in dict_diff(current_rel_dict, new_rel_dict):
-            pass
-        for key_not_in_current in dict_diff(new_rel_dict, current_rel_dict):
-            pass
-        for key_in_both in dict_intersection(current_rel_dict, new_rel_dict):
-            pass
 
     def save(self, skip_difference=False):
         """
@@ -285,5 +285,6 @@ car.owner.connect(person, {'km' : 0, 'brand' : 'BMW'})
 rel = car._get_relationships()
 print '_get_relationships', rel
 print '_format_relationships', car._format_relationships(rel.keys()[0])
-
-car.update_relationship('owner', {})
+#print 'key 1, 2', rel.keys()[0], car.uuid
+car.add_or_update_relationship_target('owner', person.uuid)
+# Clear properties.
