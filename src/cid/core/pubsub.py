@@ -1,7 +1,6 @@
 # -*- encoding: utf-8 -*-
 """
 @authors: Andrés Felipe Calderón andres.calderon@correlibre.org
-          Sebastián Ortiz V. neoecos@gmail.com
 
 SIIM2 Server is the web server of SIIM2 Framework
 Copyright (C) 2013 Infometrika Ltda.
@@ -19,8 +18,36 @@ Copyright (C) 2013 Infometrika Ltda.
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
-from helpers import *
-from fileUtils import *
-from jsOptimizer import *
-from jsOptimizerProcess import *
-from DefaultDatabase import *
+import redis
+
+r = redis.Redis()
+ps = r.pubsub()
+
+
+class pubsub(object):
+    @staticmethod
+    def subscribe(channel):
+        ps.subscribe(channel)
+        return ps
+
+
+    @staticmethod
+    def subscribe_with_uuid(uuid):
+        if True: #TODO: check uuid
+            ps.subscribe('uuid=' + uuid)
+            return ps
+        else:
+            return None
+
+    @staticmethod
+    def unsubscribe_with_uuid(uuid):
+        if True: #TODO: check uuid
+            ps.unsubscribe('uuid=' + uuid)
+            return ps
+        else:
+            return None
+
+
+    @staticmethod
+    def listen():
+        return ps.listen()

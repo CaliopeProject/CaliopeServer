@@ -26,12 +26,18 @@ import unittest
 import hashlib
 
 from py2neo import neo4j
-from cid.core.entities import VersionedNode, DoesNotExist, UniqueProperty, CaliopeUser, CaliopeGroup, CaliopeJSONProperty
+from cid.core.entities import (VersionedNode,
+                               DoesNotExist,
+                               UniqueProperty,
+                               CaliopeUser,
+                               CaliopeGroup,
+                               CaliopeJSONProperty)
 from neomodel import StringProperty, RelationshipFrom, ZeroOrOne
 
 
 class TestVersionedNodeStorage(unittest.TestCase):
     def tearDown(self):
+        #:Delete database
         neo4j.GraphDatabaseService().clear()
 
     def printLine(self):
@@ -143,62 +149,64 @@ class TestVersionedNodeStorage(unittest.TestCase):
         assert node.foo["foo"] == "bar"
         self.printLine()
 
-    def test_Versioned_Format_Relationships_OnlyOne(self):
-	class Person(VersionedNode):
-	    name = StringProperty()
-	    age = StringProperty()
+    def test_VersionedNode_format_relationships_only_one(self):
+        class Person(VersionedNode):
+            name = StringProperty()
+            age = StringProperty()
 
-	class Car(VersionedNode):
-	    plate = StringProperty()
-	    owner = RelationshipFrom(Person, 'OWNER', ZeroOrOne)
+        class Car(VersionedNode):
+            plate = StringProperty()
+            owner = RelationshipFrom(Person, 'OWNER', ZeroOrOne)
 
         self.printLine()
 
-	person = Person(name='Bob')
-	person.age = 10
-	person.save()
+        person = Person(name='Bob')
+        person.age = 10
+        person.save()
 
-	car = Car(plate='7777')
-	car.save()
+        car = Car(plate='7777')
+        car.save()
 
         # Test empty relationship
         assert {} == car._format_relationships('owner')
         # Create the relationship with attributes
-	car.owner.connect(person, {'km' : 0, 'brand' : 'BMW'})
+        car.owner.connect(person, {'km': 0, 'brand': 'BMW'})
         #Expected value for relationships (with different UID):
-        #{'Person': {u'21b04fc6-3e97-4584-926a-28497d997447': {u'brand': u'BMW', u'km': 0}}}
+        #{'Person': {u'21b04fc6-3e97-4584-926a-28497d997447':
+        #{u'brand': u'BMW', u'km': 0}}}
         relationships = car._format_relationships('owner')
         assert 'Person' in relationships
         assert len(relationships['Person']) == 1
         assert person.uuid in relationships['Person']
-        assert relationships['Person'][person.uuid] == {u'brand': u'BMW', u'km': 0}
+        assert relationships['Person'][person.uuid] == {u'brand': u'BMW',
+                                                        u'km': 0}
         self.printLine()
 
-    def test_Versioned_Format_Relationships_Many(self):
-	class Car(VersionedNode):
-	    plate = StringProperty()
+    def test_VersionedNode_format_relationships_many(self):
+        class Car(VersionedNode):
+            plate = StringProperty()
 
         class ParkingLot(VersionedNode):
-	    parked = RelationshipFrom(Car, 'PARKED')
+            parked = RelationshipFrom(Car, 'PARKED')
 
         self.printLine()
 
-        car_uids = []
+        car_uuids = []
         parking_lot = ParkingLot()
         parking_lot.save()
         for i in range(5):
-	  car = Car(plate=str(i))
-	  car.save()
-          parking_lot.parked.connect(car, {'i' : i})
-          car_uids.append(car.uuid)
+            car = Car(plate=str(i))
+            car.save()
+            parking_lot.parked.connect(car, {'i': i})
+            car_uuids.append(car.uuid)
 
         relationships = parking_lot._format_relationships('parked')
 
         assert 'Car' in relationships
-        assert len(car_uids) == len(relationships['Car'])
-        for i, uuid in enumerate(car_uids):
-          assert uuid in relationships['Car']
-          assert {'i' : i} == relationships['Car'][uuid]
+        assert len(car_uuids) == len(relationships['Car'])
+        for i, uuid in enumerate(car_uuids):
+            assert uuid in relationships['Car']
+            assert {'i': i} == relationships['Car'][uuid]
 
         self.printLine()
 
@@ -269,66 +277,6 @@ class TestVersionedNodeStorage(unittest.TestCase):
             u1.delete()
         except UniqueProperty:
             assert False
-        self.printLine()
-
-    def test_CaliopeStorage_defaultUserGroupOne(self):
-        self.printLine()
-        try:
-            u1 = CaliopeUser()
-            u1.username = 'user'
-            u1.password = hashlib.sha256(u'123').hexdigest()
-            u1.domainname = 'correlibre.org'
-            u1.first_name = "User"
-            u1.last_name = "Test"
-            u1.save()
-            g1 = CaliopeGroup()
-            g1.name = 'Group'
-            g1.code = 'g-000'
-            g1.save()
-            u1.member_of.connect(g1)
-            g1.members.connect(u1)
-            assert u1.member_of.is_connected(g1)
-            assert g1.members.is_connected(u1)
-        except UniqueProperty:
-            try:
-                u1 = CaliopeUser.index.get(username='user')
-                g1 = CaliopeGroup.index.get(code='g-000')
-                assert u1 is not None and g1 is not None
-                assert u1.member_of.is_connected(g1)
-                assert g1.members.is_connected(u1)
-            except DoesNotExist:
-                assert False
-        self.printLine()
-
-    def test_CaliopeStorage_defaultUserGroupMany(self):
-        self.printLine()
-        try:
-            for i in xrange(1, 5):
-                u1 = CaliopeUser()
-                u1.username = 'user' + str(i)
-                u1.password = hashlib.sha256(u'123').hexdigest()
-                u1.domainname = 'correlibre.org'
-                u1.first_name = "User" + str(i)
-                u1.last_name = "Test"
-                u1.save()
-                g1 = CaliopeGroup()
-                g1.name = 'Group' + str(i)
-                g1.code = 'g-00' + str(i)
-                g1.save()
-                u1.member_of.connect(g1)
-                g1.members.connect(u1)
-                assert u1.member_of.is_connected(g1)
-                assert g1.members.is_connected(u1)
-        except UniqueProperty:
-            try:
-                for i in xrange(1, 5):
-                    u1 = CaliopeUser.index.get(username='user' + str(i))
-                    g1 = CaliopeGroup.index.get(code='g-00' + str(i))
-                    assert u1 is not None and g1 is not None
-                    assert u1.member_of.is_connected(g1)
-                    assert g1.members.is_connected(u1)
-            except DoesNotExist:
-                assert False
         self.printLine()
 
 
