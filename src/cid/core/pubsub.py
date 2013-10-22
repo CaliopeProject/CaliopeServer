@@ -19,30 +19,16 @@ Copyright (C) 2013 Infometrika Ltda.
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 import redis
-
-r = redis.Redis()
-ps = r.pubsub()
+from flask import g
 
 
 class pubsub(object):
     @staticmethod
-    def subscribe(channel):
-        ps.subscribe(channel)
-        return ps
-
-
-    @staticmethod
-    def subscribe_with_uuid(uuid):
+    def subscribe_uuid(uuid):
         if True: #TODO: check uuid
-            ps.subscribe('uuid=' + uuid)
-            return ps
-        else:
-            return None
-
-    @staticmethod
-    def unsubscribe_with_uuid(uuid):
-        if True: #TODO: check uuid
-            ps.unsubscribe('uuid=' + uuid)
+            r = redis.Redis()
+            ps = r.pubsub()
+            ps.execute_command('PUBLISH', 'connection_thread_id=' + str(g.connection_thread_id), str(uuid))
             return ps
         else:
             return None
