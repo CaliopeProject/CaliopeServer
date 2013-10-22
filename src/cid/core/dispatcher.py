@@ -21,6 +21,7 @@ Copyright (C) 2013 Infometrika Ltda.
 """
 #system, and standard library
 import uuid
+import json
 from functools import wraps
 
 #flask
@@ -46,7 +47,7 @@ connection_thread_pool_id = dict()
 def ws_endpoint():
     @copy_current_request_context
     def cmd_greenlet(ws):
-        print('Running in cmd_greenlet')
+        #print('Running in cmd_greenlet')
         connection_thread_id = uuid.uuid1()
         connection_thread_pool_id[connection_thread_id] = None
         #: TODO: Move the pool to redis
@@ -65,17 +66,16 @@ def ws_endpoint():
                 handle_incoming_jsonrpc_message(ws_message, ws)
         del connection_thread_pool_id[connection_thread_id]
 
-
     @copy_current_request_context
     def notifications_greenlet(ws):
-        print('Running in notifications_greenlet')
+        #print('Running in notifications_greenlet')
         r = redis.Redis()
 
         pubsub = r.pubsub()
-        pubsub.subscribe('test')
+        pubsub.subscribe('broadcast')
         for item in pubsub.listen():
-            ws.send(str(item['data']))
-            print "sending.... " + str(item['data'])
+            msg = {"jsonrpc":"2.0", "method": "message", "params": str(item['data']), "id": 0}
+            ws.send(json.dumps(msg))
 
     if request.environ.get('wsgi.websocket'):
         ws = request.environ['wsgi.websocket']
@@ -84,14 +84,13 @@ def ws_endpoint():
         #: TODO: Move the pool to redis
         g.connection_thread_pool_id = connection_thread_pool_id
 
-
         cmd = gevent.spawn(cmd_greenlet, ws)
         notifications = gevent.spawn(notifications_greenlet, ws)
 
         gevent.joinall([cmd])
         gevent.kill(notifications)
 
-        return "Closed WebSocketConnection"
+        #return "Closed WebSocketConnection"
 
 '''
 @bp.route('/api/ws')
