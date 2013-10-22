@@ -276,7 +276,7 @@ class Car(VersionedNode):
     plate = StringProperty()
     owner = RelationshipFrom(Person, 'OWNER', ZeroOrOne)
 
-person = Person(name='Bob')
+"""person = Person(name='Bob')
 person.age = 10
 person.save()
 car = Car(plate='7777')
@@ -288,3 +288,4 @@ print '_format_relationships', car._format_relationships(rel.keys()[0])
 #print 'key 1, 2', rel.keys()[0], car.uuid
 car.add_or_update_relationship_target('owner', person.uuid)
 # Clear properties.
+"""
