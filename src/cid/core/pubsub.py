@@ -18,22 +18,17 @@ Copyright (C) 2013 Infometrika Ltda.
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
-import redis
+from hotqueue import HotQueue
+
 from flask import g
 
 
-class pubsub(object):
-    @staticmethod
-    def subscribe_uuid(uuid):
-        if True: #TODO: check uuid
-            r = redis.Redis()
-            ps = r.pubsub()
-            ps.execute_command('PUBLISH', 'connection_thread_id=' + str(g.connection_thread_id), str(uuid))
-            return ps
-        else:
-            return None
+def pubsub_subscribe_uuid(uuid):
+    if True: #TODO: check uuid
+        queue = HotQueue("connection_thread_id_queue=" + str(g.connection_thread_id))
+        queue.put(str(uuid))
 
+        return True
+    else:
+        return False
 
-    @staticmethod
-    def listen():
-        return ps.listen()
