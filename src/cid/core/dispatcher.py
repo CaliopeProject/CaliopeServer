@@ -47,17 +47,13 @@ connection_thread_pool_id = dict()
 def ws_endpoint():
     @copy_current_request_context
     def cmd_greenlet(ws, connection_thread_id):
-        #print('Running in cmd_greenlet')
         connection_thread_pool_id[connection_thread_id] = None
-        #: TODO: Move the pool to redis
         g.connection_thread_pool_id = connection_thread_pool_id
-
         while True:
             g.connection_thread_id = connection_thread_id
             ws_message = ws.receive()
             if ws_message is None:
                 if ws.socket is None:
-                    current_app.logger.info('Remote peer closed connection')
                     break
                 else:
                     current_app.logger.warn('Request: ' + request.__str__() + '\tmessage: None')
@@ -65,14 +61,19 @@ def ws_endpoint():
                 handle_incoming_jsonrpc_message(ws_message, ws)
         del connection_thread_pool_id[connection_thread_id]
 
-    @copy_current_request_context
     def subscribe_greenlet(ps, connection_thread_id):
-        #print('Running in notifications_greenlet')
         queue = HotQueue("connection_thread_id_queue=" + str(connection_thread_id))
-        for uuid in queue.consume():
-            ps.subscribe('uuid=' + uuid)
+        for msg in queue.consume():
+            try:
+                cmd = json.loads(msg)
+                if cmd['cmd'] == 'subscribe':
+                    ps.subscribe('uuid=' + cmd['params'])
+                elif cmd['cmd'] == 'subscribe':
+                    ps.unsubscribe('uuid=' + cmd['params'])
+            except:
+                pass
 
-    @copy_current_request_context
+
     def notifications_greenlet(ws, ps):
         ps.subscribe('broadcast')
         for item in ps.listen():
@@ -93,7 +94,7 @@ def ws_endpoint():
         gevent.joinall([cmd])
         gevent.killall([subscriptions, notifications])
 
-        #return "Closed WebSocketConnection"
+        return "Closed WebSocketConnection"
 
 
 @bp.route('/rest', methods=['POST'])

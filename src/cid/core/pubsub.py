@@ -22,13 +22,23 @@ from hotqueue import HotQueue
 
 from flask import g
 
+import json
+
 
 def pubsub_subscribe_uuid(uuid):
     if True: #TODO: check uuid
         queue = HotQueue("connection_thread_id_queue=" + str(g.connection_thread_id))
-        queue.put(str(uuid))
-
-        return True
+        msg = {'cmd': 'subscribe', 'params': str(uuid)}
+        queue.put(json.dumps(msg))
+        return msg
     else:
-        return False
+        return None
 
+def pubsub_unsubscribe_uuid(uuid):
+    if True: #TODO: check uuid
+        queue = HotQueue("connection_thread_id_queue=" + str(g.connection_thread_id))
+        msg = {'cmd': 'unsubscribe', 'params': str(uuid)}
+        queue.put(json.dumps(msg))
+        return msg
+    else:
+        return None
