@@ -25,6 +25,7 @@ Copyright (C) 2013  Fundación Correlibre
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
+from py2neo import neo4j
 from neomodel import (StringProperty,
                       DateTimeProperty,
                       RelationshipTo,
@@ -51,6 +52,8 @@ class VersionedNode(SemiStructuredNode):
 
     __index__ = 'CaliopeStorage'
 
+    __extended_classes__ = dict()
+
     uuid = StringProperty(default=uuidGenerator, unique_index=True)
 
     #: All timestamps should be in UTC using pytz.utc
@@ -64,6 +67,7 @@ class VersionedNode(SemiStructuredNode):
 
     def __new__(cls, *args, **kwargs):
         cls.parent = RelationshipTo(cls, 'PARENT', ZeroOrOne)
+        cls.__extended_classes__[cls.__name__] = cls
         return super(VersionedNode, cls).__new__(cls, *args, **kwargs)
 
     def __init__(self, *args, **kwargs):
@@ -107,6 +111,28 @@ class VersionedNode(SemiStructuredNode):
         new_node = cls(*args, **kwargs)
         new_node.save()
         return new_node
+
+    @staticmethod
+    def inflate_object(uuid):
+        try:
+            versioned_node = VersionedNode.index.get(uuid=uuid)
+            node = versioned_node.__node__
+            graph_db = node._graph_db
+            node_rels = graph_db.match(end_node=node)
+            for rel in node_rels:
+                if "__instance__" in rel._properties \
+                    and rel._properties["__instance__"]:
+                    category_node = rel.start_node
+                    category_node.get_properties()
+                    node_class = VersionedNode.__extended_classes__[
+                        category_node._properties["category"] if
+                        "category" in category_node._properties else
+                        "VersionedNode"]
+            return node_class().__class__.inflate(node)
+        except DoesNotExist as dne:
+            #: TODO LOG
+            return None
+
 
     def _get_node_data(self):
         return self.__properties__

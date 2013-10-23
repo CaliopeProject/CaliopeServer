@@ -210,6 +210,18 @@ class TestVersionedNodeStorage(unittest.TestCase):
 
         self.printLine()
 
+    def test_VersionedNode_inflate_t0_category(self):
+        class Car(VersionedNode):
+            plate = StringProperty()
+
+        car = Car(plate="777")
+        self.assertIsNotNone(car.save())
+        uuid = car.uuid
+        inflated_object = VersionedNode.inflate_object(uuid)
+        self.assertIsInstance(inflated_object, Car)
+
+
+    #: TODO: Move the following test to a new file.
     def test_CaliopeUser_creation(self):
         self.printLine()
         u1 = CaliopeUser()
