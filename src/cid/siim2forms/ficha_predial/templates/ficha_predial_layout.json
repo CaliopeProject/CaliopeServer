@@ -52,7 +52,6 @@
                 {
                     "class": "span6",
                     "elements": [
-                        "estrato",
                         "tipo_propietario",
                         "propietario_actual",
                         "direccion_notificacion"
