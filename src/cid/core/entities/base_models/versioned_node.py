@@ -294,29 +294,3 @@ class VersionedNode(SemiStructuredNode):
         else:
             raise BaseException("{} not a property or attribute"
             .format(field_name))
-
-
-class Person(VersionedNode):
-    name = StringProperty()
-    age = StringProperty()
-
-class Car(VersionedNode):
-    plate = StringProperty()
-    owner = RelationshipFrom(Person, 'OWNER', ZeroOrOne)
-
-if __name__ == "__main__":
-    person = Person(name='Bob')
-    person.age = 10
-    person.save()
-    car = Car(plate='7777')
-    car.save()
-    car.owner.connect(person, {'km' : 0, 'brand' : 'BMW'})
-    rel = car._get_relationships()
-    #print '_get_relationships', rel
-    print '_format_relationships for key ', rel.keys()[0], " ==> ", car._format_relationships(rel.keys()[0])
-    #print 'key 1, 2', rel.keys()[0], car.uuid
-    car.add_or_update_relationship_target('owner', person.uuid)
-    print '_format_relationships for key ', rel.keys()[0], " ==> ", car._format_relationships(rel.keys()[0])
-    car.add_or_update_relationship_target('owner', person.uuid, {'km' : 1000, 'brand' : 'Cannot tell anymore'})
-    print '_format_relationships for key ', rel.keys()[0], " ==> ", car._format_relationships(rel.keys()[0])
-    # Clear properties.
