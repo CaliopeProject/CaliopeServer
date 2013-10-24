@@ -22,6 +22,8 @@ from hotqueue import HotQueue
 
 from flask import g
 
+import redis
+
 import json
 
 
@@ -34,6 +36,7 @@ def pubsub_subscribe_uuid(uuid):
     else:
         return None
 
+
 def pubsub_unsubscribe_uuid(uuid):
     if True: #TODO: check uuid
         queue = HotQueue("connection_thread_id_queue=" + str(g.connection_thread_id))
@@ -42,3 +45,14 @@ def pubsub_unsubscribe_uuid(uuid):
         return msg
     else:
         return None
+
+
+def pubsub_publish(from_uuid, res_uuid, field, value, subfield_id=None, pos=None):
+    if True: #TODO:  check from_uuid, res_uuid
+        r = redis.Redis()
+        cmd = {'from_uuid': from_uuid, 'field': field, 'value': value, 'subfield_id': subfield_id, 'pos': pos}
+        r.publish('uuid='+str(res_uuid), json.dumps(cmd))
+
+        return True
+    else:
+        return False
