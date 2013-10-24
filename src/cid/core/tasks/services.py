@@ -97,10 +97,8 @@ class TaskServices(CaliopeEntityService):
     @staticmethod
     @public(name='getData')
     def get_data(uuid):
-        data = {}
-        data['uuid'] = uuid
-        task_controller = TaskController(**data)
-        return task_controller.get_data()
+        task = Task.pull(uuid)
+        return task.serialize()
 
 
     @staticmethod
@@ -108,7 +106,7 @@ class TaskServices(CaliopeEntityService):
     def get_model():
         task_controller = TaskController()
         rv = task_controller.get_model()
-        rv['data'] = task_controller.get_data()
+        rv['data'] = Task().serialize()
         TaskServices.service_requested_uuid.add(rv['data']['uuid']['value'])
         return rv
 
@@ -117,16 +115,19 @@ class TaskServices(CaliopeEntityService):
     def get_model_and_data(uuid):
         data = {}
         data['uuid'] = uuid
-        task_controller = TaskController(**data)
+        task_controller = TaskController()
         rv = task_controller.get_model()
-        rv['data'] = task_controller.get_data()
+        rv['data'] = TaskController.get_data(uuid)
         return rv
 
     @staticmethod
     @public
     def create(formId=None, data=None):
         if 'uuid' in data:
-            task_controller = TaskController(uuid=data['uuid'])
+            uuid = data["uuid"]
+            if uuid in TaskServices.service_requested_uuid:
+                task = Task(**data)
+                task.save()
         else:
             task_controller = TaskController()
 
@@ -212,22 +213,6 @@ class TaskServices(CaliopeEntityService):
 class TaskController(CaliopeEntityController):
     def __init__(self, *args, **kwargs):
         super(TaskController, self).__init__(*args, **kwargs)
-        if 'uuid' in kwargs:
-            try:
-                node = CaliopeNode.index.get(uuid=kwargs['uuid'])
-                self.task = Task().__class__.inflate(node.__node__)
-            except DoesNotExist:
-                if kwargs['uuid'] in TaskServices.service_requested_uuid:
-                    TaskServices.service_requested_uuid.remove(kwargs['uuid'])
-                    self.task = Task()
-                else:
-                    raise DoesNotExist("Invalid UUID")
-            except Exception as e:
-                raise e
-        else:
-            #: TODO check initialization
-            self.task = None
-            self.set_data(**{})
 
     def get_model(self):
         if self._check_template():

@@ -114,6 +114,12 @@ class CaliopeServerTestCase(unittest.TestCase):
             info_uuid = info[0]['uuid']['value']
             assert user == info_uuid
 
+    def test_task_get_model(self):
+        user = self.login(u'user', u'123')
+        tasks_proxy = self.rpc_client.get_proxy(prefix="projects.")
+        model = tasks_proxy.getModel()
+        self.assertIsNotNone(model)
+
     def test_projects_create(self):
         user = self.login(u'user', u'123')
         projects_proxy = self.rpc_client.get_proxy(prefix="projects.")
