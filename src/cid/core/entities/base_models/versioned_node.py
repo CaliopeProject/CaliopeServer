@@ -189,10 +189,12 @@ class VersionedNode(SemiStructuredNode):
         assert issubclass(relationship.__class__, RelationshipManager)
 
         try:
-            print 'relationship.definition => ', relationship.definition
-            print 'relationship.__class__ => ', relationship.__class__
+            #print 'relationship.definition => ', relationship.definition
+            #print 'relationship.__class__ => ', relationship.__class__
+            #print 'relationship.__dict__ => ', relationship.__dict__
             rel = relationship.get(**{'uuid' : target_uuid})
             print 'rel.__class__', rel.__class__
+            print 'rel.__dict__', rel.__dict__
             # TODO(nel): Modify the properties.
         except DoesNotExist:
 	    destination = self.pull(target_uid)
@@ -302,7 +304,7 @@ class Car(VersionedNode):
     plate = StringProperty()
     owner = RelationshipFrom(Person, 'OWNER', ZeroOrOne)
 
-"""person = Person(name='Bob')
+person = Person(name='Bob')
 person.age = 10
 person.save()
 car = Car(plate='7777')
@@ -310,8 +312,7 @@ car.save()
 car.owner.connect(person, {'km' : 0, 'brand' : 'BMW'})
 rel = car._get_relationships()
 print '_get_relationships', rel
-print '_format_relationships', car._format_relationships(rel.keys()[0])
+print '_format_relationships for key ', rel.keys()[0], " ==> ", car._format_relationships(rel.keys()[0])
 #print 'key 1, 2', rel.keys()[0], car.uuid
 car.add_or_update_relationship_target('owner', person.uuid)
 # Clear properties.
-"""
