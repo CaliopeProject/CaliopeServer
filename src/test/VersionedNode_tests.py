@@ -43,6 +43,42 @@ class TestVersionedNodeStorage(unittest.TestCase):
     def printLine(self):
         print "-" * 80
 
+    def test_VersionedNode_add_or_update_relationship_target(self):
+        # First, create Person and Car objects.
+        class Person(VersionedNode):
+            pass
+        class Car(VersionedNode):
+            owner = RelationshipFrom(Person, 'OWNER', ZeroOrOne)
+        person = Person(name='Bob')
+        person.save()
+        car = Car(plate='7777')
+        car.save()
+
+        # Create the relationship and add properties.
+        car.owner.connect(person, {'brand' : 'BMW'})
+
+        # Check relationship properties are there.
+        assert {'brand': 'BMW'} == car._format_relationships('owner')['Person'][person.uuid]
+
+        # Delete the relationship properties.
+        car.add_or_update_relationship_target('owner', person.uuid)
+
+        # Properties should be empty.
+        assert {} == car._format_relationships('owner')['Person'][person.uuid]
+
+        # Add new properties. Let's add two.
+        car.add_or_update_relationship_target('owner', person.uuid, {'brand' : 'Twingo', 'KM' : 0})
+        assert {'brand' : 'Twingo', 'KM' : 0} == car._format_relationships('owner')['Person'][person.uuid]
+
+    def test_VersionedNode_init_without_args(self):
+        self.printLine()
+        node = VersionedNode()
+        node.save()
+        print node.uuid, node.timestamp
+        node2 = VersionedNode.pull(node.uuid)
+        assert node2.uuid == node.uuid
+        self.printLine()
+
     def test_VersionedNode_init_without_args(self):
         self.printLine()
         node = VersionedNode()
