@@ -100,10 +100,6 @@ class VersionedNode(SemiStructuredNode):
                         new_rel.connect(related_node)
 
     @classmethod
-    def pull(cls, id_node):
-        return cls.index.get(uuid=id_node)
-
-    @classmethod
     def push(cls, *args, **kwargs):
         """
         Creates a single node of one class and return it.
@@ -113,29 +109,36 @@ class VersionedNode(SemiStructuredNode):
         return new_node
 
     @staticmethod
-    def inflate_object(uuid):
-        """This metho
-        :param uuid:
-        :return:
+    def pull(uuid):
+        """Useful when you have and UUID and you need the inflated object in
+        the class it was saved. This methods looksups for the relationship
+        which has the `__instance__` property and traceback the class from
+        the registered classes in `py:class:cid.core.entities.VersionedNode`.
+        The default class for an object is `py:class:cid.core.entities
+        .VersionedNode` when no class was traced.
+
+        :param uuid: The UUID of the object you want
+        :return: An instance of the class of the object with the data.
+        :raises DoesNotExits: In case the `uuid` is not found within the index.
         """
         try:
             versioned_node = VersionedNode.index.get(uuid=uuid)
             node = versioned_node.__node__
             graph_db = node._graph_db
             node_rels = graph_db.match(end_node=node)
-            for rel in node_rels:
-                if "__instance__" in rel._properties \
-                    and rel._properties["__instance__"]:
-                    category_node = rel.start_node
+            for relationship in node_rels:
+                if "__instance__" in relationship._properties \
+                    and relationship._properties["__instance__"]:
+                    category_node = relationship.start_node
                     category_node.get_properties()
                     node_class = VersionedNode.__extended_classes__[
                         category_node._properties["category"] if
                         "category" in category_node._properties else
                         "VersionedNode"]
-            return node_class().__class__.inflate(node)
+            return node_class.inflate(node)
         except DoesNotExist as dne:
             #: TODO LOG
-            return None
+            return dne
 
 
     def _get_node_data(self):
@@ -266,8 +269,8 @@ class VersionedNode(SemiStructuredNode):
 
         :param field_name: Name of the field to update
         :param new_value: Value that needs to be saved or updated
-        :param field_id: <Optional>: If is a list the index to be updated -1 to
-                        add a new item, if a dict the key to be updated or added.
+        :param field_id: If is a list the index to be updated -1 to add a new
+                         item, if a dict the key to be updated or added.
         """
 
         if field_name in self._attributes_to_diff() or \
