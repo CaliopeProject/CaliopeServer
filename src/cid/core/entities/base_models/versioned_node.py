@@ -114,6 +114,10 @@ class VersionedNode(SemiStructuredNode):
 
     @staticmethod
     def inflate_object(uuid):
+        """This metho
+        :param uuid:
+        :return:
+        """
         try:
             versioned_node = VersionedNode.index.get(uuid=uuid)
             node = versioned_node.__node__
@@ -151,7 +155,7 @@ class VersionedNode(SemiStructuredNode):
     def _format_relationships(self, rel_name):
         """
         Format relationship in JSON friendly way.
-        :param rel_name: The name of the relationship to be parsed
+        :param: rel_name: The name of the relationship to be parsed
         :return: A relationship in json friendly dict, example
         {
             'class_1': {'uuid_1': {'property_a': 1, 'property_b': 2},
@@ -174,31 +178,32 @@ class VersionedNode(SemiStructuredNode):
                 rv[target_class_name][target.uuid] = dict(rel_inst._properties)
         return rv
 
-    def add_or_update_relationship_target(self, rel_name, target_uuid, new_properties = None):
+    def add_or_update_relationship_target(self, rel_name, target_uuid,
+                                          new_properties=None):
         """
-        Add or update  a relationship target. If the relationship target exists, the
-        properties get overwritten. Otherwise the relationship target is created with
-        the new properties.
+        Add or update  a relationship target. If the relationship target exists,
+        the properties get overwritten. Otherwise the relationship target is
+        created with the new properties.
 
-        :param rel_name: The name of the relationship.
-        :param target_uuid: The uuid of the target node.
-        :param new_properties : If set, a dictionary with the new properties.
+        :param: rel_name: The name of the relationship.
+        :param: target_uuid: The uuid of the target node.
+        :param: new_properties : If set, a dictionary with the new properties.
         """
-        
-        relationship = getattr(self, rel_name)
-        assert issubclass(relationship.__class__, RelationshipManager)
 
-        try:
-            #print 'relationship.definition => ', relationship.definition
-            #print 'relationship.__class__ => ', relationship.__class__
-            #print 'relationship.__dict__ => ', relationship.__dict__
-            rel = relationship.get(**{'uuid' : target_uuid})
-            print 'rel.__class__', rel.__class__
-            print 'rel.__dict__', rel.__dict__
-            # TODO(nel): Modify the properties.
-        except DoesNotExist:
-	    destination = self.pull(target_uid)
-	    relationship.connect(destination, new_properties)
+        start_node = self.__node__
+        target_node = self.__class__.index.get(uuid=target_uuid).__node__
+        rels = start_node.match_one(rel_type=rel_name
+        .upper(), end_node=target_node, bidirectional=True)
+        if len(rels) > 1:
+            #:  Somethings wrong no?
+            pass
+        else:
+            for rel in rels:
+                if new_properties is None:
+                    rel.delete_properties()
+                else:
+                    rel.update_properties(new_properties)
+
 
     def _get_relationships(self):
         rv = {}
