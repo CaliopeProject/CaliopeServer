@@ -210,15 +210,17 @@ class TestVersionedNodeStorage(unittest.TestCase):
 
         self.printLine()
 
-    def test_VersionedNode_inflate_t0_category(self):
+    def test_VersionedNode_pull(self):
         class Car(VersionedNode):
             plate = StringProperty()
 
         car = Car(plate="777")
         self.assertIsNotNone(car.save())
         uuid = car.uuid
-        inflated_object = VersionedNode.inflate_object(uuid)
-        self.assertIsInstance(inflated_object, Car)
+        pulled_object = VersionedNode.pull(uuid)
+        self.assertIsInstance(pulled_object, Car)
+        self.assertEqual(car.plate, pulled_object.plate)
+        car.delete()
 
 
     #: TODO: Move the following test to a new file.
