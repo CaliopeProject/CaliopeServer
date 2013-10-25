@@ -38,6 +38,7 @@ from flask import current_app
 from cid.core.login import LoginManager
 from cid.core.forms.services import FormManager
 from models import Task
+from cid.core.pubsub import pubsub_publish_command
 
 
 class TaskServices(CaliopeEntityService):
@@ -94,7 +95,7 @@ class TaskServices(CaliopeEntityService):
     @staticmethod
     @public(name='getData')
     def get_data(uuid):
-        data = {}
+        data = dict()
         data['uuid'] = uuid
         task_controller = TaskController(**data)
         return task_controller.get_data()
@@ -120,6 +121,14 @@ class TaskServices(CaliopeEntityService):
         return rv
 
     @staticmethod
+    @public("updateField")
+    #: TODO: test
+    def update_field(uuid, field, value, subfield_id=None, pos=None):
+        #get Form module from uuid
+        pubsub_publish(0, uuid, field, value, subfield_id, pos)
+        return "ok"
+
+    @staticmethod
     @public
     def create(formId=None, data=None):
         if 'uuid' in data:
@@ -140,6 +149,11 @@ class TaskServices(CaliopeEntityService):
         task_controller.set_data(**data)
         task_controller.set_owner()
         rv = task_controller.get_data()
+
+        for target in rv['holders']['target']:
+            uuid = target['entity_data']['uuid']
+            print uuid
+            pubsub_publish_command('0', uuid, 'createTask', rv)
 
         return rv
 
