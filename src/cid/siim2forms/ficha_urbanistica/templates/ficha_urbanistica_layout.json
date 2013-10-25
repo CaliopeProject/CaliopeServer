@@ -23,7 +23,7 @@
         {
           "columns": [
             {
-              "class": "widget-header widget-header-flat widget-header-small",
+              "class": "span12 widget-header widget-header-flat widget-header-small",
               "elements": [
                 "datos_modelacion"
               ]
@@ -61,7 +61,7 @@
         {
           "columns": [
             {
-              "class": "span12  widget-header widget-header-flat widget-header-small",
+              "class": "span12  span12 widget-header widget-header-flat widget-header-small",
               "elements": [
                 "espacio_publico"
               ]
@@ -87,7 +87,7 @@
         {
           "columns": [
             {
-              "class": "span12  widget-header widget-header-flat widget-header-small",
+              "class": "span12  span12 widget-header widget-header-flat widget-header-small",
               "elements": [
                 "estacionamientos"
               ]
@@ -125,7 +125,7 @@
         {
           "columns": [
             {
-              "class": "span12  widget-header widget-header-flat widget-header-small",
+              "class": "span12  span12 widget-header widget-header-flat widget-header-small",
               "elements": [
                 "observaciones"
               ]
@@ -145,7 +145,7 @@
         {
           "columns": [
             {
-              "class": "span12  widget-header widget-header-flat widget-header-small",
+              "class": "span12  span12 widget-header widget-header-flat widget-header-small",
               "elements": [
                 "cuadro_areas"
               ]
@@ -187,7 +187,7 @@
         {
           "columns": [
             {
-              "class": "span12  widget-header widget-header-flat widget-header-small",
+              "class": "span12  span12 widget-header widget-header-flat widget-header-small",
               "elements": [
                 "indice_ocupacion"
               ]
@@ -213,7 +213,7 @@
         {
           "columns": [
             {
-              "class": "span12  widget-header widget-header-flat widget-header-small",
+              "class": "span12  span12 widget-header widget-header-flat widget-header-small",
               "elements": [
                 "indice_construccion"
               ]
@@ -239,7 +239,7 @@
       {
         "columns": [
           {
-            "class": "span12  widget-header widget-header-flat widget-header-small",
+            "class": "span12  span12 widget-header widget-header-flat widget-header-small",
             "elements": [
               "indice_construccion"
             ]
@@ -265,7 +265,7 @@
       {
         "columns": [
           {
-            "class": "span12  widget-header widget-header-flat widget-header-small",
+            "class": "span12  span12 widget-header widget-header-flat widget-header-small",
             "elements": [
               "uso_residencial"
             ]
@@ -291,7 +291,7 @@
       {
         "columns": [
           {
-            "class": "span12  widget-header widget-header-flat widget-header-small",
+            "class": "span12  span12 widget-header widget-header-flat widget-header-small",
             "elements": [
               "uso_institucional"
             ]

@@ -1,0 +1,67 @@
+{
+  "name": "Person",
+  "novalidate" : "novalidate",
+  "html": [
+    {
+      "name" : "title",
+      "type" : "div",
+      "html" :
+      [
+        {
+          "type" : "h1",
+          "html" : "Persona"
+        }
+      ]
+    },
+    {
+      "name"    : "name",
+      "caption" : "Nombre",
+      "type"    : "text",
+      "class"   : "input-xlarge"
+    },
+    {
+      "name"    : "surname",
+      "caption" : "Apellido",
+      "type"    : "text",
+      "class"   : "input-xlarge"
+    },
+    {
+      "name"    : "genero",
+      "caption" : "Genero",
+      "type"    : "select",
+      "class"   : "input-xlarge",
+      "options": [
+        {"html":"m","value":"Maculino"},
+        {"html":"f","value":"Femenino"}
+      ]
+    }
+  ],
+  "layout" : [
+    {
+      "columns" : [
+        {
+          "class"   : "page-header",
+          "elements"  : ["title"]
+        }
+      ]
+    },
+    {
+      "class" : "span12",
+      "columns" : [
+        {
+          "class": "span4",
+          "elements"    : ["name"]
+        },
+        {
+          "class": "span4",
+          "elements"    : ["surname"]
+        },
+        {
+          "class": "span4",
+          "elements"    : ["genero"]
+        }
+
+      ]
+    }
+  ]
+}
