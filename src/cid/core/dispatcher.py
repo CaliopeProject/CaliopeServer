@@ -34,8 +34,7 @@ from tinyrpc import BadRequestError
 
 import gevent
 import redis
-
-from cid.core.pubsub import pubsub
+from hotqueue import HotQueue
 
 bp = Blueprint('api', __name__, template_folder='pages')
 
@@ -48,17 +47,13 @@ connection_thread_pool_id = dict()
 def ws_endpoint():
     @copy_current_request_context
     def cmd_greenlet(ws, connection_thread_id):
-        #print('Running in cmd_greenlet')
         connection_thread_pool_id[connection_thread_id] = None
-        #: TODO: Move the pool to redis
         g.connection_thread_pool_id = connection_thread_pool_id
-
         while True:
             g.connection_thread_id = connection_thread_id
             ws_message = ws.receive()
             if ws_message is None:
                 if ws.socket is None:
-                    current_app.logger.info('Remote peer closed connection')
                     break
                 else:
                     current_app.logger.warn('Request: ' + request.__str__() + '\tmessage: None')
@@ -66,52 +61,43 @@ def ws_endpoint():
                 handle_incoming_jsonrpc_message(ws_message, ws)
         del connection_thread_pool_id[connection_thread_id]
 
-    @copy_current_request_context
-    def notifications_greenlet(ws, connection_thread_id):
-        #print('Running in notifications_greenlet')
-        r = redis.Redis()
-        ps = r.pubsub()
-        ps.subscribe('connection_thread_id=' + str(connection_thread_id))
-        print 'connection_thread_id=' + str(connection_thread_id)
+    def subscribe_greenlet(ps, connection_thread_id):
+        queue = HotQueue("connection_thread_id_queue=" + str(connection_thread_id))
+        for msg in queue.consume():
+            try:
+                cmd = json.loads(msg)
+                if cmd['cmd'] == 'subscribe':
+                    ps.subscribe('uuid=' + cmd['params'])
+                elif cmd['cmd'] == 'subscribe':
+                    ps.unsubscribe('uuid=' + cmd['params'])
+            except:
+                pass
+
+    def notifications_greenlet(ws, ps):
+        ps.subscribe('broadcast')
         for item in ps.listen():
-            msg = {"jsonrpc":"2.0", "method": "message", "params": str(item['data']), "id": 0}
-            ws.send(json.dumps(msg))
+            try:
+                if json.loads(item['data']):
+                    ws.send(item['data'])
+            except:
+                pass
 
     if request.environ.get('wsgi.websocket'):
         ws = request.environ['wsgi.websocket']
         connection_thread_id = uuid.uuid1()
 
-        notifications = gevent.spawn(notifications_greenlet, ws, connection_thread_id)
+        r = redis.Redis()
+        ps = r.pubsub()
+
+        subscriptions = gevent.spawn(subscribe_greenlet, ps, connection_thread_id)
+        notifications = gevent.spawn(notifications_greenlet, ws, ps)
         cmd = gevent.spawn(cmd_greenlet, ws, connection_thread_id)
 
         gevent.joinall([cmd])
-        gevent.kill(notifications)
+        gevent.killall([subscriptions, notifications])
 
-        #return "Closed WebSocketConnection"
-
-'''
-@bp.route('/api/ws')
-def ws_endpoint():
-    if request.environ.get('wsgi.websocket'):
-        ws = request.environ['wsgi.websocket']
-        connection_thread_id = uuid.uuid1()
-        connection_thread_pool_id[connection_thread_id] = None
-        #: TODO: Move the pool to redis
-        g.connection_thread_pool_id = connection_thread_pool_id
-        while True:
-            g.connection_thread_id = connection_thread_id
-            ws_message = ws.receive()
-            if ws_message is None:
-                if ws.socket is None:
-                    current_app.logger.info('Remote peer closed connection')
-                    break
-                else:
-                    current_app.logger.warn('Request: ' + request.__str__() + '\tmessage: None')
-            else:
-                handle_incoming_jsonrpc_message(ws_message, ws)
-        del connection_thread_pool_id[connection_thread_id]
         return "Closed WebSocketConnection"
-'''
+
 
 @bp.route('/rest', methods=['POST'])
 def rest_endpoint():

@@ -17,7 +17,7 @@
       "name"    : "ficha",
       "caption" : "Ficha",
       "type"    : "text",
-      "class"   : "input-xxlarge",
+      "class"   : "input-xlarge",
       "options": {
         "idea"            : "Idea",
         "perfil"          : "Perfil",
@@ -29,7 +29,7 @@
     {
       "name"    : "estado",
       "caption" : "Estado",
-      "class"   : "input-xxlarge",
+      "class"   : "input-xlarge",
       "type"    : "select",
       "options": {
         "en_estudio"   : "En Estudio",
@@ -47,7 +47,7 @@
       "name"    : "nombre",
       "caption" : "Nombre del Proyecto",
       "type"    : "text",
-      "class"   : "input-xxlarge",
+      "class"   : "input-xlarge",
       "validations": {
         "minlength" : 10
       }
@@ -112,8 +112,17 @@
                 }
             ]
         }
+    },
+    {
+      "name" : "propietario",
+      "caption" : "Propietario",
+      "type" : "form",
+      "cardinality" : 1,
+      "options-form" : {
+        "formId"  : "Person",
+        "generic" : "true"
+      }
     }
-
   ],
   "layout" : [
     {
@@ -151,6 +160,14 @@
         {
           "class" :  "span6",
           "elements"  : ["areas"]
+        }
+      ]
+    },
+    {
+      "columns" : [
+        {
+          "class" :  "span6",
+          "elements"  : ["propietario"]
         }
       ]
     }

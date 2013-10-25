@@ -22,9 +22,7 @@ Copyright (C) 2013 Infometrika Ltda.
 from neomodel.exception import DoesNotExist
 
 #CaliopeStorage
-from cid.core.entities import (CaliopeNode,
-                               CaliopeUser,
-                               CaliopeEntityController,
+from cid.core.entities import (CaliopeNode, CaliopeUser, CaliopeEntityController,
                                CaliopeEntityService)
 
 from cid.utils.fileUtils import loadJSONFromFile
@@ -40,9 +38,11 @@ from flask import current_app
 from cid.core.login import LoginManager
 from cid.core.forms.services import FormManager
 from models import Task
+from cid.core.pubsub import pubsub_publish_command
 
 
 class TaskServices(CaliopeEntityService):
+
     def __init__(self, *args, **kwargs):
         super(TaskServices, self).__init__(*args, **kwargs)
 
@@ -119,6 +119,14 @@ class TaskServices(CaliopeEntityService):
         rv = task_controller.get_model()
         rv['data'] = TaskController.get_data(uuid)
         return rv
+
+    @staticmethod
+    @public("updateField")
+    #: TODO: test
+    def update_field(uuid, field, value, subfield_id=None, pos=None):
+        #get Form module from uuid
+        pubsub_publish(0, uuid, field, value, subfield_id, pos)
+        return "ok"
 
     @staticmethod
     @public
