@@ -22,9 +22,7 @@ Copyright (C) 2013 Infometrika Ltda.
 from neomodel.exception import DoesNotExist
 
 #CaliopeStorage
-from cid.core.entities import (CaliopeNode,
-                               CaliopeUser,
-                               CaliopeEntityController,
+from cid.core.entities import (CaliopeNode, CaliopeUser, CaliopeEntityController,
                                CaliopeEntityService)
 
 from cid.utils.fileUtils import loadJSONFromFile
@@ -40,9 +38,11 @@ from flask import current_app
 from cid.core.login import LoginManager
 from cid.core.forms.services import FormManager
 from models import Task
+from cid.core.pubsub import pubsub_publish_command
 
 
 class TaskServices(CaliopeEntityService):
+
     def __init__(self, *args, **kwargs):
         super(TaskServices, self).__init__(*args, **kwargs)
 
@@ -97,10 +97,8 @@ class TaskServices(CaliopeEntityService):
     @staticmethod
     @public(name='getData')
     def get_data(uuid):
-        data = {}
-        data['uuid'] = uuid
-        task_controller = TaskController(**data)
-        return task_controller.get_data()
+        task = Task.pull(uuid)
+        return task.serialize()
 
 
     @staticmethod
@@ -108,7 +106,7 @@ class TaskServices(CaliopeEntityService):
     def get_model():
         task_controller = TaskController()
         rv = task_controller.get_model()
-        rv['data'] = task_controller.get_data()
+        rv['data'] = Task().serialize()
         TaskServices.service_requested_uuid.add(rv['data']['uuid']['value'])
         return rv
 
@@ -117,16 +115,27 @@ class TaskServices(CaliopeEntityService):
     def get_model_and_data(uuid):
         data = {}
         data['uuid'] = uuid
-        task_controller = TaskController(**data)
+        task_controller = TaskController()
         rv = task_controller.get_model()
-        rv['data'] = task_controller.get_data()
+        rv['data'] = TaskController.get_data(uuid)
         return rv
+
+    @staticmethod
+    @public("updateField")
+    #: TODO: test
+    def update_field(uuid, field, value, subfield_id=None, pos=None):
+        #get Form module from uuid
+        pubsub_publish(0, uuid, field, value, subfield_id, pos)
+        return "ok"
 
     @staticmethod
     @public
     def create(formId=None, data=None):
         if 'uuid' in data:
-            task_controller = TaskController(uuid=data['uuid'])
+            uuid = data["uuid"]
+            if uuid in TaskServices.service_requested_uuid:
+                task = Task(**data)
+                task.save()
         else:
             task_controller = TaskController()
 
@@ -212,22 +221,6 @@ class TaskServices(CaliopeEntityService):
 class TaskController(CaliopeEntityController):
     def __init__(self, *args, **kwargs):
         super(TaskController, self).__init__(*args, **kwargs)
-        if 'uuid' in kwargs:
-            try:
-                node = CaliopeNode.index.get(uuid=kwargs['uuid'])
-                self.task = Task().__class__.inflate(node.__node__)
-            except DoesNotExist:
-                if kwargs['uuid'] in TaskServices.service_requested_uuid:
-                    TaskServices.service_requested_uuid.remove(kwargs['uuid'])
-                    self.task = Task()
-                else:
-                    raise DoesNotExist("Invalid UUID")
-            except Exception as e:
-                raise e
-        else:
-            #: TODO check initialization
-            self.task = None
-            self.set_data(**{})
 
     def get_model(self):
         if self._check_template():

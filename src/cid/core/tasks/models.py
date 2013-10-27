@@ -24,20 +24,24 @@ Copyright (C) 2013 Infometrika Ltda.
 
 #Caliope Entities
 from cid.core.entities import (VersionedNode,
-                               RelationshipFrom,
-                               CaliopeUser,
+                               Contextable,
+                               Holdable,
+                               CaliopeJSONProperty,
                                DateTimeProperty,
                                StringProperty,
                                IntegerProperty,
-                               CaliopeJSONProperty)
+                               RelationshipFrom,
+                               RelationshipTo
+                               )
 
 
-class Task(VersionedNode):
+class Task(VersionedNode, Holdable):
+    """Task are the most important part of the Kanban framework,
+
     """
 
-    """
-
-    holders = RelationshipFrom(CaliopeUser, 'HOLDER')
+    holders = RelationshipFrom(Contextable, 'HOLDER')
+    context = RelationshipTo(Contextable, 'HOLDER')
 
     deadline = DateTimeProperty()
     name = StringProperty()

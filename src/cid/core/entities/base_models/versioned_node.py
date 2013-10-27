@@ -24,11 +24,13 @@ Copyright (C) 2013  Fundación Correlibre
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
+import types
 
 from py2neo import neo4j
 from neomodel import (StringProperty,
                       DateTimeProperty,
                       RelationshipTo,
+                      AliasProperty,
                       ZeroOrOne,
                       One,
                       DoesNotExist,
@@ -73,6 +75,7 @@ class VersionedNode(SemiStructuredNode):
     def __init__(self, *args, **kwargs):
         super(VersionedNode, self).__init__(*args, **kwargs)
 
+
     def _attributes_to_diff(self):
         return [a for a in self.__dict__ if a[:1] != '_'
         and a not in self.__special_fields__]
@@ -108,10 +111,10 @@ class VersionedNode(SemiStructuredNode):
         new_node.save()
         return new_node
 
-    @staticmethod
-    def pull(uuid):
+    @classmethod
+    def pull(cls, uuid):
         """Useful when you have and UUID and you need the inflated object in
-        the class it was saved. This methods looksups for the relationship
+        the class it was saved. This methods lookups for the relationship
         which has the `__instance__` property and traceback the class from
         the registered classes in `py:class:cid.core.entities.VersionedNode`.
         The default class for an object is `py:class:cid.core.entities
@@ -135,6 +138,7 @@ class VersionedNode(SemiStructuredNode):
                         category_node._properties["category"] if
                         "category" in category_node._properties else
                         "VersionedNode"]
+            assert cls == node_class
             return node_class.inflate(node)
         except DoesNotExist as dne:
             #: TODO LOG
@@ -271,6 +275,7 @@ class VersionedNode(SemiStructuredNode):
         :param new_value: Value that needs to be saved or updated
         :param field_id: If is a list the index to be updated -1 to add a new
                          item, if a dict the key to be updated or added.
+        :raise ValueError: If the field_name is not a property of the object.
         """
 
         if field_name in self._attributes_to_diff() or \
@@ -295,5 +300,38 @@ class VersionedNode(SemiStructuredNode):
                 setattr(self, field_name, new_value)
             self.save()
         else:
-            raise BaseException("{} not a property or attribute"
+            raise ValueError("{} not a property or attribute"
             .format(field_name))
+
+
+class Contextable(object):
+    """Mixing class for allowing create contexts between nodes.
+    """
+    def __init__(self, *args, **kwargs):
+        try:
+            super(Contextable, self).__init__(*args, **kwargs)
+        except TypeError:
+            super(Contextable, self).__init__()
+        self.__context__ = RelationshipFrom(VersionedNode, "__CONTEXT__")
+
+class Holdable(object):
+    """Mixing class for allowing create contexts between nodes.
+    """
+    def __init__(self, *args, **kwargs):
+        try:
+            super(Holdable, self).__init__(*args, **kwargs)
+        except TypeError:
+            super(Holdable, self).__init__()
+        self.__hold__ = RelationshipFrom(Holder, "__HOLD__")
+
+
+class Holder(object):
+    """Mixing class for allowing create contexts between nodes.
+    """
+    def __init__(self, *args, **kwargs):
+        try:
+            super(Holdable, self).__init__(*args, **kwargs)
+        except TypeError:
+            super(Holdable, self).__init__()
+        self.__hold__ = RelationshipTo(Holdable, "__HOLD__")
+
