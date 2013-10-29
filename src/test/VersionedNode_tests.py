@@ -22,6 +22,10 @@ Copyright (C) 2013 Infometrika Ltda
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
+
+# TODO(nel,neoecos): Use assertEqual(a, b) functions and friends.
+# http://docs.python.org/2/library/unittest.html#unittest.TestCase
+
 import unittest
 import hashlib
 
