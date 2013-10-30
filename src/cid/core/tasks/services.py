@@ -40,6 +40,8 @@ from cid.core.forms.services import FormManager
 from models import Task
 from cid.core.pubsub import pubsub_publish_command
 
+from cid.core.pubsub import pubsub_subscribe_uuid
+
 
 class TaskServices(CaliopeEntityService):
 
@@ -98,6 +100,7 @@ class TaskServices(CaliopeEntityService):
         data = dict()
         data['uuid'] = uuid
         task_controller = TaskController(**data)
+        pubsub_subscribe_uuid(uuid)
         return task_controller.get_data()
 
 

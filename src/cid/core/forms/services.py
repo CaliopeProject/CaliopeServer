@@ -32,7 +32,7 @@ from cid.core.login import LoginManager
 from cid.utils import fileUtils
 from cid.core.forms.models import SIIMForm
 from cid.core.entities.utils import CaliopeEntityUtil
-from cid.core.pubsub import pubsub_publish_field
+from cid.core.pubsub import pubsub_publish_command
 
 
 class FormManager(object):
@@ -105,7 +105,9 @@ class FormManager(object):
     #: TODO: test
     def update_field(uuid, field, value, subfield_id=None, pos=None):
         #get Form module from uuid
-        pubsub_publish_field(0, uuid, field, value, subfield_id, pos)
+        rv = {'field': field, 'value': value, 'subfield_id': subfield_id, 'pos': pos}
+        pubsub_publish_command('0', uuid, 'updateField', rv)
+
         return "ok"
 
 
