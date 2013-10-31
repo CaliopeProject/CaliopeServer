@@ -78,10 +78,6 @@
         },
         {
           "class": "span4",
-          "elements"    : ["surname2"]
-        },
-        {
-          "class": "span4",
           "elements"    : ["genero"]
         },
         {
