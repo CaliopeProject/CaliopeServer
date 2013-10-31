@@ -32,7 +32,7 @@ from cid.core.login import LoginManager
 from cid.utils import fileUtils
 from cid.core.forms.models import SIIMForm
 from cid.core.entities.utils import CaliopeEntityUtil
-from cid.core.pubsub import pubsub_publish_command
+# from cid.core.pubsub import pubsub_publish_command
 
 
 class FormManager(object):
@@ -100,16 +100,16 @@ class FormManager(object):
             form = Form(formId=formId)
             return form.get_from_with_data_list(filters)
 
-    @staticmethod
-    @public("updateField")
-    #: TODO: test
-    def update_field(uuid, field, value, subfield_id=None, pos=None):
-        #get Form module from uuid
-        rv = {'field': field, 'value': value, 'subfield_id': subfield_id, 'pos': pos}
-        pubsub_publish_command('0', uuid, 'updateField', rv)
-
-        return "ok"
-
+    # @staticmethod
+    # @public("updateField")
+    # #: TODO: test
+    # def update_field(uuid, field, value, subfield_id=None, pos=None):
+    #     #get Form module from uuid
+    #     rv = {'field': field, 'value': value, 'subfield_id': subfield_id, 'pos': pos}
+    #     pubsub_publish_command('0', uuid, 'updateField', rv)
+    #
+    #     return "ok"
+    #
 
     @staticmethod
     @public("editFromForm")
