@@ -73,12 +73,15 @@ def ws_endpoint():
             except:
                 pass
 
-    def notifications_greenlet(ws, ps):
+    def notifications_greenlet(ws, ps, connection_thread_id):
         ps.subscribe('broadcast')
         for item in ps.listen():
             try:
-                if json.loads(item['data']):
-                    ws.send(item['data'])
+                data = json.loads(item['data'])
+                if data:
+                    if data['thread'] != str(connection_thread_id):
+
+                         ws.send(item['data'])
             except:
                 pass
 
@@ -90,7 +93,7 @@ def ws_endpoint():
         ps = r.pubsub()
 
         subscriptions = gevent.spawn(subscribe_greenlet, ps, connection_thread_id)
-        notifications = gevent.spawn(notifications_greenlet, ws, ps)
+        notifications = gevent.spawn(notifications_greenlet, ws, ps, connection_thread_id)
         cmd = gevent.spawn(cmd_greenlet, ws, connection_thread_id)
 
         gevent.joinall([cmd])
