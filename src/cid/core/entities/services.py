@@ -24,6 +24,7 @@ from exceptions import ValueError
 from tinyrpc.dispatch import public
 from redis import Redis
 import json
+from tinyrpc.exc import RPCError
 
 from cid.utils.fileUtils import loadJSONFromFile
 from cid.utils.helpers import DatetimeEncoder, DatetimeDecoder
@@ -232,6 +233,11 @@ class CaliopeEntityService(object):
         return append_change(uuid, field_name, draft_field) in [0, 1]
 
     @classmethod
+    @public("updateRelationship")
+    def update_relationship(cls, uuid, rel_name, target_uuid, new_properties=None):
+        pass
+
+    @classmethod
     @public("commit")
     def commit(cls, uuid):
         """
@@ -257,8 +263,10 @@ class CaliopeEntityService(object):
                 if versioned_node is None:
                     versioned_node = cls.service_class(uuid=uuid)
                 versioned_node.update_field(delta_k, delta_v)
-                remove_draft(uuid)
-                return versioned_node.uuid == uuid
+            remove_draft(uuid)
+            return versioned_node.uuid == uuid
+        else:
+            return "Nothing to commit"
 
 
 
