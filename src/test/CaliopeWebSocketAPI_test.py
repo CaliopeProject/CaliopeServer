@@ -29,7 +29,7 @@ from geventwebsocket.handler import WebSocketHandler
 
 #tinyrpc
 from tinyrpc.protocols.jsonrpc import JSONRPCProtocol
-from tinyrpc.client import RPCClient
+from tinyrpc.client import RPCClient, RPCError
 from tinyrpc.transports.http import HttpWebSocketClientTransport
 
 #neo4j
@@ -116,9 +116,305 @@ class CaliopeServerTestCase(unittest.TestCase):
 
     def test_task_get_model(self):
         user = self.login(u'user', u'123')
-        tasks_proxy = self.rpc_client.get_proxy(prefix="projects.")
+        tasks_proxy = self.rpc_client.get_proxy(prefix="tasks.")
         model = tasks_proxy.getModel()
         self.assertIsNotNone(model)
+
+    def test_task_update_commit_field_single_value(self):
+        user = self.login(u'user', u'123')
+        tasks_proxy = self.rpc_client.get_proxy(prefix="tasks.")
+        model = tasks_proxy.getModel()
+        uuid = model["data"]["uuid"]["value"]
+        #:update
+        update = tasks_proxy.updateField(uuid=uuid,
+                                         field_name="name",
+                                         value="test")
+
+        #:commit
+        commit = tasks_proxy.commit(uuid=uuid)
+        self.assertTrue(commit)
+
+        #:update a commited value
+        update = tasks_proxy.updateField(uuid=uuid,
+                                         field_name="name",
+                                         value="foo")
+        self.assertTrue(update)
+
+        #:commit again a previusly commited value after being updated
+        self.assertTrue(tasks_proxy.commit(uuid=uuid))
+
+        #:update twice a draft and commit
+        update = tasks_proxy.updateField(uuid=uuid,
+                                         field_name="name",
+                                         value="more foo")
+        self.assertTrue(update)
+        update = tasks_proxy.updateField(uuid=uuid,
+                                         field_name="name",
+                                         value="not more foo")
+        self.assertTrue(update)
+        self.assertTrue(tasks_proxy.commit(uuid=uuid))
+
+
+    def test_task_update_commit_field_single_value_not_exist_in_class(self):
+        user = self.login(u'user', u'123')
+        tasks_proxy = self.rpc_client.get_proxy(prefix="tasks.")
+        model = tasks_proxy.getModel()
+        uuid = model["data"]["uuid"]["value"]
+        update = tasks_proxy.updateField(uuid=uuid,
+                                         field_name="other",
+                                         value="test")
+        self.assertTrue(update)
+        try:
+            response = tasks_proxy.commit(uuid=uuid)
+        except RPCError as error:
+            self.assertIsInstance(error, RPCError)
+
+    def test_task_update_commit_field_list(self):
+        user = self.login(u'user', u'123')
+        tasks_proxy = self.rpc_client.get_proxy(prefix="tasks.")
+        model = tasks_proxy.getModel()
+        uuid = model["data"]["uuid"]["value"]
+
+         #:update invalid index first.
+        try:
+            update = tasks_proxy.updateField(uuid=uuid,
+                                             field_name="subtasks",
+                                             subfield_id=0,
+                                             value="subtask0")
+            self.assertTrue(update)
+        except RPCError as error:
+            self.assertIsInstance(error, RPCError)
+
+        #:update and commit with empty lists
+        update = tasks_proxy.updateField(uuid=uuid,
+                                         field_name="subtasks",
+                                         subfield_id=-1,
+                                         value="subtask0")
+        self.assertTrue(update)
+        self.assertTrue(tasks_proxy.commit(uuid=uuid))
+
+        #: update and commit already commited lists
+        update = tasks_proxy.updateField(uuid=uuid,
+                                         field_name="subtasks",
+                                         subfield_id=0,
+                                         value="new_subtask0")
+        self.assertTrue(update)
+        self.assertTrue(tasks_proxy.commit(uuid=uuid))
+
+        #: update twice and commit
+        update = tasks_proxy.updateField(uuid=uuid,
+                                         field_name="subtasks",
+                                         subfield_id=0,
+                                         value="new_subtask0_up1")
+        self.assertTrue(update)
+        update = tasks_proxy.updateField(uuid=uuid,
+                                         field_name="subtasks",
+                                         subfield_id=0,
+                                         value="new_subtask_up2")
+        self.assertTrue(update)
+        self.assertTrue(tasks_proxy.commit(uuid=uuid))
+
+        #:update a non valid subfield_id
+        try:
+            update = tasks_proxy.updateField(uuid=uuid,
+                                         field_name="subtasks",
+                                         subfield_id=1,
+                                         value="not subtask1")
+        except RPCError as error:
+            self.assertIsInstance(error, RPCError)
+
+    def test_task_update_commit_field_list_list(self):
+        user = self.login(u'user', u'123')
+        tasks_proxy = self.rpc_client.get_proxy(prefix="tasks.")
+        model = tasks_proxy.getModel()
+        uuid = model["data"]["uuid"]["value"]
+
+        #:update with invalid pos
+        try:
+            update = tasks_proxy.updateField(uuid=uuid,
+                                             field_name="subtasks",
+                                             subfield_id=-1,
+                                             pos=0,
+                                             value="subtask0")
+        except RPCError as error:
+            self.assertIsInstance(error, RPCError)
+
+        #:update with invalid subfield_id
+        try:
+            update = tasks_proxy.updateField(uuid=uuid,
+                                             field_name="subtasks",
+                                             subfield_id=0,
+                                             pos=-1,
+                                             value="subtask0")
+        except RPCError as error:
+            self.assertIsInstance(error, RPCError)
+
+        #:update and commit with empty lists
+        update = tasks_proxy.updateField(uuid=uuid,
+                                         field_name="subtasks",
+                                         subfield_id=-1,
+                                         pos=-1,
+                                         value="subtask0")
+        self.assertTrue(update)
+        self.assertTrue(tasks_proxy.commit(uuid=uuid))
+
+        #: update and commit already commited lists
+        update = tasks_proxy.updateField(uuid=uuid,
+                                         field_name="subtasks",
+                                         subfield_id=0,
+                                         pos=0,
+                                         value="new_subtask0")
+        self.assertTrue(update)
+        self.assertTrue(tasks_proxy.commit(uuid=uuid))
+
+        #update twice same, append new and commit
+        update = tasks_proxy.updateField(uuid=uuid,
+                                         field_name="subtasks",
+                                         subfield_id=0,
+                                         pos=0,
+                                         value="new_subtask0_up1")
+        self.assertTrue(update)
+        update = tasks_proxy.updateField(uuid=uuid,
+                                         field_name="subtasks",
+                                         subfield_id=0,
+                                         pos=0,
+                                         value="new_subtask0_up2")
+        self.assertTrue(update)
+        update = tasks_proxy.updateField(uuid=uuid,
+                                         field_name="subtasks",
+                                         subfield_id=0,
+                                         pos=-1,
+                                         value="new_subtask1_up2")
+        self.assertTrue(update)
+        self.assertTrue(tasks_proxy.commit(uuid=uuid))
+
+        #:update a non valid pos
+        try:
+            update = tasks_proxy.updateField(uuid=uuid,
+                                         field_name="subtasks",
+                                         subfield_id=0,
+                                         pos=1,
+                                         value="not subtask1")
+        except RPCError as error:
+            self.assertIsInstance(error, RPCError)
+
+
+
+    def test_task_update_commit_field_list_dict(self):
+        user = self.login(u'user', u'123')
+        tasks_proxy = self.rpc_client.get_proxy(prefix="tasks.")
+        model = tasks_proxy.getModel()
+        uuid = model["data"]["uuid"]["value"]
+
+        #:update with invalid subfield_id
+        try:
+            update = tasks_proxy.updateField(uuid=uuid,
+                                             field_name="subtasks",
+                                             subfield_id=0,
+                                             pos="foo",
+                                             value="subtask0")
+        except RPCError as error:
+            self.assertIsInstance(error, RPCError)
+
+        #:update and commit with empty subfield
+        update = tasks_proxy.updateField(uuid=uuid,
+                                         field_name="subtasks",
+                                         subfield_id=-1,
+                                         pos="foo",
+                                         value="subtask0")
+        self.assertTrue(update)
+        self.assertTrue(tasks_proxy.commit(uuid=uuid))
+
+        #: update and commit already commited lists
+        update = tasks_proxy.updateField(uuid=uuid,
+                                         field_name="subtasks",
+                                         subfield_id=0,
+                                         pos="foo",
+                                         value="new_subtask0")
+        self.assertTrue(update)
+        self.assertTrue(tasks_proxy.commit(uuid=uuid))
+
+        #update twice same, append new and commit
+        update = tasks_proxy.updateField(uuid=uuid,
+                                         field_name="subtasks",
+                                         subfield_id=0,
+                                         pos="foo1",
+                                         value="new_subtask0_up1")
+        self.assertTrue(update)
+        update = tasks_proxy.updateField(uuid=uuid,
+                                         field_name="subtasks",
+                                         subfield_id=0,
+                                         pos="foo1",
+                                         value="new_subtask0_up2")
+        self.assertTrue(update)
+        update = tasks_proxy.updateField(uuid=uuid,
+                                         field_name="subtasks",
+                                         subfield_id=0,
+                                         pos="foo_new",
+                                         value="new_subtask0_up2")
+        self.assertTrue(update)
+        self.assertTrue(tasks_proxy.commit(uuid=uuid))
+
+        #:update a non valid pos
+        try:
+            update = tasks_proxy.updateField(uuid=uuid,
+                                         field_name="subtasks",
+                                         subfield_id=0,
+                                         pos=1,
+                                         value="not subtask1")
+        except RPCError as error:
+            self.assertIsInstance(error, RPCError)
+
+    def test_task_update_commit_field_dict(self):
+        user = self.login(u'user', u'123')
+        tasks_proxy = self.rpc_client.get_proxy(prefix="tasks.")
+        model = tasks_proxy.getModel()
+        uuid = model["data"]["uuid"]["value"]
+
+
+        #:update and commint for fist time
+        update = tasks_proxy.updateField(uuid=uuid,
+                                         field_name="comments",
+                                         subfield_id="user1",
+                                         value="comment0")
+        self.assertTrue(update)
+        self.assertTrue(tasks_proxy.commit(uuid=uuid))
+
+        #: update and commit already commited lists
+        update = tasks_proxy.updateField(uuid=uuid,
+                                         field_name="comments",
+                                         subfield_id="user1",
+                                         value="comment0_up0")
+        self.assertTrue(update)
+        self.assertTrue(tasks_proxy.commit(uuid=uuid))
+
+        #: update twice, append new and commit
+        update = tasks_proxy.updateField(uuid=uuid,
+                                         field_name="comments",
+                                         subfield_id="user1",
+                                         value="comment0_up1")
+        self.assertTrue(update)
+        update = tasks_proxy.updateField(uuid=uuid,
+                                         field_name="comments",
+                                         subfield_id="user1",
+                                         value="comment0_up2")
+        self.assertTrue(update)
+        update = tasks_proxy.updateField(uuid=uuid,
+                                         field_name="comments",
+                                         subfield_id="user2",
+                                         value="comment0")
+        self.assertTrue(update)
+        self.assertTrue(tasks_proxy.commit(uuid=uuid))
+
+        #:update a non valid subfield_id
+        try:
+            update = tasks_proxy.updateField(uuid=uuid,
+                                         field_name="comments",
+                                         subfield_id=1,
+                                         value="not subtask1")
+        except RPCError as error:
+            self.assertIsInstance(error, RPCError)
+
 
     def test_projects_create(self):
         user = self.login(u'user', u'123')

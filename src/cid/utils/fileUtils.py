@@ -39,7 +39,7 @@ from werkzeug.exceptions import NotFound
 from cid.utils.jsOptimizer import jsOptimizer
 
 
-def loadJSONFromFile(filename, root_path):
+def loadJSONFromFile(filename, root_path=None):
     if filename is not None:
         if not os.path.isabs(filename):
             filename = os.path.join(root_path, filename)

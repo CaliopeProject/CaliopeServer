@@ -93,23 +93,6 @@ class TaskServices(CaliopeEntityService):
         return [list for list in
                 sorted(tasks_list.values(), key=lambda pos: pos['pos'])]
 
-
-    @staticmethod
-    @public(name='getData')
-    def get_data(uuid):
-        task = Task.pull(uuid)
-        return task.serialize()
-
-
-    @staticmethod
-    @public(name='getModel')
-    def get_model():
-        task_controller = TaskController()
-        rv = task_controller.get_model()
-        rv['data'] = Task().serialize()
-        TaskServices.service_requested_uuid.add(rv['data']['uuid']['value'])
-        return rv
-
     @staticmethod
     @public(name='getModelAndData')
     def get_model_and_data(uuid):
@@ -120,13 +103,17 @@ class TaskServices(CaliopeEntityService):
         rv['data'] = TaskController.get_data(uuid)
         return rv
 
-    @staticmethod
-    @public("updateField")
-    #: TODO: test
-    def update_field(uuid, field, value, subfield_id=None, pos=None):
-        #get Form module from uuid
-        pubsub_publish(0, uuid, field, value, subfield_id, pos)
-        return "ok"
+    @classmethod
+    @public("getModel")
+    def get_empty_model(cls):
+        import os
+        template_path = os.path.join(os.path.split(__file__)[0],"templates/" +
+                        cls.service_class.__name__ + ".json")
+        entity_class = cls.service_class
+        rv = super(TaskServices, cls)\
+            .get_empty_model(entity_class=entity_class,
+                             template_path=template_path)
+        return rv
 
     @staticmethod
     @public
@@ -216,122 +203,3 @@ class TaskServices(CaliopeEntityService):
             tl.append(entity_data)
 
         return tasks_list
-
-
-class TaskController(CaliopeEntityController):
-    def __init__(self, *args, **kwargs):
-        super(TaskController, self).__init__(*args, **kwargs)
-
-    def get_model(self):
-        if self._check_template():
-            rv = dict()
-            rv['form'] = self._get_form()
-            rv['actions'] = self._get_actions()
-            rv['layout'] = self._get_layout()
-            return rv
-        else:
-            raise RPCError('Template error')
-
-    def set_data(self, **data):
-        rels = list()
-        if 'holders' in data and 'target' in data['holders'] and len(
-                data['holders']['target']) > 0:
-            holders = data['holders']
-        else:
-            holders = [CaliopeUser.index.get(
-                username=LoginManager().get_user()).username]
-
-        for rel in Task.__entity_data_type__._get_class_relationships():
-            if rel[0] in data:
-                rels.append(data[rel[0]])
-                del data[rel[0]]
-
-        # Check if category type is send, else set default category to ToDo
-        if 'category' in data and data['category'] in ['ToDo', 'Doing', 'Done']:
-            category = data['category']
-            del data['category']
-        else:
-            category = 'ToDo'
-
-        if self.task is None:
-            self.task = Task()
-        else:
-            self.task.set_entity_data(**data)
-            if isinstance(holders, list):
-                self.set_holders(holders, category)
-            elif isinstance(holders, dict):
-                for target in holders['target']:
-                    # target_class = target['entity'].strip...
-                    target_class = CaliopeUser
-                    target_node = target_class.index.get(
-                        **{k: v for k, v in target['entity_data'].items()})
-                    self.set_holder(target_node, **target['properties'])
-
-
-    def get_data(self):
-        return self.task.serialize()
-
-    def set_holders(self, holders, category):
-
-        if isinstance(holders, list):
-            holders = [h for h in holders]
-        else:
-            holders = [holders]
-
-        query = ''
-        for holder in holders:
-            if query == '':
-                query += 'username:' + holder
-            else:
-                query += ' OR username:' + holder
-        holdersUsersNodes = CaliopeUser.index.search(query=query)
-        self.task.remove_holders()
-        for holderUser in holdersUsersNodes:
-            self.task.set_holder(holderUser, properties={'category': category})
-
-    def set_owner(self):
-        owner = CaliopeUser.index.get(username=LoginManager().get_user())
-        self.task.set_owner(owner)
-
-    def set_holder(self, holder_node, category):
-        self.task.set_holder(holder_node, properties={'category': category})
-
-    def archive(self):
-        holder_user = CaliopeUser.index.get(username=LoginManager().get_user())
-        self.set_holder(holder_user, 'archived')
-
-
-    def delete(self):
-        holder_user = CaliopeUser.index.get(username=LoginManager().get_user())
-        self.set_holder(holder_user, 'deleted')
-
-
-    def _check_template(self):
-        #: TODO: Check if form_name is valid and form_path is a file
-        #: TODO: Cache this files
-        try:
-            self.template = loadJSONFromFile('core/tasks/templates/tasks.json',
-                                             current_app.root_path)
-            return True
-        except IOError:
-            return False
-
-    def _get_form(self):
-        return self.template
-
-    def _get_actions(self):
-        #: TODO: Implement depending on user
-        if 'actions' in self.template:
-            self.actions = self.template['actions']
-            self.template.pop('actions')
-        return self.actions
-
-    def _get_layout(self):
-        #: TODO: Implement depending on user
-        if 'layout' in self.template:
-            self.layout = self.template['layout']
-            self.template.pop('layout')
-        else:
-            self.layout = []
-        return self.layout
-
