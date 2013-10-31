@@ -1,28 +1,25 @@
 # -*- coding: utf-8 -*-
 """
-    cid.core.entities.versioned_node
-    ~~~~~~~~~~~~~~
+    .. codeauthor:: Sebastián Ortiz <neoecos@gmail.com>
+    .. codeauthor:: Nelson Castillo <nelsoneci@gmail.com>
+    .. copyright:: (c) 2013 por Fundación CorreLibre
+    .. license::  GNU AFFERO GENERAL PUBLIC LICENSE
 
-    :author: Sebastián Ortiz <neoecos@gmail.com>
-    :author: Nelson Castillo <nelsoneci@gmail.com>
-    :copyright: (c) 2013 por Fundación CorreLibre
-    :license:  GNU AFFERO GENERAL PUBLIC LICENSE
-
-SIIM2 Storage is the base of SIIM2's Framework
-Copyright (C) 2013  Fundación Correlibre
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#SIIM2 Storage is the base of SIIM2's Framework
+#Copyright (C) 2013  Fundación Correlibre
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Affero General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Affero General Public License for more details.
+#
+#    You should have received a copy of the GNU Affero General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 import types
 
@@ -47,8 +44,7 @@ from caliope_properties import CaliopeJSONProperty
 
 class VersionedNode(SemiStructuredNode):
     """
-    :class: cid.core.entities.VersionedNode
-
+    .. py:class::
     This class is the base for all data in the SIIM2 project.
     """
 
@@ -58,11 +54,6 @@ class VersionedNode(SemiStructuredNode):
 
     uuid = StringProperty(default=uuidGenerator, unique_index=True)
 
-    #: All timestamps should be in UTC using pytz.utc
-    # TODO:
-    # 1) When a timestamp is stored and then loaded the value is different.
-    #    Timezone issue.
-    # 2) Check that the timestamp is updated when needed.
     timestamp = DateTimeProperty(default=timeStampGenerator)
 
     __special_fields__ = set(['timestamp', 'parent', 'uuid'])
@@ -122,7 +113,7 @@ class VersionedNode(SemiStructuredNode):
 
         :param uuid: The UUID of the object you want
         :return: An instance of the class of the object with the data.
-        :raises DoesNotExits: In case the `uuid` is not found within the index.
+        `py::const None` if does not exists.
         """
         try:
             versioned_node = VersionedNode.index.get(uuid=uuid)
@@ -142,7 +133,7 @@ class VersionedNode(SemiStructuredNode):
             return node_class.inflate(node)
         except DoesNotExist as dne:
             #: TODO LOG
-            return dne
+            return None
 
 
     def _get_node_data(self):
@@ -285,7 +276,7 @@ class VersionedNode(SemiStructuredNode):
                 if isinstance(curr_value, list) and isinstance(field_id, int):
                     if field_id == -1:
                         curr_value.append(new_value)
-                    elif len(curr_value) >= field_id:
+                    elif len(curr_value) > field_id:
                         curr_value[field_id] = new_value
                     else:
                         raise IndexError("Index does {} not exists in {}"
@@ -300,6 +291,8 @@ class VersionedNode(SemiStructuredNode):
                 setattr(self, field_name, new_value)
             self.save()
         else:
+            #: TODO: change the following line to support adding new
+            # properties.
             raise ValueError("{} not a property or attribute"
             .format(field_name))
 

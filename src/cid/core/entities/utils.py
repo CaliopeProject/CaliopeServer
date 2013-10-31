@@ -10,16 +10,24 @@ from neomodel.properties import (Property,
 
       
 class CaliopeEntityUtil(object):
-    def makeFormTemplate(self, node_type, html=None):
+
+    def makeFormTemplate(self, entity_class, html=None):
+        """
+        Utility method to create a json template from a `class` definition.
+        :param entity_class: Class to build the template
+        :param html: Already defined html
+        :return: `dict` with the json form template.
+        """
         json_template = dict()
-        json_template['name'] = node_type.__class__.__name__
-        json_template['html'] = html if html else self.show_dictionary(node_type.__class__.__dict__)
+        json_template['name'] = entity_class.__name__
+        json_template['html'] = html if html else self.show_dictionary(
+            entity_class.__dict__)
         return json_template
 
-    def makeLayoutTemplate(self, node_type):
+    def makeLayoutTemplate(self, entity_class):
         elements = list()
-        for field in node_type.__class__.__dict__:
-            if isinstance(node_type.__class__.__dict__[field], Property):
+        for field in entity_class.__dict__:
+            if isinstance(entity_class.__dict__[field], Property):
                 elements.append(field)
         columns = list()
         columns.append({"elements": elements})
