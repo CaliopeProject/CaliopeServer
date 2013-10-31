@@ -167,7 +167,7 @@
             "columns": [
                 {
                     "class": "span6",
-                    "elements": ["name" , "descripcion", "category", "comments", "subtasks"]
+                    "elements": ["name" , "description", "category", "comments", "subtasks"]
                 },
                 {
                     "class": "span6",
