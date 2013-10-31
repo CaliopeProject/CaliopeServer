@@ -87,15 +87,8 @@
                 "field-image": "image"
             },
             "relation": {
-                "direction": -1,
-                "target": {
-                    "entity": "<class 'cid.core.entities.base_models.entities_models.CaliopeUser'>",
-                    "properties": {
-                        "category": "{{category}}"
-                    },
-                    "entity_data": {
-                        "uuid": "{{holders}}"
-                    }
+                "CaliopeUser": {
+                    "{{holders}}": {"category": "{{category}}"}
                 }
             }
         },
