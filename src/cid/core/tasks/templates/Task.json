@@ -122,7 +122,7 @@
             }
         },
         {
-            "name": "descripcion",
+            "name": "description",
             "caption": "Descripción tarea",
             "class": "input-large",
             "type": "textarea",
