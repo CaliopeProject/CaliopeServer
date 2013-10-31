@@ -22,7 +22,11 @@ from hotqueue import HotQueue
 
 from flask import g
 
+import redis
+
 import json
+
+from cid.utils.helpers import DatetimeEncoder
 
 
 def pubsub_subscribe_uuid(uuid):
@@ -34,6 +38,7 @@ def pubsub_subscribe_uuid(uuid):
     else:
         return None
 
+
 def pubsub_unsubscribe_uuid(uuid):
     if True: #TODO: check uuid
         queue = HotQueue("connection_thread_id_queue=" + str(g.connection_thread_id))
@@ -42,3 +47,31 @@ def pubsub_unsubscribe_uuid(uuid):
         return msg
     else:
         return None
+
+
+def pubsub_publish_command(from_uuid, res_uuid, method, data):
+    if True: #TODO:  check from_uuid, res_uuid
+
+        cmd = {
+            "jsonrpc": "2.0",
+            "method": method,
+            "params": data,
+            "id": str(from_uuid)
+        }
+        r = redis.Redis()
+        r.publish('uuid=' + str(res_uuid), json.dumps(cmd,  cls=DatetimeEncoder))
+
+        return True
+    else:
+        return False
+
+
+def pubsub_publish_field(from_uuid, res_uuid, field, value, subfield_id=None, pos=None):
+    if True: #TODO:  check from_uuid, res_uuid
+        r = redis.Redis()
+        cmd = {'from_uuid': from_uuid, 'field': field, 'value': value, 'subfield_id': subfield_id, 'pos': pos}
+        r.publish('uuid='+str(res_uuid), json.dumps(cmd, cls=DatetimeEncoder))
+
+        return True
+    else:
+        return False

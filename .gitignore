@@ -18,3 +18,4 @@ src/SIIM2_Server.egg-info/
 .idea/
 var/
 !var/dummy.pid
+docs/_build

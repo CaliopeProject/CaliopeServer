@@ -20,8 +20,9 @@ Copyright (C) 2013 Infometrika Ltda.
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from services import TaskServices
+from .services import TaskServices
+from .models import Task
 
 
 def get_service():
-    return TaskServices()
+    return TaskServices(service_class=Task)

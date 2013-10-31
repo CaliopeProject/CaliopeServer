@@ -32,6 +32,7 @@ from cid.core.login import LoginManager
 from cid.utils import fileUtils
 from cid.core.forms.models import SIIMForm
 from cid.core.entities.utils import CaliopeEntityUtil
+from cid.core.pubsub import pubsub_publish_command
 
 
 class FormManager(object):
@@ -100,6 +101,17 @@ class FormManager(object):
             return form.get_from_with_data_list(filters)
 
     @staticmethod
+    @public("updateField")
+    #: TODO: test
+    def update_field(uuid, field, value, subfield_id=None, pos=None):
+        #get Form module from uuid
+        rv = {'field': field, 'value': value, 'subfield_id': subfield_id, 'pos': pos}
+        pubsub_publish_command('0', uuid, 'updateField', rv)
+
+        return "ok"
+
+
+    @staticmethod
     @public("editFromForm")
     #: TODO: test
     def edit_form(formId=None, data=None):
@@ -149,10 +161,11 @@ class FormManager(object):
     @staticmethod
     def _get_default_actions():
         return [
-                #{"name": "create", "method": "form.createFromForm"},
-                #{"name": "delete", "method": "form.delete", "params": ["uuid"]},
-                {"name": "guardar", "method": "form.editFromForm"}
-            ]
+            #{"name": "create", "method": "form.createFromForm"},
+            #{"name": "delete", "method": "form.delete", "params": ["uuid"]},
+            {"name": "guardar", "method": "form.editFromForm"}
+        ]
+
 
 class Form(object):
     def __init__(self, **kwargs):

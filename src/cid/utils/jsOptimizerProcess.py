@@ -26,7 +26,7 @@ import sys
 import getopt
 from simplekv.memory.redisstore import RedisStore
 from os import path
-from pyinotify import (WatchManager, Notifier, ProcessEvent, IN_MOVED_TO,IN_ACCESS,IN_CREATE, IN_MODIFY, IN_DELETE)
+from pyinotify import (WatchManager, Notifier, ProcessEvent, IN_MOVED_TO, IN_ACCESS, IN_CREATE, IN_MODIFY, IN_DELETE)
 from cid.utils.jsOptimizer import *
 from cid.utils.fileUtils import loadJSONFromFile
 
@@ -56,14 +56,14 @@ def _parseCommandArguments(argv):
     print "_parseCommandArguments" + str(argv)
     server_config_file = "conf/caliope_server.json"
     try:
-        opts, args = getopt.getopt(argv, "hc:", ["help", "config=",])
+        opts, args = getopt.getopt(argv, "hc:", ["help", "config=", ])
     except getopt.GetoptError:
-        print 'jsOptimizerProcess.py -c <server_configfile>' 
+        print 'jsOptimizerProcess.py -c <server_configfile>'
         sys.exit(2)
 
     for opt, arg in opts:
         if opt == '-h':
-            print 'jsOptimizerProcess.py -c <server_configfile>' 
+            print 'jsOptimizerProcess.py -c <server_configfile>'
             sys.exit()
         elif opt in ("-c", "--config"):
             server_config_file = arg
@@ -102,6 +102,7 @@ def main(argv):
         notifier.loop()
     finally:
         pass
+
 
 if __name__ == '__main__':
     #: Start the application

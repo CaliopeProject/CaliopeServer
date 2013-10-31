@@ -1,0 +1,27 @@
+{
+ "roles" : {
+              "role_all" : ["read", "write", "assign"],
+              "role_rw" : ["read", "write"]
+           },
+ "things" : {
+              "everything" : ["form", "document", "task", "report"]
+            },
+ "groups" : {
+              "recepcionistas" : ["recepcionista_1", "recepcionista_2"],
+              "revisores" : ["revisor_1", "revisor_2", "revisor_3"],
+              "gerentes" : ["gerente_1"],
+              "reportes" : ["reportero_1", "reportero_2"],
+              "everybody" : ["recepcionistas","revisores",  "gerentes", "reportes"]
+            },
+ "rules" : [ 
+             ["recepcionistas", "read", "everything"],
+             ["recepcionistas", "assign", "everything", "revisores"],
+             ["recepcionistas", "read", "everything", "revisores"],
+             ["revisores", "role_rw", "everything"],
+             ["revisores", "assign", "everything", "gerentes"],
+             ["gerentes", "role_all", "everything"],
+             ["gerentes", "assign", "everything", "reportes"],
+             ["reportes", "read", "everything"],
+             ["reportes", "role_rw", "report"]
+           ] 
+}

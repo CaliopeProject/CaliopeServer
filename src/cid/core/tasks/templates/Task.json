@@ -1,0 +1,181 @@
+{
+    "name": "Tasks",
+    "html": [
+        {
+            "name": "title",
+            "type": "div",
+            "html": [
+                {
+                    "type": "h1",
+                    "html": "Tarea"
+                }
+            ]
+        },
+        {
+            "name": "empty",
+            "type": "span"
+        },
+        {
+            "name": "category",
+            "caption": "Categoria",
+            "type": "select",
+            "class": "input-large",
+            "options": {
+                "ToDo": "ToDo",
+                "Doing": "Doing",
+                "Done": "Done"
+            }
+        },
+        {
+            "name": "execute",
+            "type": "execute-task",
+            "options": {
+                "target-uuid-field": "target.target.0.entity_data.uuid",
+                "target-entity-field": "target.target.0.entity"
+            }
+        },
+        {
+            "name": "target",
+            "type": "hidden",
+            "relation": {
+                "direction": -1,
+                "target": {
+                    "entity": "{{formtask}}",
+                    "properties": {
+                    },
+                    "entity_data": {
+                        "uuid": "{{target}}"
+                    }
+                }
+            }
+        },
+        {
+            "name": "subtasks",
+            "type": "hidden"
+        },
+        {
+            "name": "comments",
+            "type": "hidden"
+        },
+        {
+            "name": "formtask",
+            "caption": "Formulario",
+            "class": "input-large",
+            "type": "select",
+            "options-load-server": {
+                "method": "form.getForms",
+                "field-value": "formId",
+                "field-desc": "label"
+            },
+            "validation": {
+                "required": true
+            },
+            "options": {
+                "predios": "Selección de Predios",
+                "projects": "Formulario de proyectos"
+            }
+        },
+        {
+            "name": "holders",
+            "caption": "Asignar a",
+            "class": "input-large",
+            "type": "multi-choices",
+            "options-load-server": {
+                "method": "accounts.getAll",
+                "field-value": "uuid",
+                "field-desc": "username",
+                "field-image": "image"
+            },
+            "relation": {
+                "direction": -1,
+                "target": {
+                    "entity": "<class 'cid.core.entities.base_models.entities_models.CaliopeUser'>",
+                    "properties": {
+                        "category": "{{category}}"
+                    },
+                    "entity_data": {
+                        "uuid": "{{holders}}"
+                    }
+                }
+            }
+        },
+        {
+            "name": "status",
+            "caption": "Estado",
+            "class": "input-large",
+            "type": "multi-choices",
+            "single": "true",
+            "options-load-server": {
+                "method": "accounts.getAll",
+                "field-value": "estado",
+                "field-desc": "desc",
+                "field-image": "image"
+            }
+        },
+        {
+            "name": "name",
+            "caption": "Nombre",
+            "class": "input-large",
+            "type": "text",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "descripcion",
+            "caption": "Descripción tarea",
+            "class": "input-large",
+            "type": "textarea",
+            "rows": "5",
+            "cols": "70"
+        },
+        {
+            "name": "deadline",
+            "class": "input-large",
+            "caption": "Fecha estimada de finalización",
+            "type": "datepicker",
+            "format": "dd/MM/yyyy"
+        }
+    ],
+    "actions": [
+        {
+            "name": "Crear",
+            "method": "tasks.create"
+        },
+        {
+            "name": "Editar",
+            "method": "tasks.edit"
+        }
+    ],
+    "layout": [
+        {
+            "columns": [
+                {
+                    "class": "page-header span3",
+                    "elements": ["title"]
+                },
+                {
+                    "class": "page-header span8",
+                    "elements": ["execute"]
+                },
+                {
+                    "class": "span1",
+                    "elements": ["target"]
+                }
+            ]
+        },
+        {
+            "class": "span12",
+            "columns": [
+                {
+                    "class": "span6",
+                    "elements": ["name" , "descripcion", "category", "comments", "subtasks"]
+                },
+                {
+                    "class": "span6",
+                    "elements": ["formtask", "deadline", "holders", "target", "status"]
+                }
+            ]
+        }
+    ]
+}

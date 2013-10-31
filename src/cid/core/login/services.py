@@ -88,7 +88,7 @@ class LoginManager(object):
                     }
                 except Exception as e:
                     raise JSONRPCInternalError(e)
-            #: if not returned is not a  valid session
+                    #: if not returned is not a  valid session
         return {'login': False}
 
 

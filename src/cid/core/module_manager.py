@@ -46,7 +46,6 @@ def register_form_modules(app):
                 form['layout'] = loadJSONFromFile(m['layout'], path)['layout']
             except:
                 form['layout'] = None
-
             try:
                 form['html'] = loadJSONFromFile(m['html'], path)['html']
             except:

@@ -76,9 +76,11 @@ def ws_endpoint():
     def notifications_greenlet(ws, ps):
         ps.subscribe('broadcast')
         for item in ps.listen():
-            params = {'content': str(item['data']), 'level': 'info'}
-            msg = {"jsonrpc":"2.0", "method": "message", "params": params, "id": 0}
-            ws.send(json.dumps(msg))
+            try:
+                if json.loads(item['data']):
+                    ws.send(item['data'])
+            except:
+                pass
 
     if request.environ.get('wsgi.websocket'):
         ws = request.environ['wsgi.websocket']

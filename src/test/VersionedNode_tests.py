@@ -22,22 +22,68 @@ Copyright (C) 2013 Infometrika Ltda
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
+
+# TODO(nel,neoecos): Use assertEqual(a, b) functions and friends.
+# http://docs.python.org/2/library/unittest.html#unittest.TestCase
+
 import unittest
 import hashlib
 
 from py2neo import neo4j
-from cid.core.entities import VersionedNode, DoesNotExist, UniqueProperty, CaliopeUser, CaliopeGroup
+from cid.core.entities import (VersionedNode,
+                               DoesNotExist,
+                               UniqueProperty,
+                               CaliopeUser,
+                               CaliopeGroup,
+                               CaliopeJSONProperty)
+from neomodel import StringProperty, RelationshipFrom, ZeroOrOne
 
 
 class TestVersionedNodeStorage(unittest.TestCase):
     def tearDown(self):
+        #:Delete database
         neo4j.GraphDatabaseService().clear()
 
     def printLine(self):
         print "-" * 80
 
+    def test_VersionedNode_add_or_update_relationship_target(self):
+        # First, create Person and Car objects.
+        class Person(VersionedNode):
+            pass
+        class Car(VersionedNode):
+            owner = RelationshipFrom(Person, 'OWNER', ZeroOrOne)
+        person = Person(name='Bob')
+        person.save()
+        car = Car(plate='7777')
+        car.save()
+
+        # Create the relationship and add properties.
+        car.owner.connect(person, {'brand' : 'BMW'})
+
+        # Check relationship properties are there.
+        assert {'brand': 'BMW'} == car._format_relationships('owner')['Person'][person.uuid]
+
+        # Delete the relationship properties.
+        car.add_or_update_relationship_target('owner', person.uuid)
+
+        # Properties should be empty.
+        assert {} == car._format_relationships('owner')['Person'][person.uuid]
+
+        # Add new properties. Let's add two.
+        car.add_or_update_relationship_target('owner', person.uuid, {'brand' : 'Twingo', 'KM' : 0})
+        assert {'brand' : 'Twingo', 'KM' : 0} == car._format_relationships('owner')['Person'][person.uuid]
+
     def test_VersionedNode_init_without_args(self):
-        print "Test#1"
+        self.printLine()
+        node = VersionedNode()
+        node.save()
+        print node.uuid, node.timestamp
+        node2 = VersionedNode.pull(node.uuid)
+        assert node2.uuid == node.uuid
+        self.printLine()
+
+    def test_VersionedNode_init_without_args(self):
         self.printLine()
         node = VersionedNode()
         node.save()
@@ -47,7 +93,6 @@ class TestVersionedNodeStorage(unittest.TestCase):
         self.printLine()
 
     def test_VersionedNode_init_with_args(self):
-        print "Test#2"
         self.printLine()
         props = {'foo': 'bar', 'other': 2}
         node = VersionedNode(**props)
@@ -58,7 +103,6 @@ class TestVersionedNodeStorage(unittest.TestCase):
         self.printLine()
 
     def test_VersionedNode_push(self):
-        print "Test#3"
         self.printLine()
         props = {'foo': 'bar', 'other': 2}
         node = VersionedNode.push(**props)
@@ -67,7 +111,6 @@ class TestVersionedNodeStorage(unittest.TestCase):
         self.printLine()
 
     def test_VersionedNode_change(self):
-        print "Test#4"
         self.printLine()
         props = {'foo': 'bar', 'other': 2}
         node = VersionedNode.push(**props)
@@ -79,7 +122,6 @@ class TestVersionedNodeStorage(unittest.TestCase):
         self.printLine()
 
     def test_VersionedNode_parent(self):
-        print "Test#5"
         self.printLine()
         props = {'foo': 'bar', 'other': 2}
         node = VersionedNode.push(**props)
@@ -92,8 +134,137 @@ class TestVersionedNodeStorage(unittest.TestCase):
         assert node_prev.other == props['other']
         self.printLine()
 
+    def test_versionednode_update_field(self):
+        self.printLine()
+        node = VersionedNode()
+        node.foo = 'bar'
+        node.save()
+        print node.uuid, node.timestamp, node.foo
+        node.update_field("foo", "new_bar")
+        assert node.foo == "new_bar"
+        self.printLine()
+
+    def test_VersionedNode_update_field_list_append(self):
+        self.printLine()
+        node = VersionedNode()
+        node.foo = ['item0', "item1"]
+        node.save()
+        print node.uuid, node.timestamp, node.foo
+        node.update_field("foo", "bar", 0)
+        assert node.foo[0] == "bar"
+        assert node.foo[1] == "item1"
+        self.printLine()
+
+    def test_VersionedNode_update_field_list_update(self):
+        self.printLine()
+        node = VersionedNode()
+        node.foo = ['item0', "item1"]
+        node.save()
+        print node.uuid, node.timestamp, node.foo
+        node.update_field("foo", "bar", -1)
+        assert node.foo[2] == "bar"
+        assert node.foo[0] == "item0"
+        assert node.foo[1] == "item1"
+        self.printLine()
+
+
+    def test_VersionedNode_update_field_dict_update(self):
+        self.printLine()
+        setattr(VersionedNode, "foo", CaliopeJSONProperty())
+        node = VersionedNode()
+        node.foo = {"foo": "bar", "a": 1}
+        node.save()
+        print node.uuid, node.timestamp, node.foo
+        node.update_field("foo", "new_bar", "foo")
+        assert node.foo["foo"] == "new_bar"
+        self.printLine()
+
+    def test_VersionedNode_update_field_dict_append(self):
+        self.printLine()
+        setattr(VersionedNode, "foo", CaliopeJSONProperty())
+        node = VersionedNode()
+        node.save()
+        print node.uuid, node.timestamp, node.foo
+        node.update_field("foo", "bar", field_id="foo")
+        assert node.foo["foo"] == "bar"
+        self.printLine()
+
+    def test_VersionedNode_format_relationships_only_one(self):
+        class Person(VersionedNode):
+            name = StringProperty()
+            age = StringProperty()
+
+        class Car(VersionedNode):
+            plate = StringProperty()
+            owner = RelationshipFrom(Person, 'OWNER', ZeroOrOne)
+
+        self.printLine()
+
+        person = Person(name='Bob')
+        person.age = 10
+        person.save()
+
+        car = Car(plate='7777')
+        car.save()
+
+        # Test empty relationship
+        assert {} == car._format_relationships('owner')
+        # Create the relationship with attributes
+        car.owner.connect(person, {'km': 0, 'brand': 'BMW'})
+        #Expected value for relationships (with different UID):
+        #{'Person': {u'21b04fc6-3e97-4584-926a-28497d997447':
+        #{u'brand': u'BMW', u'km': 0}}}
+        relationships = car._format_relationships('owner')
+        assert 'Person' in relationships
+        assert len(relationships['Person']) == 1
+        assert person.uuid in relationships['Person']
+        assert relationships['Person'][person.uuid] == {u'brand': u'BMW',
+                                                        u'km': 0}
+        self.printLine()
+
+    def test_VersionedNode_format_relationships_many(self):
+        class Car(VersionedNode):
+            plate = StringProperty()
+
+        class ParkingLot(VersionedNode):
+            parked = RelationshipFrom(Car, 'PARKED')
+
+        self.printLine()
+
+        car_uuids = []
+        parking_lot = ParkingLot()
+        parking_lot.save()
+        for i in range(5):
+            car = Car(plate=str(i))
+            car.save()
+            parking_lot.parked.connect(car, {'i': i})
+            car_uuids.append(car.uuid)
+
+        relationships = parking_lot._format_relationships('parked')
+
+        assert 'Car' in relationships
+        assert len(car_uuids) == len(relationships['Car'])
+        for i, uuid in enumerate(car_uuids):
+            assert uuid in relationships['Car']
+            assert {'i': i} == relationships['Car'][uuid]
+
+        self.printLine()
+
+    def test_VersionedNode_pull(self):
+        class Car(VersionedNode):
+            plate = StringProperty()
+
+        car = Car(plate="777")
+        self.assertIsNotNone(car.save())
+        uuid = car.uuid
+        pulled_object = VersionedNode.pull(uuid)
+        self.assertIsInstance(pulled_object, Car)
+        self.assertEqual(car.plate, pulled_object.plate)
+        car.delete()
+
+
+    #: TODO: Move the following test to a new file.
     def test_CaliopeUser_creation(self):
-        print "Test#6"
         self.printLine()
         u1 = CaliopeUser()
         u1.username = 'userTmp'
@@ -105,7 +276,6 @@ class TestVersionedNodeStorage(unittest.TestCase):
         self.printLine()
 
     def test_CaliopeUser_creationMany(self):
-        print "Test#7"
         self.printLine()
         for i in xrange(20):
             u1 = CaliopeUser()
@@ -118,7 +288,6 @@ class TestVersionedNodeStorage(unittest.TestCase):
         self.printLine()
 
     def test_CaliopeGroup_creation(self):
-        print "Test#8"
         self.printLine()
         g1 = CaliopeGroup()
         g1.name = 'GroupTmp'
@@ -128,7 +297,6 @@ class TestVersionedNodeStorage(unittest.TestCase):
         self.printLine()
 
     def test_CaliopeGroup_creationMany(self):
-        print "Test#9"
         self.printLine()
         for i in xrange(1, 5):
             g1 = CaliopeGroup()
@@ -138,11 +306,10 @@ class TestVersionedNodeStorage(unittest.TestCase):
                 assert g1.save() is not None
                 g1.delete()
             except UniqueProperty:
-                assert True
+                pass
         self.printLine()
 
     def test_CaliopeGroup_connectOne(self):
-        print "Test#10"
         self.printLine()
         try:
             u1 = CaliopeUser()
@@ -164,68 +331,6 @@ class TestVersionedNodeStorage(unittest.TestCase):
             u1.delete()
         except UniqueProperty:
             assert False
-        self.printLine()
-
-    def test_CaliopeStorage_defaultUserGroupOne(self):
-        print "Test#11"
-        self.printLine()
-        try:
-            u1 = CaliopeUser()
-            u1.username = 'user'
-            u1.password = hashlib.sha256(u'123').hexdigest()
-            u1.domainname = 'correlibre.org'
-            u1.first_name = "User"
-            u1.last_name = "Test"
-            u1.save()
-            g1 = CaliopeGroup()
-            g1.name = 'Group'
-            g1.code = 'g-000'
-            g1.save()
-            u1.member_of.connect(g1)
-            g1.members.connect(u1)
-            assert u1.member_of.is_connected(g1)
-            assert g1.members.is_connected(u1)
-        except UniqueProperty:
-            try:
-                u1 = CaliopeUser.index.get(username='user')
-                g1 = CaliopeGroup.index.get(code='g-000')
-                assert u1 is not None and g1 is not None
-                assert u1.member_of.is_connected(g1)
-                assert g1.members.is_connected(u1)
-            except DoesNotExist:
-                assert False
-        self.printLine()
-
-    def test_CaliopeStorage_defaultUserGroupMany(self):
-        print "Test#12"
-        self.printLine()
-        try:
-            for i in xrange(1, 5):
-                u1 = CaliopeUser()
-                u1.username = 'user' + str(i)
-                u1.password = hashlib.sha256(u'123').hexdigest()
-                u1.domainname = 'correlibre.org'
-                u1.first_name = "User" + str(i)
-                u1.last_name = "Test"
-                u1.save()
-                g1 = CaliopeGroup()
-                g1.name = 'Group' + str(i)
-                g1.code = 'g-00' + str(i)
-                g1.save()
-                u1.member_of.connect(g1)
-                g1.members.connect(u1)
-                assert u1.member_of.is_connected(g1)
-                assert g1.members.is_connected(u1)
-        except UniqueProperty:
-            try:
-                for i in xrange(1, 5):
-                    u1 = CaliopeUser.index.get(username='user' + str(i))
-                    g1 = CaliopeGroup.index.get(code='g-00' + str(i))
-                    assert u1 is not None and g1 is not None
-                    assert u1.member_of.is_connected(g1)
-                    assert g1.members.is_connected(u1)
-            except DoesNotExist:
-                assert False
         self.printLine()
 
 
