@@ -38,7 +38,6 @@ from flask import current_app
 from cid.core.login import LoginManager
 from cid.core.forms.services import FormManager
 from models import Task
-from cid.core.pubsub import pubsub_publish_command
 
 
 class TaskServices(CaliopeEntityService):

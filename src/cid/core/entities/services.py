@@ -28,6 +28,7 @@ from tinyrpc.exc import RPCError
 
 from cid.utils.fileUtils import loadJSONFromFile
 from cid.utils.helpers import DatetimeEncoder, DatetimeDecoder
+from cid.core.pubsub import PubSub
 
 from .utils import CaliopeEntityUtil
 from .models import VersionedNode
@@ -85,8 +86,16 @@ class CaliopeEntityService(object):
                                                     template_path=template_path)
         rv = entity_controller.get_model()
         rv["data"] = entity_controller.get_data()
+        cls.subscribe_uuid(uuid)
         return rv
 
+    @classmethod
+    def subscribe_uuid(cls, uuid):
+        PubSub().subscribe_uuid(uuid)
+
+    @classmethod
+    def subscribe_uuid(cls, uuid):
+        PubSub().unsubscribe_uuid(uuid)
 
     @classmethod
     def set_drafts_uuid(cls, uuid):
