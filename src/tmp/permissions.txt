@@ -1,0 +1,61 @@
+# Los roles 'read', 'write', y 'assign' están definidos.
+# Los roles agrupan permisos y se convierten en nuevos permisos.
+
+[roles]
+
+role_all = read write assign
+role_rw = read write
+
+# Las cosas definidas son: 'form', 'document', 'task', y 'report'.
+# En esta sección se pueden agrupar.
+
+[things]
+
+everything = form document task report
+
+# Grupos de usuarios. Un grupo puede estar dentro de otro.
+# No se permiten referencias circulares.
+
+[groups]
+
+recepcionistas = recepcionista_1 recepcionista_2
+revisores = revisor_1 revisor_2 revisor_3
+gerentes = gerente_1
+reportes = reportero_1 reportero_2
+everybody = recepcionistas revisores gerentes reportes
+
+# Reglas.
+# Es en esta sección que se combinan los grupos,
+# los permisos, las cosas y las personas.
+# Si no se especifica un grupo o usuario al final, entonces el alcance
+# de una regla es el mismo grupo.
+
+[rules] # formato : grupo permiso thing groups
+
+# El grupo recepcionistas lee todo (lo de su grupo).
+recepcionistas read everything
+
+# El grupo recepcionistas lee todo del grupo revisores para responder preguntas
+# del gerente con respecto al avance de los proyectos.
+recepcionistas read everything revisores
+
+# EL grupo recepcionistas puede asignar todo de su grupo al grupo revisores.
+recepcionistas assign everything revisores
+
+# El grupo revisores puede leer y escribir todo lo que hay en el grupo.
+revisores role_rw everything
+
+# El grupo revisores puede asignar todo al grupo de gerentes.
+revisores assign everything gerentes
+
+# El grupo de gerentes puede hacer todo sobre todo el contenido de su grupo.
+gerentes role_all everything
+
+# El grupo de gerentes puede asignar todo al grupo de reportes.
+gerentes assign everything reportes
+
+# El grupo de reportes puede leer todo de su grupo.
+reportes read everything
+
+# El grupo de reportes puede leer y escribir los reportes.
+reportes role_rw report
