@@ -139,12 +139,10 @@
     ],
     "actions": [
         {
-            "name": "Crear",
-            "method": "tasks.create"
-        },
-        {
-            "name": "Editar",
-            "method": "tasks.edit"
+            "name": "Confirmar",
+            "method": "tasks.commit",
+            "params-to-send" : "uuid",
+            "encapsulate-in-data" : "false"
         }
     ],
     "layout": [
