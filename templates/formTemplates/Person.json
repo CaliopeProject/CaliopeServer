@@ -79,10 +79,13 @@
         {
           "class": "span4",
           "elements"    : ["genero"]
-        },
+        }
+      ]
+    },    {
+      "columns" : [
         {
-          "class": "span4",
-          "elements"    : ["direccion"]
+          "class"   : "page-span12",
+          "elements"  : ["direccion"]
         }
       ]
     }
