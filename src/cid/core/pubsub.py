@@ -22,7 +22,7 @@ from hotqueue import HotQueue
 
 from flask import g
 
-import redis
+from redis import Redis
 
 import json
 
