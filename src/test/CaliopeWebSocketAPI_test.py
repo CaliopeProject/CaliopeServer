@@ -120,6 +120,24 @@ class CaliopeServerTestCase(unittest.TestCase):
         model = tasks_proxy.getModel()
         self.assertIsNotNone(model)
 
+    def test_task_get_model_and_data(self):
+        user = self.login(u'user', u'123')
+        tasks_proxy = self.rpc_client.get_proxy(prefix="tasks.")
+        model = tasks_proxy.getModel()
+        self.assertIsNotNone(model)
+        uuid = model["data"]["uuid"]["value"]
+        #:update
+        update = tasks_proxy.updateField(uuid=uuid,
+                                         field_name="name",
+                                         value="test")
+
+        #:commit
+        commit = tasks_proxy.commit(uuid=uuid)
+        self.assertTrue(commit)
+        model_and_data = tasks_proxy.getModelAndData(uuid=uuid)
+        self.assertEqual(model_and_data["data"]["name"]["value"], "test")
+
+
     def test_task_update_commit_field_single_value(self):
         user = self.login(u'user', u'123')
         tasks_proxy = self.rpc_client.get_proxy(prefix="tasks.")

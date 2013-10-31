@@ -71,8 +71,19 @@ class CaliopeEntityService(object):
         """
         entity_controller = CaliopeEntityController(entity_class=entity_class,
                                                     template_path=template_path)
-        rv = entity_controller.get_model_and_empty_data()
+        rv = entity_controller.get_model()
+        rv["data"] = entity_controller.get_data()
         cls.set_drafts_uuid(rv['data']['uuid']['value'])
+        return rv
+
+    @classmethod
+    @public("getModelAndData")
+    def get_model_and_data(cls, uuid, entity_class=None, template_path=None):
+        entity_controller = CaliopeEntityController(uuid=uuid,
+                                                    entity_class=entity_class,
+                                                    template_path=template_path)
+        rv = entity_controller.get_model()
+        rv["data"] = entity_controller.get_data()
         return rv
 
 
@@ -134,7 +145,9 @@ class CaliopeEntityService(object):
                                   object_hook=DatetimeDecoder.json_date_parser)
             return None
 
+        #: get the current node from database if exists
         versioned_node = cls.service_class.pull(uuid)
+
         if cls.r.hexists(uuid,field_name):
             draft_field = get_in_stage(uuid, field_name)
         elif versioned_node is not None:
@@ -261,10 +274,6 @@ class CaliopeEntityService(object):
                                 "class {1}".format(uuid, cls.__name__))
 
 
-    @staticmethod
-    @public("getModelAndData")
-    def get_model_and_data(*args, **kwargs):
-        raise NotImplementedError
 
     @staticmethod
     @public("edit")
@@ -283,7 +292,8 @@ class CaliopeEntityController(object):
 
     Also will provide the json models from templates.
     """
-    def __init__(self, entity_class=None, template_path=None):
+
+    def __init__(self, uuid=None, entity_class=None, template_path=None):
         """
 
         :param entity_class:
@@ -291,16 +301,14 @@ class CaliopeEntityController(object):
         :return:
         """
         self.entity_class = entity_class
-        self.entity = self.entity_class()
+        self.entity = self.entity_class.pull(uuid) if uuid is not None else \
+            self.entity_class()
         self.template_path= template_path
 
     def get_data(self):
+        if self.entity is None:
+            self.entity = self.entity_class()
         return self.entity.serialize()
-
-    def get_model_and_empty_data(self):
-        rv = self.get_model()
-        rv["data"] = self.get_data()
-        return rv
 
     def get_model(self):
         if self.check_template():

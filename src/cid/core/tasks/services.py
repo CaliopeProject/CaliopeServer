@@ -93,16 +93,6 @@ class TaskServices(CaliopeEntityService):
         return [list for list in
                 sorted(tasks_list.values(), key=lambda pos: pos['pos'])]
 
-    @staticmethod
-    @public(name='getModelAndData')
-    def get_model_and_data(uuid):
-        data = {}
-        data['uuid'] = uuid
-        task_controller = TaskController()
-        rv = task_controller.get_model()
-        rv['data'] = TaskController.get_data(uuid)
-        return rv
-
     @classmethod
     @public("getModel")
     def get_empty_model(cls):
@@ -115,55 +105,18 @@ class TaskServices(CaliopeEntityService):
                              template_path=template_path)
         return rv
 
-    @staticmethod
-    @public
-    def create(formId=None, data=None):
-        if 'uuid' in data:
-            uuid = data["uuid"]
-            if uuid in TaskServices.service_requested_uuid:
-                task = Task(**data)
-                task.save()
-        else:
-            task_controller = TaskController()
+    @classmethod
+    @public(name='getModelAndData')
+    def get_model_and_data(cls, uuid):
+        import os
 
-        for target in data['target']['target']:
-            if 'entity' in target:
-                if 'uuid' in target['entity_data']:
-                    res = target['entity_data']
-                else:
-                    form = target['entity']
-                    res = FormManager.create_form_from_id(form, None)
-                if res:
-                    target['entity_data'] = res
-
-        task_controller.set_data(**data)
-        task_controller.set_owner()
-        rv = task_controller.get_data()
-
+        template_path = os.path.join(os.path.split(__file__)[0], "templates/" +
+                                                                 cls.service_class.__name__ + ".json")
+        entity_class = cls.service_class
+        rv = super(TaskServices, cls) \
+            .get_model_and_data(uuid=uuid, entity_class=entity_class,
+                                template_path=template_path)
         return rv
-
-    @staticmethod
-    @public
-    def edit(formId=None, data=None):
-        task_controller = TaskController(**data)
-        task_controller.set_data(**data)
-        rv = task_controller.get_data()
-        return rv
-
-    @staticmethod
-    @public
-    def archive(formId=None, data=None):
-        task_controller = TaskController(**data)
-        task_controller.archive()
-        return {'result': True}
-
-    @staticmethod
-    @public
-    def delete(formId=None, data=None):
-        task_controller = TaskController(**data)
-        task_controller.delete()
-        return {'result': True}
-
 
     @staticmethod
     @public(name='getDeletedByCurrentUser')
