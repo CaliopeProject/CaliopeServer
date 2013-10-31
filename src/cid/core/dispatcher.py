@@ -80,8 +80,7 @@ def ws_endpoint():
                 data = json.loads(item['data'])
                 if data:
                     if data['thread'] != str(connection_thread_id):
-
-                         ws.send(item['data'])
+                        ws.send(item['data'])
             except:
                 pass
 
