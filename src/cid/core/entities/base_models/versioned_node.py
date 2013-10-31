@@ -103,7 +103,7 @@ class VersionedNode(SemiStructuredNode):
         return new_node
 
     @classmethod
-    def pull(cls, uuid):
+    def pull(cls, uuid, only_class=False):
         """Useful when you have and UUID and you need the inflated object in
         the class it was saved. This methods lookups for the relationship
         which has the `__instance__` property and traceback the class from
@@ -112,6 +112,7 @@ class VersionedNode(SemiStructuredNode):
         .VersionedNode` when no class was traced.
 
         :param uuid: The UUID of the object you want
+        :param only_class: True if you only want to get the class for the uuid.
         :return: An instance of the class of the object with the data.
         `py::const None` if does not exists.
         """
@@ -129,6 +130,8 @@ class VersionedNode(SemiStructuredNode):
                         category_node._properties["category"] if
                         "category" in category_node._properties else
                         "VersionedNode"]
+            if only_class:
+                return node_class
             assert cls == node_class
             return node_class.inflate(node)
         except DoesNotExist as dne:
@@ -156,25 +159,24 @@ class VersionedNode(SemiStructuredNode):
         :param: rel_name: The name of the relationship to be parsed
         :return: A relationship in json friendly dict, example
         {
-            'class_1': {'uuid_1': {'property_a': 1, 'property_b': 2},
-                        'uuid_2': {'property_a': 2, 'property_b': 3}
-                        },
-            'class_2': {'uuid_3': {'property_a': 1, 'property_b': 2},
-                        'uuid_4': {'property_a': 2, 'property_b': 3}
-                        },
-                }
+            'uuid_1': {'property_a': 1, 'property_b': 2},
+            'uuid_2': {'property_a': 2, 'property_b': 3}
+            'uuid_3': {'property_a': 1, 'property_b': 2},
+            'uuid_4': {'property_a': 2, 'property_b': 3}
+        }
         """
         rv = {}
         if self.__node__ and hasattr(self, rel_name):
             relations = getattr(self, rel_name)
             assert issubclass(relations.__class__, RelationshipManager)
             for target in relations.all():
-                target_class_name = target.__class__.__name__
-                if not target_class_name in rv:
-                    rv[target_class_name] = {}
                 rel_inst = relations.relationship(target)
-                rv[target_class_name][target.uuid] = dict(rel_inst._properties)
-        return rv
+                rv[target.uuid] = dict(rel_inst._properties)
+            return rv
+        else:
+            raise ValueError("{} not a relationship"
+            .format(rel_name))
+
 
     def add_or_update_relationship_target(self, rel_name, target_uuid, new_properties=None):
         """

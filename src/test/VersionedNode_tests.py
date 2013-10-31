@@ -62,17 +62,19 @@ class TestVersionedNodeStorage(unittest.TestCase):
         car.owner.connect(person, {'brand' : 'BMW'})
 
         # Check relationship properties are there.
-        assert {'brand': 'BMW'} == car._format_relationships('owner')['Person'][person.uuid]
+        assert {'brand': 'BMW'} == car._format_relationships('owner')[
+            person.uuid]
 
         # Delete the relationship properties.
         car.add_or_update_relationship_target('owner', person.uuid)
 
         # Properties should be empty.
-        assert {} == car._format_relationships('owner')['Person'][person.uuid]
+        assert {} == car._format_relationships('owner')[person.uuid]
 
         # Add new properties. Let's add two.
         car.add_or_update_relationship_target('owner', person.uuid, {'brand' : 'Twingo', 'KM' : 0})
-        assert {'brand' : 'Twingo', 'KM' : 0} == car._format_relationships('owner')['Person'][person.uuid]
+        assert {'brand': 'Twingo', 'KM': 0} ==
+               car._format_relationships('owner')[person.uuid]
 
     def test_VersionedNode_init_without_args(self):
         self.printLine()
