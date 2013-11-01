@@ -229,6 +229,8 @@ class CaliopeEntityService(object):
             else:
                 draft_field = value
 
+        rv = {'field': field_name, 'value': value, 'subfield_id': subfield_id, 'pos': pos}
+        PubSub().publish_command('0', uuid, 'updateField', rv)
         return append_change(uuid, field_name, draft_field) in [0, 1]
 
     @classmethod
@@ -323,15 +325,16 @@ class CaliopeEntityService(object):
                             delta_k, target, new_properties=props)
                 #: clean stage area
                 remove_hkey(rels_hkey)
-            return versioned_node.uuid == uuid
+            return {'value': versioned_node.uuid == uuid}
         else:
-            return "Nothing to commit"
+            return {'value': "Nothing to commit"}
 
     @classmethod
     @public("getData")
     def get_data(cls, uuid):
         try:
-            return cls.pull(uuid).serialize()
+            PubSub().subscribe_uuid(uuid)
+            return cls.service_class.pull(uuid).serialize()
         except AssertionError:
             return RuntimeError("The give uuid {0} is not a valid object of "
                                 "class {1}".format(uuid, cls.__name__))
