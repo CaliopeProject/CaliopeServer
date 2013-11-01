@@ -73,8 +73,7 @@ class TestVersionedNodeStorage(unittest.TestCase):
 
         # Add new properties. Let's add two.
         car.add_or_update_relationship_target('owner', person.uuid, {'brand' : 'Twingo', 'KM' : 0})
-        assert {'brand': 'Twingo', 'KM': 0} ==
-               car._format_relationships('owner')[person.uuid]
+        assert {'brand': 'Twingo', 'KM': 0} == car._format_relationships('owner')[person.uuid]
 
     def test_VersionedNode_init_without_args(self):
         self.printLine()
