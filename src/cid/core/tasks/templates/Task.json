@@ -24,7 +24,17 @@
                 "ToDo": "ToDo",
                 "Doing": "Doing",
                 "Done": "Done"
-            }
+            },
+            "relation": [
+              {
+                "name" : "holder",
+                "CaliopeUser": {
+                  "{{holders}}": {
+                    "category": "{{category}}"
+                  }
+                }
+              }
+            ]
         },
         {
             "name": "execute",
