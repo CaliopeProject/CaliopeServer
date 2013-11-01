@@ -94,7 +94,7 @@ class CaliopeEntityService(object):
         PubSub().subscribe_uuid(uuid)
 
     @classmethod
-    def subscribe_uuid(cls, uuid):
+    def unsubscribe_uuid(cls, uuid):
         PubSub().unsubscribe_uuid(uuid)
 
     @classmethod
@@ -129,20 +129,10 @@ class CaliopeEntityService(object):
              if cls.r.hexists(cls.draft_hkey, uuid):
                  return True
              return False
-        def stage(uuid):
-            if not cls.r.hexists(uuid, "__stagged__"):
-                cls.r.hset(uuid, "__stagged__", json.dumps(True,
-                                                    cls=DatetimeEncoder))
-        def mark_edit(uuid):
-            if is_draft(uuid):
-                cls.r.hdel(cls.draft_hkey, uuid)
-            if cls.r.hlen(uuid) == 0:
-                stage(uuid)
-                return True
-            return False
 
         def append_change(uuid, key, value):
-            mark_edit(uuid)
+            if is_draft(uuid):
+                cls.r.hdel(cls.draft_hkey, uuid)
             return cls.r.hset(uuid, key, json.dumps(value,
                                                     cls=DatetimeEncoder))
         def get_in_stage(uuid, field):
@@ -243,8 +233,50 @@ class CaliopeEntityService(object):
 
     @classmethod
     @public("updateRelationship")
-    def update_relationship(cls, uuid, rel_name, target_uuid, new_properties=None):
-        pass
+    def update_relationship(cls, uuid, rel_name, target_uuid,
+                            new_properties=None):
+        """
+        For updating entity drafts relationships.
+
+        Also pulls the object and refresh the draft with data from the saved
+        `py::class VersionedNode`.
+        """
+
+        def is_draft(uui):
+            if cls.r.hexists(cls.draft_hkey, uuid):
+                return True
+            return False
+
+        def append_change(uuid, key, value):
+            hkey_name = uuid + "_rels"
+            if is_draft(uuid):
+                cls.r.hdel(cls.draft_hkey, uuid)
+            return cls.r.hset(hkey_name, key, json.dumps(value,
+                                                         cls=DatetimeEncoder))
+
+        def get_in_stage(uuid, key):
+            """
+            hset returns 1 if is the first time a key, val is set,
+            0 if is an update.
+            """
+            hkey_name = uuid + "_rels"
+            if cls.r.hexists(hkey_name, key):
+                return json.loads(cls.r.hget(hkey_name, key),
+                                  object_hook=DatetimeDecoder.json_date_parser)
+            return None
+
+        draft_rel = get_in_stage(uuid, rel_name)
+        if draft_rel is None:
+            versioned_node = cls.service_class.pull(uuid)
+            if versioned_node is not None:
+                draft_rel = versioned_node.__format_relationships(rel_name)
+            else:
+                draft_rel = {}
+
+        draft_rel[target_uuid] = new_properties
+
+        append_change(uuid, rel_name, draft_rel) in [0, 1]
+
 
     @classmethod
     @public("commit")
@@ -252,34 +284,48 @@ class CaliopeEntityService(object):
         """
         Push the changes that are in the draft (Redis) to the neo4j database
         """
-        def is_stagged(uuid):
-            return cls.r.hexists(uuid,"__stagged__")
+        def is_stagged(hkey):
+            return cls.r.hlen(hkey) > 0
 
-        def get_changes(uuid):
-            return cls.r.hgetall(uuid)
+        def get_changes(hkey):
+            return cls.r.hgetall(hkey)
 
-        def remove_draft(uuid):
-            cls.r.delete(uuid)
+        def remove_hkey(hkey):
+            cls.r.delete(hkey)
 
-
-        if is_stagged(uuid):
-            changes = get_changes(uuid)
-            del changes["__stagged__"]
-            for delta_k, delta_v in changes.items():
-                delta_v = json.loads(delta_v,
+        #: TODO: Ensure all updates runs within the same transaction or batch.
+        rels_hkey = uuid + "_rels"
+        props_hkey = uuid
+        #: check for changes of any kind
+        if is_stagged(props_hkey) or is_stagged(rels_hkey):
+            versioned_node = cls.service_class.pull(uuid)
+            #: if first time save create a node with given uuid.
+            if versioned_node is None:
+                versioned_node = cls.service_class(uuid=uuid)
+            #: apply first the properties changes
+            if is_stagged(props_hkey):
+                changes = get_changes(props_hkey)
+                for delta_k, delta_v in changes.items():
+                    delta_v = json.loads(delta_v,
+                                    object_hook=DatetimeDecoder.json_date_parser)
+                    #: do the changes
+                    versioned_node.update_field(delta_k, delta_v)
+                #: clean stage area
+                remove_hkey(props_hkey)
+            if is_stagged(rels_hkey):
+                changes = get_changes(rels_hkey)
+                for delta_k, delta_v in changes.items():
+                    delta_v = json.loads(delta_v,
                                 object_hook=DatetimeDecoder.json_date_parser)
-                versioned_node = cls.service_class.pull(uuid)
-                if versioned_node is None:
-                    versioned_node = cls.service_class(uuid=uuid)
-                versioned_node.update_field(delta_k, delta_v)
-            remove_draft(uuid)
+                    #: do the changes for each target
+                    for target, props in delta_v.items():
+                        versioned_node.add_or_update_relationship_target(
+                            delta_k, target, new_properties=props)
+                #: clean stage area
+                remove_hkey(rels_hkey)
             return versioned_node.uuid == uuid
         else:
             return "Nothing to commit"
-
-
-
-
 
     @classmethod
     @public("getData")
