@@ -166,12 +166,13 @@ class VersionedNode(SemiStructuredNode):
         }
         """
         rv = {}
-        if self.__node__ and hasattr(self, rel_name):
+        if hasattr(self, rel_name):
             relations = getattr(self, rel_name)
             assert issubclass(relations.__class__, RelationshipManager)
-            for target in relations.all():
-                rel_inst = relations.relationship(target)
-                rv[target.uuid] = dict(rel_inst._properties)
+            if self.__node__ is not None:
+                for target in relations.all():
+                    rel_inst = relations.relationship(target)
+                    rv[target.uuid] = dict(rel_inst._properties)
             return rv
         else:
             raise ValueError("{} not a relationship"
