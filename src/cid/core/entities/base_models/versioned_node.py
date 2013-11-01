@@ -132,7 +132,7 @@ class VersionedNode(SemiStructuredNode):
                         "VersionedNode"]
             if only_class:
                 return node_class
-            assert cls == node_class
+            assert issubclass(node_class, cls)
             return node_class.inflate(node)
         except DoesNotExist as dne:
             #: TODO LOG
@@ -179,7 +179,8 @@ class VersionedNode(SemiStructuredNode):
             .format(rel_name))
 
 
-    def add_or_update_relationship_target(self, rel_name, target_uuid, new_properties=None):
+    def add_or_update_relationship_target(self, rel_name, target_uuid,
+                                          new_properties=None):
         """
         Add or update  a relationship target. If the relationship target exists,
         the properties get overwritten. Otherwise the relationship target is
@@ -195,11 +196,16 @@ class VersionedNode(SemiStructuredNode):
         rels = self.__node__.match_one(rel_type=rel_name.upper(),
                                        end_node=target_node,
                                        bidirectional=True)
-        assert len(rels) == 1
-        if new_properties:
-            rels[0].update_properties(new_properties)
+        if len(rels) == 1:
+            if new_properties:
+                rels[0].update_properties(new_properties)
+            else:
+                rels[0].delete_properties()
         else:
-            rels[0].delete_properties()
+            reldef = getattr(self, rel_name)
+            target_vnode = VersionedNode.pull(target_uuid)
+            reldef.connect(target_vnode, new_properties)
+
 
     def _get_relationships(self):
         rv = {}
