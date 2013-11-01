@@ -39,7 +39,7 @@ from cid.core.utils import timeStampGenerator
 from .versioned_node import *
 
 
-class CaliopeUser(CaliopeNode, Contextable, Holder):
+class CaliopeUser(VersionedNode, Contextable, Holder):
     username = StringProperty(unique_index=True)
     domainname = StringProperty()
     password = StringProperty()
@@ -49,7 +49,7 @@ class CaliopeUser(CaliopeNode, Contextable, Holder):
     member_of = RelationshipTo('CaliopeGroup', 'IS_MEMBER_OF_GROUP')
 
 
-class CaliopeGroup(CaliopeNode, Contextable, Holder):
+class CaliopeGroup(VersionedNode, Contextable, Holder):
     name = StringProperty(required=True)
     code = StringProperty(unique_index=True)
     members = RelationshipFrom('CaliopeUser', 'IS_MEMBER_OF_GROUP')
