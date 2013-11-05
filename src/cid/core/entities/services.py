@@ -33,15 +33,17 @@ from cid.core.pubsub import PubSub
 from .utils import CaliopeEntityUtil
 from .models import VersionedNode
 
+
 class CaliopeEntityService(object):
     """
 
     This class is the base for all future forms elements.
     """
+
     def __new__(cls, *args, **kwargs):
         cls.r = Redis()
         cls.service_class = kwargs["service_class"] if "service_class" in \
-                             kwargs else VersionedNode
+                                                       kwargs else VersionedNode
         cls.draft_hkey = cls.service_class.__name__ + "_drafts"
 
         return cls
@@ -125,30 +127,40 @@ class CaliopeEntityService(object):
 
 
         """
+
         def is_draft(uui):
-             if cls.r.hexists(cls.draft_hkey, uuid):
-                 return True
-             return False
+            if cls.r.hexists(cls.draft_hkey, uuid):
+                return True
+            return False
 
         def append_change(uuid, key, value):
             if is_draft(uuid):
                 cls.r.hdel(cls.draft_hkey, uuid)
-            return cls.r.hset(uuid, key, json.dumps(value,
-                                                    cls=DatetimeEncoder))
+            value = json.loads(json.dumps(value, cls=DatetimeEncoder), object_hook=DatetimeDecoder.json_date_parser)
+            if type(value) is dict:
+                return cls.r.hset(uuid, key, json.dumps(value,
+                                                        cls=DatetimeEncoder))
+            else:
+                return cls.r.hset(uuid, key, str(value))
+
         def get_in_stage(uuid, field):
             """
             hset returns 1 if is the first time a key, val is set,
             0 if is an update.
             """
             if cls.r.hexists(uuid, field):
-                return json.loads(cls.r.hget(uuid, field),
-                                  object_hook=DatetimeDecoder.json_date_parser)
+                value = cls.r.hget(uuid, field)
+                try:
+                    return json.loads(value,
+                                      object_hook=DatetimeDecoder.json_date_parser)
+                except:
+                    return value
             return None
 
         #: get the current node from database if exists
         versioned_node = cls.service_class.pull(uuid)
 
-        if cls.r.hexists(uuid,field_name):
+        if cls.r.hexists(uuid, field_name):
             draft_field = get_in_stage(uuid, field_name)
         elif versioned_node is not None:
             draft_field = getattr(versioned_node, field_name)
@@ -159,20 +171,20 @@ class CaliopeEntityService(object):
             if subfield_id is not None:
                 if pos is not None:
                     if isinstance(draft_field[subfield_id], list) and \
-                       isinstance(pos, int):
+                            isinstance(pos, int):
                         if pos == -1:
                             draft_field[subfield_id].append(value)
                         elif len(draft_field[subfield_id]) > pos:
                             draft_field[subfield_id][pos] = value
                         else:
                             raise IndexError("Index does {} not exists in {}"
-                                             .format(pos, subfield_id))
+                            .format(pos, subfield_id))
                     elif isinstance(draft_field[subfield_id], dict) and \
-                         isinstance(pos, (unicode, str,)):
-                         draft_field[subfield_id][pos] = value
+                            isinstance(pos, (unicode, str,)):
+                        draft_field[subfield_id][pos] = value
                     else:
                         raise KeyError("Field {} does not exists in {}"
-                                       .format(subfield_id, field_name))
+                        .format(subfield_id, field_name))
                 else:
                     if isinstance(subfield_id, int):
                         if isinstance(draft_field, list):
@@ -182,16 +194,16 @@ class CaliopeEntityService(object):
                                 draft_field[subfield_id] = value
                             else:
                                 raise IndexError("Index {} not exists in {}"
-                                             .format(subfield_id, field_name))
+                                .format(subfield_id, field_name))
                         else:
                             raise TypeError("Field {} is not a {}"
-                                       .format(draft_field, str(list)))
+                            .format(draft_field, str(list)))
                     elif isinstance(draft_field, dict) and isinstance(
-                        subfield_id, (unicode, str,)):
+                            subfield_id, (unicode, str,)):
                         draft_field[subfield_id] = value
                     else:
                         raise TypeError("Field {} is not a {}"
-                                       .format(draft_field, str(dict)))
+                        .format(draft_field, str(dict)))
             else:
                 draft_field = value
         else:
@@ -203,7 +215,7 @@ class CaliopeEntityService(object):
                         subfield = [value]
                     else:
                         raise IndexError("Index does {} not exists in {}"
-                                             .format(pos, subfield_id))
+                        .format(pos, subfield_id))
                 elif isinstance(pos, (unicode, str)):
                     subfield = {pos: value}
                 if subfield_id is not None:
@@ -212,17 +224,17 @@ class CaliopeEntityService(object):
                             field = [subfield]
                         else:
                             raise IndexError("Index {} not exists in {}"
-                                             .format(subfield_id, field_name))
+                            .format(subfield_id, field_name))
                     elif isinstance(subfield_id, (unicode, str,)):
                         field = {subfield_id: subfield}
                 draft_field = field
             elif subfield_id is not None:
                 if isinstance(subfield_id, int):
                     if subfield_id == -1:
-                            field = [value]
+                        field = [value]
                     else:
                         raise IndexError("Index {} not exists in {}"
-                                             .format(subfield_id, field_name))
+                        .format(subfield_id, field_name))
                 elif isinstance(subfield_id, (unicode, str,)):
                     field = {subfield_id: value}
                 draft_field = field
@@ -286,6 +298,7 @@ class CaliopeEntityService(object):
         """
         Push the changes that are in the draft (Redis) to the neo4j database
         """
+
         def is_stagged(hkey):
             return cls.r.hlen(hkey) > 0
 
@@ -304,26 +317,29 @@ class CaliopeEntityService(object):
             #: if first time save create a node with given uuid.
             if versioned_node is None:
                 versioned_node = cls.service_class(uuid=uuid)
-            #: apply first the properties changes
+                #: apply first the properties changes
             if is_stagged(props_hkey):
                 changes = get_changes(props_hkey)
                 for delta_k, delta_v in changes.items():
-                    delta_v = json.loads(delta_v,
-                                    object_hook=DatetimeDecoder.json_date_parser)
-                    #: do the changes
+                    try:
+                        delta_v = json.loads(delta_v,
+                                             object_hook=DatetimeDecoder.json_date_parser)
+                    except:
+                        delta_v = DatetimeDecoder._parser(delta_v)
+                        #: do the changes
                     versioned_node.update_field(delta_k, delta_v)
-                #: clean stage area
+                    #: clean stage area
                 remove_hkey(props_hkey)
             if is_stagged(rels_hkey):
                 changes = get_changes(rels_hkey)
                 for delta_k, delta_v in changes.items():
                     delta_v = json.loads(delta_v,
-                                object_hook=DatetimeDecoder.json_date_parser)
+                                         object_hook=DatetimeDecoder.json_date_parser)
                     #: do the changes for each target
                     for target, props in delta_v.items():
                         versioned_node.add_or_update_relationship_target(
                             delta_k, target, new_properties=props)
-                #: clean stage area
+                    #: clean stage area
                 remove_hkey(rels_hkey)
             return {'value': versioned_node.uuid == uuid}
         else:
@@ -340,7 +356,6 @@ class CaliopeEntityService(object):
                                 "class {1}".format(uuid, cls.__name__))
 
 
-
     @staticmethod
     @public("edit")
     def edit(*args, **kwargs):
@@ -350,6 +365,7 @@ class CaliopeEntityService(object):
     @public("create")
     def create(*args, **kwargs):
         raise NotImplementedError
+
 
 class CaliopeEntityController(object):
     """
@@ -369,7 +385,7 @@ class CaliopeEntityController(object):
         self.entity_class = entity_class
         self.entity = self.entity_class.pull(uuid) if uuid is not None else \
             self.entity_class()
-        self.template_path= template_path
+        self.template_path = template_path
 
     def get_data(self):
         if self.entity is None:
@@ -391,8 +407,8 @@ class CaliopeEntityController(object):
             if self.template_path is not None:
                 self.template = loadJSONFromFile(self.template_path)
         except IOError:
-            self.template = CaliopeEntityUtil()\
-                                .makeFormTemplate(self.entity_class)
+            self.template = CaliopeEntityUtil() \
+                .makeFormTemplate(self.entity_class)
         finally:
             return True
 
@@ -407,7 +423,7 @@ class CaliopeEntityController(object):
             self.template.pop('actions')
         else:
             self.actions = [{"name": "Guardar", "method":
-                            self.entity_class.__name__ + ".commit"}]
+                self.entity_class.__name__ + ".commit"}]
         return self.actions
 
     def get_layout(self):
