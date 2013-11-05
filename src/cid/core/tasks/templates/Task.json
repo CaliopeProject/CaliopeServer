@@ -24,7 +24,17 @@
                 "ToDo": "ToDo",
                 "Doing": "Doing",
                 "Done": "Done"
-            }
+            },
+            "relation": [
+              {
+                "rel_name" : "holders",
+                "class": "CaliopeUser",
+                "target" : "{{holders}}",
+                "properties" : {
+                  "category" : "{{category}}"
+                }
+              }
+            ]
         },
         {
             "name": "execute",
@@ -87,15 +97,8 @@
                 "field-image": "image"
             },
             "relation": {
-                "direction": -1,
-                "target": {
-                    "entity": "<class 'cid.core.entities.base_models.entities_models.CaliopeUser'>",
-                    "properties": {
-                        "category": "{{category}}"
-                    },
-                    "entity_data": {
-                        "uuid": "{{holders}}"
-                    }
+                "CaliopeUser": {
+                    "{{holders}}": {"category": "{{category}}"}
                 }
             }
         },
@@ -122,7 +125,7 @@
             }
         },
         {
-            "name": "descripcion",
+            "name": "description",
             "caption": "Descripción tarea",
             "class": "input-large",
             "type": "textarea",
@@ -139,12 +142,10 @@
     ],
     "actions": [
         {
-            "name": "Crear",
-            "method": "tasks.create"
-        },
-        {
-            "name": "Editar",
-            "method": "tasks.edit"
+            "name": "Confirmar",
+            "method": "tasks.commit",
+            "params-to-send" : "uuid",
+            "encapsulate-in-data" : "false"
         }
     ],
     "layout": [
@@ -169,7 +170,7 @@
             "columns": [
                 {
                     "class": "span6",
-                    "elements": ["name" , "descripcion", "category", "comments", "subtasks"]
+                    "elements": ["name" , "description", "category", "comments", "subtasks"]
                 },
                 {
                     "class": "span6",

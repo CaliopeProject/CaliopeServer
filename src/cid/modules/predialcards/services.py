@@ -23,7 +23,7 @@ from neomodel.exception import DoesNotExist
 #CaliopeStorage
 from cid.core.entities import CaliopeNode
 from cid.core.entities.base_models.entities_models import CaliopeUser
-from cid.core.entities.services import CaliopeEntityController, CaliopeEntityService
+from cid.core.entities.services import CaliopeEntityController, CaliopeServices
 
 #utils
 from cid.utils.fileUtils import loadJSONFromFile
@@ -40,7 +40,7 @@ from flask import current_app
 from models import PredialCardEntity
 
 
-class PredialCardsServices(CaliopeEntityService):
+class PredialCardsServices(CaliopeServices):
     def __init__(self, *args, **kwargs):
         super(PredialCardsServices, self).__init__(*args, **kwargs)
 

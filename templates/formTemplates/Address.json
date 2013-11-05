@@ -1,0 +1,42 @@
+{
+  "name": "Address",
+  "novalidate" : "novalidate",
+  "html": [
+    {
+      "name" : "title",
+      "type" : "div",
+      "html" :
+      [
+        {
+          "type" : "h1",
+          "html" : "Direccion"
+        }
+      ]
+    },
+    {
+      "name"    : "direccion",
+      "caption" : "Nombre",
+      "type"    : "text",
+      "class"   : "input-xlarge"
+    }
+  ],
+  "layout" : [
+    {
+      "columns" : [
+        {
+          "class"   : "page-header",
+          "elements"  : ["title"]
+        }
+      ]
+    },
+    {
+      "class" : "span12",
+      "columns" : [
+        {
+          "class": "span4",
+          "elements"    : ["direccion"]
+        }
+      ]
+    }
+  ]
+}

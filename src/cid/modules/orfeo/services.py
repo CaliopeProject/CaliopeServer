@@ -25,7 +25,7 @@ from neomodel.exception import DoesNotExist
 #CaliopeStorage
 from cid.core.entities import CaliopeNode
 from cid.core.entities.base_models.entities_models import CaliopeUser
-from cid.core.entities.services import CaliopeEntityController, CaliopeEntityService
+from cid.core.entities.services import CaliopeEntityController, CaliopeServices
 
 from cid.utils.fileUtils import loadJSONFromFile
 
@@ -42,7 +42,7 @@ from cid.core.login import LoginManager
 from models import Orfeo
 
 
-class OrfeoServices(CaliopeEntityService):
+class OrfeoServices(CaliopeServices):
     def __init__(self, *args, **kwargs):
         super(OrfeoServices, self).__init__(*args, **kwargs)
 

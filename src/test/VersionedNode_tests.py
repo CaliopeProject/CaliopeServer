@@ -62,17 +62,18 @@ class TestVersionedNodeStorage(unittest.TestCase):
         car.owner.connect(person, {'brand' : 'BMW'})
 
         # Check relationship properties are there.
-        assert {'brand': 'BMW'} == car._format_relationships('owner')['Person'][person.uuid]
+        assert {'brand': 'BMW'} == car._format_relationships('owner')[
+            person.uuid]
 
         # Delete the relationship properties.
         car.add_or_update_relationship_target('owner', person.uuid)
 
         # Properties should be empty.
-        assert {} == car._format_relationships('owner')['Person'][person.uuid]
+        assert {} == car._format_relationships('owner')[person.uuid]
 
         # Add new properties. Let's add two.
         car.add_or_update_relationship_target('owner', person.uuid, {'brand' : 'Twingo', 'KM' : 0})
-        assert {'brand' : 'Twingo', 'KM' : 0} == car._format_relationships('owner')['Person'][person.uuid]
+        assert {'brand': 'Twingo', 'KM': 0} == car._format_relationships('owner')[person.uuid]
 
     def test_VersionedNode_init_without_args(self):
         self.printLine()
@@ -215,11 +216,10 @@ class TestVersionedNodeStorage(unittest.TestCase):
         #{'Person': {u'21b04fc6-3e97-4584-926a-28497d997447':
         #{u'brand': u'BMW', u'km': 0}}}
         relationships = car._format_relationships('owner')
-        assert 'Person' in relationships
-        assert len(relationships['Person']) == 1
-        assert person.uuid in relationships['Person']
-        assert relationships['Person'][person.uuid] == {u'brand': u'BMW',
-                                                        u'km': 0}
+        assert len(relationships) == 1
+        assert person.uuid in relationships
+        assert relationships[person.uuid] == {u'brand': u'BMW',
+                                              u'km': 0}
         self.printLine()
 
     def test_VersionedNode_format_relationships_many(self):
@@ -242,11 +242,10 @@ class TestVersionedNodeStorage(unittest.TestCase):
 
         relationships = parking_lot._format_relationships('parked')
 
-        assert 'Car' in relationships
-        assert len(car_uuids) == len(relationships['Car'])
+        assert len(car_uuids) == len(relationships)
         for i, uuid in enumerate(car_uuids):
-            assert uuid in relationships['Car']
-            assert {'i': i} == relationships['Car'][uuid]
+            assert uuid in relationships
+            assert {'i': i} == relationships[uuid]
 
         self.printLine()
 
@@ -257,7 +256,7 @@ class TestVersionedNodeStorage(unittest.TestCase):
         car = Car(plate="777")
         self.assertIsNotNone(car.save())
         uuid = car.uuid
-        pulled_object = VersionedNode.pull(uuid)
+        pulled_object = Car.pull(uuid)
         self.assertIsInstance(pulled_object, Car)
         self.assertEqual(car.plate, pulled_object.plate)
         car.delete()

@@ -21,7 +21,7 @@ Copyright (C) 2013 Infometrika Ltda.
 """
 
 #models
-from cid.core.entities import CaliopeEntityService, DoesNotExist
+from cid.core.entities import CaliopeServices, DoesNotExist
 from readonly_models import RegistroPredioCatastroTipoII
 
 #tinyrpc
@@ -29,7 +29,7 @@ from tinyrpc.protocols.jsonrpc import JSONRPCInvalidRequestError
 from tinyrpc.dispatch import public
 
 
-class PredioCatastroServices(CaliopeEntityService):
+class PredioCatastroServices(CaliopeServices):
     @staticmethod
     @public
     def getPredio(sector):

@@ -52,6 +52,7 @@ class Task(VersionedNode, Holdable):
     color = StringProperty()
     target = CaliopeJSONProperty()
     status = StringProperty()
+    formtask = CaliopeJSONProperty()
 
     def __init__(self, *args, **kwargs):
         super(Task, self).__init__(*args, **kwargs)

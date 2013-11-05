@@ -23,7 +23,7 @@ from neomodel.exception import DoesNotExist
 
 #CaliopeStorage
 from cid.core.entities import (CaliopeNode, CaliopeUser, CaliopeEntityController,
-                               CaliopeEntityService)
+                               CaliopeServices)
 
 from cid.utils.fileUtils import loadJSONFromFile
 
@@ -36,12 +36,10 @@ from flask import current_app
 
 #SIIM2
 from cid.core.login import LoginManager
-from cid.core.forms.services import FormManager
 from models import Task
-from cid.core.pubsub import pubsub_publish_command
 
 
-class TaskServices(CaliopeEntityService):
+class TaskServices(CaliopeServices):
 
     def __init__(self, *args, **kwargs):
         super(TaskServices, self).__init__(*args, **kwargs)
@@ -72,12 +70,14 @@ class TaskServices(CaliopeEntityService):
         #: relationship and that node is connected with a  CURRENT relationship to a task.
         #: From the task find the FIRST node
         results, metadata = user_node.cypher("START user=node({self})"
-                                             "MATCH (user)-[r:HOLDER]-(tdc)-[e:CURRENT]-(t)"
+                                             "MATCH (user)-[r:HOLDER]-(t)-["
+                                             "TASK]-()"
                                              "WHERE has(r.category) and "
                                              "(r.category='ToDo' or "
                                              "r.category='Doing' or "
                                              "r.category='Done')"
-                                             "return t, r.category");
+                                             "return distinct (t), "
+                                             "r.category");
         tasks_list = {
             'ToDo': {'pos': 0, 'category': {'value': 'ToDo'}, 'tasks': []},
             'Doing': {'pos': 1, 'category': {'value': 'Doing'}, 'tasks': []},
@@ -96,6 +96,28 @@ class TaskServices(CaliopeEntityService):
     @classmethod
     @public("getModel")
     def get_empty_model(cls):
+        """
+        In order to create a Task, first you need to get the model, in the
+        model is incluided de default dform (.json) the layout, the actions
+        and the default data.
+
+        In the default data is included the default uuid for the new object
+        and cannot be changed otherwise the item will not commit or update
+        because is not a valid uuid.
+
+        Also appends as the default holder to the current user under the
+        ToDo category.
+
+        :return: the model, actions, layout, data.
+        """
+        def append_default_holder(uuid):
+            user_node = CaliopeUser.index.get(
+                username=LoginManager().get_user())
+            super(TaskServices, cls)\
+                .update_relationship(uuid, "holders", user_node.uuid,
+                            new_properties={"category": "ToDo"})
+            return {user_node.uuid:{"category": "ToDo"}}
+
         import os
         template_path = os.path.join(os.path.split(__file__)[0],"templates/" +
                         cls.service_class.__name__ + ".json")
@@ -103,6 +125,8 @@ class TaskServices(CaliopeEntityService):
         rv = super(TaskServices, cls)\
             .get_empty_model(entity_class=entity_class,
                              template_path=template_path)
+        rv["data"]["holders"] = append_default_holder(rv["data"]["uuid"][
+            "value"])
         return rv
 
     @classmethod

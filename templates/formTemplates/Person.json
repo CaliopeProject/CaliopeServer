@@ -6,12 +6,12 @@
       "name" : "title",
       "type" : "div",
       "html" :
-      [
-        {
-          "type" : "h1",
-          "html" : "Persona"
-        }
-      ]
+          [
+            {
+              "type" : "h1",
+              "html" : "Persona"
+            }
+          ]
     },
     {
       "name"    : "name",
@@ -21,19 +21,35 @@
     },
     {
       "name"    : "surname",
-      "caption" : "Apellido",
+      "caption" : "Apellido 1",
+      "type"    : "text",
+      "class"   : "input-xlarge"
+    },
+    {
+      "name"    : "surname1",
+      "caption" : "Apellido 2",
       "type"    : "text",
       "class"   : "input-xlarge"
     },
     {
       "name"    : "genero",
-      "caption" : "Genero",
+      "caption" : "Género",
       "type"    : "select",
       "class"   : "input-xlarge",
       "options": [
         {"html":"m","value":"Maculino"},
         {"html":"f","value":"Femenino"}
       ]
+    },
+    {
+      "name" : "direccion",
+      "caption" : "Direccion",
+      "type" : "form",
+      "cardinality" : 1,
+      "options-form" : {
+        "formId"  : "Address",
+        "generic" : "true"
+      }
     }
   ],
   "layout" : [
@@ -58,9 +74,19 @@
         },
         {
           "class": "span4",
+          "elements"    : ["surname1"]
+        },
+        {
+          "class": "span4",
           "elements"    : ["genero"]
         }
-
+      ]
+    },    {
+      "columns" : [
+        {
+          "class"   : "page-span12",
+          "elements"  : ["direccion"]
+        }
       ]
     }
   ]

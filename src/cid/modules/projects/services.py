@@ -23,7 +23,7 @@ Copyright (C) 2013 Infometrika Ltda.
 #CaliopeStorage
 from cid.core.entities import CaliopeNode, DoesNotExist
 from cid.core.entities.base_models.entities_models import CaliopeUser
-from cid.core.entities.services import CaliopeEntityController, CaliopeEntityService
+from cid.core.entities.services import CaliopeEntityController, CaliopeServices
 
 #utils
 from cid.utils.fileUtils import loadJSONFromFile
@@ -38,7 +38,7 @@ from flask import current_app
 from models import ProjectEntity, ProjectData
 
 
-class ProjectServices(CaliopeEntityService):
+class ProjectServices(CaliopeServices):
     def __init__(self, *args, **kwargs):
         super(ProjectServices, self).__init__(*args, **kwargs)
 
