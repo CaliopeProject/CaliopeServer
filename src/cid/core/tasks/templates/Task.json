@@ -27,11 +27,11 @@
             },
             "relation": [
               {
-                "name" : "holder",
-                "CaliopeUser": {
-                  "{{holders}}": {
-                    "category": "{{category}}"
-                  }
+                "rel_name" : "holders",
+                "class": "CaliopeUser",
+                "target" : "{{holders}}",
+                "properties" : {
+                  "category" : "{{category}}"
                 }
               }
             ]
