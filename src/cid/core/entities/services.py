@@ -34,7 +34,7 @@ from .utils import CaliopeEntityUtil
 from .models import VersionedNode
 
 
-class CaliopeEntityService(object):
+class CaliopeServices(object):
     """
 
     This class is the base for all future forms elements.
@@ -50,7 +50,7 @@ class CaliopeEntityService(object):
 
     def __init__(self, *args, **kwargs):
 
-        super(CaliopeEntityService, self).__init__(*args, **kwargs)
+        super(CaliopeServices, self).__init__(*args, **kwargs)
 
 
     @classmethod
@@ -283,7 +283,7 @@ class CaliopeEntityService(object):
         if draft_rel is None:
             versioned_node = cls.service_class.pull(uuid)
             if versioned_node is not None:
-                draft_rel = versioned_node.__format_relationships(rel_name)
+                draft_rel = versioned_node._format_relationships(rel_name)
             else:
                 draft_rel = {}
 

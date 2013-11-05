@@ -25,4 +25,4 @@ from models import *
 
 
 def get_service():
-    return CaliopeEntityService()
+    return CaliopeServices()
