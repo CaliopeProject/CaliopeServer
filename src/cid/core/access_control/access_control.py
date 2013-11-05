@@ -4,9 +4,11 @@ import sys
 class AccessControl:
 
     def __init__(self, configuration):
+        """ Initialize the access control instance. """
         self.config = json.loads(configuration)
 
     def _resolve_groups(self, group_name, seen):
+        """ Get the users that belong to a group. """
         if group_name in seen:
           print >> sys.stderr, 'Circular reference found. Group:{}'.format(group_name)
           sys.exit(1)
@@ -22,12 +24,11 @@ class AccessControl:
         return members
 
     def load_groups_and_users(self):
-        """ Populate the list of groups. Groups can belong to other groups. """
+        """ Populate groups with their users. Groups can belong to other groups. """
 
         # Make sure we don't call this function twice.
         assert not hasattr(self, 'groups')
 
-        # First load the groups. Groups names have priority over user names.
         self.groups = {}
         for group in self.config['groups']:
             # Now get the users for this group.
