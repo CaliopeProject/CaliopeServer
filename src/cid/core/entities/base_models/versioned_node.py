@@ -103,6 +103,12 @@ class VersionedNode(SemiStructuredNode):
         return new_node
 
     @classmethod
+    def inflate(cls, node):
+        if "uuid" in node._properties:
+            return cls.pull(node._properties["uuid"])
+        return super(VersionedNode, cls).inflate(node)
+
+    @classmethod
     def pull(cls, uuid, only_class=False):
         """Useful when you have and UUID and you need the inflated object in
         the class it was saved. This methods lookups for the relationship
