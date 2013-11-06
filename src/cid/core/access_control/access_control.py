@@ -1,5 +1,6 @@
 import json
 import sys
+import things
 
 class AccessControl:
 
@@ -34,19 +35,34 @@ class AccessControl:
             # Now get the users for this group.
             self.groups[group] = self._resolve_groups(group, seen=set())
 
+    def load_things(self):
+        """ Get the list of things that can be used. """
+        available_things = things.get_available_things()
+        self.things = {}
+        for thing in self.config['things']:
+            print thing
+            assert isinstance(self.config['things'][thing], list)
+          #if thing not in available_things:
+          #  print >> sys.stderr, '{} is not in the list of available things. Available things: {}'.format(thing, available_things.keys())
+          #  sys.exit(1)
+
+
     def get_groups(self):
       return self.groups.keys()
 
     def get_users_in_grup(self, group):
       return self.groups[group]
 
+
 def main():
     ac = AccessControl(open('permissions.json').read())
     ac.load_groups_and_users()
+    ac.load_things()
     print ac.get_groups()
     for group in ac.get_groups():
         print 'group:', group
         print ac.get_users_in_grup(ac.get_groups()[0])
+
 
 if __name__ == "__main__":
     main()
