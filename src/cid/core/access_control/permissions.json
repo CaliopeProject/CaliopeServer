@@ -1,0 +1,42 @@
+{
+ "things" : {
+              "form" : "internal.Form",
+              "document" : "internal.Document",
+              "task" : "internal.Task",
+              "report" : "internal.Report",
+              "everything" : ["form", "document", "task", "report"]
+            },
+ "groups" : {
+              "recepcionistas" : ["recepcionista_1", "recepcionista_2"],
+              "secretarias" : ["secretaria_1"],
+              "revisores" : ["revisor_1", "revisor_2", "revisor_3"],
+              "gerentes" : ["gerente_1"],
+              "reportes" : ["reportero_1", "reportero_2"],
+              "everybody" : ["recepcionistas","revisores",  "gerentes", "reportes"]
+            },
+ "actions" : {
+                "read" : "internal.Read",
+                "write" : "internal.Write",
+                "assign" : "internal.Assign"
+             },
+ "permission" : {
+                "read_tasks" : ["read", "task"],
+                "read_everything" : ["read", "everything"],
+                "write_everything" : ["write", "everything"],
+                "write_report" : ["write", "report"],
+                "assign_everything" : ["assign", "everything"],
+                "assign_everything_revisores" : ["assign", "everything", "revisores"],
+                "read_everything_revisores" : ["read", "everything", "revisores"],
+                "assign_everything_gerentes" : ["assign", "everything", "gerentes"],
+                "assign_everything_reportes" : ["assign", "everything", "reportes"],
+                "assign_task_gerente" : ["assign", "task", "gerentes"],
+                "assign_task_secretarias" : ["assign", "task", "secretarias"]
+           },
+ "roles" : {
+              "recepcionistas" : ["read_everything", "assign_everything_revisores", "read_everything_revisores", "assign_task_secretarias"],
+              "secretarias" : ["assign_task_gerente", "read_tasks"],
+              "revisores" : [ "read_everything", "write_everyting", "assign_everything_gerentes"],
+              "gerentes" : ["read_everything", "write_everything", "assign_everyting", "assign_everything_reportes"],
+              "reportes" : ["read_everything", "write_report"]
+           }
+}

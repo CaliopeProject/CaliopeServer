@@ -23,7 +23,7 @@ from neomodel.exception import DoesNotExist
 
 #CaliopeStorage
 from cid.core.entities import (CaliopeNode, CaliopeUser, CaliopeEntityController,
-                               CaliopeEntityService)
+                               CaliopeServices)
 
 from cid.utils.fileUtils import loadJSONFromFile
 
@@ -39,7 +39,7 @@ from cid.core.login import LoginManager
 from models import Task
 
 
-class TaskServices(CaliopeEntityService):
+class TaskServices(CaliopeServices):
 
     def __init__(self, *args, **kwargs):
         super(TaskServices, self).__init__(*args, **kwargs)
