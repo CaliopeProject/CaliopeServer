@@ -18,14 +18,11 @@ class Report(Thing):
     def __init__(self):
         Thing.__init__(self, "report")
 
-def get_things():
+def get_available_things():
     things = [
                Form(),
                Document(),
                Task(),
                Report(),
              ]
-
     return {t.name: t for t in things}
-
-print get_things()
