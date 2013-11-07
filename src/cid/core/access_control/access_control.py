@@ -14,6 +14,7 @@ class AccessControl:
         self._load_actions()
         self._load_groups_and_users()
         self._load_things()
+        self._load_permissions()
 
     def _resolve_right_side(self, config_kind, key_name, seen):
         """ Resolve right side in configuration. Useful for rules that can use
@@ -45,6 +46,16 @@ class AccessControl:
         for group in self.config['groups']:
             # Now get the users for this group.
             self.groups[group] = self._resolve_right_side('groups', group, seen=set())
+
+    def _load_permissions(self):
+        """ Get the list of permissions in the config. file. """
+        assert not hasattr(self, 'permissions')
+        # This is the dict where we are going to store the permissions.
+        # We just make a copy.
+        self.permissions = {}
+        for permission in self.config['permissions']:
+            self.permissions[permission] = self.config['permissions'][permission]
+
 
     def _get_class_name_from_internal(self, whole_name):
       """ Get a string like 'internal.name' and return what is after the point  """
@@ -127,7 +138,13 @@ class AccessControl:
         return self.groups.keys()
 
     def get_users_in_grup(self, group):
+        """ Get the list of users that belong to a group. """
         return self.groups[group]
+
+    def get_permission_names(self):
+        """ Get the list of available permissions. """
+        pass
+
 
 
 def main():
