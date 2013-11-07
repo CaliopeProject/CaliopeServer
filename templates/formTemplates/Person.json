@@ -66,7 +66,7 @@
       "columns" : [
         {
           "class": "span4",
-          "elements"    : ["name"]
+          "elements"    : ["name", "genero"]
         },
         {
           "class": "span4",
@@ -75,10 +75,6 @@
         {
           "class": "span4",
           "elements"    : ["surname1"]
-        },
-        {
-          "class": "span4",
-          "elements"    : ["genero"]
         }
       ]
     },    {

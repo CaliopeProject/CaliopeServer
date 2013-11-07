@@ -38,23 +38,18 @@
             "name": "execute",
             "type": "execute-task",
             "options": {
-                "target-uuid-field": "target.target.0.entity_data.uuid",
-                "target-entity-field": "target.target.0.entity"
+                "target-uuid-field": "target",
+                "target-entity-field": "formtask"
             }
         },
         {
             "name": "target",
             "type": "hidden",
             "relation": {
-                "direction": -1,
-                "target": {
-                    "entity": "{{formtask}}",
-                    "properties": {
-                    },
-                    "entity_data": {
-                        "uuid": "{{target}}"
-                    }
-                }
+              "rel_name" : "target",
+              "target" : "{{target}}",
+              "properties" : {
+              }
             }
         },
         {
