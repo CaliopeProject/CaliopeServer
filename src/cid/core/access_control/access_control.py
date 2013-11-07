@@ -7,6 +7,7 @@ class AccessControl:
     def __init__(self, configuration):
         """ Initialize the access control instance. """
         self.config = json.loads(configuration)
+        self.available_things = things.get_available_things()
 
     def _resolve_right_side(self, config_kind, key_name, seen):
         """ Resolve right side in configuration. Useful for rules that can use
@@ -28,7 +29,7 @@ class AccessControl:
                 right_side.append(instance_or_kind)
         return right_side
 
-    def load_groups_and_users(self):
+    def _load_groups_and_users(self):
         """ Populate groups with their users. Groups can belong to other groups. """
 
         # Make sure we don't call this function twice.
@@ -39,20 +40,32 @@ class AccessControl:
             # Now get the users for this group.
             self.groups[group] = self._resolve_right_side('groups', group, seen=set())
 
-    def load_things(self):
+    def _get_class_name_from_internal(self, whole_name):
+      """ Get a string like 'internal.name' and return what is after the point  """
+      split = whole_name.split('.')
+      if len(split) != 2:
+        print >> sys.stderr, 'Wrong name. Expected internal.something, got:{}'.format(whole_name)
+        sys.exit(1)
+      assert split[0] == 'internal'
+      return split[1]
+
+    def _load_things(self):
         """ Load the list of things that we can use. """
         # Make sure we do not call this function twice.
         assert not hasattr(self, 'things')
-
+        # This is the dict we are going to store.
         self.things = {}
+        # Check that all the things can be resolved to something we know.
         for thing_left in self.config['things']:
-            self.things[thing_left] = self._resolve_right_side('things', thing_left, seen=set())
-        # Check that all the things can be resolved to a class we know.
-        self.available_things = things.get_available_things()
-        for thing_left in self.config['things']:
-            for right_thing in self.things[thing_left]:
-                print  right_thing
-
+            self.things[thing_left] = []
+            for right_thing in self._resolve_right_side('things', thing_left, seen=set()):
+                name = self._get_class_name_from_internal(right_thing)
+                if name not in self.available_things:
+                    print  >> sys.stderr, \
+                        '{} not in the list of available things. List is: {}'. \
+                                 format(name, self.available_things)
+                    sys.exit(1)
+                self.things[thing_left].append(name)
 
     def get_groups(self):
       return self.groups.keys()
@@ -63,8 +76,8 @@ class AccessControl:
 
 def main():
     ac = AccessControl(open('permissions.json').read())
-    ac.load_groups_and_users()
-    ac.load_things()
+    ac._load_groups_and_users()
+    ac._load_things()
     print ac.get_groups()
     for group in ac.get_groups():
         print 'group:', group
