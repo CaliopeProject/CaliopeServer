@@ -312,34 +312,3 @@ class VersionedNode(SemiStructuredNode):
             .format(field_name))
 
 
-class Contextable(object):
-    """Mixing class for allowing create contexts between nodes.
-    """
-    def __init__(self, *args, **kwargs):
-        try:
-            super(Contextable, self).__init__(*args, **kwargs)
-        except TypeError:
-            super(Contextable, self).__init__()
-        self.__context__ = RelationshipFrom(VersionedNode, "__CONTEXT__")
-
-class Holdable(object):
-    """Mixing class for allowing create contexts between nodes.
-    """
-    def __init__(self, *args, **kwargs):
-        try:
-            super(Holdable, self).__init__(*args, **kwargs)
-        except TypeError:
-            super(Holdable, self).__init__()
-        self.__hold__ = RelationshipFrom(Holder, "__HOLD__")
-
-
-class Holder(object):
-    """Mixing class for allowing create contexts between nodes.
-    """
-    def __init__(self, *args, **kwargs):
-        try:
-            super(Holdable, self).__init__(*args, **kwargs)
-        except TypeError:
-            super(Holdable, self).__init__()
-        self.__hold__ = RelationshipTo(Holdable, "__HOLD__")
-
