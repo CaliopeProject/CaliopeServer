@@ -1,9 +1,9 @@
 {
  "things" : {
-              "form" : "internal.Form",
-              "document" : "internal.Document",
-              "task" : "internal.Task",
-              "report" : "internal.Report",
+              "form" : ["internal.form"],
+              "document" : ["internal.document"],
+              "task" : ["internal.task"],
+              "report" : ["internal.report"],
               "everything" : ["form", "document", "task", "report"]
             },
  "groups" : {
@@ -15,9 +15,9 @@
               "everybody" : ["recepcionistas","revisores",  "gerentes", "reportes"]
             },
  "actions" : {
-                "read" : "internal.Read",
-                "write" : "internal.Write",
-                "assign" : "internal.Assign"
+                "read" : ["internal.Read"],
+                "write" : ["internal.Write"],
+                "assign" : ["internal.Assign"]
              },
  "permission" : {
                 "read_tasks" : ["read", "task"],

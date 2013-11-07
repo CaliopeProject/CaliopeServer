@@ -40,8 +40,8 @@ class Task(VersionedNode, Holdable):
 
     """
 
-    holders = RelationshipFrom(Contextable, 'HOLDER')
-    context = RelationshipTo(Contextable, 'HOLDER')
+    holders = RelationshipFrom(VersionedNode, 'HOLDER')
+    target = RelationshipTo(VersionedNode, 'TARGET')
 
     deadline = DateTimeProperty()
     name = StringProperty()
@@ -50,9 +50,8 @@ class Task(VersionedNode, Holdable):
     subtasks = CaliopeJSONProperty()
     comments = CaliopeJSONProperty()
     color = StringProperty()
-    target = CaliopeJSONProperty()
     status = StringProperty()
-    formtask = CaliopeJSONProperty()
+    formtask = StringProperty()
 
     def __init__(self, *args, **kwargs):
         super(Task, self).__init__(*args, **kwargs)
