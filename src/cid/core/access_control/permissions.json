@@ -15,9 +15,9 @@
               "everybody" : ["recepcionistas","revisores",  "gerentes", "reportes"]
             },
  "actions" : {
-                "read" : ["internal.Read"],
-                "write" : ["internal.Write"],
-                "assign" : ["internal.Assign"]
+                "read" : ["internal.read"],
+                "write" : ["internal.write"],
+                "assign" : ["internal.assign"]
              },
  "permission" : {
                 "read_tasks" : ["read", "task"],
