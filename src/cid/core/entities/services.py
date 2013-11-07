@@ -137,7 +137,7 @@ class CaliopeServices(object):
             if is_draft(uuid):
                 cls.r.hdel(cls.draft_hkey, uuid)
             value = json.loads(json.dumps(value, cls=DatetimeEncoder), object_hook=DatetimeDecoder.json_date_parser)
-            if type(value) is dict:
+            if isinstance(value, (dict, list,)):
                 return cls.r.hset(uuid, key, json.dumps(value,
                                                         cls=DatetimeEncoder))
             else:

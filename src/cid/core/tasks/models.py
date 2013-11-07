@@ -24,8 +24,7 @@ Copyright (C) 2013 Infometrika Ltda.
 
 #Caliope Entities
 from cid.core.entities import (VersionedNode,
-                               Contextable,
-                               Holdable,
+
                                CaliopeJSONProperty,
                                DateTimeProperty,
                                StringProperty,
@@ -35,7 +34,7 @@ from cid.core.entities import (VersionedNode,
                                )
 
 
-class Task(VersionedNode, Holdable):
+class Task(VersionedNode):
     """Task are the most important part of the Kanban framework,
 
     """
