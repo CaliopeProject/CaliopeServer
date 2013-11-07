@@ -27,7 +27,8 @@ from neomodel.exception import DoesNotExist
 
 from flask import current_app
 
-from cid.core.entities import CaliopeUser
+from cid.core.entities import (CaliopeUser, CaliopeServices)
+
 from cid.core.login import LoginManager
 from cid.utils import fileUtils
 from cid.core.forms.models import SIIMForm
@@ -35,7 +36,36 @@ from cid.core.entities.utils import CaliopeEntityUtil
 # from cid.core.pubsub import pubsub_publish_command
 
 
-class FormManager(object):
+class FormManager(CaliopeServices):
+    def __init__(self, *args, **kwargs):
+        super(FormManager, self).__init__(*args, **kwargs)
+
+    @classmethod
+    @public("getForms")
+    def get_forms(cls):
+        rv = []
+        for formId in current_app.caliope_forms:
+            f = {
+                'formId': {'value': formId},
+                'label': {'value': current_app.caliope_forms[formId]['label']}
+            }
+            rv.append(f)
+        return rv
+
+    @classmethod
+    @public("getModel")
+    def get_empty_model(cls, formId):
+        if formId in current_app.caliope_forms:
+            form = current_app.caliope_forms[formId]
+            module = form['module']
+
+            rv = super(FormManager, cls).get_empty_model(entity_class=module)
+            return rv
+        else:
+            return ""
+
+
+class FormManager2(object):
     """
 
     This class is the base for all future forms elements.
