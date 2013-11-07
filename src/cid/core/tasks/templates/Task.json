@@ -25,8 +25,7 @@
                 "Doing": "Doing",
                 "Done": "Done"
             },
-            "relation": [
-              {
+            "relation": {
                 "rel_name" : "holders",
                 "class": "CaliopeUser",
                 "target" : "{{holders}}",
@@ -34,7 +33,6 @@
                   "category" : "{{category}}"
                 }
               }
-            ]
         },
         {
             "name": "execute",
@@ -97,8 +95,11 @@
                 "field-image": "image"
             },
             "relation": {
-                "CaliopeUser": {
-                    "{{holders}}": {"category": "{{category}}"}
+                "rel_name" : "holders",
+                "class": "CaliopeUser",
+                "target" : "{{holders}}",
+                "properties" : {
+                  "category" : "{{category}}"
                 }
             }
         },

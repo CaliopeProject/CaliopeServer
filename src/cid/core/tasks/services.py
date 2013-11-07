@@ -142,6 +142,19 @@ class TaskServices(CaliopeServices):
                                 template_path=template_path)
         return rv
 
+    @classmethod
+    @public(name='commit')
+    def commit(cls, uuid):
+        from cid.core.forms.services import FormManager
+        hkey_name = uuid
+        if cls.r.hexists(hkey_name, "formtask"):
+            form_name = cls.r.hget(hkey_name, "formtask")
+            form = FormManager.create_form_from_id(form_name, {})
+            cls.update_relationship(uuid, "target", form["uuid"])
+        return super(TaskServices, cls).commit(uuid)
+
+
+
     @staticmethod
     @public(name='getDeletedByCurrentUser')
     def get_deleted_by_current_user():
