@@ -17,7 +17,8 @@
  "actions" : {
                 "read" : ["internal.read"],
                 "write" : ["internal.write"],
-                "assign" : ["internal.assign"]
+                "assign" : ["internal.assign"],
+                "all_actions" : ["read", "write", "assign"]
              },
  "permission" : {
                 "read_tasks" : ["read", "task"],

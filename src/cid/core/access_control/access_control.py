@@ -93,13 +93,37 @@ class AccessControl:
                     sys.exit(1)
                 self.actions[thing_left].append(name)
 
-    def get_actions(self):
+    def get_action_names(self):
+        """ Return the list of action shorthands. For instance, in the
+            following action, "all_actions" is the shorthand for the list
+            actions.
+            "all_actions" : ["read", "write", "assign"] 
+        """
         return self.actions.keys()
 
-    def get_things(self):
+    def get_action_instance(self, action_shorthand):
+        """ Return a list of actions for the action shorthand. """
+        return self.actions[action_shorthand]
+
+    def get_thing_names(self):
+        """ Return the list of name shorhands. For instance, in the
+            following definition "everything" is the shorthand for the
+            list of things.
+
+            "everything" : ["form", "document", "task", "report"]
+        """
         return self.things.keys()
 
-    def get_groups(self):
+    def get_thing_instance(self, thing_shorthand):
+        """ Return a list of things for the thing shorthand. """
+        return self.things[thing_shorthand]
+
+    def get_group_shorthands(self):
+        """ Return the list of group sorthands. For instance, in the following
+            definition "recepcionistas" is the shorthand.
+
+            "recepcionistas" : ["recepcionista_1", "recepcionista_2"]
+        """
         return self.groups.keys()
 
     def get_users_in_grup(self, group):
@@ -108,13 +132,21 @@ class AccessControl:
 
 def main():
     ac = AccessControl(open('permissions.json').read())
-    print 'groups:', ac.get_groups()
-    print 'actions:', ac.get_actions()
-    print 'things:', ac.get_things()
-    #for group in ac.get_groups():
-    #    print 'group:', group
-    #    print ac.get_users_in_grup(ac.get_groups()[0])
+    print 'Actions:', ac.get_action_names()
+    for action_name in ac.get_action_names():
+        print 'Actions for shorthand "{}" : {}'.format(action_name, ac.get_action_instance(action_name))
+    print
 
+    print 'Things:', ac.get_thing_names()
+    for thing_name in ac.get_thing_names():
+        print 'Things for shorthand "{}" : {}'.format(thing_name, ac.get_thing_instance(thing_name))
+    print
+
+    print 'groups:', ac.get_group_shorthands()
+    for group_shorthand in ac.get_group_shorthands():
+        print 'group:', group_shorthand
+        print "  members:",
+        print ac.get_users_in_grup(group_shorthand)
 
 if __name__ == "__main__":
     main()
