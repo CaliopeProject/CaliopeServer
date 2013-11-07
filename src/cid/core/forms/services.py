@@ -64,6 +64,21 @@ class FormManager(CaliopeServices):
         else:
             return ""
 
+    @classmethod
+    def create_form_from_id(cls,formId, data):
+        if formId in current_app.caliope_forms:
+            module = current_app.caliope_forms[formId]['module']
+            node = module()
+            try:
+                map(lambda k, v: setattr(node, k, v), data.keys(), data.values())
+            except:
+                pass
+            node.save()
+
+            rv = {'uuid': node.uuid}
+            return rv
+        else:
+            return None
 
 class FormManager2(object):
     """
