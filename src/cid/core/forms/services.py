@@ -65,6 +65,16 @@ class FormManager(CaliopeServices):
             return ""
 
     @classmethod
+    @public("getData")
+    def get_data(cls, formId, uuid):
+        if formId in current_app.caliope_forms:
+            form = current_app.caliope_forms[formId]
+            module = form['module']
+            rv = super(FormManager, cls).get_data(uuid,entity_class=module)
+            return rv
+
+
+    @classmethod
     def create_form_from_id(cls,formId, data):
         if formId in current_app.caliope_forms:
             module = current_app.caliope_forms[formId]['module']

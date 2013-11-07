@@ -54,6 +54,7 @@ def register_form_modules(app):
             form['label'] = m['label']
             form['module'] = getattr(module, m['module'])
             app.caliope_forms[m['module']] = form
+            form['module']() #needed for VersionedNode register
         except ImportError as e:
             print m['package']+'.'+m['module']
             app.logger.exception(str(e))

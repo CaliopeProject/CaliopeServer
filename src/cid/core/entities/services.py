@@ -347,10 +347,13 @@ class CaliopeServices(object):
 
     @classmethod
     @public("getData")
-    def get_data(cls, uuid):
+    def get_data(cls, uuid, entity_class=None):
         try:
             PubSub().subscribe_uuid(uuid)
-            return cls.service_class.pull(uuid).serialize()
+            if entity_class is not None:
+                return entity_class.pull(uuid).serialize()
+            else:
+                return cls.service_class.pull(uuid).serialize()
         except AssertionError:
             return RuntimeError("The give uuid {0} is not a valid object of "
                                 "class {1}".format(uuid, cls.__name__))
