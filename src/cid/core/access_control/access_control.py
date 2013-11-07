@@ -11,9 +11,9 @@ class AccessControl:
         self.available_actions = actions.get_available_actions()
         self.available_things = things.get_available_things()
         # Load actions, groups and things.
-        ac._load_actions(self):
-        ac._load_groups_and_users()
-        ac._load_things()
+        self._load_actions()
+        self._load_groups_and_users()
+        self._load_things()
 
     def _resolve_right_side(self, config_kind, key_name, seen):
         """ Resolve right side in configuration. Useful for rules that can use
@@ -93,19 +93,27 @@ class AccessControl:
                     sys.exit(1)
                 self.actions[thing_left].append(name)
 
+    def get_actions(self):
+        return self.actions.keys()
+
+    def get_things(self):
+        return self.things.keys()
+
     def get_groups(self):
-      return self.groups.keys()
+        return self.groups.keys()
 
     def get_users_in_grup(self, group):
-      return self.groups[group]
+        return self.groups[group]
 
 
 def main():
     ac = AccessControl(open('permissions.json').read())
-    print ac.get_groups()
-    for group in ac.get_groups():
-        print 'group:', group
-        print ac.get_users_in_grup(ac.get_groups()[0])
+    print 'groups:', ac.get_groups()
+    print 'actions:', ac.get_actions()
+    print 'things:', ac.get_things()
+    #for group in ac.get_groups():
+    #    print 'group:', group
+    #    print ac.get_users_in_grup(ac.get_groups()[0])
 
 
 if __name__ == "__main__":
