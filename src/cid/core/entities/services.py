@@ -339,7 +339,7 @@ class CaliopeServices(object):
                     for target, props in delta_v.items():
                         versioned_node.add_or_update_relationship_target(
                             delta_k, target, new_properties=props)
-                    #: clean stage area
+                        #: clean stage area
                 remove_hkey(rels_hkey)
             return {'value': versioned_node.uuid == uuid}
         else:
@@ -406,11 +406,13 @@ class CaliopeEntityController(object):
         try:
             if self.template_path is not None:
                 self.template = loadJSONFromFile(self.template_path)
-        except IOError:
-            self.template = CaliopeEntityUtil() \
-                .makeFormTemplate(self.entity_class)
-        finally:
-            return True
+            else:
+                self.template = CaliopeEntityUtil() \
+                    .makeFormTemplate(self.entity_class)
+        except:
+            pass
+
+        return True
 
 
     def get_form(self):
@@ -432,7 +434,8 @@ class CaliopeEntityController(object):
             self.layout = self.template['layout']
             self.template.pop('layout')
         else:
-            self.layout = []
+            self.layout = CaliopeEntityUtil() \
+                .makeLayoutTemplate(self.entity_class)
         return self.layout
 
 
