@@ -85,6 +85,13 @@
             "label": "SIIMForm",
             "html": "templates/SIIMForm_html.json",
             "layout": "templates/SIIMForm_layout.json"
+        },
+        {
+            "package": "cid.siim2forms.Person",
+            "module": "Person",
+            "label": "Person",
+            "html": "templates/Person_html.json",
+            "layout": "templates/Person_layout.json"
         }
      ]
 }
