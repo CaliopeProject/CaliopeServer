@@ -1,3 +1,4 @@
+import copy
 import json
 import sys
 import actions
@@ -37,24 +38,30 @@ class AccessControl:
         return right_side
 
     def _load_groups_and_users(self):
-        """ Populate groups with their users. Groups can belong to other groups. """
+        """ Populate groups with their users. Groups can belong to other groups.
+            Also, for each user, populate a list with the groups she belongs to.
+        """
 
         # Make sure we don't call this function twice.
         assert not hasattr(self, 'groups')
 
+        self.groups_for_user = {}
         self.groups = {}
         for group in self.config['groups']:
             # Now get the users for this group.
             self.groups[group] = self._resolve_right_side('groups', group, seen=set())
+            # Keep track of the users that belong to a group.
+            for user in self.groups[group]:
+                if user not in self.groups_for_user:
+                    self.groups_for_user[user] = set()
+                self.groups_for_user[user].add(group)
+                
 
     def _load_permissions(self):
         """ Get the list of permissions in the config. file. """
         assert not hasattr(self, 'permissions')
-        # This is the dict where we are going to store the permissions.
-        # We just make a copy.
-        self.permissions = {}
-        for permission in self.config['permissions']:
-            self.permissions[permission] = self.config['permissions'][permission]
+        # We just make a copy of the permissions.
+        self.permissions = copy.deepcopy(self.config['permissions'])
 
 
     def _get_class_name_from_internal(self, whole_name):
