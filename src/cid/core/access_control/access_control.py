@@ -16,6 +16,7 @@ class AccessControl:
         self._load_groups_and_users()
         self._load_things()
         self._load_permissions()
+        self._load_roles()
 
     def _resolve_right_side(self, config_kind, key_name, seen):
         """ Resolve right side in configuration. Useful for rules that can use
@@ -55,13 +56,29 @@ class AccessControl:
                 if user not in self.groups_for_user:
                     self.groups_for_user[user] = set()
                 self.groups_for_user[user].add(group)
-                
+
+    def resolve_group_to_groups(self, group_name):
+        """ Resolve group names until they reference real groups. For instance, if you have
+            the group everybody, and it is made of other groups, calling this function on
+            'everybody' will return all the groups that 'everybody' resolves to. """
+
+        ret = set([group_name])
+        for g in self.groups[group_name]:
+            if g in self.groups:
+                ret.add(g)
+        return ret
 
     def _load_permissions(self):
         """ Get the list of permissions in the config. file. """
         assert not hasattr(self, 'permissions')
         # We just make a copy of the permissions.
         self.permissions = copy.deepcopy(self.config['permissions'])
+
+    def _load_roles(self):
+        """ Get the list of roles in a config. file. """
+        assert not hasattr(self, 'roles')
+        # Make a copy of the roles.
+        self.roles = copy.deepcopy(self.config['roles'])
 
 
     def _get_class_name_from_internal(self, whole_name):
@@ -148,14 +165,37 @@ class AccessControl:
         """ Get the list of users that belong to a group. """
         return self.groups[group]
 
-    def get_permission_names(self):
-        """ Get the list of available permissions. """
-        pass
-
-
+    def get_user_permissions(self, user):
+        permissions = set()
+        for group_for_user in self.groups_for_user[user]:
+            # Now get the roles for this group.
+            if group_for_user in self.roles: 
+                for permission_key in self.roles[group_for_user]:
+                    # TODO(nel): Check for errors (keys that do not exist).
+                    # ['read', 'everything']
+                    # ['assign', 'everything', 'revisores']
+                    perm = self.permissions[permission_key]
+                    action = perm[0] # read
+                    things = self.get_thing_instance(perm[1]) # report, everything
+                    if len(perm) == 2:
+                        perm_groups = self.groups_for_user[user]
+                    elif len(perm) == 3:
+                        perm_groups = [perm[2]]
+                    else:
+                        print >> sys.stderr, 'Incorrect permissions "{}" : {}', permission_key, perm
+                    groups = []
+                    for group_name in perm_groups:
+                        groups += self.resolve_group_to_groups(group_name)
+                    for thing in things:
+                      for group in groups:
+                          permissions.add((action, thing, group))
+        return permissions 
 
 def main():
     ac = AccessControl(open('permissions.json').read())
+    print "Lista de permisis para el usuario recepcionista_1"
+    print ac.get_user_permissions('recepcionista_1')
+
     print 'Actions:', ac.get_action_names()
     for action_name in ac.get_action_names():
         print 'Actions for shorthand "{}" : {}'.format(action_name, ac.get_action_instance(action_name))
