@@ -57,11 +57,10 @@ class AccessControl:
                     self.groups_for_user[user] = set()
                 self.groups_for_user[user].add(group)
 
-    def resolve_group_to_groups(self, group_name):
+    def _resolve_group_to_groups(self, group_name):
         """ Resolve group names until they reference real groups. For instance, if you have
             the group everybody, and it is made of other groups, calling this function on
             'everybody' will return all the groups that 'everybody' resolves to. """
-
         ret = set([group_name])
         for g in self.groups[group_name]:
             if g in self.groups:
@@ -185,16 +184,31 @@ class AccessControl:
                         print >> sys.stderr, 'Incorrect permissions "{}" : {}', permission_key, perm
                     groups = []
                     for group_name in perm_groups:
-                        groups += self.resolve_group_to_groups(group_name)
+                        groups += self._resolve_group_to_groups(group_name)
                     for thing in things:
                       for group in groups:
                           permissions.add((action, thing, group))
         return permissions 
 
+    def get_user_list(self):
+        """" Get the list of users. """
+        return self.groups_for_user.keys()
+
 def main():
+    # Load permission model.
     ac = AccessControl(open('permissions.json').read())
-    print "Lista de permisis para el usuario recepcionista_1"
-    print ac.get_user_permissions('recepcionista_1')
+
+    # How user list.
+    print 'User list:', ac.get_user_list()  
+    print 
+
+    # Groups and group members.
+    print 'groups:', ac.get_group_shorthands()
+    for group_shorthand in ac.get_group_shorthands():
+        print 'group:', group_shorthand
+        print "  members:",
+        print ac.get_users_in_grup(group_shorthand)
+    print
 
     print 'Actions:', ac.get_action_names()
     for action_name in ac.get_action_names():
@@ -206,11 +220,13 @@ def main():
         print 'Things for shorthand "{}" : {}'.format(thing_name, ac.get_thing_instance(thing_name))
     print
 
-    print 'groups:', ac.get_group_shorthands()
-    for group_shorthand in ac.get_group_shorthands():
-        print 'group:', group_shorthand
-        print "  members:",
-        print ac.get_users_in_grup(group_shorthand)
+    print
+    print "List of permissions for each user:"
+    print
+    for user in ac.get_user_list():
+      print "Permission of user {}".format(user)
+      print ac.get_user_permissions('recepcionista_1')
+      print
 
 if __name__ == "__main__":
     main()
