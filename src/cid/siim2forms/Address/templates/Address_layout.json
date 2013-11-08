@@ -1,0 +1,21 @@
+{
+  "layout" : [
+    {
+      "columns" : [
+        {
+          "class"   : "page-header",
+          "elements"  : ["title"]
+        }
+      ]
+    },
+    {
+      "class" : "span12",
+      "columns" : [
+        {
+          "class": "span4",
+          "elements"    : ["direccion"]
+        }
+      ]
+    }
+  ]
+}
