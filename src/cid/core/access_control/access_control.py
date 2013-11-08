@@ -186,8 +186,8 @@ class AccessControl:
                     for group_name in perm_groups:
                         groups += self._resolve_group_to_groups(group_name)
                     for thing in things:
-                      for group in groups:
-                          permissions.add((action, thing, group))
+                        for group in groups:
+                            permissions.add((action, thing, group))
         return permissions 
 
     def get_user_list(self):
