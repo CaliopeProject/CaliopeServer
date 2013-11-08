@@ -60,7 +60,7 @@ class CaliopeServices(object):
 
     @classmethod
     @public("getModel")
-    def get_empty_model(cls, entity_class=None, template_html=None, template_layout=None):
+    def get_empty_model(cls, entity_class=None, template_html=None, template_layout=None, actions=None):
         """
         This method needs to be override if you want to use configured json
         forms.
@@ -75,7 +75,8 @@ class CaliopeServices(object):
         """
         entity_controller = CaliopeEntityController(entity_class=entity_class,
                                                     template_html=template_html,
-                                                    template_layout=template_layout)
+                                                    template_layout=template_layout,
+                                                    actions=actions)
         rv = entity_controller.get_model()
         rv["data"] = entity_controller.get_data()
         cls.set_drafts_uuid(rv['data']['uuid']['value'])
@@ -83,10 +84,11 @@ class CaliopeServices(object):
 
     @classmethod
     @public("getModelAndData")
-    def get_model_and_data(cls, uuid, entity_class=None, template_html=None):
-        entity_controller = CaliopeEntityController(uuid=uuid,
-                                                    entity_class=entity_class,
-                                                    template_html=template_html)
+    def get_model_and_data(cls, uuid, entity_class=None, template_html=None, template_layout=None, actions=None):
+        entity_controller = CaliopeEntityController(entity_class=entity_class,
+                                                    template_html=template_html,
+                                                    template_layout=template_layout,
+                                                    actions=actions)
         rv = entity_controller.get_model()
         rv["data"] = entity_controller.get_data()
         cls.subscribe_uuid(uuid)
@@ -379,7 +381,7 @@ class CaliopeEntityController(object):
     Also will provide the json models from templates.
     """
 
-    def __init__(self, uuid=None, entity_class=None, template_html=None, template_layout=None):
+    def __init__(self, uuid=None, entity_class=None, template_html=None, template_layout=None, actions=None):
         """
 
         :param entity_class:
@@ -391,6 +393,7 @@ class CaliopeEntityController(object):
             self.entity_class()
         self.template_html = template_html
         self.template_layout = template_layout
+        self.actions = actions
 
     def get_data(self):
         if self.entity is None:
@@ -417,7 +420,9 @@ class CaliopeEntityController(object):
 
     def get_actions(self):
         #: TODO: Implement depending on user
-        if 'actions' in self.template:
+        if self.actions is not None:
+            return self.actions
+        elif 'actions' in self.template:
             self.actions = self.template['actions']
             self.template.pop('actions')
         else:

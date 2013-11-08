@@ -58,9 +58,10 @@ class FormManager(CaliopeServices):
         if formId in current_app.caliope_forms:
             form = current_app.caliope_forms[formId]
             module = form['module']
-
             rv = super(FormManager, cls).get_empty_model(entity_class=module, template_html=form['html'],
-                                                         template_layout=form['layout'])
+                                                         template_layout=form['layout'],
+                                                         actions=[{"name": "Guardar", "method": "form.commit"}])
+            rv['form']['name'] = form['name']
             return rv
         else:
             return ""
@@ -71,12 +72,12 @@ class FormManager(CaliopeServices):
         if formId in current_app.caliope_forms:
             form = current_app.caliope_forms[formId]
             module = form['module']
-            rv = super(FormManager, cls).get_data(uuid,entity_class=module)
+            rv = super(FormManager, cls).get_data(uuid, entity_class=module)
             return rv
 
 
     @classmethod
-    def create_form_from_id(cls,formId, data):
+    def create_form_from_id(cls, formId, data):
         if formId in current_app.caliope_forms:
             module = current_app.caliope_forms[formId]['module']
             node = module()
@@ -90,6 +91,12 @@ class FormManager(CaliopeServices):
             return rv
         else:
             return None
+
+    @classmethod
+    @public(name='commit')
+    def commit(cls, formId):
+        pass
+
 
 class FormManager2(object):
     """
