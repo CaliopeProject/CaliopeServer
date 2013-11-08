@@ -12,7 +12,8 @@
               "revisores" : ["revisor_1", "revisor_2", "revisor_3"],
               "gerentes" : ["gerente_1"],
               "reportes" : ["reportero_1", "reportero_2"],
-              "everybody" : ["recepcionistas","revisores",  "gerentes", "reportes"]
+              "everybody" : ["recepcionistas","revisores",  "gerentes", "reportes"],
+              "superusers" : ["superuser"]
             },
  "actions" : {
                 "read" : ["internal.read"],
@@ -31,7 +32,9 @@
                 "assign_everything_gerentes" : ["assign", "everything", "gerentes"],
                 "assign_everything_reportes" : ["assign", "everything", "reportes"],
                 "assign_task_gerente" : ["assign", "task", "gerentes"],
-                "assign_task_secretarias" : ["assign", "task", "secretarias"]
+                "assign_task_secretarias" : ["assign", "task", "secretarias"],
+                "superusers" : ["all_actions", "everything", "everybody"]
+                
            },
  "roles" : {
               "recepcionistas" : ["read_everything", "assign_everything_revisores", "read_everything_revisores", "assign_task_secretarias"],
