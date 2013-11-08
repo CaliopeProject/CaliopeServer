@@ -74,6 +74,17 @@
             "module": "ControlAjustes",
             "label": "Control de ajustes",
             "html": "templates/control_ajustes_html.json"
+        },
+        /*
+        * Testing forms.
+        * */
+
+        {
+            "package": "cid.siim2forms.SIIMForm",
+            "module": "SIIMForm",
+            "label": "SIIMForm",
+            "html": "templates/SIIMForm_html.json",
+            "layout": "templates/SIIMForm_layout.json"
         }
-    ]
+     ]
 }

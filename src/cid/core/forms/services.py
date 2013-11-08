@@ -59,7 +59,8 @@ class FormManager(CaliopeServices):
             form = current_app.caliope_forms[formId]
             module = form['module']
 
-            rv = super(FormManager, cls).get_empty_model(entity_class=module)
+            rv = super(FormManager, cls).get_empty_model(entity_class=module, template_html=form['html'],
+                                                         template_layout=form['layout'])
             return rv
         else:
             return ""

@@ -42,15 +42,15 @@ def register_form_modules(app):
             form['name'] = m['module']
             module = importlib.import_module( m['package'])
             path = str(module.__path__[0])
+
             try:
-                form['layout'] = loadJSONFromFile(m['layout'], path)['layout']
+                form['layout'] = os.path.join(path, m['layout'])
             except:
                 form['layout'] = None
             try:
-                form['html'] = loadJSONFromFile(m['html'], path)['html']
+                form['html'] = os.path.join(path, m['html'])
             except:
                 form['html'] = None
-
             form['label'] = m['label']
             form['module'] = getattr(module, m['module'])
             app.caliope_forms[m['module']] = form
