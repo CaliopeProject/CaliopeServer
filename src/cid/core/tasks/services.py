@@ -19,7 +19,7 @@ Copyright (C) 2013 Infometrika Ltda.
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
-from neomodel.exception import DoesNotExist
+import os
 
 #CaliopeStorage
 from cid.core.entities import (CaliopeNode, CaliopeUser, CaliopeEntityController,
@@ -40,7 +40,6 @@ from models import Task
 
 
 class TaskServices(CaliopeServices):
-
     def __init__(self, *args, **kwargs):
         super(TaskServices, self).__init__(*args, **kwargs)
 
@@ -110,21 +109,21 @@ class TaskServices(CaliopeServices):
 
         :return: the model, actions, layout, data.
         """
+
         def append_default_holder(uuid):
             user_node = CaliopeUser.index.get(
                 username=LoginManager().get_user())
-            super(TaskServices, cls)\
+            super(TaskServices, cls) \
                 .update_relationship(uuid, "holders", user_node.uuid,
-                            new_properties={"category": "ToDo"})
-            return {user_node.uuid:{"category": "ToDo"}}
+                                     new_properties={"category": "ToDo"})
+            return {user_node.uuid: {"category": "ToDo"}}
 
-        import os
-        template_path = os.path.join(os.path.split(__file__)[0],"templates/" +
-                        cls.service_class.__name__ + ".json")
+        template_path = os.path.join(os.path.split(__file__)[0], "templates/" +
+                                                                 cls.service_class.__name__ + ".json")
         entity_class = cls.service_class
-        rv = super(TaskServices, cls)\
+        rv = super(TaskServices, cls) \
             .get_empty_model(entity_class=entity_class,
-                             template_path=template_path)
+                             template_html=template_path)
         rv["data"]["holders"] = append_default_holder(rv["data"]["uuid"][
             "value"])
         return rv
@@ -146,13 +145,13 @@ class TaskServices(CaliopeServices):
     @public(name='commit')
     def commit(cls, uuid):
         from cid.core.forms.services import FormManager
+
         hkey_name = uuid
         if cls.r.hexists(hkey_name, "formtask"):
             form_name = cls.r.hget(hkey_name, "formtask")
             form = FormManager.create_form_from_id(form_name, {})
             cls.update_relationship(uuid, "target", form["uuid"])
         return super(TaskServices, cls).commit(uuid)
-
 
 
     @staticmethod

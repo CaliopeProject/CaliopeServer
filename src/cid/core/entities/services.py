@@ -60,7 +60,7 @@ class CaliopeServices(object):
 
     @classmethod
     @public("getModel")
-    def get_empty_model(cls, entity_class=None, template_path=None):
+    def get_empty_model(cls, entity_class=None, template_html=None, template_layout=None, actions=None):
         """
         This method needs to be override if you want to use configured json
         forms.
@@ -74,7 +74,9 @@ class CaliopeServices(object):
         :param
         """
         entity_controller = CaliopeEntityController(entity_class=entity_class,
-                                                    template_path=template_path)
+                                                    template_html=template_html,
+                                                    template_layout=template_layout,
+                                                    actions=actions)
         rv = entity_controller.get_model()
         rv["data"] = entity_controller.get_data()
         cls.set_drafts_uuid(rv['data']['uuid']['value'])
@@ -82,10 +84,11 @@ class CaliopeServices(object):
 
     @classmethod
     @public("getModelAndData")
-    def get_model_and_data(cls, uuid, entity_class=None, template_path=None):
-        entity_controller = CaliopeEntityController(uuid=uuid,
-                                                    entity_class=entity_class,
-                                                    template_path=template_path)
+    def get_model_and_data(cls, uuid, entity_class=None, template_html=None, template_layout=None, actions=None):
+        entity_controller = CaliopeEntityController(entity_class=entity_class,
+                                                    template_html=template_html,
+                                                    template_layout=template_layout,
+                                                    actions=actions)
         rv = entity_controller.get_model()
         rv["data"] = entity_controller.get_data()
         cls.subscribe_uuid(uuid)
@@ -378,17 +381,19 @@ class CaliopeEntityController(object):
     Also will provide the json models from templates.
     """
 
-    def __init__(self, uuid=None, entity_class=None, template_path=None):
+    def __init__(self, uuid=None, entity_class=None, template_html=None, template_layout=None, actions=None):
         """
 
         :param entity_class:
-        :param template_path:
+        :param template_html:
         :return:
         """
         self.entity_class = entity_class
         self.entity = self.entity_class.pull(uuid) if uuid is not None else \
             self.entity_class()
-        self.template_path = template_path
+        self.template_html = template_html
+        self.template_layout = template_layout
+        self.actions = actions
 
     def get_data(self):
         if self.entity is None:
@@ -396,34 +401,28 @@ class CaliopeEntityController(object):
         return self.entity.serialize()
 
     def get_model(self):
-        if self.check_template():
-            rv = dict()
-            rv['form'] = self.get_form()
-            rv['actions'] = self.get_actions()
-            rv['layout'] = self.get_layout()
-            return rv
-        else:
-            raise ValueError('Template error')
+        rv = dict()
+        rv['form'] = self.get_form()
+        rv['actions'] = self.get_actions()
+        rv['layout'] = self.get_layout()
+        return rv
 
-    def check_template(self):
+    def get_form(self):
         try:
-            if self.template_path is not None:
-                self.template = loadJSONFromFile(self.template_path)
+            if self.template_html is not None:
+                self.template = loadJSONFromFile(self.template_html)
             else:
                 self.template = CaliopeEntityUtil() \
                     .makeFormTemplate(self.entity_class)
+            return  self.template
         except:
-            pass
-
-        return True
-
-
-    def get_form(self):
-        return self.template
+            return list()
 
     def get_actions(self):
         #: TODO: Implement depending on user
-        if 'actions' in self.template:
+        if self.actions is not None:
+            return self.actions
+        elif 'actions' in self.template:
             self.actions = self.template['actions']
             self.template.pop('actions')
         else:
@@ -433,14 +432,18 @@ class CaliopeEntityController(object):
 
     def get_layout(self):
         #: TODO: Implement depending on user
-        if 'layout' in self.template:
-            self.layout = self.template['layout']
-            self.template.pop('layout')
-        else:
-            self.layout = CaliopeEntityUtil() \
-                .makeLayoutTemplate(self.entity_class)
-        return self.layout
-
+        try:
+            if self.template_layout is not None:
+                self.layout = loadJSONFromFile(self.template_layout)['layout']
+            elif 'layout' in self.template: #for all in one template compatibility workaround
+                self.layout = self.template['layout']
+                self.template.pop('layout')
+            else:
+                self.layout = CaliopeEntityUtil() \
+                    .makeLayoutTemplate(self.entity_class)
+            return self.layout
+        except:
+            return list()
 
 
 

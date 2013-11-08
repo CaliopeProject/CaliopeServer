@@ -1,6 +1,5 @@
 {
   "name": "Address",
-  "novalidate" : "novalidate",
   "html": [
     {
       "name" : "title",
@@ -18,25 +17,6 @@
       "caption" : "Nombre",
       "type"    : "text",
       "class"   : "input-xlarge"
-    }
-  ],
-  "layout" : [
-    {
-      "columns" : [
-        {
-          "class"   : "page-header",
-          "elements"  : ["title"]
-        }
-      ]
-    },
-    {
-      "class" : "span12",
-      "columns" : [
-        {
-          "class": "span4",
-          "elements"    : ["direccion"]
-        }
-      ]
     }
   ]
 }

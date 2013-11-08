@@ -1,6 +1,5 @@
 {
   "name": "Person",
-  "novalidate" : "novalidate",
   "html": [
     {
       "name" : "title",
@@ -50,40 +49,6 @@
         "formId"  : "Address",
         "generic" : "true"
       }
-    }
-  ],
-  "layout" : [
-    {
-      "columns" : [
-        {
-          "class"   : "page-header",
-          "elements"  : ["title"]
-        }
-      ]
-    },
-    {
-      "class" : "span12",
-      "columns" : [
-        {
-          "class": "span4",
-          "elements"    : ["name", "genero"]
-        },
-        {
-          "class": "span4",
-          "elements"    : ["surname"]
-        },
-        {
-          "class": "span4",
-          "elements"    : ["surname1"]
-        }
-      ]
-    },    {
-      "columns" : [
-        {
-          "class"   : "page-span12",
-          "elements"  : ["direccion"]
-        }
-      ]
     }
   ]
 }
