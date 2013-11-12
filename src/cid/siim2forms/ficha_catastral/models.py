@@ -1,11 +1,10 @@
 # -*- encoding: utf-8 -*-
 
 #Caliope Entities
-from cid.core.entities import (CaliopeEntityData, CaliopeEntity, RelationshipFrom,
+from cid.core.entities import (VersionedNode, RelationshipFrom,
                                CaliopeUser, One, NotConnected, DateTimeProperty,
                                StringProperty, IntegerProperty, FloatProperty, CaliopeJSONProperty)
 
-from cid.core.entities.base_models.versioned_node import VersionedNode
 
 
 class FichaCatastral(VersionedNode):

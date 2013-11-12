@@ -27,12 +27,7 @@ from .contact import CaliopeContact
 from .identification_document import CaliopeIdentificationDocument
 
 
-class CaliopePerson(CaliopeEntityData):
-    pass
-
-
-class CaliopePersonData(CaliopeEntityData):
-    __entity_type__ = CaliopePerson
+class CaliopePerson(VersionedNode):
     #: primer nombre
     first_name = StringProperty()
     #: segundo nombre
@@ -44,7 +39,3 @@ class CaliopePersonData(CaliopeEntityData):
     identification_document = RelationshipTo(CaliopeIdentificationDocument, 'IDENTIFIED_BY', ZeroOrOne)
     #: información de contacto
     contact_information = RelationshipTo(CaliopeContact, 'CONTACT_INFORMATION', ZeroOrOne)
-
-
-class CaliopePerson(CaliopeEntityData):
-    entity_data_type = CaliopePersonData

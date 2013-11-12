@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 #Caliope Entities
-from cid.core.entities import (CaliopeEntityData, CaliopeEntity, RelationshipFrom,
+from cid.core.entities import ( RelationshipFrom,
                                CaliopeUser, One, NotConnected, DateTimeProperty,
                                StringProperty, IntegerProperty, FloatProperty, CaliopeJSONProperty)
 

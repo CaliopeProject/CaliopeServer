@@ -1,15 +1,13 @@
 # -*- encoding: utf-8 -*-
 
 #Caliope Entities
-from cid.core.entities import (CaliopeEntityData, CaliopeEntity, RelationshipFrom,
+from cid.core.entities import (VersionedNode, RelationshipFrom,
                                CaliopeUser, One, NotConnected, DateTimeProperty,
                                StringProperty, IntegerProperty, FloatProperty, CaliopeJSONProperty)
 
-from cid.core.entities.base_models.versioned_node import VersionedNode
 
 
-
-class DerechoPreferencia(CaliopeEntityData):
+class DerechoPreferencia(VersionedNode):
     #Definición de datos para el Derecho de Preferencia-Datos Básicos
 
     #anexar_informacion RELACIÓN DE LA INFORMACIÓN QUE DEBE ANEXARSE - Tipo Label
