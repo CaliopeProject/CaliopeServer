@@ -117,7 +117,8 @@ class CaliopeServices(object):
 
     @classmethod
     @public("updateField")
-    def update_field(cls, uuid, field_name, value, subfield_id=None, pos=None):
+    def update_field(cls, uuid, field_name, value, subfield_id=None,
+                     pos=None, delete=False):
         """
         For updating entity drafts.
 
@@ -178,13 +179,19 @@ class CaliopeServices(object):
                         if pos == -1:
                             draft_field[subfield_id].append(value)
                         elif len(draft_field[subfield_id]) > pos:
-                            draft_field[subfield_id][pos] = value
+                            if delete:
+                                del draft_field[subfield_id][pos]
+                            else:
+                                draft_field[subfield_id][pos] = value
                         else:
                             raise IndexError("Index does {} not exists in {}"
                             .format(pos, subfield_id))
                     elif isinstance(draft_field[subfield_id], dict) and \
                             isinstance(pos, (unicode, str,)):
-                        draft_field[subfield_id][pos] = value
+                        if delete:
+                            del draft_field[subfield_id][pos]
+                        else:
+                            draft_field[subfield_id][pos] = value
                     else:
                         raise KeyError("Field {} does not exists in {}"
                         .format(subfield_id, field_name))
@@ -194,7 +201,10 @@ class CaliopeServices(object):
                             if subfield_id == -1:
                                 draft_field.append(value)
                             elif len(draft_field) > subfield_id:
-                                draft_field[subfield_id] = value
+                                if delete:
+                                    del draft_field[subfield_id]
+                                else:
+                                    draft_field[subfield_id] = value
                             else:
                                 raise IndexError("Index {} not exists in {}"
                                 .format(subfield_id, field_name))
@@ -203,12 +213,18 @@ class CaliopeServices(object):
                             .format(draft_field, str(list)))
                     elif isinstance(draft_field, dict) and isinstance(
                             subfield_id, (unicode, str,)):
-                        draft_field[subfield_id] = value
+                        if delete:
+                            del draft_field[subfield_id]
+                        else:
+                            draft_field[subfield_id] = value
                     else:
                         raise TypeError("Field {} is not a {}"
                         .format(draft_field, str(dict)))
             else:
-                draft_field = value
+                if delete:
+                    draft_field = None
+                else:
+                    draft_field = value
         else:
             field = None
             subfield = None
@@ -248,10 +264,18 @@ class CaliopeServices(object):
         PubSub().publish_command('0', uuid, 'updateField', rv)
         return append_change(uuid, field_name, draft_field) in [0, 1]
 
+
+    @classmethod
+    @public("clearField")
+    def clear_field(cls, uuid, field_name, subfield_id=None, pos=None):
+        return cls.update_field(uuid, field_name, None,
+                                subfield_id=subfield_id,
+                                pos=pos, delete=True)
+
     @classmethod
     @public("updateRelationship")
     def update_relationship(cls, uuid, rel_name, target_uuid,
-                            new_properties=None):
+                            new_properties=None, delete=False):
         """
         For updating entity drafts relationships.
 
@@ -290,9 +314,18 @@ class CaliopeServices(object):
             else:
                 draft_rel = {}
 
-        draft_rel[target_uuid] = new_properties
+        if delete:
+            del draft_rel[target_uuid]
+        else:
+            draft_rel[target_uuid] = new_properties
 
-        append_change(uuid, rel_name, draft_rel) in [0, 1]
+        return append_change(uuid, rel_name, draft_rel) in [0, 1]
+
+    @classmethod
+    @public("deleteRelationship")
+    def delete_relationship(cls, uuid, rel_name, target_uuid):
+        return cls.update_relationship(uuid, rel_name, target_uuid,
+                                       delete=True)
 
 
     @classmethod
