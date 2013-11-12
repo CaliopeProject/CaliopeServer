@@ -26,14 +26,17 @@ import types
 from py2neo import neo4j
 from neomodel import (StringProperty,
                       DateTimeProperty,
-                      RelationshipTo,
                       AliasProperty,
+                      IntegerProperty,
+                      FloatProperty,
+                      ZeroOrMore,
                       ZeroOrOne,
                       One,
                       DoesNotExist,
                       RelationshipDefinition,
                       RelationshipManager,
-                      RelationshipFrom)
+                      RelationshipFrom,
+                      RelationshipTo)
 
 from neomodel.contrib import SemiStructuredNode
 
