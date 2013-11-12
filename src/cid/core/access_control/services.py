@@ -4,8 +4,7 @@ __author__ = 'afc'
 from tinyrpc.protocols.jsonrpc import JSONRPCInvalidRequestError
 from tinyrpc.dispatch import public
 
-
-class AccessControlManager(object):
+class AccessControlManager:
     @staticmethod
     @public(name='isAccessGranted')
     def is_access_granted(params):

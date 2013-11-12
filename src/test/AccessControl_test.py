@@ -45,9 +45,7 @@ from simplekv.memory.redisstore import RedisStore
 from cid import caliope_server
 from cid.utils.DefaultDatabase import DefaultDatabase
 
-
-
-class CaliopeServerTestCase(unittest.TestCase):
+class AccessControlTestCase(unittest.TestCase):
     def setUp(self):
         caliope_server.app.config['TESTING'] = True
         caliope_server.init_flask_app()
@@ -60,7 +58,7 @@ class CaliopeServerTestCase(unittest.TestCase):
                                       caliope_server.app,
                                       handler_class=WebSocketHandler)  # @IgnorePep8
         self.http_server.start()
-        self.create_default_database()
+        DefaultDatabase().test_defaultUserGroupOne()
 
     def tearDown(self):
         """Get rid of the database again after each test."""
@@ -72,9 +70,6 @@ class CaliopeServerTestCase(unittest.TestCase):
         #:Delete database
         neo4j.GraphDatabaseService().clear()
 
-
-    def create_default_database(self):
-        DefaultDatabase().test_defaultUserGroupOne()
 
 
     def login(self, username, password):
@@ -103,6 +98,13 @@ class CaliopeServerTestCase(unittest.TestCase):
         rv = self.logout(uuid=uuid)
         assert 'logout' in rv
         assert rv['logout']
+
+
+    def test_user_list(self):
+        self.login(u'user', u'123') # Log in.
+        ac_proxy = self.rpc_client.get_proxy("ac.")
+        test_rename_me =  ac_proxy.isAccessGranted({'a' : 1})
+        print '*******', test_rename_me
 
 if __name__ == '__main__':
     unittest.main()
