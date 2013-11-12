@@ -57,18 +57,14 @@
                     "service": "search"
                 }
             },
-            {
+            /*
+             {
                 "mtvprojects": {
                     "package": "modules.projects",
                     "service": "projects"
                 }
             },
-            {
-                "predialcards": {
-                    "package": "modules.predialcards",
-                    "service": "predialcards"
-                }
-            },
+             */
             {
                 "reg2bogota": {
                     "package": "modules.reg2bogota",
