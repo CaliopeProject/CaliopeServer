@@ -26,34 +26,17 @@ from ..base_models.entities_models import *
 from .geolocation import CaliopeMunicipality
 
 
-class CaliopeIdentificationDocumentType(CaliopeEntity):
-    pass
 
-
-class CaliopeIdentificationDocument(CaliopeEntity):
-    pass
-
-
-class CaliopeIdentificationDocumentTypeData(CaliopeEntityData):
-    __entity_type__ = CaliopeIdentificationDocumentType
+class CaliopeIdentificationDocumentType(VersionedNode):
     name = StringProperty()
     code = StringProperty()
     maximum_length = IntegerProperty()
     minimum_length = IntegerProperty
 
 
-class CaliopeIdentificationDocumentType(CaliopeEntity):
-    __entity_data_type__ = CaliopeIdentificationDocumentTypeData
-
-
-class CaliopeIdentificationDocumentData(CaliopeEntityData):
-    __entity_type__ = CaliopeIdentificationDocument
+class CaliopeIdentificationDocument(VersionedNode):
     number = StringProperty()
     issue_date = DateTimeProperty()
     type = RelationshipTo(CaliopeIdentificationDocumentType, 'IS_TYPE', One)
     issue_location = RelationshipTo(CaliopeMunicipality, 'ISSUED_AT', ZeroOrOne)
-
-
-class CaliopeIdentificationDocument(CaliopeEntity):
-    __entity_data_type__ = CaliopeIdentificationDocumentData
 
