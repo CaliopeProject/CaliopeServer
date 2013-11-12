@@ -22,17 +22,13 @@ Copyright (C) 2013 Infometrika Ltda.
 import os
 
 #CaliopeStorage
-from cid.core.entities import (CaliopeNode, CaliopeUser, CaliopeEntityController,
+from cid.core.entities import (VersionedNode, CaliopeUser,
                                CaliopeServices)
 
-from cid.utils.fileUtils import loadJSONFromFile
 
 #tinyrpc
-from tinyrpc.protocols.jsonrpc import JSONRPCInvalidRequestError, RPCError
 from tinyrpc.dispatch import public
 
-#Flask
-from flask import current_app
 
 #SIIM2
 from cid.core.login import LoginManager
