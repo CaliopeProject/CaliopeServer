@@ -46,7 +46,7 @@
                 }
             },
             {
-                "accounts": {
+                "access_control": {
                     "package": "core.access_control",
                     "service": "ac"
                 }
