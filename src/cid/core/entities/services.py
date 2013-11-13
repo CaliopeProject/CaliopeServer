@@ -275,7 +275,7 @@ class CaliopeServices(object):
     @classmethod
     @public("updateRelationship")
     def update_relationship(cls, uuid, rel_name, target_uuid,
-                            new_properties=None, delete=False):
+                            new_properties={}, delete=False):
         """
         TODO: Make sure only mark as draft changed rels.
         For updating entity drafts relationships.
