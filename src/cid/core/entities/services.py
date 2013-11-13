@@ -277,6 +277,7 @@ class CaliopeServices(object):
     def update_relationship(cls, uuid, rel_name, target_uuid,
                             new_properties=None, delete=False):
         """
+        TODO: Make sure only mark as draft changed rels.
         For updating entity drafts relationships.
 
         Also pulls the object and refresh the draft with data from the saved
@@ -315,9 +316,11 @@ class CaliopeServices(object):
                 draft_rel = {}
 
         if delete:
-            del draft_rel[target_uuid]
+            #: Mark the relationship to deletion on commit.
+            draft_rel[target_uuid]["__delete__"] = True
         else:
             draft_rel[target_uuid] = new_properties
+            draft_rel[target_uuid]["__changed__"] = True
 
         return append_change(uuid, rel_name, draft_rel) in [0, 1]
 
@@ -373,8 +376,12 @@ class CaliopeServices(object):
                                          object_hook=DatetimeDecoder.json_date_parser)
                     #: do the changes for each target
                     for target, props in delta_v.items():
-                        versioned_node.add_or_update_relationship_target(
-                            delta_k, target, new_properties=props)
+                        if "__delete__" in props and props["__delete__"]:
+                            versioned_node.delete_relationship(delta_k, target)
+                        elif "__changed__" in props and props["__changed__"]:
+                            del props["__changed__"]
+                            versioned_node.add_or_update_relationship_target(
+                                delta_k, target, new_properties=props)
                         #: clean stage area
                 remove_hkey(rels_hkey)
             return {'value': versioned_node.uuid == uuid}
