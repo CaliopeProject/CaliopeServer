@@ -10,7 +10,8 @@
         "formModules": "conf/siim2_forms.json",
         "cid_base_directory": "src/cid",
         "cache_enabled": "True",
-        "minify_enabled": "False"
+        "minify_enabled": "False",
+        "acl_file" : "permissions.json"
     },
     /* Added fo app configurations */
     "app": {

@@ -6,7 +6,8 @@
         "static": "../caliope_webui_beowulf/app",
         "formTemplates": "../templates/formTemplates",
         "formModules": "../../conf/siim2_forms.json",
-        "cid_base_directory": "../../src/cid"
+        "cid_base_directory": "../../src/cid",
+        "acl_file" : "permissions_for_test.json"
     },
     /* Added fo app configurations */
     "app": {
