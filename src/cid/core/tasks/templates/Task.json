@@ -18,13 +18,9 @@
         {
             "name": "category",
             "caption": "Categoria",
-            "type": "select",
+            "type": "text",
             "class": "input-large",
-            "options": {
-                "ToDo": "ToDo",
-                "Doing": "Doing",
-                "Done": "Done"
-            },
+            "readonly" : true,
             "relation": {
                 "rel_name" : "holders",
                 "class": "CaliopeUser",
