@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 """
-@authors: Nelson Castillo. nelsoneci@gmail.com
-
 SIIM Server is the web server of SIIM's Framework
 Copyright (C) 2013 Infometrika Ltda
 
