@@ -1,54 +1,64 @@
 {
-  "name": "Person",
-  "html": [
-    {
-      "name" : "title",
-      "type" : "div",
-      "html" :
-          [
-            {
-              "type" : "h1",
-              "html" : "Persona"
+    "name": "Person",
+    "html": [
+        {
+            "name": "title",
+            "type": "div",
+            "html": [
+                {
+                    "type": "h1",
+                    "html": "Persona"
+                }
+            ]
+        },
+        {
+            "name": "name",
+            "caption": "Nombre",
+            "type": "text",
+            "class": "input-xlarge"
+        },
+        {
+            "name": "surname",
+            "caption": "Apellido 1",
+            "type": "text",
+            "class": "input-xlarge"
+        },
+        {
+            "name": "surname1",
+            "caption": "Apellido 2",
+            "type": "text",
+            "class": "input-xlarge"
+        },
+        {
+            "name": "genero",
+            "caption": "Género",
+            "type": "select",
+            "class": "input-xlarge",
+            "options": [
+                {
+                    "html": "m",
+                    "value": "Maculino"
+                },
+                {
+                    "html": "f",
+                    "value": "Femenino"
+                }
+            ]
+        },
+        {
+            "name": "direccion",
+            "caption": "Direccion",
+            "type": "form",
+            "cardinality": 1,
+            "options-form": {
+                "formId": "Address",
+                "generic": "true"
+            },
+            "relation": {
+                "rel_name": "IS_IN",
+                "class": "Address",
+                "target": "{{address}}"
             }
-          ]
-    },
-    {
-      "name"    : "name",
-      "caption" : "Nombre",
-      "type"    : "text",
-      "class"   : "input-xlarge"
-    },
-    {
-      "name"    : "surname",
-      "caption" : "Apellido 1",
-      "type"    : "text",
-      "class"   : "input-xlarge"
-    },
-    {
-      "name"    : "surname1",
-      "caption" : "Apellido 2",
-      "type"    : "text",
-      "class"   : "input-xlarge"
-    },
-    {
-      "name"    : "genero",
-      "caption" : "Género",
-      "type"    : "select",
-      "class"   : "input-xlarge",
-      "options": [
-        {"html":"m","value":"Maculino"},
-        {"html":"f","value":"Femenino"}
-      ]
-    },
-    {
-      "name" : "direccion",
-      "caption" : "Direccion",
-      "type" : "form",
-      "cardinality" : 1,
-      "options-form" : {
-        "formId"  : "Address",
-        "generic" : "true"
-      }
-    }
-  ]
+        }
+    ]
 }

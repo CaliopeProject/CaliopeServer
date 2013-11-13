@@ -189,7 +189,7 @@ class VersionedNode(SemiStructuredNode):
 
 
     def add_or_update_relationship_target(self, rel_name, target_uuid,
-                                          new_properties=None):
+                                          new_properties=None, delete=False):
         """
         Add or update  a relationship target. If the relationship target exists,
         the properties get overwritten. Otherwise the relationship target is
@@ -202,18 +202,27 @@ class VersionedNode(SemiStructuredNode):
         """
 
         target_node = self.__class__.index.get(uuid=target_uuid).__node__
-        rels = self.__node__.match_one(rel_type=rel_name.upper(),
+        reldef = getattr(self, rel_name)
+        rels = self.__node__.match_one(rel_type=reldef.relation_type,
                                        end_node=target_node,
                                        bidirectional=True)
+
         if len(rels) == 1:
-            if new_properties:
-                rels[0].update_properties(new_properties)
+            if delete:
+                rels[0].delete()
             else:
-                rels[0].delete_properties()
+                if new_properties:
+                    rels[0].update_properties(new_properties)
+                else:
+                    rels[0].delete_properties()
         else:
-            reldef = getattr(self, rel_name)
+
             target_vnode = VersionedNode.pull(target_uuid)
             reldef.connect(target_vnode, new_properties)
+
+    def delete_relationship(self, rel_name, target_uuid):
+        self.add_or_update_relationship_target(rel_name, target_uuid,
+                                               delete=True)
 
 
     def _get_relationships(self):
