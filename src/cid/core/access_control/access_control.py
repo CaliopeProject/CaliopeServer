@@ -6,9 +6,9 @@ import things
 
 class AccessControl:
 
-    def __init__(self, configuration):
+    def __init__(self, configuration_json):
         """ Initialize the access control instance. """
-        self.config = json.loads(configuration)
+        self.config = configuration_json
         self.available_actions = actions.get_available_actions()
         self.available_things = things.get_available_things()
         # Load actions, groups and things.
