@@ -321,6 +321,8 @@ class CaliopeServices(object):
         else:
             draft_rel[target_uuid] = new_properties
             draft_rel[target_uuid]["__changed__"] = True
+            if "__delete__" in draft_rel[target_uuid]:
+                del draft_rel[target_uuid]["__delete__"]
 
         return append_change(uuid, rel_name, draft_rel) in [0, 1]
 

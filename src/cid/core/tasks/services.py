@@ -20,7 +20,7 @@ Copyright (C) 2013 Infometrika Ltda.
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 import os
-
+import json
 #CaliopeStorage
 from cid.core.entities import (VersionedNode, CaliopeUser,
                                CaliopeServices)
@@ -33,7 +33,8 @@ from tinyrpc.dispatch import public
 #SIIM2
 from cid.core.login import LoginManager
 from models import Task
-
+from cid.utils.helpers import DatetimeEncoder, DatetimeDecoder
+from cid.core.pubsub import PubSub
 
 class TaskServices(CaliopeServices):
     def __init__(self, *args, **kwargs):
@@ -147,7 +148,28 @@ class TaskServices(CaliopeServices):
             form_name = cls.r.hget(hkey_name, "formtask")
             form = FormManager.create_form_from_id(form_name, {})
             cls.update_relationship(uuid, "target", form["uuid"])
-        return super(TaskServices, cls).commit(uuid)
+
+        hkey_name_rels = uuid + "_rels"
+        if cls.r.hexists(hkey_name_rels, "holders"):
+            holders_to_add = [h for h, v in json.loads(cls.r.hget(hkey_name_rels,
+                                                       "holders"),
+                                         object_hook=DatetimeDecoder.json_date_parser).items()
+                          if "__changed__" in v]
+            holders_to_remove =[h for h, v in json.loads(cls.r.hget(hkey_name_rels,
+                                                       "holders"),
+                                         object_hook=DatetimeDecoder.json_date_parser).items()
+                          if "__delete__" in v]
+        rv = super(TaskServices, cls).commit(uuid)
+        for holder in holders_to_add:
+            PubSub().publish_command("",
+            holder, "createTask", VersionedNode.pull(uuid).serialize())
+        for holder in holders_to_remove:
+            PubSub().publish_command("",
+            holder, "removeTask", VersionedNode.pull(uuid).serialize())
+        return rv
+
+
+
 
 
     @staticmethod
