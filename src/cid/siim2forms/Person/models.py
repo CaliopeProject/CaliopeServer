@@ -1,5 +1,6 @@
 from cid.core.entities import (RelationshipFrom,
-                               CaliopeUser, One, NotConnected, DateTimeProperty,
+                               CaliopeUser, ZeroOrMore,
+                               RelationshipTo,
                                StringProperty, IntegerProperty, FloatProperty, CaliopeJSONProperty)
 
 from cid.core.entities.base_models.versioned_node import VersionedNode
@@ -10,4 +11,5 @@ class Person(VersionedNode):
     surname = StringProperty()
     surname1 = StringProperty()
     genero = StringProperty()
+    address = RelationshipTo(VersionedNode, 'IS_IN', cardinality=ZeroOrMore)
 
