@@ -39,9 +39,9 @@ from werkzeug.exceptions import NotFound
 from cid.utils.jsOptimizer import jsOptimizer
 
 
-def loadJSONFromFile(filename, root_path=None):
+def loadJSONFromFile(filename, root_path=''):
     if filename is not None:
-        if not os.path.isabs(filename):
+        if len(root_path):
             filename = os.path.join(root_path, filename)
     if not os.path.isfile(filename):
         print "Error : JSON file " + filename + " not found"
