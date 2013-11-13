@@ -210,6 +210,8 @@ def main():
         print ac.get_users_in_grup(group_shorthand)
     print
 
+    sys.exit(1)
+
     print 'Actions:', ac.get_action_names()
     for action_name in ac.get_action_names():
         print 'Actions for shorthand "{}" : {}'.format(action_name, ac.get_action_instance(action_name))
