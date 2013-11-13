@@ -1,14 +1,12 @@
 # -*- encoding: utf-8 -*-
 
 #Caliope Entities
-from cid.core.entities import (CaliopeEntityData, CaliopeEntity, RelationshipFrom,
+from cid.core.entities import (VersionedNode, RelationshipFrom,
                                CaliopeUser, One, NotConnected, DateTimeProperty,
                                StringProperty, IntegerProperty, FloatProperty, CaliopeJSONProperty)
 
-from cid.core.entities.base_models.versioned_node import VersionedNode
 
-
-class FichaUrbanistica(CaliopeEntityData):
+class FichaUrbanistica(VersionedNode):
     #Definición de datos para la ficha urbanística
     #modelacion_urbanistica - MODELACIÓN URBANÍSTICA - Tipo Label
     nombre_proyecto = StringProperty() # nombre proyecto  

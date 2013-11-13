@@ -25,12 +25,8 @@ Copyright (C) 2013 Infometrika Ltda.
 from ..base_models.entities_models import *
 
 
-class CaliopeDocument(CaliopeEntity):
-    pass
 
-
-class CaliopeDocumentData(CaliopeEntityData):
-    __entity_type__ = CaliopeDocument
+class CaliopeDocument(VersionedNode):
 
     owner = RelationshipFrom(CaliopeUser, 'OWNER', cardinality=One)
     holders = RelationshipFrom(CaliopeUser, 'HOLDER')
@@ -42,7 +38,7 @@ class CaliopeDocumentData(CaliopeEntityData):
     state = StringProperty()
 
     def __init__(self, *args, **kwargs):
-        super(CaliopeDocumentData, self).__init__(*args, **kwargs)
+        super(CaliopeDocument, self).__init__(*args, **kwargs)
 
     def get_document_data(self):
         return self.get_data()
@@ -74,35 +70,7 @@ class CaliopeDocumentData(CaliopeEntityData):
             raise RuntimeError('No valid holder class')
 
 
-class CaliopeDocument(CaliopeEntity):
-    __entity_data_type__ = CaliopeDocumentData
-
-    def __init__(self, *args, **kwargs):
-        super(CaliopeDocument, self).__init__(*args, **kwargs)
-
-    def set_owner(self, owner):
-        self._get_current().set_owner(owner)
-
-    def set_holder(self, holder, **props):
-        self._get_current().add_holder(holder, **props)
-
-    def remove_holders(self):
-        current_node = self._get_current()
-        holders_nodes = current_node.holders.all()
-        for holder in holders_nodes:
-            current_node.remove_holder(holder)
-
-    def get_entity_data(self):
-        #: Added due to extra logic of holders
-        rv = super(CaliopeDocument, self).get_entity_data()
-        current_node = self._get_current()
-        holders_nodes = current_node.holders.all()
-        holders = [holder_node.username for holder_node in holders_nodes]
-        rv['holders'] = {'value': holders}
-        return rv
-
-
-class ContentDocument(CaliopeNode):
+class ContentDocument(VersionedNode):
     __index__ = 'ContentFulltext'
     content = StringProperty(index=True)
     #uuid = StringProperty()

@@ -10,7 +10,8 @@
         "formModules": "conf/siim2_forms.json",
         "cid_base_directory": "src/cid",
         "cache_enabled": "True",
-        "minify_enabled": "False"
+        "minify_enabled": "False",
+        "acl_file" : "permissions.json"
     },
     /* Added fo app configurations */
     "app": {
@@ -50,7 +51,7 @@
                 }
             },
             {
-                "accounts": {
+                "access_control": {
                     "package": "core.access_control",
                     "service": "ac"
                 }
@@ -61,18 +62,12 @@
                     "service": "search"
                 }
             },
-            {
+            /*{
                 "mtvprojects": {
                     "package": "modules.projects",
                     "service": "projects"
                 }
-            },
-            {
-                "predialcards": {
-                    "package": "modules.predialcards",
-                    "service": "predialcards"
-                }
-            },
+            },*/
             {
                 "reg2bogota": {
                     "package": "modules.reg2bogota",

@@ -24,7 +24,6 @@ Copyright (C) 2013 Infometrika Ltda.
 
 #Caliope Entities
 from cid.core.entities import (VersionedNode,
-
                                CaliopeJSONProperty,
                                DateTimeProperty,
                                StringProperty,

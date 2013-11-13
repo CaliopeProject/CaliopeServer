@@ -107,7 +107,7 @@ def register_modules(app, package_base='cid'):
         except ImportError as e:
             app.logger.exception(str(e))
         except Exception as e:
-            app.logger.critical(e)
+            app.logger.critical(str(e))
 
 
 

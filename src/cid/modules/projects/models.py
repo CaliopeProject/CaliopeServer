@@ -23,16 +23,11 @@ Copyright (C) 2013 Infometrika Ltda.
 """
 #Caliope Entities
 from cid.core.entities import RelationshipFrom, StringProperty
-from cid.core.entities import CaliopeEntityData, CaliopeEntity, CaliopeJSONProperty
+from cid.core.entities import VersionedNode, CaliopeJSONProperty
 
 
-class ProjectEntity(CaliopeEntity):
-    pass
 
-
-class ProjectData(CaliopeEntityData):
-    __index__ = 'CaliopeStorage'
-    __entity_data__ = ProjectEntity
+class CaliopeProject(VersionedNode):
 
     name = StringProperty()
     general_location = StringProperty()
@@ -41,26 +36,3 @@ class ProjectData(CaliopeEntityData):
     record_document_creation = StringProperty()
     profit_center = StringProperty()
     areas = CaliopeJSONProperty()
-
-
-    def __init__(self, *args, **kwargs):
-        super(ProjectData, self).__init__(*args, **kwargs)
-
-    def get_task_data(self):
-        return self._get_node_data()
-
-    def set_task_data(self, data):
-        return self.evolve(**data)
-
-
-class ProjectEntity(CaliopeEntity):
-    __index__ = 'CaliopeStorage'
-    __entity_data_type__ = ProjectData
-
-    def __init__(self, *args, **kwargs):
-        super(ProjectEntity, self).__init__(*args, **kwargs)
-
-
-
-
-

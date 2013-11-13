@@ -164,6 +164,9 @@ def configure_server_and_app(server_config_file):
         #: TODO: load default storage if not found in config
         pass
 
+    if 'server' in config:
+        app.config['server'] = config['server']
+
     if 'debug' in config['server']:
         app.debug = config['server']['debug'].lower() == 'true'
     else:

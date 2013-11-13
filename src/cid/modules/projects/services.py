@@ -35,7 +35,7 @@ from tinyrpc.dispatch import public
 #Flask
 from flask import current_app
 
-from models import ProjectEntity, ProjectData
+from models import CaliopeProject
 
 
 class ProjectServices(CaliopeServices):
@@ -45,7 +45,7 @@ class ProjectServices(CaliopeServices):
     @staticmethod
     @public(name='getAll')
     def get_all():
-        return [pe.serialize() for pe in ProjectEntity.category().instance.all()]
+        return [pe.serialize() for pe in CaliopeProject.category().instance.all()]
 
     @staticmethod
     @public(name='getData')

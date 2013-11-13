@@ -6,7 +6,8 @@
         "static": "../caliope_webui_beowulf/app",
         "formTemplates": "../templates/formTemplates",
         "formModules": "../../conf/siim2_forms.json",
-        "cid_base_directory": "../../src/cid"
+        "cid_base_directory": "../../src/cid",
+        "acl_file" : "permissions_for_test.json"
     },
     /* Added fo app configurations */
     "app": {
@@ -46,7 +47,7 @@
                 }
             },
             {
-                "accounts": {
+                "access_control": {
                     "package": "core.access_control",
                     "service": "ac"
                 }
@@ -57,18 +58,14 @@
                     "service": "search"
                 }
             },
-            {
+            /*
+             {
                 "mtvprojects": {
                     "package": "modules.projects",
                     "service": "projects"
                 }
             },
-            {
-                "predialcards": {
-                    "package": "modules.predialcards",
-                    "service": "predialcards"
-                }
-            },
+             */
             {
                 "reg2bogota": {
                     "package": "modules.reg2bogota",

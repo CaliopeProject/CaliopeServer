@@ -26,59 +26,28 @@ from ..base_models.entities_models import *
 from .geolocation import CaliopeMunicipality
 
 
-class CaliopeAddressType(CaliopeEntity):
-    pass
 
-
-class CaliopePhoneType(CaliopeEntity):
-    pass
-
-
-class CaliopeAddress(CaliopeEntity):
-    pass
-
-
-class CaliopePhone(CaliopeEntity):
-    pass
-
-
-class CaliopeEmail(CaliopeEntity):
-    pass
-
-
-class CaliopeContact(CaliopeEntity):
-    pass
-
-
-class CaliopeAddressTypeData(CaliopeEntityData):
+class CaliopeAddressType(VersionedNode):
     """
     This class allows to mark as home, work, personal etc, an address
     """
-    __entity_type__ = CaliopeAddressType
     name = StringProperty()
     code = StringProperty()
 
 
-class CaliopeAddressType(CaliopeEntity):
-    __entity_data_type__ = CaliopeAddressTypeData
 
-
-class CaliopePhoneTypeData(CaliopeEntityData):
+class CaliopePhoneType(VersionedNode):
     """
     This class allows to mark as home, work, personal, etc and the carrier  a phone number
     """
-    __entity_type__ = CaliopePhoneType
     name = StringProperty()
     code = StringProperty()
     carrier = StringProperty()
 
 
-class CaliopePhoneType(CaliopeEntity):
-    __entity_data_type__ = CaliopePhoneTypeData
 
 
-class CaliopeAddressData(CaliopeEntityData):
-    __entity_type__ = CaliopeAddress
+class CaliopeAddress(VersionedNode):
     address = StringProperty(required=True)
     postal_code = StringProperty()
     latitude = FloatProperty()
@@ -87,37 +56,23 @@ class CaliopeAddressData(CaliopeEntityData):
     type = RelationshipTo(CaliopeAddressType, 'IS_TYPE', ZeroOrOne)
 
 
-class CaliopeAddress(CaliopeEntity):
-    __entity_data_type__ = CaliopeAddressData
-
-
-class CaliopePhoneData(CaliopeEntityData):
-    __entity_type__ = CaliopePhone
+class CaliopePhone(VersionedNode):
     number = StringProperty()
     area_code = StringProperty()
     type = RelationshipTo(CaliopePhoneType, 'IS_TYPE', ZeroOrOne)
 
 
-class CaliopePhone(CaliopeEntity):
-    __entity_data_type__ = CaliopePhoneData
 
-
-class CaliopeEmailData(CaliopeEntityData):
-    __entity_type__ = CaliopeEmail
+class CaliopeEmail(VersionedNode):
     email = StringProperty()
     type = RelationshipTo(CaliopeAddressType, 'IS_TYPE', ZeroOrOne)
 
 
-class CaliopeEmail(CaliopeEntity):
-    __entity_data_type__ = CaliopeEmailData
-
-
-class CaliopeContactData(CaliopeEntityData):
-    __entity_type__ = CaliopeContact
+class CaliopeContact(VersionedNode):
     address = RelationshipTo(CaliopeAddress, 'ADDRESS', ZeroOrMore)
     phone_number = RelationshipTo(CaliopePhone, 'PHONE', ZeroOrMore)
     email_address = RelationshipTo(CaliopeEmail, 'EMAIL', ZeroOrMore)
 
 
-class CaliopeContact(CaliopeEntity):
-    __entity_data_type__ = CaliopeContactData
+class CaliopeContact(VersionedNode):
+    __entity_data_type__ = CaliopeContact

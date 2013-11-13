@@ -25,28 +25,7 @@ Copyright (C) 2013 Infometrika Ltda.
 from ..base_models.entities_models import *
 
 
-class CaliopeCountry(CaliopeEntity):
-    pass
-
-
-class CaliopeState(CaliopeEntity):
-    pass
-
-
-class CaliopeMunicipality(CaliopeEntity):
-    pass
-
-
-class CaliopePopulatedCenterType(CaliopeEntity):
-    pass
-
-
-class CaliopePopulatedCenter(CaliopeEntityData):
-    pass
-
-
-class CaliopeCountyData(CaliopeEntityData):
-    __entity_type__ = CaliopeCountry
+class CaliopeCounty(VersionedNode):
 
     name = StringProperty()
     code = StringProperty(index=True)
@@ -54,58 +33,26 @@ class CaliopeCountyData(CaliopeEntityData):
     currency_code = StringProperty()
     iso_code = StringProperty()
 
-
-class CaliopeCountry(CaliopeEntity):
-    __entity_data_type__ = CaliopeCountyData
-
-
-class CaliopeStateData(CaliopeEntityData):
-    __entity_type__ = CaliopeState
+class CaliopeState(VersionedNode):
     name = StringProperty()
     code = StringProperty(index=True)
     area_code = StringProperty()
-    part_of = RelationshipTo(CaliopeCountry, 'PART_OF', One)
+    part_of = RelationshipTo(VersionedNode, 'PART_OF', One)
 
-
-class CaliopeState(CaliopeEntity):
-    __entity_data_type__ = CaliopeStateData
-
-
-class CaliopeMunicipalityData(CaliopeEntityData):
-    __entity_type__ = CaliopeMunicipality
+class CaliopeMunicipality(VersionedNode):
     name = StringProperty()
     code = StringProperty(index=True)
     part_of = RelationshipTo(CaliopeState, 'PART_OF', One)
 
-
-class CaliopeMunicipality(CaliopeEntity):
-    __entity_data_type__ = CaliopeMunicipalityData
-
-
-class CaliopePopulatedCenterTypeData(CaliopeEntityData):
-    __entity_type__ = CaliopePopulatedCenterType
+class CaliopePopulatedCenterType(VersionedNode):
     name = StringProperty()
     code = StringProperty(index=True)
 
-
-class CaliopePopulatedCenterType(CaliopeEntity):
-    __entity_data_type__ = CaliopePopulatedCenterTypeData
-
-    def __init__(self, *args, **kwargs):
-        super(CaliopePopulatedCenterType, self).__init__(*args, **kwargs)
-
-
-class CaliopePopulatedCenterData(CaliopeEntityData):
-    __entity_type__ = CaliopePopulatedCenter
+class CaliopePopulatedCenter(VersionedNode):
     name = StringProperty()
     code = StringProperty(index=True)
     type = RelationshipTo(CaliopePopulatedCenterType, 'IS_TYPE', One)
     part_of = RelationshipTo(CaliopeMunicipality, 'PART_OF', One)
 
 
-class CaliopePopulatedCenter(CaliopeEntity):
-    __entity_data_type__ = CaliopePopulatedCenterData
-
-    def __init__(self, *args, **kwargs):
-        super(CaliopePopulatedCenter, self).__init__(*args, **kwargs)
 
