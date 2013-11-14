@@ -28,7 +28,7 @@
       "columns" : [
         {
           "class"   : "page-span12",
-          "elements"  : ["direccion"]
+          "elements"  : ["address"]
         }
       ]
     }

@@ -26,6 +26,7 @@ from tinyrpc.dispatch import public
 from flask import current_app
 
 from cid.core.entities import ( CaliopeServices)
+from cid.core.entities.base_models.versioned_node import VersionedNode
 from cid.utils.helpers import DatetimeEncoder, DatetimeDecoder
 
 from cid.core.login import LoginManager
@@ -109,7 +110,8 @@ class FormManager(CaliopeServices):
             for target_uuid in related.keys():
                 #: This is to save nodes when no data added but there are
                 # in a relationships, we're saving "blank" connected nodes.
-                cls.update_field(target_uuid, "uuid", target_uuid)
+                if VersionedNode.pull(target_uuid) is None:
+                    cls.update_field(target_uuid, "uuid", target_uuid)
                 rv.update(cls.commit(target_uuid))
         rv.update(super(FormManager, cls).commit(uuid))
         return rv

@@ -71,9 +71,6 @@
                 "usaquen": "Usaquén",
                 "chapinero": "Chapinero",
                 "santa_fe": "Santa Fe"
-            },
-            "validations": {
-                "required": true
             }
         },
         {

@@ -46,7 +46,7 @@
             ]
         },
         {
-            "name": "direccion",
+            "name": "address",
             "caption": "Direccion",
             "type": "form",
             "cardinality": 1,
@@ -57,7 +57,7 @@
             "relation": {
                 "rel_name": "address",
                 "class": "Address",
-                "target": "{{direccion}}"
+                "target": "{{address}}"
             }
         }
     ]
