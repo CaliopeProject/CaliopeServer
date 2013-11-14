@@ -98,9 +98,13 @@ class TestAccessControl(unittest.TestCase):
             for thing in self.acl.get_thing_instance(shorthand):
                 self.assertIn(thing, things_resolved[thing])
 
-    def test_UserPermissions(self):
-        # TODO(nel): Test this!
-        pass
+    # TODO(nel): How do we test for this?
+    #def test_UserPermissions(self):
+    #    users = ['revisor_1', 'revisor_2', 'revisor_3', 'recepcionista_1',
+    #             'recepcionista_2', 'superuser', 'secretaria_1', 'reportero_1',
+            #             'reportero_2', 'gerente_1']
+    #    for user in users:
+    #        print self.acl.get_user_permissions(user)
 
 if __name__ == '__main__':
     unittest.main()
