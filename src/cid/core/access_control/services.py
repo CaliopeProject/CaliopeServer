@@ -31,9 +31,8 @@ class AccessControlManager:
         acl = AccessControlManager.get_acl()
         return acl.groups_for_user.keys()
 
-    #@staticmethod
-    #@public(name='getGroupList')
-    #def get_user_list(params):
-    #    acl = AccessControlManager.get_acl()
-    #    return acl.get_group_shorthands()
-
+    @staticmethod
+    @public(name='getGroupList')
+    def get_group_list(params):
+        acl = AccessControlManager.get_acl()
+        return acl.get_group_shorthands()
