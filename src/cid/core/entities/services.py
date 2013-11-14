@@ -119,6 +119,19 @@ class CaliopeServices(object):
         if not cls.r.hexists(uuid + str("_class"), "name"):
             cls.r.hset(uuid + str("_class"), "name", entity_class.__name__)
 
+    @classmethod
+    def _set_related(cls, uuid, target_uuid):
+        cls.r.hset(uuid + "_related", target_uuid, True)
+
+    @classmethod
+    def _get_related(cls, uuid):
+        return cls.r.hgetall(uuid + "_related")
+
+    @classmethod
+    def _del_related(cls, uuid, target_uuid):
+        if cls.r.hexists(uuid + "_related", target_uuid):
+            cls.r.hdel(uuid + "_related", target_uuid)
+
 
     @classmethod
     @public("updateField")
@@ -323,9 +336,13 @@ class CaliopeServices(object):
         if delete:
             #: Mark the relationship to deletion on commit.
             draft_rel[target_uuid]["__delete__"] = True
+            #: Remove from related
+            cls._del_related(uuid, target_uuid)
         else:
             draft_rel[target_uuid] = new_properties
             draft_rel[target_uuid]["__changed__"] = True
+            #: add to related
+            cls._set_related(uuid, target_uuid)
             if "__delete__" in draft_rel[target_uuid]:
                 del draft_rel[target_uuid]["__delete__"]
 
@@ -393,9 +410,9 @@ class CaliopeServices(object):
                                 delta_k, target, new_properties=props)
                         #: clean stage area
                 remove_hkey(rels_hkey)
-            return {'value': versioned_node.uuid == uuid}
+            return {uuid: {'value': versioned_node.uuid == uuid}}
         else:
-            return {'value': "Nothing to commit"}
+            return {uuid: {'value': False}}
 
     @classmethod
     @public("getData")
@@ -403,7 +420,14 @@ class CaliopeServices(object):
         try:
             PubSub().subscribe_uuid(uuid)
             if entity_class is not None:
-                return entity_class.pull(uuid).serialize()
+                vnode = entity_class.pull(uuid)
+                #: Append related uuids to the list.
+                for rel_name, rel_repr in vnode._serialize_relationships() \
+                    .items():
+                    for target_uuid in rel_repr.keys():
+                        cls._set_related(uuid, target_uuid)
+
+                return vnode.serialize()
             else:
                 return cls.service_class.pull(uuid).serialize()
         except AssertionError:
