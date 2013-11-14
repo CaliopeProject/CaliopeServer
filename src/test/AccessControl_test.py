@@ -94,10 +94,13 @@ class TestAccessControl(unittest.TestCase):
             'task' : [u'task']
         }
 
-
         for shorthand in self.acl.get_thing_names():
             for thing in self.acl.get_thing_instance(shorthand):
                 self.assertIn(thing, things_resolved[thing])
+
+    def test_UserPermissions(self):
+        # TODO(nel): Test this!
+        pass
 
 if __name__ == '__main__':
     unittest.main()
