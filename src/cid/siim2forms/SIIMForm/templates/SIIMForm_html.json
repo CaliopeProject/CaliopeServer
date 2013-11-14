@@ -121,7 +121,7 @@
                 "generic": "true"
             },
             "relation": {
-                "rel_name": "PROPIETARIO",
+                "rel_name": "propietario",
                 "class": "Person",
                 "target": "{{propietario}}"
             }

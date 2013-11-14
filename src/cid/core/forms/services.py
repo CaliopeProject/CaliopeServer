@@ -60,7 +60,10 @@ class FormManager(CaliopeServices):
             module = form['module']
             rv = super(FormManager, cls).get_empty_model(entity_class=module, template_html=form['html'],
                                                          template_layout=form['layout'],
-                                                         actions=[{"name": "Guardar", "method": "form.commit"}])
+                                                         actions=[{"name": "Guardar", "method": "form.commit",
+                                                                   "params-to-send": "uuid",
+                                                                   "encapsulate-in-data": "false"}])
+
             rv['form']['name'] = form['name']
             return rv
         else:
@@ -92,10 +95,10 @@ class FormManager(CaliopeServices):
         else:
             return None
 
-    @classmethod
-    @public(name='commit')
-    def commit(cls, formId):
-        pass
+#    @classmethod
+#    @public(name='commit')
+#    def commit(cls, formId):
+#        pass
 
 
 class Form(object):
