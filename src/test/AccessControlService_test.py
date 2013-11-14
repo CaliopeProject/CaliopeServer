@@ -69,7 +69,6 @@ class AccessControlTestCase(unittest.TestCase):
         neo4j.GraphDatabaseService().clear()
 
 
-
     def login(self, username, password):
         self.rpc_client = RPCClient(JSONRPCProtocol(),
                                     HttpWebSocketClientTransport('ws://localhost:9001/api/ws'))
@@ -98,11 +97,11 @@ class AccessControlTestCase(unittest.TestCase):
         assert rv['logout']
     """
 
-    def test_user_list(self):
+    # TODO(nel): Deprecate this method.
+    def test_isAccessGranted(self):
         self.login(u'user', u'123') # Log in.
         ac_proxy = self.rpc_client.get_proxy("ac.")
-        test_rename_me =  ac_proxy.isAccessGranted({'a' : 1})
-        print '*******', test_rename_me
+        self.assertEqual({u'granted': True}, ac_proxy.isAccessGranted({}))
 
 if __name__ == '__main__':
     unittest.main()

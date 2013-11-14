@@ -194,30 +194,32 @@ class AccessControl:
         """" Get the list of users. """
         return self.groups_for_user.keys()
 
+"""
+
+# TODO(nel): Remove after you get user permissions in the test.
+
 def main():
     # Load permission model.
     # TODO(nel): Use the function that Sebasti'an wrote. This code will be deleted anyway... so who cares.
     # This is moving to a test of its own.
     ac = AccessControl(json.loads(open('../../../../conf/permissions_for_test.json').read()))
 
-    print 'groups:', ac.get_group_shorthands()
-    for group_shorthand in ac.get_group_shorthands():
-        print 'group:', group_shorthand
-        print "  members:",
-        print ac.get_users_in_grup(group_shorthand)
-    print
+    #print 'groups:', ac.get_group_shorthands()
+    #for group_shorthand in ac.get_group_shorthands():
+    #    print 'group:', group_shorthand
+    #    print "  members:",
+    #    print ac.get_users_in_grup(group_shorthand)
+    #print
 
-    sys.exit(1)
+    #print 'Actions:', ac.get_action_names()
+    #for action_name in ac.get_action_names():
+    #    print 'Actions for shorthand "{}" : {}'.format(action_name, ac.get_action_instance(action_name))
+    #print
 
-    print 'Actions:', ac.get_action_names()
-    for action_name in ac.get_action_names():
-        print 'Actions for shorthand "{}" : {}'.format(action_name, ac.get_action_instance(action_name))
-    print
-
-    print 'Things:', ac.get_thing_names()
-    for thing_name in ac.get_thing_names():
-        print 'Things for shorthand "{}" : {}'.format(thing_name, ac.get_thing_instance(thing_name))
-    print
+    #print 'Things:', ac.get_thing_names()
+    #for thing_name in ac.get_thing_names():
+    #    print 'Things for shorthand "{}" : {}'.format(thing_name, ac.get_thing_instance(thing_name))
+    #print
 
     print
     print "List of permissions for each user:"
@@ -229,3 +231,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+"""

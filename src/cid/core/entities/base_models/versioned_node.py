@@ -235,11 +235,17 @@ class VersionedNode(SemiStructuredNode):
 
     def serialize(self):
         rv = self._get_data()
+        rv.update(self._serialize_relationships())
+        return rv
+
+    def _serialize_relationships(self):
+        rv = {}
         for rel_name in self._get_relationships():
             assert not rel_name in rv  # TODO : remove
             if rel_name not in self.__special_fields__:
                 rv[rel_name] = self._format_relationships(rel_name)
         return rv
+
 
     def save(self, skip_difference=False):
         """
