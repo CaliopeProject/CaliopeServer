@@ -196,13 +196,10 @@ class AccessControl:
 
 def main():
     # Load permission model.
-    ac = AccessControl(open('permissions.json').read())
+    # TODO(nel): Use the function that Sebasti'an wrote. This code will be deleted anyway... so who cares.
+    # This is moving to a test of its own.
+    ac = AccessControl(json.loads(open('../../../../conf/permissions_for_test.json').read()))
 
-    # How user list.
-    print 'User list:', ac.get_user_list()  
-    print 
-
-    # Groups and group members.
     print 'groups:', ac.get_group_shorthands()
     for group_shorthand in ac.get_group_shorthands():
         print 'group:', group_shorthand
