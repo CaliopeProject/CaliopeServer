@@ -39,10 +39,13 @@ class TestAccessControl(unittest.TestCase):
             self.assertIn(user, users)
 
     def test_Groups(self):
+
         groups = ['everybody', 'secretarias', 'revisores', 'reportes',
                   'superusers', 'gerentes', 'recepcionistas']
+
         for group in self.acl.get_group_shorthands():
             self.assertIn(group, groups)
+
         user_and_groups = \
             {'everybody' : ['recepcionista_1', 'recepcionista_2', 'revisor_1',
                             'revisor_2', 'revisor_3', 'gerente_1', 'reportero_1',
@@ -55,8 +58,8 @@ class TestAccessControl(unittest.TestCase):
              'recepcionistas' : [u'recepcionista_1', u'recepcionista_2']}
 
         for group in user_and_groups:
-          for user in self.acl.get_users_in_group(group):
-            assert self.assertIn(user, user_and_groups[group])
+          for user in self.acl.get_users_in_grup(group):
+            self.assertIn(user, user_and_groups[group])
 
 if __name__ == '__main__':
     unittest.main()
