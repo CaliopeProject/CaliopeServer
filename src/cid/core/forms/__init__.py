@@ -20,8 +20,9 @@ Copyright (C) 2013 Infometrika Ltda.
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from cid.core.forms.services import FormManager, Form
+from cid.core.forms.services import FormManager
 from cid.core.forms.models import *
+
 
 def get_service():
     return FormManager()

@@ -79,7 +79,7 @@ class CaliopeServices(object):
                                                     actions=actions)
         rv = entity_controller.get_model()
         rv["data"] = entity_controller.get_data()
-        cls.set_drafts_uuid(rv['data']['uuid']['value'])
+        cls.set_drafts_uuid(rv['data']['uuid']['value'], entity_class)
         return rv
 
     @classmethod
@@ -103,7 +103,7 @@ class CaliopeServices(object):
         PubSub().unsubscribe_uuid(uuid)
 
     @classmethod
-    def set_drafts_uuid(cls, uuid):
+    def set_drafts_uuid(cls, uuid, entity_class):
         """
         This methods check and creates the HSET in Redis with the key
          cls.draft_hkey  where valid uuids are stored.
@@ -113,6 +113,11 @@ class CaliopeServices(object):
             raise KeyError("UUID {} already is a draft".format(uuid))
         else:
             cls.r.hset(cls.draft_hkey, uuid, "__draft__")
+
+        if entity_class is None:
+            entity_class = VersionedNode
+        if not cls.r.hexists(uuid + str("_class"), "name"):
+            cls.r.hset(uuid + str("_class"), "name", entity_class.__name__)
 
 
     @classmethod
@@ -357,7 +362,9 @@ class CaliopeServices(object):
             versioned_node = cls.service_class.pull(uuid)
             #: if first time save create a node with given uuid.
             if versioned_node is None:
-                versioned_node = cls.service_class(uuid=uuid)
+                node_class = VersionedNode.__extended_classes__[cls.r.hget(
+                    uuid + str("_class"), "name")]
+                versioned_node = node_class(uuid=uuid)
                 #: apply first the properties changes
             if is_stagged(props_hkey):
                 changes = get_changes(props_hkey)
