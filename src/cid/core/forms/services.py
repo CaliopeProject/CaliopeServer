@@ -19,21 +19,19 @@ Copyright (C) 2013 Infometrika Ltda.
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
-
+import json
 from tinyrpc.dispatch import public
-from tinyrpc.protocols.jsonrpc import JSONRPCInvalidParamsError, JSONRPCInvalidRequestError, JSONRPCInternalError
 
-from neomodel.exception import DoesNotExist
 
 from flask import current_app
 
-from cid.core.entities import (CaliopeUser, CaliopeServices)
+from cid.core.entities import ( CaliopeServices)
+from cid.utils.helpers import DatetimeEncoder, DatetimeDecoder
 
 from cid.core.login import LoginManager
 from cid.utils import fileUtils
 from cid.core.forms.models import SIIMForm
 from cid.core.entities.utils import CaliopeEntityUtil
-# from cid.core.pubsub import pubsub_publish_command
 
 
 class FormManager(CaliopeServices):
@@ -58,11 +56,16 @@ class FormManager(CaliopeServices):
         if formId in current_app.caliope_forms:
             form = current_app.caliope_forms[formId]
             module = form['module']
-            rv = super(FormManager, cls).get_empty_model(entity_class=module, template_html=form['html'],
-                                                         template_layout=form['layout'],
-                                                         actions=[{"name": "Guardar", "method": "form.commit",
-                                                                   "params-to-send": "uuid",
-                                                                   "encapsulate-in-data": "false"}])
+            rv = super(FormManager, cls).get_empty_model(entity_class=module,
+                                                         template_html=form[
+                                                             'html'],
+                                                         template_layout=form[
+                                                             'layout'],
+                                                         actions=[
+                                                             {"name": "Guardar",
+                                                              "method": "form.commit",
+                                                              "params-to-send": "uuid",
+                                                              "encapsulate-in-data": "false"}])
 
             rv['form']['name'] = form['name']
             return rv
@@ -85,7 +88,8 @@ class FormManager(CaliopeServices):
             module = current_app.caliope_forms[formId]['module']
             node = module()
             try:
-                map(lambda k, v: setattr(node, k, v), data.keys(), data.values())
+                map(lambda k, v: setattr(node, k, v), data.keys(),
+                    data.values())
             except:
                 pass
             node.save()
@@ -95,160 +99,22 @@ class FormManager(CaliopeServices):
         else:
             return None
 
-#    @classmethod
-#    @public(name='commit')
-#    def commit(cls, formId):
-#        pass
+    @classmethod
+    @public(name='commit')
+    def commit(cls, uuid):
+        hkey_name = uuid
+        hkey_name_rels = uuid + "_rels"
+
+        if cls.r.hlen(hkey_name_rels) > 0:
+            for rel_name, rel_value in cls.r.hgetall(hkey_name_rels).items():
+                rels_pending = json.loads(rel_value,
+                                          object_hook=DatetimeDecoder
+                                          .json_date_parser)
+                for uuid_target in rels_pending.keys():
+                    cls.commit(uuid_target)
+        return super(FormManager, cls).commit(uuid)
 
 
-class Form(object):
-    def __init__(self, **kwargs):
-        self.form_name = kwargs['formId'] if 'formId' in kwargs else None
-        self.form_path = kwargs['form_path'] if 'form path' in kwargs else current_app.config['FORM_TEMPLATES']
-        self.form_cls = kwargs['form_cls'] if 'form_cls' in kwargs else SIIMForm
-        self.app = kwargs['current_app'] if 'current_app' in kwargs else None
-        self.form_json = None
-
-    def _get_form_acl(self):
-        #: TODO: Check form node and check acl for node
-        pass
-
-    def _check_access(self):
-        return LoginManager().check()
-
-    def _check_valid_form(self):
-        #: TODO: Check if form_name is valid and form_path is a file
-        #: TODO: Cache this files
-        try:
-            self.form_json = fileUtils.loadJSONFromFile(self.form_path + "/" + self.form_name + ".json",
-                                                        current_app.root_path)
-            return True
-        except IOError:
-            return False
-
-    def create_form(formId, data):
-        if formId in current_app.caliope_forms:
-            module = current_app.caliope_forms[formId]['module']
-            node = module()
-            map(lambda k, v: setattr(node, k, v), data.keys(), data.values())
-            node.save()
-
-            rv = {'uuid': node.uuid}
-            return rv
-        else:
-            return None
-
-    def _get_form(self):
-        return self.form_json
-
-    def _get_actions(self):
-        #: TODO: Implement depending on user
-        #Workaround!!
-        if 'actions' in self.form_json:
-            self.actions = self.form_json['actions']
-            self.form_json.pop('actions')
-        else:
-            self.actions = [
-                #{"name": "create", "method": "form.createFromForm"},
-                #{"name": "delete", "method": "form.delete", "params": ["uuid"]},
-                {"name": "guardar", "method": "form.editFromForm"}
-            ]
-        return self.actions
-
-    def _get_layout(self):
-        #: TODO: Implement depending on user
-        #Workaround!!
-        if 'layout' in self.form_json:
-            self.layout = self.form_json['layout']
-            self.form_json.pop('layout')
-        else:
-            self.layout = []
-        return self.layout
-
-    def get_form_template(self):
-        if self._check_access():
-            if self._check_valid_form():
-                rv = dict()
-                rv['form'] = self._get_form()
-                rv['actions'] = self._get_actions()
-                rv['layout'] = self._get_layout()
-                return rv
-            else:
-                return JSONRPCInternalError('Invalid Form')
-        else:
-            raise JSONRPCInvalidRequestError('Forbidden')
-
-    def _get_node_data(self, uuid):
-        #: TODO: User dynamic class types
-        self.form_cls = SIIMForm
-        try:
-            self.node = self.form_cls.index.get(uuid=uuid)
-            self.form_data = self.node.get_data()
-            return self.form_data
-        except DoesNotExist as e:
-            self.node = None
-            self.form_data = None
-            raise JSONRPCInvalidRequestError(e)
-
-    def _get_node_data_list(self, filters):
-        #: TODO: User dynamic class types
-        self.form_cls = SIIMForm
-        try:
-            self.nodes = self.form_cls.index.search('uuid:*')
-            self.form_data_list = [node.get_data() for node in self.nodes]
-            return self.form_data_list
-        except DoesNotExist as e:
-            self.node = None
-            self.form_data = None
-            raise JSONRPCInvalidRequestError(e)
 
 
-    def get_form_with_data(self, uuid):
-        #: TODO: this looks like a decorator is needed
-        if self._check_access():
-            rv = self.get_form_template()
-            rv['data'] = self._get_node_data(uuid)
-            return rv
-        else:
-            raise JSONRPCInvalidRequestError('Forbidden')
-
-    def get_from_with_data_list(self, filters=None):
-        #: TODO: this looks like a decorator is needed
-        if self._check_access():
-            rv = self.get_form_template()
-            rv['data'] = self._get_node_data_list(filters)
-            return rv
-        else:
-            raise JSONRPCInvalidRequestError('Forbidden')
-
-    def update_form_data(self, uuid, data):
-        if self._check_access():
-            self._get_node_data(uuid)
-            self.node = self.node.set_data(data)
-            self.node.form_id = self.form_name
-            self.node.save()
-
-            rv = dict()
-            rv['uuid'] = self.node.uuid
-            return rv
-        else:
-            raise JSONRPCInvalidRequestError('Forbidden')
-
-    def create_form(self, data, formUUID):
-        if self._check_access():
-            self.node = SIIMForm(**data)
-            self.node.form_id = self.form_name
-            if formUUID is not None:
-                self.node.uuid = formUUID
-            self.node.save()
-
-            ownerUser = CaliopeUser.index.get(username=LoginManager().get_user())
-            self.node.owner.connect(ownerUser)
-            self.node.holder.connect(ownerUser)
-
-            rv = dict()
-            rv['uuid'] = self.node.uuid
-            return rv
-        else:
-            raise JSONRPCInvalidRequestError('Forbidden')
 
