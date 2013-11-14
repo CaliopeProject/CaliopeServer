@@ -11,8 +11,9 @@ import os
 class AccessControlManager:
     @staticmethod
     def get_acl():
-        """ Instanciate the access control object and return it.
-            Read the current ACL configuration.
+        """
+          Instanciate the access control object and return it.
+          Read the current ACL configuration.
         """
         acl_conf = loadJSONFromFile('../../conf/permissions_for_test.json')
         return access_control.AccessControl(acl_conf)
@@ -20,12 +21,19 @@ class AccessControlManager:
     @staticmethod
     @public(name='isAccessGranted')
     def is_access_granted(params):
-
-        # ***************************** Unused ****************************
-        acl = AccessControlManager.get_acl()
-        # ***************************** Unused ****************************
-
-        rv = {
+        return {
             'granted': True
         }
-        return rv
+
+    @staticmethod
+    @public(name='getUserList')
+    def get_user_list(params):
+        acl = AccessControlManager.get_acl()
+        return acl.groups_for_user.keys()
+
+    #@staticmethod
+    #@public(name='getGroupList')
+    #def get_user_list(params):
+    #    acl = AccessControlManager.get_acl()
+    #    return acl.get_group_shorthands()
+

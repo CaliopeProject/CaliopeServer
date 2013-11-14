@@ -106,13 +106,18 @@ class AccessControlTestCase(unittest.TestCase):
     def test_getUserList(self):
         self.login()
         ac_proxy = self.rpc_client.get_proxy("ac.")
-        #self.assertEqual({'granted': True}, ac_proxy.getUserList({}))
-
-        user_list = set(['revisor_1', 'revisor_2', 'revisor_3', 'recepcionista_1', 'recepcionista_2', 'superuser', 'secretaria_1', 'reportero_1', 'reportero_2', 'gerente_1'])
-        for user in  ac_proxy.getUserList({}):
+        user_list = set(['revisor_1', 'revisor_2', 'revisor_3', 'recepcionista_1',
+                         'recepcionista_2', 'superuser', 'secretaria_1', 'reportero_1',
+                         'reportero_2', 'gerente_1'])
+        for user in ac_proxy.getUserList({}):
             self.assertIn(user, user_list)
             user_list.remove(user)
         self.assertEqual(user_list, set())
+
+    #def test_getGroupList(self):
+    #    self.login()
+    #    ac_proxy = self.rpc_client.get_proxy("ac.")
+    #    print ac_proxy.getGroupList({})
 
 if __name__ == '__main__':
     unittest.main()
