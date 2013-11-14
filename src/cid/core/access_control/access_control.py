@@ -6,9 +6,9 @@ import things
 
 class AccessControl:
 
-    def __init__(self, configuration):
+    def __init__(self, configuration_json):
         """ Initialize the access control instance. """
-        self.config = json.loads(configuration)
+        self.config = configuration_json
         self.available_actions = actions.get_available_actions()
         self.available_things = things.get_available_things()
         # Load actions, groups and things.
@@ -196,19 +196,18 @@ class AccessControl:
 
 def main():
     # Load permission model.
-    ac = AccessControl(open('permissions.json').read())
+    # TODO(nel): Use the function that Sebasti'an wrote. This code will be deleted anyway... so who cares.
+    # This is moving to a test of its own.
+    ac = AccessControl(json.loads(open('../../../../conf/permissions_for_test.json').read()))
 
-    # How user list.
-    print 'User list:', ac.get_user_list()  
-    print 
-
-    # Groups and group members.
     print 'groups:', ac.get_group_shorthands()
     for group_shorthand in ac.get_group_shorthands():
         print 'group:', group_shorthand
         print "  members:",
         print ac.get_users_in_grup(group_shorthand)
     print
+
+    sys.exit(1)
 
     print 'Actions:', ac.get_action_names()
     for action_name in ac.get_action_names():

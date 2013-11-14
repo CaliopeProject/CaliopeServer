@@ -55,7 +55,7 @@
                 "generic": "true"
             },
             "relation": {
-                "rel_name": "IS_IN",
+                "rel_name": "address",
                 "class": "Address",
                 "target": "{{direccion}}"
             }

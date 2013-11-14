@@ -11,7 +11,7 @@
         "cid_base_directory": "src/cid",
         "cache_enabled": "True",
         "minify_enabled": "False",
-        "acl_file" : "permissions.json"
+        "acl_file" : "conf/permissions.json"
     },
     /* Added fo app configurations */
     "app": {

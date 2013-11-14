@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
-"""
-@authors: Nelson Castillo. nelsoneci@gmail.com
 
+"""
 SIIM Server is the web server of SIIM's Framework
 Copyright (C) 2013 Infometrika Ltda
 
@@ -20,91 +19,341 @@ Copyright (C) 2013 Infometrika Ltda
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
+from cid.utils.fileUtils import loadJSONFromFile
+
+import cid.core.access_control.access_control
 import unittest
-import hashlib
 
-#gevent
-from gevent.pywsgi import WSGIServer
-from geventwebsocket.handler import WebSocketHandler
+class TestAccessControl(unittest.TestCase):
 
-#tinyrpc
-from tinyrpc.protocols.jsonrpc import JSONRPCProtocol
-from tinyrpc.client import RPCClient, RPCError
-from tinyrpc.transports.http import HttpWebSocketClientTransport
-
-#neo4j
-from py2neo import neo4j
-
-#flask
-from flask import (Flask)
-
-#simplekv
-import redis
-from simplekv.memory.redisstore import RedisStore
-
-from cid import caliope_server
-from cid.utils.DefaultDatabase import DefaultDatabase
-
-class AccessControlTestCase(unittest.TestCase):
     def setUp(self):
-        caliope_server.app.config['TESTING'] = True
-        caliope_server.init_flask_app()
-        caliope_server.configure_server_and_app("../../conf/test_caliope_server.json")
-        caliope_server.configure_logger("../../conf/tests_logger.json")
-        caliope_server.register_modules()
-        caliope_server.app.storekv = RedisStore(redis.StrictRedis())
-        self.http_server = WSGIServer((caliope_server.app.config['address'],
-                                       caliope_server.app.config['port']),
-                                      caliope_server.app,
-                                      handler_class=WebSocketHandler)  # @IgnorePep8
-        self.http_server.start()
-        DefaultDatabase().test_defaultUserGroupOne()
+        acl_conf = loadJSONFromFile('../../conf/permissions_for_test.json')
+        self.acl = cid.core.access_control.access_control.AccessControl(acl_conf)
 
-    def tearDown(self):
-        """Get rid of the database again after each test."""
-        if self.rpc_client:
-            self.rpc_client.transport.close()
-        self.http_server.stop()
-        self.http_server = None
-        caliope_server.app = Flask('caliope_server')
-        #:Delete database
-        neo4j.GraphDatabaseService().clear()
+    def test_Users(self):
+        users = ['revisor_1', 'revisor_2', 'revisor_3', 'recepcionista_1',
+                 'recepcionista_2', 'superuser', 'secretaria_1', 'reportero_1',
+                 'reportero_2', 'gerente_1']
 
+        for user in self.acl.get_user_list():
+            self.assertIn(user, users)
 
+    def test_Groups(self):
+        groups = ['everybody', 'secretarias', 'revisores', 'reportes',
+                  'superusers', 'gerentes', 'recepcionistas']
+        for group in self.acl.get_group_shorthands():
+            self.assertIn(group, groups)
+        user_and_groups = \
+            {'everybody' : ['recepcionista_1', 'recepcionista_2', 'revisor_1',
+                            'revisor_2', 'revisor_3', 'gerente_1', 'reportero_1',
+                            'reportero_2'],
+             'secretarias' :  ['secretaria_1'],
+             'revisores' : ['revisor_1', 'revisor_2', 'revisor_3'],
+             'reportes' : ['reportero_1', 'reportero_2'],
+             'superusers': ['superuser'],
+             'gerentes' : ['gerente_1'],
+             'recepcionistas' : [u'recepcionista_1', u'recepcionista_2']}
 
-    def login(self, username, password):
-        self.rpc_client = RPCClient(JSONRPCProtocol(),
-                                    HttpWebSocketClientTransport('ws://localhost:9001/api/ws'))
-        self.loginManager = self.rpc_client.get_proxy("login.")
-        hashed_password = hashlib.sha256(password).hexdigest()
-        return self.loginManager.authenticate(username=username,
-                                              password=hashed_password)
-
-    def logout(self, uuid):
-        if self.loginManager is None:
-            return
-        return self.loginManager.logout(uuid=uuid)
-
-
-    """def test_login(self):
-        rv = self.login(u'user', u'123')
-        assert 'login' in rv
-        assert rv['login'] is True
-        assert 'user_uuid' in rv
-        assert 'session_uuid' in rv
-
-    def test_logout(self):
-        uuid = self.login(u'user', u'123')['user_uuid']['value']
-        rv = self.logout(uuid=uuid)
-        assert 'logout' in rv
-        assert rv['logout']
-    """
-
-    def test_user_list(self):
-        self.login(u'user', u'123') # Log in.
-        ac_proxy = self.rpc_client.get_proxy("ac.")
-        test_rename_me =  ac_proxy.isAccessGranted({'a' : 1})
-        print '*******', test_rename_me
+        for group in user_and_groups:
+          for user in self.acl.get_users_in_group(group):
+            assert self.assertIn(user, user_and_groups[group])
 
 if __name__ == '__main__':
     unittest.main()
+
+"""
+class TestVersionedNodeStorage(unittest.TestCase):
+    def tearDown(self):
+        #:Delete database
+        neo4j.GraphDatabaseService().clear()
+
+    def printLine(self):
+        print "-" * 80
+
+    def test_VersionedNode_add_or_update_relationship_target(self):
+        # First, create Person and Car objects.
+        class Person(VersionedNode):
+            pass
+        class Car(VersionedNode):
+            owner = RelationshipFrom(Person, 'OWNER', ZeroOrOne)
+        person = Person(name='Bob')
+        person.save()
+        car = Car(plate='7777')
+        car.save()
+
+        # Create the relationship and add properties.
+        car.owner.connect(person, {'brand' : 'BMW'})
+
+        # Check relationship properties are there.
+        assert {'brand': 'BMW'} == car._format_relationships('owner')[
+            person.uuid]
+
+        # Delete the relationship properties.
+        car.add_or_update_relationship_target('owner', person.uuid)
+
+        # Properties should be empty.
+        assert {} == car._format_relationships('owner')[person.uuid]
+
+        # Add new properties. Let's add two.
+        car.add_or_update_relationship_target('owner', person.uuid, {'brand' : 'Twingo', 'KM' : 0})
+        assert {'brand': 'Twingo', 'KM': 0} == car._format_relationships('owner')[person.uuid]
+
+    def test_VersionedNode_init_without_args(self):
+        self.printLine()
+        node = VersionedNode()
+        node.save()
+        print node.uuid, node.timestamp
+        node2 = VersionedNode.pull(node.uuid)
+        assert node2.uuid == node.uuid
+        self.printLine()
+
+    def test_VersionedNode_init_without_args(self):
+        self.printLine()
+        node = VersionedNode()
+        node.save()
+        print node.uuid, node.timestamp
+        node2 = VersionedNode.pull(node.uuid)
+        assert node2.uuid == node.uuid
+        self.printLine()
+
+    def test_VersionedNode_init_with_args(self):
+        self.printLine()
+        props = {'foo': 'bar', 'other': 2}
+        node = VersionedNode(**props)
+        node.save()
+        print node.uuid, node.timestamp
+        node.refresh()
+        assert node.foo == 'bar' and node.other == 2
+        self.printLine()
+
+    def test_VersionedNode_push(self):
+        self.printLine()
+        props = {'foo': 'bar', 'other': 2}
+        node = VersionedNode.push(**props)
+        print node.uuid, node.timestamp
+        assert node.foo == 'bar' and node.other == 2
+        self.printLine()
+
+    def test_VersionedNode_change(self):
+        self.printLine()
+        props = {'foo': 'bar', 'other': 2}
+        node = VersionedNode.push(**props)
+        print node.uuid, node.timestamp
+        setattr(node, 'foo', 'no_bar')
+        setattr(node, 'other', 4)
+        node.save()
+        assert node.foo == 'no_bar' and node.other == 4
+        self.printLine()
+
+    def test_VersionedNode_parent(self):
+        self.printLine()
+        props = {'foo': 'bar', 'other': 2}
+        node = VersionedNode.push(**props)
+        print node.uuid, node.timestamp
+        setattr(node, 'foo', 'no_bar')
+        setattr(node, 'other', 3)
+        node.save()
+        node_prev = node.parent.single()
+        assert node_prev.foo == props['foo']
+        assert node_prev.other == props['other']
+        self.printLine()
+
+    def test_versionednode_update_field(self):
+        self.printLine()
+        node = VersionedNode()
+        node.foo = 'bar'
+        node.save()
+        print node.uuid, node.timestamp, node.foo
+        node.update_field("foo", "new_bar")
+        assert node.foo == "new_bar"
+        self.printLine()
+
+    def test_VersionedNode_update_field_list_append(self):
+        self.printLine()
+        node = VersionedNode()
+        node.foo = ['item0', "item1"]
+        node.save()
+        print node.uuid, node.timestamp, node.foo
+        node.update_field("foo", "bar", 0)
+        assert node.foo[0] == "bar"
+        assert node.foo[1] == "item1"
+        self.printLine()
+
+    def test_VersionedNode_update_field_list_update(self):
+        self.printLine()
+        node = VersionedNode()
+        node.foo = ['item0', "item1"]
+        node.save()
+        print node.uuid, node.timestamp, node.foo
+        node.update_field("foo", "bar", -1)
+        assert node.foo[2] == "bar"
+        assert node.foo[0] == "item0"
+        assert node.foo[1] == "item1"
+        self.printLine()
+
+
+    def test_VersionedNode_update_field_dict_update(self):
+        self.printLine()
+        setattr(VersionedNode, "foo", CaliopeJSONProperty())
+        node = VersionedNode()
+        node.foo = {"foo": "bar", "a": 1}
+        node.save()
+        print node.uuid, node.timestamp, node.foo
+        node.update_field("foo", "new_bar", "foo")
+        assert node.foo["foo"] == "new_bar"
+        self.printLine()
+
+    def test_VersionedNode_update_field_dict_append(self):
+        self.printLine()
+        setattr(VersionedNode, "foo", CaliopeJSONProperty())
+        node = VersionedNode()
+        node.save()
+        print node.uuid, node.timestamp, node.foo
+        node.update_field("foo", "bar", field_id="foo")
+        assert node.foo["foo"] == "bar"
+        self.printLine()
+
+    def test_VersionedNode_format_relationships_only_one(self):
+        class Person(VersionedNode):
+            name = StringProperty()
+            age = StringProperty()
+
+        class Car(VersionedNode):
+            plate = StringProperty()
+            owner = RelationshipFrom(Person, 'OWNER', ZeroOrOne)
+
+        self.printLine()
+
+        person = Person(name='Bob')
+        person.age = 10
+        person.save()
+
+        car = Car(plate='7777')
+        car.save()
+
+        # Test empty relationship
+        assert {} == car._format_relationships('owner')
+        # Create the relationship with attributes
+        car.owner.connect(person, {'km': 0, 'brand': 'BMW'})
+        #Expected value for relationships (with different UID):
+        #{'Person': {u'21b04fc6-3e97-4584-926a-28497d997447':
+        #{u'brand': u'BMW', u'km': 0}}}
+        relationships = car._format_relationships('owner')
+        assert len(relationships) == 1
+        assert person.uuid in relationships
+        assert relationships[person.uuid] == {u'brand': u'BMW',
+                                              u'km': 0}
+        self.printLine()
+
+    def test_VersionedNode_format_relationships_many(self):
+        class Car(VersionedNode):
+            plate = StringProperty()
+
+        class ParkingLot(VersionedNode):
+            parked = RelationshipFrom(Car, 'PARKED')
+
+        self.printLine()
+
+        car_uuids = []
+        parking_lot = ParkingLot()
+        parking_lot.save()
+        for i in range(5):
+            car = Car(plate=str(i))
+            car.save()
+            parking_lot.parked.connect(car, {'i': i})
+            car_uuids.append(car.uuid)
+
+        relationships = parking_lot._format_relationships('parked')
+
+        assert len(car_uuids) == len(relationships)
+        for i, uuid in enumerate(car_uuids):
+            assert uuid in relationships
+            assert {'i': i} == relationships[uuid]
+
+        self.printLine()
+
+    def test_VersionedNode_pull(self):
+        class Car(VersionedNode):
+            plate = StringProperty()
+
+        car = Car(plate="777")
+        self.assertIsNotNone(car.save())
+        uuid = car.uuid
+        pulled_object = Car.pull(uuid)
+        self.assertIsInstance(pulled_object, Car)
+        self.assertEqual(car.plate, pulled_object.plate)
+        car.delete()
+
+
+    #: TODO: Move the following test to a new file.
+    def test_CaliopeUser_creation(self):
+        self.printLine()
+        u1 = CaliopeUser()
+        u1.username = 'userTmp'
+        u1.password = hashlib.sha256(u'123').hexdigest()
+        u1.domainname = 'correlibre.org'
+        u1.first_name = "UserTmp"
+        u1.last_name = "Test"
+        assert u1.save() is not None
+        self.printLine()
+
+    def test_CaliopeUser_creationMany(self):
+        self.printLine()
+        for i in xrange(20):
+            u1 = CaliopeUser()
+            u1.username = 'userTmp' + str(i)
+            u1.password = hashlib.sha256('password' + str(i)).hexdigest()
+            u1.domainname = 'correlibre.org'
+            u1.first_name = "UserTmp" + str(i)
+            u1.last_name = "Test"
+            assert u1.save() is not None
+        self.printLine()
+
+    def test_CaliopeGroup_creation(self):
+        self.printLine()
+        g1 = CaliopeGroup()
+        g1.name = 'GroupTmp'
+        g1.code = 'g-000Tmp'
+        assert g1.save() is not None
+        g1.delete()
+        self.printLine()
+
+    def test_CaliopeGroup_creationMany(self):
+        self.printLine()
+        for i in xrange(1, 5):
+            g1 = CaliopeGroup()
+            g1.name = u'Group' + str(i)
+            g1.code = u'g-00' + str(i)
+            try:
+                assert g1.save() is not None
+                g1.delete()
+            except UniqueProperty:
+                pass
+        self.printLine()
+
+    def test_CaliopeGroup_connectOne(self):
+        self.printLine()
+        try:
+            u1 = CaliopeUser()
+            u1.username = 'userTmp'
+            u1.password = hashlib.sha256(u'123').hexdigest()
+            u1.domainname = 'correlibre.org'
+            u1.first_name = "User"
+            u1.last_name = "Test"
+            u1.save()
+            g1 = CaliopeGroup()
+            g1.name = 'GroupTmp'
+            g1.code = 'g-000Tmp'
+            g1.save()
+            u1.member_of.connect(g1)
+            g1.members.connect(u1)
+            assert u1.member_of.is_connected(g1)
+            assert g1.members.is_connected(u1)
+            g1.delete()
+            u1.delete()
+        except UniqueProperty:
+            assert False
+        self.printLine()
+
+
+"""
