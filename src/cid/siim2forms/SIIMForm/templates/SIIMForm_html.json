@@ -112,7 +112,7 @@
             "name": "propietario",
             "caption": "Propietario",
             "type": "form",
-            "cardinality": 1,
+            "cardinality": "*",
             "options-form": {
                 "formId": "Person",
                 "generic": "true"

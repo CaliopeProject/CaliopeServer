@@ -165,7 +165,7 @@ class AccessControl:
         return self.groups[group]
 
     def get_user_permissions(self, user):
-        permissions = set()
+        permissions = []
         for group_for_user in self.groups_for_user[user]:
             # Now get the roles for this group.
             if group_for_user in self.roles: 
@@ -187,20 +187,25 @@ class AccessControl:
                         groups += self._resolve_group_to_groups(group_name)
                     for thing in things:
                         for group in groups:
-                            permissions.add((action, thing, group))
+                            permissions.append((action, thing, group))
         return permissions 
+
+    def get_groups_for_user(self, user):
+        return self.groups_for_user[user]
 
     def get_user_list(self):
         """" Get the list of users. """
         return self.groups_for_user.keys()
 
 # TODO(nel): Remove after you get user permissions in the test.
+
 """
+
 def main():
     # Load permission model.
     # TODO(nel): Use the function that Sebasti'an wrote. This code will be deleted anyway... so who cares.
     # This is moving to a test of its own.
-    ac = AccessControl(json.loads(open('../../../../conf/permissions_for_test.json').read()))
+    ac = AccessControl(json.loads(open('../../../../conf/permissions.json').read()))
 
     #print 'groups:', ac.get_group_shorthands()
     #for group_shorthand in ac.get_group_shorthands():

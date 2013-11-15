@@ -38,16 +38,22 @@ class AccessControlManager:
         return acl.get_group_shorthands()
 
     @staticmethod
-    @public(name='getUsersOfGroup')
-    def get_users_of_group(params):
+    @public(name='getGroupsOfUser')
+    def get_groups_for_user(user):
         acl = AccessControlManager.get_acl()
-        return acl.get_users_in_grup(params['group'])
+        return list(acl.get_groups_for_user(user))
+
+    @staticmethod
+    @public(name='getUsersOfGroup')
+    def get_users_of_group(group):
+        acl = AccessControlManager.get_acl()
+        return acl.get_users_in_grup(group)
 
     @staticmethod
     @public(name='getUserPermissions')
-    def get_user_permissions(params):
+    def get_user_permissions(user):
         acl = AccessControlManager.get_acl()
-        return acl.get_user_permissions(params['user'])
+        return acl.get_user_permissions(user)
 
     @staticmethod
     @public(name='getActionList')
