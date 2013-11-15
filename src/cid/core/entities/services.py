@@ -435,6 +435,20 @@ class CaliopeServices(object):
                                 "class {1}".format(uuid, cls.__name__))
 
 
+    @classmethod
+    @public("getDataByIndexKeyValue")
+    def get_data_key_value(cls, key, value):
+        try:
+            param = {key: value}
+            return [vnode.serialize() for vnode in VersionedNode.index\
+                .search(**param)]
+        except Exception as e:
+            return RuntimeError(e)
+
+
+
+
+
     @staticmethod
     @public("edit")
     def edit(*args, **kwargs):
