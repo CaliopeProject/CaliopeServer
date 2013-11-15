@@ -150,6 +150,8 @@ class TaskServices(CaliopeServices):
             cls.update_relationship(uuid, "target", form["uuid"])
 
         hkey_name_rels = uuid + "_rels"
+        holders_to_add = []
+        holders_to_remove = []
         if cls.r.hexists(hkey_name_rels, "holders"):
             holders_to_add = [h for h, v in json.loads(cls.r.hget(hkey_name_rels,
                                                        "holders"),
