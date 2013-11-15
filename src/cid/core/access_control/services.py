@@ -15,7 +15,7 @@ class AccessControlManager:
           Instanciate the access control object and return it.
           Read the current ACL configuration.
         """
-        acl_conf = loadJSONFromFile('../../conf/permissions_for_test.json')
+        acl_conf = loadJSONFromFile('conf/permissions.json')
         return access_control.AccessControl(acl_conf)
 
     @staticmethod
