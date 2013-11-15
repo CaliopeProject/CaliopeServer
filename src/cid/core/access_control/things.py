@@ -18,11 +18,21 @@ class Report(Thing):
     def __init__(self):
         Thing.__init__(self, "report")
 
+class Kanban(Thing):
+    def __init__(self):
+        Thing.__init__(self, "kanban")
+
+class Gis(Thing):
+    def __init__(self):
+        Thing.__init__(self, "gis")
+
 def get_available_things():
     things = [
                Form(),
                Document(),
                Task(),
                Report(),
+               Kanban(),
+               Gis()
              ]
     return {t.name: t for t in things}

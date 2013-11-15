@@ -1,46 +1,25 @@
 {
  "things" : {
-              "form" : ["internal.form"],
-              "document" : ["internal.document"],
-              "task" : ["internal.task"],
-              "report" : ["internal.report"],
-              "everything" : ["form", "document", "task", "report"]
+              "kanban" : ["internal.kanban"],
+              "gis" : ["internal.gis"]
             },
  "groups" : {
-              "recepcionistas" : ["recepcionista_1", "recepcionista_2"],
-              "secretarias" : ["secretaria_1"],
-              "revisores" : ["revisor_1", "revisor_2", "revisor_3"],
-              "gerentes" : ["gerente_1"],
-              "reportes" : ["reportero_1", "reportero_2"],
-              "everybody" : ["recepcionistas","revisores",  "gerentes", "reportes"],
-              "superusers" : ["superuser"]
+              "kanban" : ["user1", "user2", "user3"],
+              "gis" : ["user3", "user4", "user5"]
             },
  "actions" : {
                 "read" : ["internal.read"],
                 "write" : ["internal.write"],
-                "assign" : ["internal.assign"],
-                "all_actions" : ["read", "write", "assign"]
+                "all_actions" : ["read", "write"]
              },
  "permissions" : {
-                "read_tasks" : ["read", "task"],
-                "read_everything" : ["read", "everything"],
-                "write_everything" : ["write", "everything"],
-                "write_report" : ["write", "report"],
-                "assign_everything" : ["assign", "everything"],
-                "assign_everything_revisores" : ["assign", "everything", "revisores"],
-                "read_everything_revisores" : ["read", "everything", "revisores"],
-                "assign_everything_gerentes" : ["assign", "everything", "gerentes"],
-                "assign_everything_reportes" : ["assign", "everything", "reportes"],
-                "assign_task_gerente" : ["assign", "task", "gerentes"],
-                "assign_task_secretarias" : ["assign", "task", "secretarias"],
-                "superusers" : ["all_actions", "everything", "everybody"]
-                
+                "read_gis" : ["read", "gis"],
+                "write_gis" :  ["write", "gis"],
+                "read_kanban" :  ["read", "kanban"],
+                "write_kanban" :  ["write", "kanban"]
            },
  "roles" : {
-              "recepcionistas" : ["read_everything", "assign_everything_revisores", "read_everything_revisores", "assign_task_secretarias"],
-              "secretarias" : ["assign_task_gerente", "read_tasks"],
-              "revisores" : [ "read_everything", "write_everything", "assign_everything_gerentes"],
-              "gerentes" : ["read_everything", "write_everything", "assign_everything", "assign_everything_reportes"],
-              "reportes" : ["read_everything", "write_report"]
+              "kanban" : ["read_kanban", "write_kanban"],
+              "gis" : ["read_gis", "write_gis"]
            }
 }

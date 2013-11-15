@@ -198,12 +198,14 @@ class AccessControl:
         return self.groups_for_user.keys()
 
 # TODO(nel): Remove after you get user permissions in the test.
+
 """
+
 def main():
     # Load permission model.
     # TODO(nel): Use the function that Sebasti'an wrote. This code will be deleted anyway... so who cares.
     # This is moving to a test of its own.
-    ac = AccessControl(json.loads(open('../../../../conf/permissions_for_test.json').read()))
+    ac = AccessControl(json.loads(open('../../../../conf/permissions.json').read()))
 
     #print 'groups:', ac.get_group_shorthands()
     #for group_shorthand in ac.get_group_shorthands():
