@@ -29,11 +29,8 @@ from datetime import datetime
 
 #neomodel exceptions
 
-from neomodel.exception import UniqueProperty
-
 #Model imports
-from cid.modules.siim2_forms.models import RegistroPredioCatastroTipoII
-
+from cid.siim2forms.RegistroPredioCatastroTipoII import RegistroPredioCatastroTipoII
 
 def main(argv):
     if len(argv) is not 1:
@@ -68,7 +65,7 @@ def importPredios(filename):
         node.fecha_documento = parseDateFromTwoDigitYear(record['fecha_documento'])
         try:
             node.save()
-        except UniqueProperty:
+        except :
             print record
 
 
@@ -89,7 +86,7 @@ def importPrediosWithCreateMethod(filename):
             try:
                 RegistroPredioCatastroTipoII.create(*batchList)
                 batchList = []
-            except UniqueProperty:
+            except:
                 print "Error in"
                 print batchList
     RegistroPredioCatastroTipoII.create(*batchList)
