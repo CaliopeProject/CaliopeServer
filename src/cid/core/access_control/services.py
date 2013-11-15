@@ -45,9 +45,9 @@ class AccessControlManager:
 
     @staticmethod
     @public(name='getUserPermissions')
-    def get_user_permissions(params):
+    def get_user_permissions(user):
         acl = AccessControlManager.get_acl()
-        return acl.get_user_permissions(params['user'])
+        return acl.get_user_permissions(user)
 
     @staticmethod
     @public(name='getActionList')

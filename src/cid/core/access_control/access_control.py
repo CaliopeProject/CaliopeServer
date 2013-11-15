@@ -165,7 +165,7 @@ class AccessControl:
         return self.groups[group]
 
     def get_user_permissions(self, user):
-        permissions = set()
+        permissions = []
         for group_for_user in self.groups_for_user[user]:
             # Now get the roles for this group.
             if group_for_user in self.roles: 
@@ -187,7 +187,7 @@ class AccessControl:
                         groups += self._resolve_group_to_groups(group_name)
                     for thing in things:
                         for group in groups:
-                            permissions.add((action, thing, group))
+                            permissions.append((action, thing, group))
         return permissions 
 
     def get_user_list(self):
