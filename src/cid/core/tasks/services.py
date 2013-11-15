@@ -41,9 +41,9 @@ class TaskServices(CaliopeServices):
         super(TaskServices, self).__init__(*args, **kwargs)
 
     #: TODO: Valida users and return based on context
-    @staticmethod
+    @classmethod
     @public(name='getAll')
-    def get_all():
+    def get_all(cls):
         a_node = CaliopeUser.category().instance.single()
         results, metadata = a_node.cypher("START user=node(*)"
                                           "MATCH (user)-[r:HOLDER]-(tdc)-[e:CURRENT]-(t)"
@@ -51,15 +51,13 @@ class TaskServices(CaliopeServices):
                                           "return distinct t")
         task_list = []
         for row in results:
-            task_class = Task().__class__
-            task = task_class.inflate(row[0])
-            entity_data = task.serialize()
-            task_list.append(entity_data)
+            task = cls.get_data(row[0]._properties['uuid'])
+            task_list.append(task)
         return task_list
 
-    @staticmethod
+    @classmethod
     @public(name='getCurrentUserKanban')
-    def get_current_user_kanban():
+    def get_current_user_kanban(cls):
 
         user_node = CaliopeUser.index.get(username=LoginManager().get_user())
         #: Starting from current user, match all nodes which are connected througth a HOLDER
@@ -81,10 +79,8 @@ class TaskServices(CaliopeServices):
 
         for row in results:
             tl = tasks_list[row[1]]['tasks']
-            task_class = Task().__class__
-            task = task_class.inflate(row[0])
-            entity_data = task.serialize()
-            tl.append(entity_data)
+            task = cls.get_data(row[0]._properties['uuid'])
+            tl.append(task)
 
         return [list for list in
                 sorted(tasks_list.values(), key=lambda pos: pos['pos'])]

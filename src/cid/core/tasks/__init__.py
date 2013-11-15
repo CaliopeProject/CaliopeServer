@@ -25,4 +25,5 @@ from .models import Task
 
 
 def get_service():
+    Task()
     return TaskServices(service_class=Task)
