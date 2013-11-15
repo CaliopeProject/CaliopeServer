@@ -4,7 +4,7 @@
               "gis" : ["internal.gis"]
             },
  "groups" : {
-              "kanban" : ["user1", "user2", "user3"],
+              "kanban" : ["user", "user1", "user2", "user3"],
               "gis" : ["user3", "user4", "user5"]
             },
  "actions" : {
