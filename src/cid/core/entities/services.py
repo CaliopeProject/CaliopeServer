@@ -394,6 +394,8 @@ class CaliopeServices(object):
                         #: do the changes
                     versioned_node.update_field(delta_k, delta_v)
                     #: clean stage area
+                #: push all changes to database
+                versioned_node.save()
                 remove_hkey(props_hkey)
             if is_stagged(rels_hkey):
                 changes = get_changes(rels_hkey)

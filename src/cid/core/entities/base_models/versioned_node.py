@@ -318,11 +318,12 @@ class VersionedNode(SemiStructuredNode):
                     and isinstance(field_id, (str, unicode)):
                     curr_value[field_id] = new_value
                 elif isinstance(curr_value, CaliopeJSONProperty):
-                    #: Empty dict property
+                    #: Empty dict propety
                     setattr(self, field_name, {field_id: new_value})
             else:
                 setattr(self, field_name, new_value)
-            self.save()
+            #: Moved to services.commit
+            #self.save()
         else:
             #: TODO: change the following line to support adding new
             # properties.
