@@ -49,7 +49,7 @@
             "name": "address",
             "caption": "Direccion",
             "type": "form",
-            "cardinality": 1,
+            "cardinality": "*",
             "options-form": {
                 "formId": "Address",
                 "generic": "true"
