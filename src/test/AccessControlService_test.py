@@ -129,5 +129,31 @@ class AccessControlTestCase(unittest.TestCase):
 
         self.assertEqual(group_list, set())
 
+    def test_getUserPermissions(self):
+        self.login()
+
+        permissions_of_user = \
+             set([('read', 'form', 'everybody'), ('read', 'form', 'gerentes'),
+              ('read', 'document', 'everybody'), ('read', 'document', 'gerentes'),
+              ('read', 'task', 'everybody'), ('read', 'task', 'gerentes'),
+              ('read', 'report', 'everybody'), ('read', 'report', 'gerentes'),
+              ('write', 'form', 'everybody'), ('write', 'form', 'gerentes'),
+              ('write', 'document', 'everybody'), ('write', 'document', 'gerentes'),
+              ('write', 'task', 'everybody'), ('write', 'task', 'gerentes'),
+              ('write', 'report', 'everybody'), ('write', 'report', 'gerentes'),
+              ('assign', 'form', 'everybody'), ('assign', 'form', 'gerentes'),
+              ('assign', 'document', 'everybody'), ('assign', 'document', 'gerentes'),
+              ('assign', 'task', 'everybody'), ('assign', 'task', 'gerentes'),
+              ('assign', 'report', 'everybody'), ('assign', 'report', 'gerentes'),
+              ('assign', 'form', 'reportes'), ('assign', 'document', 'reportes'),
+              ('assign', 'task', 'reportes'), ('assign', 'report', 'reportes')])
+
+        ac_proxy = self.rpc_client.get_proxy("ac.")
+
+        for perm in ac_proxy.getUserPermissions('gerente_1'):
+            self.assertIn(tuple(perm), permissions_of_user)
+            permissions_of_user.remove(tuple(perm))
+        self.assertEqual(permissions_of_user, set())
+
 if __name__ == '__main__':
     unittest.main()
