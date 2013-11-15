@@ -39,8 +39,8 @@
  "roles" : {
               "recepcionistas" : ["read_everything", "assign_everything_revisores", "read_everything_revisores", "assign_task_secretarias"],
               "secretarias" : ["assign_task_gerente", "read_tasks"],
-              "revisores" : [ "read_everything", "write_everyting", "assign_everything_gerentes"],
-              "gerentes" : ["read_everything", "write_everything", "assign_everyting", "assign_everything_reportes"],
+              "revisores" : [ "read_everything", "write_everything", "assign_everything_gerentes"],
+              "gerentes" : ["read_everything", "write_everything", "assign_everything", "assign_everything_reportes"],
               "reportes" : ["read_everything", "write_report"]
            }
 }

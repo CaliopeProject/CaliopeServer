@@ -98,9 +98,28 @@ class TestAccessControl(unittest.TestCase):
             for thing in self.acl.get_thing_instance(shorthand):
                 self.assertIn(thing, things_resolved[thing])
 
-    def test_UserPermissions(self):
-        # TODO(nel): Test this!
-        pass
+    def test_GetUserPermissions(self):
+        permissions_of_user = \
+             set([('read', 'form', 'everybody'), ('read', 'form', 'gerentes'),
+              ('read', 'document', 'everybody'), ('read', 'document', 'gerentes'),
+              ('read', 'task', 'everybody'), ('read', 'task', 'gerentes'),
+              ('read', 'report', 'everybody'), ('read', 'report', 'gerentes'),
+              ('write', 'form', 'everybody'), ('write', 'form', 'gerentes'),
+              ('write', 'document', 'everybody'), ('write', 'document', 'gerentes'),
+              ('write', 'task', 'everybody'), ('write', 'task', 'gerentes'),
+              ('write', 'report', 'everybody'), ('write', 'report', 'gerentes'),
+              ('assign', 'form', 'everybody'), ('assign', 'form', 'gerentes'),
+              ('assign', 'document', 'everybody'), ('assign', 'document', 'gerentes'),
+              ('assign', 'task', 'everybody'), ('assign', 'task', 'gerentes'),
+              ('assign', 'report', 'everybody'), ('assign', 'report', 'gerentes'),
+              ('assign', 'form', 'reportes'), ('assign', 'document', 'reportes'),
+              ('assign', 'task', 'reportes'), ('assign', 'report', 'reportes')])
+
+        for perm in self.acl.get_user_permissions('gerente_1'):
+            self.assertIn(perm, permissions_of_user)
+            permissions_of_user.remove(perm)
+
+        self.assertEqual(permissions_of_user, set())
 
 if __name__ == '__main__':
     unittest.main()

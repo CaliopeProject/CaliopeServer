@@ -29,9 +29,9 @@ from hotqueue import HotQueue
 
 #Flask
 from cid.core.entities.generic_models.document import CaliopeDocument
-from cid.core.entities.generic_models import CaliopeDocumentData,CaliopeDocument
 
 import urlparse
+
 
 class DocumentManager(object):
     @staticmethod
@@ -57,7 +57,7 @@ class DocumentManager(object):
 
     @staticmethod
     def getDocument(uuid):
-        nodes = CaliopeDocumentData.index.search(uuid=uuid)
+        nodes = CaliopeDocument.index.search(uuid=uuid)
         if len(nodes):
             return nodes[0]
         return None
@@ -68,7 +68,7 @@ class DocumentManager(object):
         scheme = 'localstorage'
         url=urlparse.urlunparse((scheme, netloc, path, params,query, fragment))
         #!!!!!!!!!!!!!!!!!!!!!!!!!!!!! este codigo solo es para una prueba simple!
-        node = CaliopeDocumentData()
+        node = CaliopeDocument()
         node.url = str(url)
         node.save()
 

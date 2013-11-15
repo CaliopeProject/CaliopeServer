@@ -22,12 +22,10 @@ Copyright (C) 2013 Infometrika Ltda.
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from ..base_models.entities_models import *
-
+from cid.core.entities.base_models.entities_models import *
 
 
 class CaliopeDocument(VersionedNode):
-
     owner = RelationshipFrom(CaliopeUser, 'OWNER', cardinality=One)
     holders = RelationshipFrom(CaliopeUser, 'HOLDER')
 
@@ -40,37 +38,7 @@ class CaliopeDocument(VersionedNode):
     def __init__(self, *args, **kwargs):
         super(CaliopeDocument, self).__init__(*args, **kwargs)
 
-    def get_document_data(self):
-        return self.get_data()
-
-    def set_document_data(self, data):
-        return self.set_data(**data)
-
-    def set_owner(self, owner_node):
-        if isinstance(owner_node, CaliopeUser):
-            if self.owner.count() >= 1:
-                self.owner.disconnect(self.owner.single())
-            self.owner.connect(owner_node)
-        else:
-            raise RuntimeError('No valid owner class')
-
-    def add_holder(self, holder_node, **props):
-        if isinstance(holder_node, CaliopeUser):
-            self.holders.connect(holder_node, **props)
-        else:
-            raise RuntimeError('No valid holder class')
-
-    def remove_holder(self, holder_node):
-        if isinstance(holder_node, CaliopeUser):
-            if self.holders.is_connected(holder_node):
-                self.holders.disconnect(holder_node)
-            else:
-                raise NotConnected('User is not a valid holder')
-        else:
-            raise RuntimeError('No valid holder class')
-
-
 class ContentDocument(VersionedNode):
     __index__ = 'ContentFulltext'
     content = StringProperty(index=True)
-    #uuid = StringProperty()
+    document = RelationshipFrom(CaliopeDocument, 'CONTENT_OF', cardinality=One)

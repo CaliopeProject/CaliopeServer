@@ -22,17 +22,12 @@ Copyright (C) 2013 Infometrika Ltda.
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-#system, and standard library
-
-#CaliopeStorage
-from cid.core.entities import (CaliopeNode,
-                                 DateTimeProperty,
-                                 FloatProperty,
-                                 IntegerProperty,
-                                 StringProperty)
+from cid.core.entities import (VersionedNode, RelationshipFrom,
+                               CaliopeUser, One, NotConnected, DateTimeProperty,
+                               StringProperty, IntegerProperty, FloatProperty, CaliopeJSONProperty)
 
 
-class RegistroPredioCatastroTipoII(CaliopeNode):
+class RegistroPredioCatastroTipoII(VersionedNode):
     #: Unique and indexed properties first
     sector = StringProperty(unique_index=True)
     chip = StringProperty(unique_index=True)

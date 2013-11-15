@@ -165,7 +165,7 @@ class AccessControl:
         return self.groups[group]
 
     def get_user_permissions(self, user):
-        permissions = set()
+        permissions = []
         for group_for_user in self.groups_for_user[user]:
             # Now get the roles for this group.
             if group_for_user in self.roles: 
@@ -187,17 +187,15 @@ class AccessControl:
                         groups += self._resolve_group_to_groups(group_name)
                     for thing in things:
                         for group in groups:
-                            permissions.add((action, thing, group))
+                            permissions.append((action, thing, group))
         return permissions 
 
     def get_user_list(self):
         """" Get the list of users. """
         return self.groups_for_user.keys()
 
-"""
-
 # TODO(nel): Remove after you get user permissions in the test.
-
+"""
 def main():
     # Load permission model.
     # TODO(nel): Use the function that Sebasti'an wrote. This code will be deleted anyway... so who cares.
@@ -226,7 +224,7 @@ def main():
     print
     for user in ac.get_user_list():
       print "Permission of user {}".format(user)
-      print ac.get_user_permissions('recepcionista_1')
+      print ac.get_user_permissions(user)
       print
 
 if __name__ == "__main__":
