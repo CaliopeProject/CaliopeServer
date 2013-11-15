@@ -278,7 +278,7 @@ class CaliopeServices(object):
             else:
                 draft_field = value
 
-        rv = {'field': field_name, 'value': value, 'subfield_id': subfield_id, 'pos': pos}
+        rv = {'uuid':uuid, 'field': field_name, 'value': value, 'subfield_id': subfield_id, 'pos': pos}
         PubSub().publish_command('0', uuid, 'updateField', rv)
         return append_change(uuid, field_name, draft_field) in [0, 1]
 

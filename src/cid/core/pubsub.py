@@ -62,7 +62,7 @@ class PubSub(object):
                 "jsonrpc": "2.0",
                 "method": method,
                 "params": data,
-                "id": str(from_uuid),
+                "id": str(res_uuid),
                 "thread": str(g.connection_thread_id)
             }
             cls.r.publish('uuid=' + str(res_uuid), json.dumps(cmd, cls=DatetimeEncoder))
