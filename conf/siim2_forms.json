@@ -76,8 +76,8 @@
             "html": "templates/control_ajustes_html.json"
         },
         /*
-        * Testing forms.
-        * */
+         * Testing forms.
+         * */
 
         {
             "package": "cid.siim2forms.SIIMForm",
@@ -93,12 +93,17 @@
             "html": "templates/Person_html.json",
             "layout": "templates/Person_layout.json"
         },
-         {
+        {
             "package": "cid.siim2forms.Address",
             "module": "Address",
             "label": "Address",
             "html": "templates/Address_html.json",
             "layout": "templates/Address_layout.json"
+        },
+        {
+            "package": "cid.siim2forms.RegistroPredioCatastroTipoII",
+            "module": "RegistroPredioCatastroTipoII",
+            "label": "RegistroPredioCatastroTipoII"
         }
-     ]
+    ]
 }
