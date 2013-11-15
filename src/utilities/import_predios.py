@@ -82,13 +82,13 @@ def importPrediosWithCreateMethod(filename):
         map(lambda k, v: record.update({k: v}), header, fields)
         record['fecha_documento'] = parseDateFromTwoDigitYear(record['fecha_documento'])
         batchList.append(record)
-        if len(batchList) == 300:
+        if len(batchList) > 300:
             try:
                 RegistroPredioCatastroTipoII.create(*batchList)
-                batchList = []
-            except:
-                print "Error in"
+            except Exception as e :
+                print "Error " + str(e) + " in"
                 print batchList
+            batchList = []
     RegistroPredioCatastroTipoII.create(*batchList)
     print "No more todo"
 
