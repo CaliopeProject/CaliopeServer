@@ -98,6 +98,9 @@ class TestAccessControl(unittest.TestCase):
             for thing in self.acl.get_thing_instance(shorthand):
                 self.assertIn(thing, things_resolved[thing])
 
+    def test_GetGroupsForUser(self):
+      print self.acl.get_groups_for_user('gerente_1')
+
     def test_GetUserPermissions(self):
         permissions_of_user = \
              set([('read', 'form', 'everybody'), ('read', 'form', 'gerentes'),

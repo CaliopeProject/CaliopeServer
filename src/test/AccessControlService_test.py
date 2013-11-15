@@ -83,7 +83,7 @@ class AccessControlTestCase(unittest.TestCase):
         return self.loginManager.logout(uuid=uuid)
 
 
-    """def test_login(self):
+    def test_login(self):
         rv = self.login(u'user', u'123')
         assert 'login' in rv
         assert rv['login'] is True
@@ -95,7 +95,6 @@ class AccessControlTestCase(unittest.TestCase):
         rv = self.logout(uuid=uuid)
         assert 'logout' in rv
         assert rv['logout']
-    """
 
     def test_isAccessGranted(self):
         # TODO(nel): Deprecate this method.
@@ -128,6 +127,11 @@ class AccessControlTestCase(unittest.TestCase):
             group_list.remove(group)
 
         self.assertEqual(group_list, set())
+
+    def test_getGroupsForUser(self):
+        self.login()
+        ac_proxy = self.rpc_client.get_proxy('ac.')
+        print ac_proxy.getGroupsOfUser('gerente_1')
 
     def test_getUserPermissions(self):
         self.login()

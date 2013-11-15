@@ -190,6 +190,9 @@ class AccessControl:
                             permissions.append((action, thing, group))
         return permissions 
 
+    def get_groups_for_user(self, user):
+        return self.groups_for_user[user]
+
     def get_user_list(self):
         """" Get the list of users. """
         return self.groups_for_user.keys()
