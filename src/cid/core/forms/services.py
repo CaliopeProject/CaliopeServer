@@ -108,6 +108,9 @@ class FormManager(CaliopeServices):
 
         if related > 0:
             for target_uuid in related.keys():
+                #Avoid related locks if theres is a back-relationship:
+                if cls._is_related(target_uuid, uuid):
+                    continue
                 #: This is to save nodes when no data added but there are
                 # in a relationships, we're saving "blank" connected nodes.
                 if VersionedNode.pull(target_uuid) is None:
