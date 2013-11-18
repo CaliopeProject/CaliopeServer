@@ -35,9 +35,28 @@ class PubSub(object):
         return cls
 
     @classmethod
+    def register_uuid_and_thread_id(cls, user_uuid):
+        cls.r.hset('thread_pool_id', str(g.connection_thread_id), str(user_uuid))
+        cls.r.sadd(str(user_uuid)+'_threads',str(g.connection_thread_id))
+
+    @classmethod
+    def subscribe_uuid_with_user_uuid(cls, user_uuid, uuid):
+        if True: #TODO: check user_uuid
+            list = cls.r.smembers(str(user_uuid)+'_threads')
+            for thread_id in list:
+                cls._subscribe_uuid_with_connection_thread_id(thread_id,uuid)
+
+    @classmethod
     def subscribe_uuid(cls, uuid):
         if True: #TODO: check uuid
-            queue = HotQueue("connection_thread_id_queue=" + str(g.connection_thread_id))
+            return cls._subscribe_uuid_with_connection_thread_id(g.connection_thread_id,uuid)
+        else:
+            return None
+
+    @classmethod
+    def _subscribe_uuid_with_connection_thread_id(cls, connection_thread_id,uuid):
+        if True: #TODO: check connection_thread_id
+            queue = HotQueue("connection_thread_id_queue=" + str(connection_thread_id))
             msg = {'cmd': 'subscribe', 'params': str(uuid)}
             queue.put(json.dumps(msg))
             return msg

@@ -36,6 +36,7 @@ from models import Task
 from cid.utils.helpers import DatetimeEncoder, DatetimeDecoder
 from cid.core.pubsub import PubSub
 
+
 class TaskServices(CaliopeServices):
     def __init__(self, *args, **kwargs):
         super(TaskServices, self).__init__(*args, **kwargs)
@@ -150,24 +151,23 @@ class TaskServices(CaliopeServices):
         holders_to_remove = []
         if cls.r.hexists(hkey_name_rels, "holders"):
             holders_to_add = [h for h, v in json.loads(cls.r.hget(hkey_name_rels,
-                                                       "holders"),
-                                         object_hook=DatetimeDecoder.json_date_parser).items()
-                          if "__changed__" in v]
-            holders_to_remove =[h for h, v in json.loads(cls.r.hget(hkey_name_rels,
-                                                       "holders"),
-                                         object_hook=DatetimeDecoder.json_date_parser).items()
-                          if "__delete__" in v]
+                                                                  "holders"),
+                                                       object_hook=DatetimeDecoder.json_date_parser).items()
+                              if "__changed__" in v]
+            holders_to_remove = [h for h, v in json.loads(cls.r.hget(hkey_name_rels,
+                                                                     "holders"),
+                                                          object_hook=DatetimeDecoder.json_date_parser).items()
+                                 if "__delete__" in v]
         rv = super(TaskServices, cls).commit(uuid)
         for holder in holders_to_add:
             PubSub().publish_command("",
-            holder, "createTask", VersionedNode.pull(uuid).serialize())
+                                     holder, "createTask", VersionedNode.pull(uuid).serialize())
+            PubSub().subscribe_uuid_with_user_uuid(holder, uuid)
+
         for holder in holders_to_remove:
             PubSub().publish_command("",
-            holder, "removeTask", VersionedNode.pull(uuid).serialize())
+                                     holder, "removeTask", VersionedNode.pull(uuid).serialize())
         return rv
-
-
-
 
 
     @staticmethod
