@@ -90,12 +90,3 @@ class PubSub(object):
         else:
             return False
 
-    @classmethod
-    def publish_field(cls, from_uuid, res_uuid, field, value, subfield_id=None, pos=None):
-        if True: #TODO:  check from_uuid, res_uuid
-            cmd = {'from_uuid': from_uuid, 'field': field, 'value': value, 'subfield_id': subfield_id, 'pos': pos}
-            cls.r.publish('uuid=' + str(res_uuid), json.dumps(cmd, cls=DatetimeEncoder))
-
-            return True
-        else:
-            return False
