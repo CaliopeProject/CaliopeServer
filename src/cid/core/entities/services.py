@@ -278,7 +278,8 @@ class CaliopeServices(object):
             else:
                 draft_field = value
 
-        rv = {'uuid':uuid, 'field': field_name, 'value': value, 'subfield_id': subfield_id, 'pos': pos}
+        rv = {'uuid': uuid, 'field': field_name, 'value': value, 'subfield_id': subfield_id, 'pos': pos,
+              'delete': delete}
         PubSub().publish_command('0', uuid, 'updateField', rv)
         return append_change(uuid, field_name, draft_field) in [0, 1]
 
@@ -410,7 +411,7 @@ class CaliopeServices(object):
                             del props["__changed__"]
                             versioned_node.add_or_update_relationship_target(
                                 delta_k, target, new_properties=props)
-                        #: clean stage area
+                            #: clean stage area
                 remove_hkey(rels_hkey)
             return {uuid: {'value': versioned_node.uuid == uuid}}
         else:
@@ -442,13 +443,10 @@ class CaliopeServices(object):
     def get_data_key_value(cls, key, value):
         try:
             param = {key: value}
-            return [vnode.serialize() for vnode in VersionedNode.index\
+            return [vnode.serialize() for vnode in VersionedNode.index \
                 .search(**param)]
         except Exception as e:
             return RuntimeError(e)
-
-
-
 
 
     @staticmethod
@@ -503,7 +501,7 @@ class CaliopeEntityController(object):
             else:
                 self.template = CaliopeEntityUtil() \
                     .makeFormTemplate(self.entity_class)
-            return  self.template
+            return self.template
         except:
             return list()
 
