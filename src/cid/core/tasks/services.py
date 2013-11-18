@@ -65,7 +65,8 @@ class TaskServices(CaliopeServices):
         #: Starting from current user, match all nodes which are connected througth a HOLDER
         #: relationship and that node is connected with a  CURRENT relationship to a task.
         #: From the task find the FIRST node
-        results, metadata = user_node.cypher("START user=node({self})"
+        if category is None:
+            results, metadata = user_node.cypher("START user=node({self})"
                                              "MATCH (user)-[r:HOLDER]-(t)-["
                                              "TASK]-()"
                                              "WHERE has(r.category) and "
@@ -75,7 +76,7 @@ class TaskServices(CaliopeServices):
                                              "return distinct (t), "
                                              "r.category");
         else:
-           results, metadata = user_node.cypher("START user=node({self})"
+            results, metadata = user_node.cypher("START user=node({self})"
                                                  "MATCH (user)-[r:HOLDER]-(t)-["
                                                  "TASK]-()"
                                                  "WHERE has(r.category) and "
