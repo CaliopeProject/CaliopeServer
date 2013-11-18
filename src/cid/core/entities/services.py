@@ -162,11 +162,11 @@ class CaliopeServices(object):
 
     @classmethod
     def _remove_draft_props(cls, uuid):
-        cls.r.hdel(uuid)
+        cls.r.delete(uuid)
 
     @classmethod
     def _remove_draft_rels(cls, uuid):
-        cls.r.hdel(uuid + "_rels")
+        cls.r.delete(uuid + "_rels")
 
     @classmethod
     @public("updateField")
@@ -423,7 +423,7 @@ class CaliopeServices(object):
                     #: clean stage area
                 #: push all changes to database
                 versioned_node.save()
-                cls._remove_draft_props(uuid)
+            cls._remove_draft_props(uuid)
             if cls._has_draft_rels(uuid):
                 changes = cls._get_draft_rels(uuid)
                 for delta_k, delta_v in changes.items():
