@@ -131,7 +131,7 @@ class CaliopeServices(object):
     @classmethod
     def _del_related(cls, uuid, target_uuid):
         if cls.r.hexists(uuid + "_related", target_uuid):
-            cls.r.hdel(uuid + "_related", target_uuid)
+            return cls.r.hdel(uuid + "_related", target_uuid)
 
     @classmethod
     def _is_related(cls, uuid, target_uuid):
@@ -139,9 +139,9 @@ class CaliopeServices(object):
 
     @classmethod
     def is_draft_not_commited(cls, uuid):
-            if cls.r.hexists(cls.draft_hkey, uuid):
-                return True
-            return False
+        if cls.r.hexists(cls.draft_hkey, uuid):
+            return True
+        return False
 
     @classmethod
     def _has_draft_props(cls, uuid):
@@ -162,11 +162,11 @@ class CaliopeServices(object):
 
     @classmethod
     def _remove_draft_props(cls, uuid):
-        cls.r.delete(uuid)
+        return cls.r.delete(uuid)
 
     @classmethod
     def _remove_draft_rels(cls, uuid):
-        cls.r.delete(uuid + "_rels")
+        return cls.r.delete(uuid + "_rels")
 
     @classmethod
     @public("updateField")
@@ -453,6 +453,7 @@ class CaliopeServices(object):
                 entity_class = VersionedNode.pull(uuid, only_class=True)
             vnode = entity_class.pull(uuid)
             if vnode is None and cls._has_draft_props(uuid):
+                #get a vnode with the class and uuid
                 vnode = cls._get_vnode_from_drafts(uuid, entity_class)
                 #: Append related uuids to the list.
             for rel_name, rel_repr in vnode._serialize_relationships() \
@@ -466,7 +467,39 @@ class CaliopeServices(object):
                                 "class {1}".format(uuid, cls.__name__))
 
     @classmethod
+    @public("discardDraft")
+    def discard_draft(cls, uuid):
+        rv = True
+        changed_fields = {}
+        if cls._has_draft_props(uuid):
+            changed_fields = cls._get_draft_props(uuid)
+        vnode = VersionedNode.pull(uuid)
+        if vnode is None:
+            #: TODO what to do with non-saved nodes on discard
+            pass
+            return {uuid: {'value': False}}
+        else:
+            saved_data = vnode.serialize()
+            #Notify to go back on saved data.
+            for field_name in changed_fields.keys():
+                cls._publish_update_field(uuid, field_name, value=saved_data[
+                    field_name]["value"])
+            rv &= cls._remove_draft_props(uuid)
+            rv &= cls._remove_draft_rels(uuid)
+            return {uuid: {'value': rv}}
+
+    @classmethod
+    def _publish_update_field(cls, uuid, field_name, value, subfield_id=None,
+                              pos=None, delete=False):
+        rv = {'uuid': uuid, 'field': field_name, 'value': value,
+              'subfield_id': subfield_id, 'pos': pos, 'delete': delete}
+        PubSub().publish_command('from_unused', uuid, 'updateField', rv)
+
+
+    @classmethod
     def _get_data_with_draft(cls, vnode):
+        #: This method does nothing to the node it self, it just rewrites the
+        #: value to be returned.
         rv = vnode.serialize()
         if cls._has_draft_props(vnode.uuid):
             for prop, value in cls._get_draft_props(vnode.uuid).items():
