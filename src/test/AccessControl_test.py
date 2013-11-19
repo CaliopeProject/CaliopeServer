@@ -76,16 +76,19 @@ class TestAccessControl(unittest.TestCase):
 
     def test_Actions(self):
 
-        actions = ['read', 'write', 'assign', 'all_actions']
+        actions = set(['read', 'write', 'assign', 'all_actions'])
 
         for action_name in self.acl.get_action_names():
             self.assertIn(action_name, actions)
+            actions.remove(action_name)
+
+        self.assertEqual(actions, set())
              
         actions_resolved = {
-            'read' : ['read'],
-            'write' : ['write'],
-            'assign' : ['assign'],
-            'all_actions' : ['read', 'write', 'assign']
+            'read' : set(['read']),
+            'write' : set(['write']),
+            'assign' : set(['assign']),
+            'all_actions' : set(['read', 'write', 'assign'])
           }
 
         for shorthand in actions_resolved:
@@ -94,17 +97,20 @@ class TestAccessControl(unittest.TestCase):
 
     def test_Things(self):
 
-        things = ['report', 'everything', 'document', 'form', 'task']
+        things = set(['report', 'everything', 'document', 'form', 'task'])
 
         for thing in self.acl.get_thing_names():
           self.assertIn(thing, things)
+          things.remove(thing)
+
+        self.assertEqual(things, set())
 
         things_resolved = {
-            'report' : ['report'],
-            'everything' : ['form', 'document', 'task', 'report'],
-            'document' : ['document'],
-            'form' : ['form'],
-            'task' : [u'task']
+            'report' : set(['report']),
+            'everything' : set(['form', 'document', 'task', 'report']),
+            'document' : set(['document']),
+            'form' : set(['form']),
+            'task' : set(['task'])
         }
 
         for shorthand in self.acl.get_thing_names():
@@ -112,11 +118,11 @@ class TestAccessControl(unittest.TestCase):
                 self.assertIn(thing, things_resolved[thing])
 
     def test_GetGroupsForUser(self):
-      groups_of_user = set(['everybody', 'gerentes'])
-      for group in self.acl.get_groups_for_user('gerente_1'):
-        self.assertIn(group, groups_of_user)
-        groups_of_user.remove(group)
-      self.assertEqual(groups_of_user, set())
+        groups_of_user = set(['everybody', 'gerentes'])
+        for group in self.acl.get_groups_for_user('gerente_1'):
+            self.assertIn(group, groups_of_user)
+            groups_of_user.remove(group)
+        self.assertEqual(groups_of_user, set())
 
     def test_GetUserPermissions(self):
         permissions_of_user = \
