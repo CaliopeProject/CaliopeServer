@@ -79,6 +79,7 @@ def ws_endpoint():
             try:
                 data = json.loads(item['data'])
                 if data:
+                    #: Do not notify the publisher
                     if data['thread'] != str(connection_thread_id):
                         ws.send(item['data'])
             except:

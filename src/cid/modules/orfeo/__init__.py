@@ -21,7 +21,7 @@ Copyright (C) 2013 Infometrika Ltda.
 """
 
 from services import OrfeoServices
-from models import Orfeo
+from models import *
 
 
 def get_service():

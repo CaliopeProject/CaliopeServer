@@ -104,11 +104,6 @@
             "package": "cid.siim2forms.RegistroPredioCatastroTipoII",
             "module": "RegistroPredioCatastroTipoII",
             "label": "RegistroPredioCatastroTipoII"
-        },
-        {
-            "package": "cid.modules.orfeo",
-            "module": "Orfeo",
-            "label": "Orfeo"
         }
     ]
 }

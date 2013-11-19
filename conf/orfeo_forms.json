@@ -1,0 +1,14 @@
+{
+    "modules": [
+        {
+            "package": "cid.modules.orfeo",
+            "module": "Orfeo",
+            "label": "Orfeo"
+        },
+        {
+            "package": "cid.modules.orfeo",
+            "module": "OrfeoAttachment",
+            "label": "OrfeoAttachment"
+        }
+    ]
+}
