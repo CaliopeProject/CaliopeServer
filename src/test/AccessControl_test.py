@@ -99,7 +99,11 @@ class TestAccessControl(unittest.TestCase):
                 self.assertIn(thing, things_resolved[thing])
 
     def test_GetGroupsForUser(self):
-      print self.acl.get_groups_for_user('gerente_1')
+      groups_of_user = set(['everybody', 'gerentes'])
+      for group in self.acl.get_groups_for_user('gerente_1'):
+        self.assertIn(group, groups_of_user)
+        groups_of_user.remove(group)
+      self.assertEqual(groups_of_user, set())
 
     def test_GetUserPermissions(self):
         permissions_of_user = \
