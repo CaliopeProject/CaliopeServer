@@ -34,4 +34,12 @@ class Orfeo(VersionedNode):
     type = StringProperty()
     sequence = StringProperty(unique_index=True)
 
-    attachment = RelationshipTo(VersionedNode, 'Attachment')
+    attachment = RelationshipTo(VersionedNode, 'ATTACHMENT')
+
+
+class OrfeoAttachment(VersionedNode):
+    description = StringProperty()
+    pages = StringProperty()
+    document_type = StringProperty()
+
+    document_attachment = RelationshipTo(VersionedNode, 'FILE')
