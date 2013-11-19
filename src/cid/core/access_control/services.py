@@ -18,12 +18,13 @@ class AccessControlManager:
         acl_conf = loadJSONFromFile('conf/permissions.json')
         return access_control.AccessControl(acl_conf)
 
-    @staticmethod
-    @public(name='isAccessGranted')
-    def is_access_granted(params):
-        return {
-            'granted': True
-        }
+    #TODO(nel): Remove.
+    #@staticmethod
+    #@public(name='isAccessGranted')
+    #def is_access_granted(user_name, action, cls, group = None):
+    #    acl = AccessControlManager.get_acl()
+    #    if acl.IsAccessGranted(user_name, action, cls, group):
+    #    return { 'granted': True }
 
     @staticmethod
     @public(name='getUserList')

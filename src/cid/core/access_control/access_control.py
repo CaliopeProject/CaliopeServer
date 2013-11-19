@@ -189,6 +189,19 @@ class AccessControl:
                         for group in groups:
                             permissions.append((action, thing, group))
         return permissions 
+    
+    def is_access_granted(self, user_name, action, cls, group = None):
+        thing_name = things.get_thing_by_class(cls).name
+        for perm in self.get_user_permissions(user_name):
+            # (u'read', u'siim_form', u'siim_user')
+            if perm[0] == action and perm[1] == thing_name:
+                if group:
+                    if perm[3] == group:
+                        return True
+                else:
+                    assert group == None
+                    return True # Group ignored when group == None
+        return False 
 
     def get_groups_for_user(self, user):
         return self.groups_for_user[user]
@@ -230,6 +243,12 @@ def main():
       print "Permission of user {}".format(user)
       print ac.get_user_permissions(user)
       print
+
+    # ('write', 'siim_form', 'all')
+           #cid.siim2forms.SIIMForm
+    import cid.siim2forms.SIIMForm as siim_form_mod
+    print ac.is_access_granted('user', 'write', siim_form_mod.SIIMForm)
+
 
 if __name__ == "__main__":
     main()

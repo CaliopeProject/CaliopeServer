@@ -41,3 +41,8 @@ def get_available_things():
                SIIM_Form(),
              ]
     return {t.name: t for t in things}
+
+def get_thing_by_class(cls): 
+    if cls.__name__ == 'SIIMForm':
+       return SIIM_Form()
+    return None
