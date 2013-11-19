@@ -323,10 +323,10 @@ class CaliopeServices(object):
 
     @classmethod
     @public("clearField")
-    def clear_field(cls, uuid, field_name, subfield_id=None, pos=None):
+    def clear_field(cls, uuid, field_name, subfield_id=None, pos=None, metadata=None):
         return cls.update_field(uuid, field_name, None,
                                 subfield_id=subfield_id,
-                                pos=pos, delete=True)
+                                pos=pos, delete=True, metadata=metadata)
 
     @classmethod
     @public("updateRelationship")
