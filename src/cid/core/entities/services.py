@@ -449,10 +449,12 @@ class CaliopeServices(object):
     def get_data(cls, uuid, entity_class=None):
         try:
             PubSub().subscribe_uuid(uuid)
-            if entity_class is not None:
+            if entity_class is None:
                 entity_class = VersionedNode.pull(uuid, only_class=True)
             vnode = entity_class.pull(uuid)
-            #: Append related uuids to the list.
+            if vnode is None and cls._has_draft_props(uuid):
+                vnode = cls._get_vnode_from_drafts(uuid, entity_class)
+                #: Append related uuids to the list.
             for rel_name, rel_repr in vnode._serialize_relationships() \
                 .items():
                 for target_uuid in rel_repr.keys():
@@ -475,6 +477,13 @@ class CaliopeServices(object):
                                           object_hook=
                                           DatetimeDecoder.json_date_parser)
         return rv
+
+
+    @classmethod
+    def _get_vnode_from_drafts(cls, uuid, entity_class):
+        vnode = entity_class()
+        setattr(vnode, "uuid", uuid)
+        return vnode
 
 
     @classmethod
