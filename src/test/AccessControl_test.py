@@ -31,35 +31,48 @@ class TestAccessControl(unittest.TestCase):
         self.acl = cid.core.access_control.access_control.AccessControl(acl_conf)
 
     def test_Users(self):
-        users = ['revisor_1', 'revisor_2', 'revisor_3', 'recepcionista_1',
-                 'recepcionista_2', 'superuser', 'secretaria_1', 'reportero_1',
-                 'reportero_2', 'gerente_1']
+        users = set(['revisor_1', 'revisor_2', 'revisor_3', 'recepcionista_1',
+                     'recepcionista_2', 'superuser', 'secretaria_1', 'reportero_1',
+                     'reportero_2', 'gerente_1'])
 
         for user in self.acl.get_user_list():
             self.assertIn(user, users)
+            users.remove(user)
 
-    def test_Groups(self):
+        self.assertEqual(users, set())
 
-        groups = ['everybody', 'secretarias', 'revisores', 'reportes',
-                  'superusers', 'gerentes', 'recepcionistas']
+    def test_GroupsShorthands(self):
+
+        groups = set(['everybody', 'secretarias', 'revisores', 'reportes',
+                      'superusers', 'gerentes', 'recepcionistas'])
 
         for group in self.acl.get_group_shorthands():
             self.assertIn(group, groups)
+            groups.remove(group)
+
+        self.assertEqual(groups, set())
+
+    def test_UsersInGroup(self):
 
         user_and_groups = \
-            {'everybody' : ['recepcionista_1', 'recepcionista_2', 'revisor_1',
+            {'everybody' : set(['recepcionista_1', 'recepcionista_2', 'revisor_1',
                             'revisor_2', 'revisor_3', 'gerente_1', 'reportero_1',
-                            'reportero_2'],
-             'secretarias' :  ['secretaria_1'],
-             'revisores' : ['revisor_1', 'revisor_2', 'revisor_3'],
-             'reportes' : ['reportero_1', 'reportero_2'],
-             'superusers': ['superuser'],
-             'gerentes' : ['gerente_1'],
-             'recepcionistas' : [u'recepcionista_1', u'recepcionista_2']}
+                            'reportero_2']),
+             'secretarias' :  set(['secretaria_1']),
+             'revisores' : set(['revisor_1', 'revisor_2', 'revisor_3']),
+             'reportes' : set(['reportero_1', 'reportero_2']),
+             'superusers': set(['superuser']),
+             'gerentes' : set(['gerente_1']),
+             'recepcionistas' : set(['recepcionista_1', 'recepcionista_2'])}
 
         for group in user_and_groups:
           for user in self.acl.get_users_in_grup(group):
             self.assertIn(user, user_and_groups[group])
+            user_and_groups[group].remove(user)
+
+        # For each group, check that all the users were removed.
+        for key, value in user_and_groups.items():
+            self.assertEqual(user_and_groups[group], set())
 
     def test_Actions(self):
 
