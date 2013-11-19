@@ -199,7 +199,6 @@ class AccessControl:
 
 # TODO(nel): Remove after you get user permissions in the test.
 
-"""
 
 def main():
     # Load permission model.
@@ -234,4 +233,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-"""
