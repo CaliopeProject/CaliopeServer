@@ -415,7 +415,8 @@ class CaliopeServices(object):
                 for delta_k, delta_v in changes.items():
                     try:
                         delta_v = json.loads(delta_v,
-                                             object_hook=DatetimeDecoder.json_date_parser)
+                                             object_hook=
+                                             DatetimeDecoder.json_date_parser)
                     except:
                         delta_v = DatetimeDecoder._parser(delta_v)
                         #: do the changes
@@ -449,29 +450,31 @@ class CaliopeServices(object):
         try:
             PubSub().subscribe_uuid(uuid)
             if entity_class is not None:
-                vnode = entity_class.pull(uuid)
-                #: Append related uuids to the list.
-                for rel_name, rel_repr in vnode._serialize_relationships() \
-                    .items():
-                    for target_uuid in rel_repr.keys():
-                        direction = getattr(vnode, rel_name).direction
-                        cls._set_related(uuid, target_uuid, direction=direction)
-
-                return vnode.serialize()
-            else:
-                return cls.service_class.pull(uuid).serialize()
+                entity_class = VersionedNode.pull(uuid, only_class=True)
+            vnode = entity_class.pull(uuid)
+            #: Append related uuids to the list.
+            for rel_name, rel_repr in vnode._serialize_relationships() \
+                .items():
+                for target_uuid in rel_repr.keys():
+                    direction = getattr(vnode, rel_name).direction
+                    cls._set_related(uuid, target_uuid, direction=direction)
+            return cls._get_data_with_draft(vnode)
         except AssertionError:
             return RuntimeError("The give uuid {0} is not a valid object of "
                                 "class {1}".format(uuid, cls.__name__))
 
     @classmethod
     def _get_data_with_draft(cls, vnode):
+        rv = vnode.serialize()
         if cls._has_draft_props(vnode.uuid):
             for prop, value in cls._get_draft_props(vnode.uuid).items():
-                setattr(vnode, prop, value)
-
-
-
+                rv[prop] = value
+        if cls._has_draft_rels(vnode.uuid):
+            for rel_name, rel_value in cls._get_draft_rels(vnode.uuid).items():
+                rv[rel_name] = json.loads(rel_value,
+                                          object_hook=
+                                          DatetimeDecoder.json_date_parser)
+        return rv
 
 
     @classmethod
