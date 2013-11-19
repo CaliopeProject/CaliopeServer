@@ -27,12 +27,6 @@ from flask import current_app
 
 from cid.core.entities import ( CaliopeServices)
 from cid.core.entities.base_models.versioned_node import VersionedNode
-from cid.utils.helpers import DatetimeEncoder, DatetimeDecoder
-
-from cid.core.login import LoginManager
-from cid.utils import fileUtils
-from cid.core.forms.models import SIIMForm
-from cid.core.entities.utils import CaliopeEntityUtil
 
 
 class FormManager(CaliopeServices):
