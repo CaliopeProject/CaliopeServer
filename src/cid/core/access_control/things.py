@@ -45,4 +45,8 @@ def get_available_things():
 def get_thing_by_class(cls): 
     if cls.__name__ == 'SIIMForm':
        return SIIM_Form()
+    if cls.__name__ == 'Address':
+       return SIIM_Form()
+    if cls.__name__ == 'Person':
+       return SIIM_Form()
     return None
