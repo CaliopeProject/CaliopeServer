@@ -162,11 +162,11 @@ class CaliopeServices(object):
 
     @classmethod
     def _remove_draft_props(cls, uuid):
-        return cls.r.delete(uuid)
+        return bool(cls.r.delete(uuid))
 
     @classmethod
     def _remove_draft_rels(cls, uuid):
-        return cls.r.delete(uuid + "_rels")
+        return bool(cls.r.delete(uuid + "_rels"))
 
     @classmethod
     @public("updateField")
@@ -469,7 +469,6 @@ class CaliopeServices(object):
     @classmethod
     @public("discardDraft")
     def discard_draft(cls, uuid):
-        rv = True
         changed_fields = {}
         if cls._has_draft_props(uuid):
             changed_fields = cls._get_draft_props(uuid)
@@ -484,8 +483,11 @@ class CaliopeServices(object):
             for field_name in changed_fields.keys():
                 cls._publish_update_field(uuid, field_name, value=saved_data[
                     field_name]["value"])
-            rv &= cls._remove_draft_props(uuid)
-            rv &= cls._remove_draft_rels(uuid)
+            rv = (cls._has_draft_props(uuid) and cls
+            ._remove_draft_props(
+                uuid))
+            rv = rv or (cls._has_draft_rels(uuid) and cls._remove_draft_rels(
+                uuid))
             return {uuid: {'value': rv}}
 
     @classmethod
