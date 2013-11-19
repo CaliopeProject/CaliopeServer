@@ -35,7 +35,12 @@ CORE_MODULES = ['cid.core.dispatcher']
 
 def register_form_modules(app):
     app.caliope_forms = dict()
-    config = loadJSONFromFileNoPath(app.config['FORM_MODULES'])
+    for path in app.config['FORM_MODULES']:
+        _register_form_modules_from_path(path,app)
+
+
+def _register_form_modules_from_path(path, app):
+    config = loadJSONFromFileNoPath(path)
     for m in config['modules']:
         try:
             form = dict()
@@ -58,7 +63,7 @@ def register_form_modules(app):
         except ImportError as e:
             print m['package']+'.'+m['module']
             app.logger.exception(str(e))
-        pass
+
 
 
 def register_modules(app, package_base='cid'):

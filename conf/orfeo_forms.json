@@ -1,0 +1,9 @@
+{
+    "modules": [
+        {
+            "package": "cid.modules.orfeo",
+            "module": "Orfeo",
+            "label": "Orfeo"
+        }
+    ]
+}

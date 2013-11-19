@@ -7,7 +7,7 @@
         "debug": "True",
         "static": "../caliope_webui_beowulf/app",
         "formTemplates": "../../templates/formTemplates",
-        "formModules": "conf/siim2_forms.json",
+        "formModules": ["conf/siim2_forms.json", "conf/orfeo_forms.json"],
         "cid_base_directory": "src/cid",
         "cache_enabled": "True",
         "minify_enabled": "False",
@@ -62,12 +62,6 @@
                     "service": "search"
                 }
             },
-            /*{
-                "mtvprojects": {
-                    "package": "modules.projects",
-                    "service": "projects"
-                }
-            },*/
             {
                 "reg2bogota": {
                     "package": "modules.reg2bogota",
