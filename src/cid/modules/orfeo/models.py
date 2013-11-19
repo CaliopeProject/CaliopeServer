@@ -26,10 +26,12 @@ from cid.core.entities import (VersionedNode, DateTimeProperty,
 
 
 class Orfeo(VersionedNode):
-    RegisterTime = DateTimeProperty()
-    DocumentTime = DateTimeProperty()
-    ReferenceCode = StringProperty()
-    GuideNumber = StringProperty()
-    Subject = StringProperty()
+    register_time = DateTimeProperty()
+    document_time = DateTimeProperty()
+    reference_code = StringProperty()
+    guide_number = StringProperty()
+    subject = StringProperty()
+    type = StringProperty()
+    sequence = StringProperty(unique_index=True)
 
-    Attachment = RelationshipTo(VersionedNode, 'Attachment')
+    attachment = RelationshipTo(VersionedNode, 'Attachment')
