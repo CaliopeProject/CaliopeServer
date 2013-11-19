@@ -1,7 +1,6 @@
 # -*- encoding: utf-8 -*-
 """
 @authors: Andrés Felipe Calderón andres.calderon@correlibre.org
-          Jairo Hernan Losada jlosada@gmail.com
           Sebastián Ortiz V. neoecos@gmail.com
 
 SIIM2 Server is the web server of SIIM2 Framework
@@ -22,6 +21,7 @@ Copyright (C) 2013 Infometrika Ltda.
 """
 
 from services import OrfeoServices
+from models import Orfeo
 
 
 def get_service():
