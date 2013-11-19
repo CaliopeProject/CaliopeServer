@@ -23,7 +23,7 @@ Copyright (C) 2013 Infometrika Ltda.
 """
 import importlib
 import os
-from cid.utils.fileUtils import loadJSONFromFileNoPath,loadJSONFromFile
+from cid.utils.fileUtils import loadJSONFromFileNoPath, loadJSONFromFile
 
 from flask import current_app
 #tinyrpc
@@ -36,7 +36,7 @@ CORE_MODULES = ['cid.core.dispatcher']
 def register_form_modules(app):
     app.caliope_forms = dict()
     for path in app.config['FORM_MODULES']:
-        _register_form_modules_from_path(path,app)
+        _register_form_modules_from_path(path, app)
 
 
 def _register_form_modules_from_path(path, app):
@@ -45,7 +45,7 @@ def _register_form_modules_from_path(path, app):
         try:
             form = dict()
             form['name'] = m['module']
-            module = importlib.import_module( m['package'])
+            module = importlib.import_module(m['package'])
             path = str(module.__path__[0])
 
             try:
@@ -61,9 +61,8 @@ def _register_form_modules_from_path(path, app):
             app.caliope_forms[m['module']] = form
             form['module']() #needed for VersionedNode register
         except ImportError as e:
-            print m['package']+'.'+m['module']
+            print m['package'] + '.' + m['module']
             app.logger.exception(str(e))
-
 
 
 def register_modules(app, package_base='cid'):
@@ -108,13 +107,11 @@ def register_modules(app, package_base='cid'):
             except AttributeError as e:
                 #app.logger.warning(str(e))
                 pass
-            #This modules does not contain a blueprint
+                #This modules does not contain a blueprint
         except ImportError as e:
             app.logger.exception(str(e))
         except Exception as e:
             app.logger.critical(str(e))
-
-
 
     _load_get_methods(app)
 
