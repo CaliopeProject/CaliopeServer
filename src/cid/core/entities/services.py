@@ -33,6 +33,8 @@ from cid.core.pubsub import PubSub
 from .utils import CaliopeEntityUtil
 from .models import VersionedNode
 
+from cid.core.access_control import AccessControlManager
+
 
 class CaliopeServices(object):
     """
@@ -49,9 +51,7 @@ class CaliopeServices(object):
         return cls
 
     def __init__(self, *args, **kwargs):
-
         super(CaliopeServices, self).__init__(*args, **kwargs)
-
 
     @classmethod
     @public("getAll")
@@ -444,6 +444,7 @@ class CaliopeServices(object):
         else:
             return {uuid: {'value': False}}
 
+
     @classmethod
     @public("getData")
     def get_data(cls, uuid, entity_class=None):
@@ -468,6 +469,8 @@ class CaliopeServices(object):
 
     @classmethod
     @public("discardDraft")
+    #@AccessControlManager.check_permission(
+    #    action="write", uuid_pos=1)
     def discard_draft(cls, uuid):
         changed_fields = {}
         if cls._has_draft_props(uuid):
