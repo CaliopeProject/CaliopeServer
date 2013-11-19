@@ -157,7 +157,7 @@ class CaliopeServices(object):
 
     @classmethod
     def _get_draft_rels(cls, uuid):
-        return cls.r.hgetall(uuid+"_rels")
+        return cls.r.hgetall(uuid + "_rels")
 
 
     @classmethod
@@ -171,7 +171,7 @@ class CaliopeServices(object):
     @classmethod
     @public("updateField")
     def update_field(cls, uuid, field_name, value, subfield_id=None,
-                     pos=None, delete=False):
+                     pos=None, delete=False, metadata=None):
         """
         For updating entity drafts.
 
@@ -315,9 +315,9 @@ class CaliopeServices(object):
             else:
                 draft_field = value
 
-        rv = {'uuid': uuid, 'field': field_name, 'value': value, 'subfield_id': subfield_id, 'pos': pos,
-              'delete': delete}
-        PubSub().publish_command('0', uuid, 'updateField', rv)
+        cls._publish_update_field(uuid, field_name, value=value, subfield_id=subfield_id, pos=pos, delete=delete,
+                                  metadata=metadata)
+
         return append_change(uuid, field_name, draft_field) in [0, 1]
 
 
@@ -438,7 +438,7 @@ class CaliopeServices(object):
                             del props["__changed__"]
                             versioned_node.add_or_update_relationship_target(
                                 delta_k, target, new_properties=props)
-                        #: clean stage area
+                            #: clean stage area
                 cls._remove_draft_rels(uuid)
             return {uuid: {'value': versioned_node.uuid == uuid}}
         else:
@@ -490,9 +490,9 @@ class CaliopeServices(object):
 
     @classmethod
     def _publish_update_field(cls, uuid, field_name, value, subfield_id=None,
-                              pos=None, delete=False):
+                              pos=None, delete=False, metadata=None):
         rv = {'uuid': uuid, 'field': field_name, 'value': value,
-              'subfield_id': subfield_id, 'pos': pos, 'delete': delete}
+              'subfield_id': subfield_id, 'pos': pos, 'delete': delete, 'metadata': metadata}
         PubSub().publish_command('from_unused', uuid, 'updateField', rv)
 
 
@@ -524,12 +524,10 @@ class CaliopeServices(object):
     def get_data_key_value(cls, key, value):
         try:
             param = {key: value}
-            return [vnode.serialize() for vnode in VersionedNode.index\
+            return [vnode.serialize() for vnode in VersionedNode.index \
                 .search(**param)]
         except Exception as e:
             return RuntimeError(e)
-
-
 
 
 class CaliopeEntityController(object):
