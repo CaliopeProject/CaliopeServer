@@ -28,9 +28,24 @@ class ImapImport:
       return False
     return True
 
+  def Test(self):
+    result = self.mail.uid('search', None, 'ALL') # search and return uids instead
+    if not self.isOK(result):
+      return False
+    email_uids = result[1][0].split()
+    if len(email_uids) == 0:
+      return False
+    latest_email_uid = email_uids[1]
+    result = self.mail.uid('fetch', latest_email_uid, '(RFC822)')
+    if not self.isOK(result):
+      return False
+    print 'Data[0]: ', result[1][0][1]
+    return True
+
 ii = ImapImport(server='imap.gmail.com', account='metrovivienda2@gmail.com', password='otrosecreto')
 if not ii.Login():
   print >> sys.stderr, 'Could not login'
   sys.exit(1)
 if not ii.SelectFolder(folder='label1'):
   print >> sys.stderr, 'Could not select folder'
+ii.Test()
