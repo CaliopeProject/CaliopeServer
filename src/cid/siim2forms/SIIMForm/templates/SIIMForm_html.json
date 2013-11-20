@@ -47,7 +47,20 @@
             "type": "text",
             "class": "input-xlarge",
             "validations": {
-                "minlength": 10
+              "minlength": 10,
+              "restrictions" : [
+                {
+                  "evaluation" : "if( {{estado}} === 'en_estudio' || {{ficha}} === 'idea')",
+                  "then" : " {{nombre}} !== '' ",
+                  "key-message-true" : "Nombre correcto",
+                  "key-message-false" : "Nombre debe ser vacio"
+                },
+                {
+                  "evaluation" : "if( {{estado}} !== 'en_estudio' || {{ficha}} !== 'idea')",
+                  "then" : " {{nombre}} === '' ",
+                  "key-message-false" : "Nombre no puede ser vacio"
+                }
+              ]
             }
         },
         {
@@ -76,10 +89,8 @@
         {
             "name": "localizacion_general",
             "caption": "Localizacion General Proyecto",
-            "type": "textarea",
-            "class": "input-xxlarge",
-            "rows": "5",
-            "cols": "70"
+            "type": "ckedit",
+            "class": "input-xxlarge"
         },
         {
             "name": "acta_creacion_proyecto",
