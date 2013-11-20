@@ -1,11 +1,9 @@
 # -*- encoding: utf-8 -*-
 """
-@authors: Nelson Daniel Ochoa ndaniel8a@gmail.com
+@authors: Andrés Felipe Calderón andres.calderon@correlibre.org
           Sebastián Ortiz V. neoecos@gmail.com
 
-@license:  GNU AFFERO GENERAL PUBLIC LICENSE
-
-SIIM Models are the data definition of SIIM2 Framework
+SIIM2 Server is the web server of SIIM2 Framework
 Copyright (C) 2013 Infometrika Ltda.
 
     This program is free software: you can redistribute it and/or modify
@@ -21,18 +19,6 @@ Copyright (C) 2013 Infometrika Ltda.
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
-#Caliope Entities
-from cid.core.entities import RelationshipFrom, StringProperty
-from cid.core.entities import VersionedNode, CaliopeJSONProperty
 
+from cid.forms.siim2.project.models import Project
 
-
-class CaliopeProject(VersionedNode):
-
-    name = StringProperty()
-    general_location = StringProperty()
-    locality = StringProperty()
-    project_type = StringProperty()
-    record_document_creation = StringProperty()
-    profit_center = StringProperty()
-    areas = CaliopeJSONProperty()

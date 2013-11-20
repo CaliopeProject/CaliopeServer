@@ -1,5 +1,4 @@
 {
-    "name": "projects",
     "html": [
         {
             "name": "title",
@@ -136,48 +135,6 @@
             "name": "record_document_creation",
             "caption": "Resolución Anuncio del Proyecto",
             "type": "attachment"
-        }
-    ],
-    "actions": [
-        {
-            "name": "Crear",
-            "method": "projects.create"
-        },
-        {
-            "name": "Actualizar",
-            "method": "projects.edit"
-        }
-    ],
-    "layout": [
-        {
-            "columns": [
-                {
-                    "class": "page-header",
-                    "elements": ["title"]
-                }
-            ]
-        },
-        {
-            "class": "span12",
-            "columns": [
-                {
-                    "class": "span6",
-                    "elements": ["name", "general_location", "creation_date"]
-                },
-                {
-                    "class": "span6",
-                    "elements": ["locality", "project_type", "profit_center"]
-                }
-            ]
-        },
-        {
-            "class": "span6",
-            "columns": [
-                {
-                    "class": "span6",
-                    "elements": ["record_document_creation"]
-                }
-            ]
         }
     ]
 }

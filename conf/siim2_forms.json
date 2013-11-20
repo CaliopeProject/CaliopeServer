@@ -1,6 +1,13 @@
 {
     "modules": [
         {
+            "package": "cid.forms.siim2.project",
+            "module": "Project",
+            "label": "Project",
+            "html": "templates/siim2_project_html.json",
+            "layout": "templates/siim2_project_layout.json"
+        },
+        {
             "package": "cid.forms.siim2.ficha_predial",
             "module": "FichaPredial",
             "label": "Ficha predial",
