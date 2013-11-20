@@ -439,10 +439,10 @@ class CaliopeServices(object):
                             versioned_node.add_or_update_relationship_target(
                                 delta_k, target, new_properties=props)
                             #: clean stage area
-                cls._remove_draft_rels(uuid)
-            return {uuid: {'value': versioned_node.uuid == uuid}}
+            return {'uuid': uuid,
+                    'value': versioned_node.uuid == uuid}
         else:
-            return {uuid: {'value': False}}
+            return {'uuid': uuid, 'value': False}
 
 
     @classmethod
@@ -479,7 +479,7 @@ class CaliopeServices(object):
         if vnode is None:
             #: TODO what to do with non-saved nodes on discard
             pass
-            return {uuid: {'value': False}}
+            return {'uuid': uuid, 'value': False}
         else:
             saved_data = vnode.serialize()
             #Notify to go back on saved data.
@@ -491,7 +491,7 @@ class CaliopeServices(object):
                 uuid))
             rv = rv or (cls._has_draft_rels(uuid) and cls._remove_draft_rels(
                 uuid))
-            return {uuid: {'value': rv}}
+            return {'uuid': uuid, 'value': rv}
 
     @classmethod
     def _publish_update_field(cls, uuid, field_name, value, subfield_id=None,
