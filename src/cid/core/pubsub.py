@@ -74,7 +74,7 @@ class PubSub(object):
             return None
 
     @classmethod
-    def publish_command(cls, from_uuid, res_uuid, method, data):
+    def publish_command(cls, from_uuid, res_uuid, method, data, loopback=False):
         if True: #TODO:  check from_uuid, res_uuid
 
             cmd = {
@@ -82,7 +82,8 @@ class PubSub(object):
                 "method": method,
                 "params": data,
                 "id": str(res_uuid),
-                "thread": str(g.connection_thread_id)
+                "thread": str(g.connection_thread_id),
+                "loopback":loopback
             }
             cls.r.publish('uuid=' + str(res_uuid), json.dumps(cmd, cls=DatetimeEncoder))
 

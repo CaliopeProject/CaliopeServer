@@ -101,7 +101,7 @@ class FormManager(CaliopeServices):
 
     @classmethod
     @public(name='commit')
-    def commit(cls, uuid):
+    def commit(cls, uuid, loopback_notification=False):
         rv = dict()
         related = cls._get_related(uuid)
 
@@ -114,8 +114,8 @@ class FormManager(CaliopeServices):
                 # in a relationships, we're saving "blank" connected nodes.
                 if VersionedNode.pull(target_uuid) is None:
                     cls.update_field(target_uuid, "uuid", target_uuid)
-                rv.update(cls.commit(target_uuid))
-        rv.update(super(FormManager, cls).commit(uuid))
+                rv.update(cls.commit(target_uuid, loopback_notification))
+        rv.update(super(FormManager, cls).commit(uuid, loopback_notification))
         return rv
 
 
