@@ -57,12 +57,6 @@
                 }
             },
             {
-                "search": {
-                    "package": "core.search",
-                    "service": "search"
-                }
-            },
-            {
                 "reg2bogota": {
                     "package": "modules.reg2bogota",
                     "service": "catastro"
