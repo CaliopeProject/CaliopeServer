@@ -55,4 +55,24 @@ class CaliopePopulatedCenter(VersionedNode):
     part_of = RelationshipTo(CaliopeMunicipality, 'PART_OF', One)
 
 
+class CaliopeDCLocalidad(VersionedNode):
+    name = StringProperty()
+    code = StringProperty(index=True)
+    located_in = RelationshipTo(CaliopeMunicipality, 'LOCATED_IN', One)
+
+
+class CaliopeDCUPZ(VersionedNode):
+    name = StringProperty()
+    code = StringProperty(index=True)
+    is_in = RelationshipTo(CaliopeDCLocalidad, 'IS_IN', One)
+
+
+class CaliopeDCBarrioCatastral(VersionedNode):
+    name = StringProperty()
+    code = StringProperty(index=True)
+    part_of = RelationshipTo(CaliopeDCLocalidad, 'PART_OF', One)
+    upz = RelationshipTo(CaliopeDCUPZ, 'UPZ', ZeroOrOne)
+
+
+
 

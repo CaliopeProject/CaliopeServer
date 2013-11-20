@@ -4,8 +4,8 @@
             "package": "cid.forms.orfeo",
             "module": "Orfeo",
             "label": "Orfeo",
-            "html": "templates/orfeo_radication_html.json"
-            /*"layout": "templates/ficha_predial_layout.json"*/
+            "html": "templates/orfeo_radication_html.json",
+            "layout": "templates/orfeo_radication_layout.json"
         },
         {
             "package": "cid.forms.orfeo",
