@@ -1,0 +1,1 @@
+from cid.forms.siim2.RegistroPredioCatastroTipoII.models import RegistroPredioCatastroTipoII

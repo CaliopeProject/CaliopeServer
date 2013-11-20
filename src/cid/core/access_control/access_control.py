@@ -245,8 +245,8 @@ def main():
       print
 
     # ('write', 'siim_form', 'all')
-           #cid.siim2forms.SIIMForm
-    import cid.siim2forms.SIIMForm as siim_form_mod
+           #cid.siim2.SIIMForm
+    import cid.forms.siim2.SIIMForm as siim_form_mod
     print ac.is_access_granted('user', 'write', siim_form_mod.SIIMForm)
 
 

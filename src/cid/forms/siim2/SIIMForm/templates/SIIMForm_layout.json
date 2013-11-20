@@ -1,0 +1,50 @@
+{
+  "layout" : [
+    {
+      "columns" : [
+        {
+          "class"   : "page-header",
+          "elements"  : ["title"]
+        }
+      ]
+    },
+    {
+      "class" : "span12",
+      "columns" : [
+        {
+          "class": "span4",
+          "elements"    : ["ficha", "nombre", "localidad"]
+        },
+        {
+          "class": "span4",
+          "elements"    : ["forma_intervencion"]
+        },
+        {
+          "class": "span4",
+          "elements"    : ["estado"]
+        }
+
+      ]
+    },
+    {
+      "columns" : [
+        {
+          "class" :  "span6",
+          "elements"  : ["localizacion_general"]
+        },
+        {
+          "class" :  "span6",
+          "elements"  : ["areas"]
+        }
+      ]
+    },
+    {
+      "columns" : [
+        {
+          "class" :  "span12",
+          "elements"  : ["propietario"]
+        }
+      ]
+    }
+  ]
+}
