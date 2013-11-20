@@ -22,7 +22,15 @@ Copyright (C) 2013 Infometrika Ltda.
 """
 
 from cid.core.entities import (VersionedNode, DateTimeProperty,
-                               StringProperty, RelationshipTo)
+                               StringProperty, RelationshipTo, CaliopeDocument)
+
+
+class OrfeoAttachment(VersionedNode):
+    description = StringProperty()
+    pages = StringProperty()
+    document_type = StringProperty()
+
+    document_attachment = RelationshipTo(CaliopeDocument, 'FILE')
 
 
 class Orfeo(VersionedNode):
@@ -34,12 +42,5 @@ class Orfeo(VersionedNode):
     type = StringProperty()
     sequence = StringProperty(unique_index=True)
 
-    attachment = RelationshipTo(VersionedNode, 'ATTACHMENT')
+    attachment = RelationshipTo(OrfeoAttachment, 'ATTACHMENT')
 
-
-class OrfeoAttachment(VersionedNode):
-    description = StringProperty()
-    pages = StringProperty()
-    document_type = StringProperty()
-
-    document_attachment = RelationshipTo(VersionedNode, 'FILE')

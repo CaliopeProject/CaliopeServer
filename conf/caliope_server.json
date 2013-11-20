@@ -55,12 +55,6 @@
                     "package": "core.access_control",
                     "service": "ac"
                 }
-            },
-            {
-                "reg2bogota": {
-                    "package": "modules.reg2bogota",
-                    "service": "catastro"
-                }
             }
         ]
     },
