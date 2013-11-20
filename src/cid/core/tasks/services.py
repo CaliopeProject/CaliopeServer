@@ -67,22 +67,22 @@ class TaskServices(CaliopeServices):
         #: From the task find the FIRST node
         if category is None:
             results, metadata = user_node.cypher("START user=node({self})"
-                                             "MATCH (user)-[r:HOLDER]-(t)-["
-                                             "TASK]-()"
-                                             "WHERE has(r.category) and "
-                                             "(r.category='ToDo' or "
-                                             "r.category='Doing' or "
-                                             "r.category='Done')"
-                                             "return distinct (t), "
-                                             "r.category");
+                                                 "MATCH (user)-[r:HOLDER]-(t)-["
+                                                 "TASK]-()"
+                                                 "WHERE has(r.category) and "
+                                                 "(r.category='ToDo' or "
+                                                 "r.category='Doing' or "
+                                                 "r.category='Done')"
+                                                 "return distinct (t), "
+                                                 "r.category");
         else:
             results, metadata = user_node.cypher("START user=node({self})"
                                                  "MATCH (user)-[r:HOLDER]-(t)-["
                                                  "TASK]-()"
                                                  "WHERE has(r.category) and "
-                                                 "(r.category=" + category +")"
-                                                 "return distinct (t), "
-                                                 "r.category");
+                                                 "(r.category=" + category + ")"
+                                                                             "return distinct (t), "
+                                                                             "r.category");
 
         tasks_list = {
             'ToDo': {'pos': 0, 'category': {'value': 'ToDo'}, 'tasks': []},
@@ -166,23 +166,22 @@ class TaskServices(CaliopeServices):
                               json.loads(cls.r.hget(hkey_name_rels, "holders"),
                                          object_hook=DatetimeDecoder
                                          .json_date_parser).items()
-                                        if "__changed__" in v]
-            holders_to_remove =[h for h, v in
-                              json.loads(cls.r.hget(hkey_name_rels, "holders"),
-                                         object_hook=DatetimeDecoder
-                                         .json_date_parser).items()
-                          if "__delete__" in v]
+                              if "__changed__" in v]
+            holders_to_remove = [h for h, v in
+                                 json.loads(cls.r.hget(hkey_name_rels, "holders"),
+                                            object_hook=DatetimeDecoder
+                                            .json_date_parser).items()
+                                 if "__delete__" in v]
         rv = super(TaskServices, cls).commit(uuid)
         for holder in holders_to_add:
             PubSub().publish_command("",
-            holder, "createTask", VersionedNode.pull(uuid).serialize())
+                                     holder, "createTask", VersionedNode.pull(uuid).serialize(), loopback=True)
             PubSub().subscribe_uuid_with_user_uuid(holder, uuid)
 
         for holder in holders_to_remove:
             PubSub().publish_command("",
-            holder, "removeTask", VersionedNode.pull(uuid).serialize())
+                                     holder, "removeTask", VersionedNode.pull(uuid).serialize(), loopback=True)
         return rv
-
 
 
     @classmethod

@@ -36,6 +36,8 @@ import gevent
 import redis
 from hotqueue import HotQueue
 
+from cid.utils.helpers import DatetimeEncoder, DatetimeDecoder
+
 bp = Blueprint('api', __name__, template_folder='pages')
 
 jsonrpc = JSONRPCProtocol()
@@ -77,12 +79,17 @@ def ws_endpoint():
         ps.subscribe('broadcast')
         for item in ps.listen():
             try:
-                data = json.loads(item['data'])
+                data = json.loads(item['data'], object_hook=DatetimeDecoder.json_date_parser)
                 if data:
                     #: Do not notify the publisher
-                    if data['thread'] != str(connection_thread_id):
-                        ws.send(item['data'])
-            except:
+                    if data['loopback'] == False and data['thread'] == str(connection_thread_id):
+                        pass #omit message
+                    else:
+                        del data['loopback']
+                        del data['thread']
+
+                        ws.send(json.dumps(data, cls=DatetimeEncoder))
+            except Exception as e:
                 pass
 
     if request.environ.get('wsgi.websocket'):
