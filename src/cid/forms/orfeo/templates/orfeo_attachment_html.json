@@ -1,0 +1,47 @@
+{
+    "html": [
+        {
+            "name": "title",
+            "type": "div",
+            "html": [
+                {
+                    "type": "h1",
+                    "html": "Adjunto"
+                }
+            ]
+        },
+        {
+            "name": "description",
+            "caption": "Descripción",
+            "class": "input-large",
+            "type": "text"
+        },
+        {
+            "name": "pages",
+            "caption": "No. páginas",
+            "class": "input-large",
+            "type": "text"
+        },
+        {
+            "name": "document_type",
+            "caption": "TD",
+            "class": "input-xlarge",
+            "type": "select",
+            "options": [
+                {
+                    "html": "tipo1",
+                    "value": "Tipo 2"
+                },
+                {
+                    "html": "tipo1",
+                    "value": "Tipo 3"
+                }
+            ]
+        },
+        {
+            "name": "attachment",
+            "caption": "Archivo(s) adjuntos",
+            "type": "attachment"
+        }
+    ]
+}
