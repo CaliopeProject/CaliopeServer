@@ -22,7 +22,7 @@ Copyright (C) 2013 Infometrika Ltda.
 """
 
 from cid.core.entities import (VersionedNode, DateTimeProperty,
-                               StringProperty, RelationshipTo, CaliopeDocument)
+                               StringProperty, RelationshipTo, CaliopeDocument, timeStampGenerator)
 
 
 class OrfeoAttachment(VersionedNode):
@@ -34,7 +34,7 @@ class OrfeoAttachment(VersionedNode):
 
 
 class Orfeo(VersionedNode):
-    register_time = DateTimeProperty()
+    register_time = DateTimeProperty(default=timeStampGenerator)
     document_time = DateTimeProperty()
     reference_code = StringProperty()
     guide_number = StringProperty()

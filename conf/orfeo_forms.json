@@ -3,7 +3,9 @@
         {
             "package": "cid.forms.orfeo",
             "module": "Orfeo",
-            "label": "Orfeo"
+            "label": "Orfeo",
+            "html": "templates/orfeo_radication_html.json",
+            "layout": "templates/orfeo_radication_layout.json"
         },
         {
             "package": "cid.forms.orfeo",

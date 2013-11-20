@@ -53,6 +53,10 @@
             "type": "hidden"
         },
         {
+            "name": "lopback_notification",
+            "type": "hidden"
+        },
+        {
             "name": "comments",
             "type": "hidden"
         },
@@ -136,7 +140,7 @@
         {
             "name": "Confirmar",
             "method": "tasks.commit",
-            "params-to-send" : "uuid",
+            "params-to-send" : "uuid, lopback_notification",
             "encapsulate-in-data" : "false"
         },
         {
@@ -172,7 +176,7 @@
                 },
                 {
                     "class": "span6",
-                    "elements": ["formtask", "deadline", "holders", "target", "status"]
+                    "elements": ["formtask", "deadline", "holders", "lopback_notification", "target", "status"]
                 }
             ]
         }

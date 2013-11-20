@@ -395,7 +395,7 @@ class CaliopeServices(object):
 
     @classmethod
     @public("commit")
-    def commit(cls, uuid):
+    def commit(cls, uuid, loopback_notification=False):
         """
         Push the changes that are in the draft (Redis) to the neo4j database
         """
@@ -495,10 +495,10 @@ class CaliopeServices(object):
 
     @classmethod
     def _publish_update_field(cls, uuid, field_name, value, subfield_id=None,
-                              pos=None, delete=False, metadata=None):
+                              pos=None, delete=False, metadata=None, loopback_notification=False):
         rv = {'uuid': uuid, 'field': field_name, 'value': value,
               'subfield_id': subfield_id, 'pos': pos, 'delete': delete, 'metadata': metadata}
-        PubSub().publish_command('from_unused', uuid, 'updateField', rv)
+        PubSub().publish_command('from_unused', uuid, 'updateField', rv, loopback=loopback_notification)
 
 
     @classmethod

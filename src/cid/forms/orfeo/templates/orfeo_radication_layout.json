@@ -1,0 +1,61 @@
+{
+    "layout": [
+        {
+            "columns": [
+                {
+                    "class": "page-header",
+                    "elements": [
+                        "title"
+                    ]
+                }
+            ]
+        },
+        {
+            "columns": [
+                {
+                    "class": "span4",
+                    "elements": [
+                        "type"
+                    ]
+                },
+                {
+                    "class": "span4",
+                    "elements": [
+                        "reference_code"
+                    ]
+                },
+                {
+                    "class": "span4",
+                    "elements": [
+                        "guide_number"
+                    ]
+                }
+            ]
+        },
+        {
+            "columns": [
+                {
+                    "class": "span4",
+                    "elements": [
+                        "subject"
+                    ]
+                },
+                {
+                    "class": "span4",
+                    "elements": [
+                        "document_time"
+                    ]
+                }
+
+            ]
+        },
+        {
+            "columns": [
+                {
+                    "class": "span12",
+                    "elements": ["attachment"]
+                }
+            ]
+        }
+    ]
+}
