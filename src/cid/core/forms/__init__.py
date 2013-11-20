@@ -21,7 +21,6 @@ Copyright (C) 2013 Infometrika Ltda.
 """
 
 from cid.core.forms.services import FormManager
-from cid.core.forms.models import *
 
 
 def get_service():
