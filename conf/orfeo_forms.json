@@ -10,7 +10,9 @@
         {
             "package": "cid.forms.orfeo",
             "module": "OrfeoAttachment",
-            "label": "OrfeoAttachment"
+            "label": "OrfeoAttachment",
+            "html": "templates/orfeo_attachment_html.json",
+            "layout": "templates/orfeo_attachment_layout.json"
         }
     ]
 }

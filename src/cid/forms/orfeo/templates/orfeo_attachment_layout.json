@@ -1,0 +1,46 @@
+{
+    "layout": [
+        {
+            "columns": [
+                {
+                    "class": "page-header",
+                    "elements": [
+                        "title"
+                    ]
+                }
+            ]
+        },
+        {
+            "columns": [
+                {
+                    "class": "span4",
+                    "elements": [
+                        "description"
+                    ]
+                },
+                {
+                    "class": "span4",
+                    "elements": [
+                        "pages"
+                    ]
+                },
+                {
+                    "class": "span4",
+                    "elements": [
+                        "document_type"
+                    ]
+                }
+            ]
+        },
+        {
+            "columns": [
+                {
+                    "class": "span12",
+                    "elements": [
+                        "attachment"
+                    ]
+                }
+            ]
+        }
+    ]
+}

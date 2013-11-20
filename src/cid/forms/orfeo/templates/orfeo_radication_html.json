@@ -13,14 +13,17 @@
         {
             "name": "type",
             "caption": "Tipo",
-            "type": "text",
-            "class": "input-xlarge",
-            "options": {
-                "tipo1": "Tipo 1",
-                "tipo2": "Tipo 2",
-                "tipo3": "Tipo 3",
-                "tipo4": "Tipo 4"
-            }
+            "type": "select",
+            "options": [
+                {
+                    "html": "tipo1",
+                    "value": "Tipo 2"
+                },
+                {
+                    "html": "tipo1",
+                    "value": "Tipo 3"
+                }
+            ]
         },
         {
             "name": "reference_code",

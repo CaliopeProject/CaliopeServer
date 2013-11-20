@@ -22,12 +22,12 @@ Copyright (C) 2013 Infometrika Ltda.
 """
 
 from cid.core.entities import (VersionedNode, DateTimeProperty,
-                               StringProperty, RelationshipTo, CaliopeDocument, timeStampGenerator)
+                               StringProperty, IntegerProperty, RelationshipTo, CaliopeDocument, timeStampGenerator)
 
 
 class OrfeoAttachment(VersionedNode):
     description = StringProperty()
-    pages = StringProperty()
+    pages = IntegerProperty()
     document_type = StringProperty()
 
     document_attachment = RelationshipTo(CaliopeDocument, 'FILE')
