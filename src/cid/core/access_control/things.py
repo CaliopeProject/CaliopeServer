@@ -26,6 +26,10 @@ class Gis(Thing):
     def __init__(self):
         Thing.__init__(self, "gis")
 
+class SIIM_Form(Thing):
+    def __init__(self):
+        Thing.__init__(self, "siim_form")
+
 def get_available_things():
     things = [
                Form(),
@@ -33,6 +37,16 @@ def get_available_things():
                Task(),
                Report(),
                Kanban(),
-               Gis()
+               Gis(),
+               SIIM_Form(),
              ]
     return {t.name: t for t in things}
+
+def get_thing_by_class(cls): 
+    if cls.__name__ == 'SIIMForm':
+       return SIIM_Form()
+    if cls.__name__ == 'Address':
+       return SIIM_Form()
+    if cls.__name__ == 'Person':
+       return SIIM_Form()
+    return None

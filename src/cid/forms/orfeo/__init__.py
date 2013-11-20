@@ -20,8 +20,9 @@ Copyright (C) 2013 Infometrika Ltda.
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from cid.core.forms.services import FormManager
+from cid.forms.orfeo.services import OrfeoServices
+from cid.forms.orfeo.models import *
 
 
 def get_service():
-    return FormManager()
+    return OrfeoServices()

@@ -27,12 +27,6 @@ from flask import current_app
 
 from cid.core.entities import ( CaliopeServices)
 from cid.core.entities.base_models.versioned_node import VersionedNode
-from cid.utils.helpers import DatetimeEncoder, DatetimeDecoder
-
-from cid.core.login import LoginManager
-from cid.utils import fileUtils
-from cid.core.forms.models import SIIMForm
-from cid.core.entities.utils import CaliopeEntityUtil
 
 
 class FormManager(CaliopeServices):
@@ -57,16 +51,21 @@ class FormManager(CaliopeServices):
         if formId in current_app.caliope_forms:
             form = current_app.caliope_forms[formId]
             module = form['module']
-            rv = super(FormManager, cls).get_empty_model(entity_class=module,
-                                                         template_html=form[
-                                                             'html'],
-                                                         template_layout=form[
-                                                             'layout'],
-                                                         actions=[
-                                                             {"name": "Guardar",
-                                                              "method": "form.commit",
-                                                              "params-to-send": "uuid",
-                                                              "encapsulate-in-data": "false"}])
+            rv = super(FormManager, cls). \
+                get_empty_model(entity_class=module,
+                                template_html=form[
+                                    'html'],
+                                template_layout=form[
+                                    'layout'],
+                                actions=[
+                                    {"name": "Guardar",
+                                     "method": "form.commit",
+                                     "params-to-send": "uuid",
+                                     "encapsulate-in-data": "false"},
+                                    {"name": "Descartar Borrador",
+                                     "method": "form.discardDraft",
+                                     "params-to-send": "uuid",
+                                     "encapsulate-in-data": "false"}])
 
             rv['form']['name'] = form['name']
             return rv
@@ -108,12 +107,31 @@ class FormManager(CaliopeServices):
 
         if related > 0:
             for target_uuid in related.keys():
+                #Avoid related locks if theres is a back-relationship:
+                if cls._is_related(target_uuid, uuid):
+                    continue
                 #: This is to save nodes when no data added but there are
                 # in a relationships, we're saving "blank" connected nodes.
                 if VersionedNode.pull(target_uuid) is None:
                     cls.update_field(target_uuid, "uuid", target_uuid)
                 rv.update(cls.commit(target_uuid))
         rv.update(super(FormManager, cls).commit(uuid))
+        return rv
+
+
+    @classmethod
+    @public("discardDraft")
+    def discard_draft(cls, uuid):
+        rv = dict()
+        related = cls._get_related(uuid)
+
+        if related > 0:
+            for target_uuid in related.keys():
+                #Avoid related locks if theres is a back-relationship:
+                if cls._is_related(target_uuid, uuid):
+                    continue
+                rv.update(cls.discard_draft(target_uuid))
+        rv.update(super(FormManager, cls).discard_draft(uuid))
         return rv
 
 

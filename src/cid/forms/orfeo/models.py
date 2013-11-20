@@ -1,9 +1,10 @@
 # -*- encoding: utf-8 -*-
 """
 @authors: Andrés Felipe Calderón andres.calderon@correlibre.org
-          Sebastián Ortiz V. neoecos@gmail.com
 
-SIIM2 Server is the web server of SIIM2 Framework
+@license:  GNU AFFERO GENERAL PUBLIC LICENSE
+
+SIIM Models are the data definition of SIIM2 Framework
 Copyright (C) 2013 Infometrika Ltda.
 
     This program is free software: you can redistribute it and/or modify
@@ -20,8 +21,25 @@ Copyright (C) 2013 Infometrika Ltda.
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from cid.core.forms.services import FormManager
+from cid.core.entities import (VersionedNode, DateTimeProperty,
+                               StringProperty, RelationshipTo)
 
 
-def get_service():
-    return FormManager()
+class Orfeo(VersionedNode):
+    register_time = DateTimeProperty()
+    document_time = DateTimeProperty()
+    reference_code = StringProperty()
+    guide_number = StringProperty()
+    subject = StringProperty()
+    type = StringProperty()
+    sequence = StringProperty(unique_index=True)
+
+    attachment = RelationshipTo(VersionedNode, 'ATTACHMENT')
+
+
+class OrfeoAttachment(VersionedNode):
+    description = StringProperty()
+    pages = StringProperty()
+    document_type = StringProperty()
+
+    document_attachment = RelationshipTo(VersionedNode, 'FILE')

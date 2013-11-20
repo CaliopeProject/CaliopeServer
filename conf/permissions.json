@@ -1,11 +1,13 @@
 {
  "things" : {
               "kanban" : ["internal.kanban"],
-              "gis" : ["internal.gis"]
+              "gis" : ["internal.gis"],
+              "siim_form" : ["internal.siim_form"]
             },
  "groups" : {
-              "kanban" : ["user", "user1", "user2", "user3"],
-              "gis" : ["user3", "user4", "user5"]
+              "all" : ["user", "user1", "user2", "user3", "user4", "user5"],
+              "siim_user" : ["user", "user3"]
+
             },
  "actions" : {
                 "read" : ["internal.read"],
@@ -13,13 +15,11 @@
                 "all_actions" : ["read", "write"]
              },
  "permissions" : {
-                "read_gis" : ["read", "gis"],
-                "write_gis" :  ["write", "gis"],
-                "read_kanban" :  ["read", "kanban"],
-                "write_kanban" :  ["write", "kanban"]
+                "read_siim_form" : ["read", "siim_form"],
+                "write_siim_form" : ["write", "siim_form"]
            },
  "roles" : {
-              "kanban" : ["read_kanban", "write_kanban"],
-              "gis" : ["read_gis", "write_gis"]
+              "all" : [],
+              "siim_user" : ["read_siim_form", "write_siim_form"]
            }
 }

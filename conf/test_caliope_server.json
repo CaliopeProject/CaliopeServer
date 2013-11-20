@@ -5,7 +5,7 @@
         "debug": "True",
         "static": "../caliope_webui_beowulf/app",
         "formTemplates": "../templates/formTemplates",
-        "formModules": "../../conf/siim2_forms.json",
+        "formModules": ["../../conf/siim2_forms.json"],
         "cid_base_directory": "../../src/cid",
         "acl_file" : "conf/permissions_for_test.json"
     },
@@ -61,8 +61,8 @@
             /*
              {
                 "mtvprojects": {
-                    "package": "modules.projects",
-                    "service": "projects"
+                    "package": "modules.project",
+                    "service": "project"
                 }
             },
              */

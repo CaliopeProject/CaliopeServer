@@ -30,7 +30,8 @@ from datetime import datetime
 #neomodel exceptions
 
 #Model imports
-from cid.siim2forms.RegistroPredioCatastroTipoII import RegistroPredioCatastroTipoII
+from cid.forms.siim2 import RegistroPredioCatastroTipoII
+
 
 def main(argv):
     if len(argv) is not 1:
@@ -82,7 +83,7 @@ def importPrediosWithCreateMethod(filename):
         map(lambda k, v: record.update({k: v}), header, fields)
         record['fecha_documento'] = parseDateFromTwoDigitYear(record['fecha_documento'])
         batchList.append(record)
-        if len(batchList) > 300:
+        if len(batchList) > 1000:
             try:
                 RegistroPredioCatastroTipoII.create(*batchList)
             except Exception as e :

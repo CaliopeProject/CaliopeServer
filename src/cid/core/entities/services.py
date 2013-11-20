@@ -33,6 +33,8 @@ from cid.core.pubsub import PubSub
 from .utils import CaliopeEntityUtil
 from .models import VersionedNode
 
+from cid.core.access_control import AccessControlManager
+
 
 class CaliopeServices(object):
     """
@@ -49,9 +51,7 @@ class CaliopeServices(object):
         return cls
 
     def __init__(self, *args, **kwargs):
-
         super(CaliopeServices, self).__init__(*args, **kwargs)
-
 
     @classmethod
     @public("getAll")
@@ -82,6 +82,7 @@ class CaliopeServices(object):
         cls.set_drafts_uuid(rv['data']['uuid']['value'], entity_class)
         return rv
 
+    @PendingDeprecationWarning
     @classmethod
     @public("getModelAndData")
     def get_model_and_data(cls, uuid, entity_class=None, template_html=None, template_layout=None, actions=None):
@@ -120,8 +121,8 @@ class CaliopeServices(object):
             cls.r.hset(uuid + str("_class"), "name", entity_class.__name__)
 
     @classmethod
-    def _set_related(cls, uuid, target_uuid):
-        cls.r.hset(uuid + "_related", target_uuid, True)
+    def _set_related(cls, uuid, target_uuid, **kwargs):
+        cls.r.hset(uuid + "_related", target_uuid, kwargs)
 
     @classmethod
     def _get_related(cls, uuid):
@@ -130,13 +131,47 @@ class CaliopeServices(object):
     @classmethod
     def _del_related(cls, uuid, target_uuid):
         if cls.r.hexists(uuid + "_related", target_uuid):
-            cls.r.hdel(uuid + "_related", target_uuid)
+            return cls.r.hdel(uuid + "_related", target_uuid)
 
+    @classmethod
+    def _is_related(cls, uuid, target_uuid):
+        return cls.r.hexists(uuid + "_related", target_uuid)
+
+    @classmethod
+    def is_draft_not_commited(cls, uuid):
+        if cls.r.hexists(cls.draft_hkey, uuid):
+            return True
+        return False
+
+    @classmethod
+    def _has_draft_props(cls, uuid):
+        return cls.r.hlen(uuid) > 0
+
+    @classmethod
+    def _has_draft_rels(cls, uuid):
+        return cls.r.hlen(uuid + "_rels") > 0
+
+    @classmethod
+    def _get_draft_props(cls, uuid):
+        return cls.r.hgetall(uuid)
+
+    @classmethod
+    def _get_draft_rels(cls, uuid):
+        return cls.r.hgetall(uuid + "_rels")
+
+
+    @classmethod
+    def _remove_draft_props(cls, uuid):
+        return bool(cls.r.delete(uuid))
+
+    @classmethod
+    def _remove_draft_rels(cls, uuid):
+        return bool(cls.r.delete(uuid + "_rels"))
 
     @classmethod
     @public("updateField")
     def update_field(cls, uuid, field_name, value, subfield_id=None,
-                     pos=None, delete=False):
+                     pos=None, delete=False, metadata=None):
         """
         For updating entity drafts.
 
@@ -158,7 +193,8 @@ class CaliopeServices(object):
         def append_change(uuid, key, value):
             if is_draft(uuid):
                 cls.r.hdel(cls.draft_hkey, uuid)
-            value = json.loads(json.dumps(value, cls=DatetimeEncoder), object_hook=DatetimeDecoder.json_date_parser)
+            value = json.loads(json.dumps(value, cls=DatetimeEncoder),
+                               object_hook=DatetimeDecoder.json_date_parser)
             if isinstance(value, (dict, list,)):
                 return cls.r.hset(uuid, key, json.dumps(value,
                                                         cls=DatetimeEncoder))
@@ -174,7 +210,8 @@ class CaliopeServices(object):
                 value = cls.r.hget(uuid, field)
                 try:
                     return json.loads(value,
-                                      object_hook=DatetimeDecoder.json_date_parser)
+                                      object_hook=
+                                      DatetimeDecoder.json_date_parser)
                 except:
                     return value
             return None
@@ -240,7 +277,7 @@ class CaliopeServices(object):
                         .format(draft_field, str(dict)))
             else:
                 if delete:
-                    draft_field = None
+                    draft_field = {}
                 else:
                     draft_field = value
         else:
@@ -278,17 +315,18 @@ class CaliopeServices(object):
             else:
                 draft_field = value
 
-        rv = {'uuid':uuid, 'field': field_name, 'value': value, 'subfield_id': subfield_id, 'pos': pos}
-        PubSub().publish_command('0', uuid, 'updateField', rv)
+        cls._publish_update_field(uuid, field_name, value=value, subfield_id=subfield_id, pos=pos, delete=delete,
+                                  metadata=metadata)
+
         return append_change(uuid, field_name, draft_field) in [0, 1]
 
 
     @classmethod
     @public("clearField")
-    def clear_field(cls, uuid, field_name, subfield_id=None, pos=None):
+    def clear_field(cls, uuid, field_name, subfield_id=None, pos=None, metadata=None):
         return cls.update_field(uuid, field_name, None,
                                 subfield_id=subfield_id,
-                                pos=pos, delete=True)
+                                pos=pos, delete=True, metadata=metadata)
 
     @classmethod
     @public("updateRelationship")
@@ -361,21 +399,10 @@ class CaliopeServices(object):
         """
         Push the changes that are in the draft (Redis) to the neo4j database
         """
-
-        def is_stagged(hkey):
-            return cls.r.hlen(hkey) > 0
-
-        def get_changes(hkey):
-            return cls.r.hgetall(hkey)
-
-        def remove_hkey(hkey):
-            cls.r.delete(hkey)
-
         #: TODO: Ensure all updates runs within the same transaction or batch.
-        rels_hkey = uuid + "_rels"
-        props_hkey = uuid
+
         #: check for changes of any kind
-        if is_stagged(props_hkey) or is_stagged(rels_hkey):
+        if cls._has_draft_props(uuid) or cls._has_draft_rels(uuid):
             versioned_node = cls.service_class.pull(uuid)
             #: if first time save create a node with given uuid.
             if versioned_node is None:
@@ -383,12 +410,13 @@ class CaliopeServices(object):
                     uuid + str("_class"), "name")]
                 versioned_node = node_class(uuid=uuid)
                 #: apply first the properties changes
-            if is_stagged(props_hkey):
-                changes = get_changes(props_hkey)
+            if cls._has_draft_props(uuid):
+                changes = cls._get_draft_props(uuid)
                 for delta_k, delta_v in changes.items():
                     try:
                         delta_v = json.loads(delta_v,
-                                             object_hook=DatetimeDecoder.json_date_parser)
+                                             object_hook=
+                                             DatetimeDecoder.json_date_parser)
                     except:
                         delta_v = DatetimeDecoder._parser(delta_v)
                         #: do the changes
@@ -396,9 +424,9 @@ class CaliopeServices(object):
                     #: clean stage area
                 #: push all changes to database
                 versioned_node.save()
-                remove_hkey(props_hkey)
-            if is_stagged(rels_hkey):
-                changes = get_changes(rels_hkey)
+            cls._remove_draft_props(uuid)
+            if cls._has_draft_rels(uuid):
+                changes = cls._get_draft_rels(uuid)
                 for delta_k, delta_v in changes.items():
                     delta_v = json.loads(delta_v,
                                          object_hook=DatetimeDecoder.json_date_parser)
@@ -410,31 +438,90 @@ class CaliopeServices(object):
                             del props["__changed__"]
                             versioned_node.add_or_update_relationship_target(
                                 delta_k, target, new_properties=props)
-                        #: clean stage area
-                remove_hkey(rels_hkey)
+                            #: clean stage area
+                cls._remove_draft_rels(uuid)
             return {uuid: {'value': versioned_node.uuid == uuid}}
         else:
             return {uuid: {'value': False}}
+
 
     @classmethod
     @public("getData")
     def get_data(cls, uuid, entity_class=None):
         try:
             PubSub().subscribe_uuid(uuid)
-            if entity_class is not None:
-                vnode = entity_class.pull(uuid)
+            if entity_class is None:
+                entity_class = VersionedNode.pull(uuid, only_class=True)
+            vnode = entity_class.pull(uuid)
+            if vnode is None and cls._has_draft_props(uuid):
+                #get a vnode with the class and uuid
+                vnode = cls._get_vnode_from_drafts(uuid, entity_class)
                 #: Append related uuids to the list.
-                for rel_name, rel_repr in vnode._serialize_relationships() \
-                    .items():
-                    for target_uuid in rel_repr.keys():
-                        cls._set_related(uuid, target_uuid)
-
-                return vnode.serialize()
-            else:
-                return cls.service_class.pull(uuid).serialize()
+            for rel_name, rel_repr in vnode._serialize_relationships() \
+                .items():
+                for target_uuid in rel_repr.keys():
+                    direction = getattr(vnode, rel_name).direction
+                    cls._set_related(uuid, target_uuid, direction=direction)
+            return cls._get_data_with_draft(vnode)
         except AssertionError:
             return RuntimeError("The give uuid {0} is not a valid object of "
                                 "class {1}".format(uuid, cls.__name__))
+
+    @classmethod
+    @public("discardDraft")
+    #@AccessControlManager.check_permission(
+    #    action="write", uuid_pos=1)
+    def discard_draft(cls, uuid):
+        changed_fields = {}
+        if cls._has_draft_props(uuid):
+            changed_fields = cls._get_draft_props(uuid)
+        vnode = VersionedNode.pull(uuid)
+        if vnode is None:
+            #: TODO what to do with non-saved nodes on discard
+            pass
+            return {uuid: {'value': False}}
+        else:
+            saved_data = vnode.serialize()
+            #Notify to go back on saved data.
+            for field_name in changed_fields.keys():
+                cls._publish_update_field(uuid, field_name, value=saved_data[
+                    field_name]["value"])
+            rv = (cls._has_draft_props(uuid) and cls
+            ._remove_draft_props(
+                uuid))
+            rv = rv or (cls._has_draft_rels(uuid) and cls._remove_draft_rels(
+                uuid))
+            return {uuid: {'value': rv}}
+
+    @classmethod
+    def _publish_update_field(cls, uuid, field_name, value, subfield_id=None,
+                              pos=None, delete=False, metadata=None):
+        rv = {'uuid': uuid, 'field': field_name, 'value': value,
+              'subfield_id': subfield_id, 'pos': pos, 'delete': delete, 'metadata': metadata}
+        PubSub().publish_command('from_unused', uuid, 'updateField', rv)
+
+
+    @classmethod
+    def _get_data_with_draft(cls, vnode):
+        #: This method does nothing to the node it self, it just rewrites the
+        #: value to be returned.
+        rv = vnode.serialize()
+        if cls._has_draft_props(vnode.uuid):
+            for prop, value in cls._get_draft_props(vnode.uuid).items():
+                rv[prop] = value
+        if cls._has_draft_rels(vnode.uuid):
+            for rel_name, rel_value in cls._get_draft_rels(vnode.uuid).items():
+                rv[rel_name] = json.loads(rel_value,
+                                          object_hook=
+                                          DatetimeDecoder.json_date_parser)
+        return rv
+
+
+    @classmethod
+    def _get_vnode_from_drafts(cls, uuid, entity_class):
+        vnode = entity_class()
+        setattr(vnode, "uuid", uuid)
+        return vnode
 
 
     @classmethod
@@ -442,24 +529,10 @@ class CaliopeServices(object):
     def get_data_key_value(cls, key, value):
         try:
             param = {key: value}
-            return [vnode.serialize() for vnode in VersionedNode.index\
+            return [vnode.serialize() for vnode in VersionedNode.index \
                 .search(**param)]
         except Exception as e:
             return RuntimeError(e)
-
-
-
-
-
-    @staticmethod
-    @public("edit")
-    def edit(*args, **kwargs):
-        raise NotImplementedError
-
-    @staticmethod
-    @public("create")
-    def create(*args, **kwargs):
-        raise NotImplementedError
 
 
 class CaliopeEntityController(object):
@@ -503,7 +576,7 @@ class CaliopeEntityController(object):
             else:
                 self.template = CaliopeEntityUtil() \
                     .makeFormTemplate(self.entity_class)
-            return  self.template
+            return self.template
         except:
             return list()
 

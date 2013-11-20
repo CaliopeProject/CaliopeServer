@@ -36,6 +36,7 @@ from models import Task
 from cid.utils.helpers import DatetimeEncoder, DatetimeDecoder
 from cid.core.pubsub import PubSub
 
+
 class TaskServices(CaliopeServices):
     def __init__(self, *args, **kwargs):
         super(TaskServices, self).__init__(*args, **kwargs)
@@ -57,13 +58,15 @@ class TaskServices(CaliopeServices):
 
     @classmethod
     @public(name='getCurrentUserKanban')
-    def get_current_user_kanban(cls):
+    def get_current_user_kanban(cls, category=None):
 
         user_node = CaliopeUser.index.get(username=LoginManager().get_user())
+
         #: Starting from current user, match all nodes which are connected througth a HOLDER
         #: relationship and that node is connected with a  CURRENT relationship to a task.
         #: From the task find the FIRST node
-        results, metadata = user_node.cypher("START user=node({self})"
+        if category is None:
+            results, metadata = user_node.cypher("START user=node({self})"
                                              "MATCH (user)-[r:HOLDER]-(t)-["
                                              "TASK]-()"
                                              "WHERE has(r.category) and "
@@ -72,6 +75,15 @@ class TaskServices(CaliopeServices):
                                              "r.category='Done')"
                                              "return distinct (t), "
                                              "r.category");
+        else:
+            results, metadata = user_node.cypher("START user=node({self})"
+                                                 "MATCH (user)-[r:HOLDER]-(t)-["
+                                                 "TASK]-()"
+                                                 "WHERE has(r.category) and "
+                                                 "(r.category=" + category +")"
+                                                 "return distinct (t), "
+                                                 "r.category");
+
         tasks_list = {
             'ToDo': {'pos': 0, 'category': {'value': 'ToDo'}, 'tasks': []},
             'Doing': {'pos': 1, 'category': {'value': 'Doing'}, 'tasks': []},
@@ -111,8 +123,9 @@ class TaskServices(CaliopeServices):
                                      new_properties={"category": "ToDo"})
             return {user_node.uuid: {"category": "ToDo"}}
 
-        template_path = os.path.join(os.path.split(__file__)[0], "templates/" +
-                                                                 cls.service_class.__name__ + ".json")
+        template_path = os.path.join(
+            os.path.split(__file__)[0], "templates/" +
+                                        cls.service_class.__name__ + ".json")
         entity_class = cls.service_class
         rv = super(TaskServices, cls) \
             .get_empty_model(entity_class=entity_class,
@@ -122,16 +135,16 @@ class TaskServices(CaliopeServices):
         return rv
 
     @classmethod
-    @public(name='getModelAndData')
-    def get_model_and_data(cls, uuid):
+    @public(name='getData')
+    def get_data(cls, uuid):
         import os
 
-        template_path = os.path.join(os.path.split(__file__)[0], "templates/" +
-                                                                 cls.service_class.__name__ + ".json")
+        template_path = os.path.join(
+            os.path.split(__file__)[0], "templates/" +
+                                        cls.service_class.__name__ + ".json")
         entity_class = cls.service_class
         rv = super(TaskServices, cls) \
-            .get_model_and_data(uuid=uuid, entity_class=entity_class,
-                                template_path=template_path)
+            .get_data(uuid=uuid, entity_class=entity_class)
         return rv
 
     @classmethod
@@ -149,18 +162,22 @@ class TaskServices(CaliopeServices):
         holders_to_add = []
         holders_to_remove = []
         if cls.r.hexists(hkey_name_rels, "holders"):
-            holders_to_add = [h for h, v in json.loads(cls.r.hget(hkey_name_rels,
-                                                       "holders"),
-                                         object_hook=DatetimeDecoder.json_date_parser).items()
-                          if "__changed__" in v]
-            holders_to_remove =[h for h, v in json.loads(cls.r.hget(hkey_name_rels,
-                                                       "holders"),
-                                         object_hook=DatetimeDecoder.json_date_parser).items()
+            holders_to_add = [h for h, v in
+                              json.loads(cls.r.hget(hkey_name_rels, "holders"),
+                                         object_hook=DatetimeDecoder
+                                         .json_date_parser).items()
+                                        if "__changed__" in v]
+            holders_to_remove =[h for h, v in
+                              json.loads(cls.r.hget(hkey_name_rels, "holders"),
+                                         object_hook=DatetimeDecoder
+                                         .json_date_parser).items()
                           if "__delete__" in v]
         rv = super(TaskServices, cls).commit(uuid)
         for holder in holders_to_add:
             PubSub().publish_command("",
             holder, "createTask", VersionedNode.pull(uuid).serialize())
+            PubSub().subscribe_uuid_with_user_uuid(holder, uuid)
+
         for holder in holders_to_remove:
             PubSub().publish_command("",
             holder, "removeTask", VersionedNode.pull(uuid).serialize())
@@ -168,43 +185,15 @@ class TaskServices(CaliopeServices):
 
 
 
-
-
-    @staticmethod
+    @classmethod
     @public(name='getDeletedByCurrentUser')
-    def get_deleted_by_current_user():
-        rv = TaskServices.get_by_category_and_by_current_user(
-            category="deleted")
+    def get_deleted_by_current_user(cls):
+        rv = cls.get_current_user_kanban(category="deleted")
         return rv
 
-    @staticmethod
+    @classmethod
     @public(name='getArchivedByCurrentUser')
-    def get_archived_by_current_user(project_id):
-        rv = TaskServices.get_by_category_and_by_current_user(
-            category="archived")
+    def get_archived_by_current_user(cls):
+        rv = cls.get_current_user_kanban(category="archived")
         return rv
 
-
-    @staticmethod
-    def get_by_category_and_by_current_user(category):
-        user_node = CaliopeUser.index.get(username=LoginManager().get_user())
-        #: Starting from current user, match all nodes which are connected througth a HOLDER
-        #: relationship and that node is connected with a  CURRENT relationship to a task.
-        #: From the task find the FIRST node
-        results, metadata = user_node.cypher("START user=node({self})"
-                                             "MATCH (user)-[r:HOLDER]-(tdc)-[e:CURRENT]-(t), (t)-[:FIRST]-(tdf)"
-                                             "WHERE has(r.category) and "
-                                             "(r.category='" + category + "')"
-                                                                          "      and not(tdf=tdc)"
-                                                                          "return t, r.category");
-        tasks_list = {
-            category: {'pos': 0, 'category': {'value': category}, 'tasks': []}}
-
-        for row in results:
-            tl = tasks_list[row[1]]['tasks']
-            task_class = Task().__class__
-            task = task_class.inflate(row[0])
-            entity_data = task.get_entity_data()
-            tl.append(entity_data)
-
-        return tasks_list

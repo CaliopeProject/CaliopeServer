@@ -20,8 +20,5 @@ Copyright (C) 2013 Infometrika Ltda.
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from cid.core.forms.services import FormManager
+from cid.forms.siim2.project.models import Project
 
-
-def get_service():
-    return FormManager()

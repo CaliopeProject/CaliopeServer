@@ -436,7 +436,7 @@ class CaliopeServerTestCase(unittest.TestCase):
 
     def test_projects_create(self):
         user = self.login(u'user', u'123')
-        projects_proxy = self.rpc_client.get_proxy(prefix="projects.")
+        projects_proxy = self.rpc_client.get_proxy(prefix="project.")
         model = projects_proxy.getModel()
         data = {"name": "PROYECTO 305",
                 "general_location": "<p><em><strong>ASDASDASD</strong></em><br></p>",
@@ -455,7 +455,7 @@ class CaliopeServerTestCase(unittest.TestCase):
 
     def test_projects_get_all(self):
         user = self.login(u'user', u'123')
-        projects_proxy = self.rpc_client.get_proxy(prefix="projects.")
+        projects_proxy = self.rpc_client.get_proxy(prefix="project.")
         rv = projects_proxy.getAll()
         self.assertIsNotNone(rv)
 

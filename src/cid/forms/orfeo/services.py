@@ -19,9 +19,26 @@ Copyright (C) 2013 Infometrika Ltda.
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
+from tinyrpc.dispatch import public
 
-from cid.core.forms.services import FormManager
+from cid.core.entities import (CaliopeServices)
+
+from redis import Redis
 
 
-def get_service():
-    return FormManager()
+class OrfeoServices(CaliopeServices):
+    def __new__(cls, *args, **kwargs):
+        cls.r = Redis()
+        return cls
+
+    def __init__(self, *args, **kwargs):
+        super(OrfeoServices, self).__init__(*args, **kwargs)
+
+    @classmethod
+    @public(name='commit')
+    def commit(cls, uuid):
+        orfeo_sequence = cls.r.incr('orfeo_sequence')
+        super(OrfeoServices, cls).update_field(cls, uuid, 'orfeo_sequence', orfeo_sequence)
+        rv = super(OrfeoServices, cls).commit(uuid)
+        return rv
+
