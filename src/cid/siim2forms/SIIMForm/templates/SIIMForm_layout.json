@@ -41,7 +41,7 @@
     {
       "columns" : [
         {
-          "class" :  "span6",
+          "class" :  "span12",
           "elements"  : ["propietario"]
         }
       ]
