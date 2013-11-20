@@ -1,12 +1,12 @@
 {
     "modules": [
         {
-            "package": "cid.modules.orfeo",
+            "package": "cid.forms.orfeo",
             "module": "Orfeo",
             "label": "Orfeo"
         },
         {
-            "package": "cid.modules.orfeo",
+            "package": "cid.forms.orfeo",
             "module": "OrfeoAttachment",
             "label": "OrfeoAttachment"
         }

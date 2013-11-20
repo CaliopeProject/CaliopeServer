@@ -30,7 +30,8 @@ from datetime import datetime
 #neomodel exceptions
 
 #Model imports
-from cid.siim2forms.RegistroPredioCatastroTipoII import RegistroPredioCatastroTipoII
+from cid.forms.siim2 import RegistroPredioCatastroTipoII
+
 
 def main(argv):
     if len(argv) is not 1:
