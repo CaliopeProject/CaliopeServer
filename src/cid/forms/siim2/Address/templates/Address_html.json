@@ -1,0 +1,22 @@
+{
+  "name": "Address",
+  "html": [
+    {
+      "name" : "title",
+      "type" : "div",
+      "html" :
+      [
+        {
+          "type" : "h1",
+          "html" : "Direccion"
+        }
+      ]
+    },
+    {
+      "name"    : "direccion",
+      "caption" : "Nombre",
+      "type"    : "text",
+      "class"   : "input-xlarge"
+    }
+  ]
+}

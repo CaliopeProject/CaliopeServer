@@ -1,0 +1,127 @@
+{
+    "name": "SIIMForm",
+    "html": [
+        {
+            "name": "title",
+            "type": "div",
+            "html": [
+                {
+                    "type": "h1",
+                    "html": "Formulario SIIMForm"
+                }
+            ]
+        },
+        {
+            "name": "ficha",
+            "caption": "Ficha",
+            "type": "text",
+            "class": "input-xlarge",
+            "options": {
+                "idea": "Idea",
+                "perfil": "Perfil",
+                "prefactibilidad": "Prefactibilidad",
+                "factibilidad": "Factibilidad",
+                "ejecucion": "Ejecución"
+            }
+        },
+        {
+            "name": "estado",
+            "caption": "Estado",
+            "class": "input-xlarge",
+            "type": "select",
+            "options": {
+                "en_estudio": "En Estudio",
+                "en_ejecucion": "En Ejecución",
+                "rechazado": "Rechazado",
+                "aplazado": "Aplazado",
+                "aprobado": "Aprobado",
+                "no_aprobado": "No Aprobado",
+                "viable": "Viable",
+                "no_viable": "No Viable",
+                "finalizado": "Finalizado"
+            }
+        },
+        {
+            "name": "nombre",
+            "caption": "Nombre del Proyecto",
+            "type": "text",
+            "class": "input-xlarge",
+            "validations": {
+                "minlength": 10
+            }
+        },
+        {
+            "name": "forma_intervencion",
+            "caption": "Forma de intervención",
+            "class": "input-xxlarge",
+            "type": "select",
+            "options": {
+                "forma_generica": "Forma Genérica",
+                "intervencion_directa": "Intervención Directa",
+                "por_asociacion": "Por Asociación"
+            }
+        },
+        {
+            "name": "localidad",
+            "caption": "Localidad",
+            "class": "input-xxlarge",
+            "type": "select",
+            "options": {
+                "": "",
+                "usaquen": "Usaquén",
+                "chapinero": "Chapinero",
+                "santa_fe": "Santa Fe"
+            }
+        },
+        {
+            "name": "localizacion_general",
+            "caption": "Localizacion General Proyecto",
+            "type": "textarea",
+            "class": "input-xxlarge",
+            "rows": "5",
+            "cols": "70"
+        },
+        {
+            "name": "acta_creacion_proyecto",
+            "caption": "Acta creación proyecto",
+            "type": "attachment"
+        },
+        {
+            "name": "areas",
+            "caption": "Areas",
+            "type": "cw-grid",
+            "class": "input-xxlarge height-1",
+            "cw-grid-options": {
+                "columns": [
+                    {
+                        "name": "areas.descripcion",
+                        "caption": "Tipo Area"
+                    },
+                    {
+                        "name": "areas.valor",
+                        "caption": "Valor"
+                    },
+                    {
+                        "name": "areas.desc",
+                        "caption": "Descripción"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "propietario",
+            "caption": "Propietario",
+            "type": "form",
+            "cardinality": "*",
+            "options-form": {
+                "formId": "Person",
+                "generic": "true"
+            },
+            "relation": {
+                "rel_name": "propietario",
+                "class": "Person",
+                "target": "{{propietario}}"
+            }
+        }
+    ]
+}

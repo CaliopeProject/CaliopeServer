@@ -1,0 +1,1 @@
+from cid.forms.siim2.acta_recibo_predios.models import ActaReciboPredios

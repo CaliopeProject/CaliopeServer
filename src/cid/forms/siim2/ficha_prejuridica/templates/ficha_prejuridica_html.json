@@ -1,0 +1,324 @@
+{
+    "name": "fichaPrejuridica",
+    "html": [
+        {
+            "name": "title",
+            "type": "div",
+            "html": [
+                {
+                    "type": "h1",
+                    "html": "Ficha Pre-Jurídica"
+                }
+            ]
+        },
+        {
+            "name": "subTitleInfoBas",
+            "type": "div",
+            "html": [
+                {
+                    "type": "h4",
+                    "html": "Información Básica"
+                }
+            ]
+        },
+        {
+            "name": "separador",
+            "type": "div",
+            "html": [
+                {
+                    "type": "h4",
+                    "html": ""
+                }
+            ]
+        },
+        {
+            "name": "subTitleDatBasPro",
+            "type": "div",
+            "html": [
+                {
+                    "type": "h4",
+                    "html": "Datos Básicos Del Propietario"
+                }
+            ]
+        },
+        {
+            "name": "subTitleInfoGenPredio",
+            "type": "div",
+            "html": [
+                {
+                    "type": "h4",
+                    "html": "Información General del Predio"
+                }
+            ]
+        },
+        {
+            "name": "subTitleCompJurid",
+            "type": "div",
+            "html": [
+                {
+                    "type": "h4",
+                    "html": "Componente Jurídico"
+                }
+            ]
+        },
+        {
+            "name": "subTitleCompEspacial",
+            "type": "div",
+            "html": [
+                {
+                    "type": "h4",
+                    "html": "Componente Espacial"
+                }
+            ]
+        },
+        {
+            "name": "identificador_predial",
+            "caption": "Identificador predial",
+            "type": "text",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "chip",
+            "caption": "CHIP",
+            "type": "text",
+            "validations": {}
+        },
+        {
+            "name": "direccion_fuente",
+            "caption": "Dirección (Dirección UACED - Fuente: FMI)",
+            "type": "textarea",
+            "cols": "70",
+            "validations": {}
+        },
+        {
+            "name": "barrio",
+            "caption": "Barrio",
+            "type": "text",
+            "validations": {}
+        },
+        {
+            "name": "estrato",
+            "caption": "Estrato",
+            "type": "radiobuttons",
+            "options": {
+                "sin_estrato": "Sin estrato",
+                "no_residencial": "No residencial",
+                "estrato_1": "Estrato 1",
+                "estrato_2": "Estrato 2",
+                "estrato_3": "Estrato 3",
+                "estrato_4": "Estrato 4",
+                "estrato_5": "Estrato 5",
+                "estrato_6": "Estrato 6"
+            }
+        },
+        {
+            "name": "tipo_propietario",
+            "caption": "Tipo de propietario",
+            "type": "radiobuttons",
+            "options": {
+                "propietario": "Propietario",
+                "poseedor": "Poseedor"
+            }
+        },
+        {
+            "name": "tipo_persona",
+            "caption": "Tipo de persona",
+            "type": "radiobuttons",
+            "options": {
+                "natural": "Persona Natural",
+                "juridica": "Persona Jurídica"
+            }
+        },
+        {
+            "name": "propietario_actual",
+            "caption": "Propietario actual inscrito",
+            "type": "text",
+            "class": "input-xlarge"
+        },
+        {
+            "name": "doc_propietario",
+            "caption": "Documento de identificación",
+            "type": "text"
+        },
+        {
+            "name": "tipo_doc_propietario",
+            "caption": "Tipo de documento",
+            "type": "radiobuttons",
+            "options": {
+                "cc": "CC",
+                "nit": "NIT",
+                "extranjeria": "Extrangería"
+            }
+        },
+        {
+            "name": "sector_predio",
+            "caption": "¿Predio del Sector?",
+            "type": "radiobuttons",
+            "options": {
+                "publico": "Público",
+                "privado": "Privado"
+            }
+        },
+        {
+            "name": "direccion_notificacion",
+            "caption": "Dirección de notificación",
+            "type": "textarea",
+            "cols": "70"
+        },
+        {
+            "name": "telefono",
+            "caption": "Número de teléfono",
+            "type": "text"
+        },
+        {
+            "name": "predio",
+            "caption": "Predio",
+            "type": "text"
+        },
+        {
+            "name": "acto_traslativo",
+            "caption": "Acto traslaticio de dominio:",
+            "type": "text"
+        },
+        {
+            "name": "matricula_inmobiliaria",
+            "caption": "Matrícula inmobiliaria",
+            "type": "text"
+        },
+        {
+            "name": "cedula_catastral",
+            "caption": "Cédula Catastral",
+            "type": "text"
+        },
+        {
+            "name": "titulo_adquisicion",
+            "caption": "Título de adquisición",
+            "type": "textarea"
+        },
+        {
+            "name": "cabida_superficiaria",
+            "caption": "Cabida superficiaria",
+            "type": "textarea"
+        },
+        {
+            "name": "linderos",
+            "caption": "Linderos",
+            "type": "ckedit"
+        },
+        {
+            "name": "tipo_linderos",
+            "caption": "Tipo de linderos",
+            "type": "radiobuttons",
+            "options": {
+                "claros": "Claros",
+                "confusos": "Confusos"
+            }
+        },
+        {
+            "name": "incorporacion_topografica",
+            "caption": "Incorporacion topográfica",
+            "type": "radiobuttons",
+            "options": {
+                "si": "SI",
+                "no": "NO"
+            }
+        },
+        {
+            "name": "incoroporacion_topografica_desc",
+            "caption": "Incoroporacion topografica desc",
+            "type": "textarea"
+        },
+        {
+            "name": "registro_topografico",
+            "caption": "Registro Topográfico",
+            "type": "radiobuttons",
+            "options": {
+                "si": "SI",
+                "no": "NO"
+            }
+        },
+        {
+            "name": "tradicion",
+            "caption": "Tradición",
+            "type": "textarea",
+            "rows": 8
+        },
+        {
+            "name": "vigenciaInformacion",
+            "caption": "Vigencia de la información",
+            "type": "datepicker",
+            "format": "dd/MM/yyyy"
+        },
+        {
+            "name": "componente_espacial",
+            "type": "label",
+            "html": "Componente Espacial"
+        },
+        {
+            "name": "componente_espacial_registral",
+            "caption": "Registral",
+            "type": "checkbox"
+        },
+        {
+            "name": "componente_espacial_catastral",
+            "caption": "Catastral",
+            "type": "checkbox"
+        },
+        {
+            "name": "componente_espacial_topografica",
+            "caption": "Topográfica",
+            "type": "checkbox"
+        },
+        {
+            "name": "area_registral",
+            "caption": "Área registral",
+            "type": "number"
+        },
+        {
+            "name": "area_catastral",
+            "caption": "Area catastral",
+            "type": "number"
+        },
+        {
+            "name": "area_topografica",
+            "caption": "Area topográfica",
+            "type": "number"
+        },
+        {
+            "name": "observaciones_componente_espacial",
+            "caption": "Observaciones y Recomendaciones",
+            "type": "textarea",
+            "rows": 8
+        },
+        {
+            "name": "informacion_unica_predial",
+            "caption": "Información Única Predial",
+            "type": "attachment"
+        },
+        {
+            "name": "mapa_tradicion_predial",
+            "caption": "Mapa De Tradición Predial",
+            "type": "attachment"
+        },
+        {
+            "name": "estado_ficha",
+            "caption": "Estado de la Ficha",
+            "type": "radiobuttons",
+            "options": {
+                "rechazado": "Rechazado",
+                "aprobado": "Aprobado",
+                "revisado": "Revisado",
+                "anulado": "Anulado",
+                "completado": "Completado"
+            }
+        }
+    ],
+    "actions": [
+        {
+            "name": "Crear",
+            "method": "tasks.create"
+        }
+    ]
+}

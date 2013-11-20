@@ -1,0 +1,1 @@
+from cid.forms.siim2.ficha_prejuridica.models import FichaPrejuridica

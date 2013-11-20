@@ -1,0 +1,824 @@
+{
+    "html": [
+        {
+            "name": "title",
+            "type": "div",
+            "html": [
+                {
+                    "type": "h1",
+                    "html": "MODELACIÓN URBANÍSTICA"
+                }
+            ]
+        },
+        {
+            "name": "nombre_proyecto",
+            "caption": "Nombre del Proyecto",
+            "class": "input-xxlarge",
+            "type": "text",
+            "validations": {
+                "required": true
+            }
+        },
+        {
+            "name": "localizacion",
+            "caption": "LOCALIZACIÓN",
+            "type": "attachment"
+        },
+        {
+            "name": "division_predial",
+            "caption": "DIVISIÓN PREDIAL",
+            "type": "attachment"
+        },
+        {
+            "name": "modelacion_prouesta",
+            "caption": "MODELACIÓN URBANÍSTICA PROPUESTA",
+            "type": "attachment"
+        },
+        {
+            "name": "datos_modelacion",
+            "type": "div",
+            "html": [
+                {
+                    "type": "h4",
+                    "html": "DATOS BÁSICOS MODELACIÓN URBANÍSTICA"
+                }
+            ]
+        },
+        {
+            "name": "total_viviendas",
+            "caption": "Número Total de viviendas",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "vip_50smmlv",
+            "caption": "VIP 50 SMMLV (50m2)",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "vip_70_smmlv",
+            "caption": "VIP 70 SMMLV (57 a 60 m2)",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "vis",
+            "caption": "VIS",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "viv",
+            "caption": "VIV E4",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "viviendas_hectarea_bruta",
+            "caption": "VIVIENDAS POR HECTAREA BRUTA",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "viviendas_hectarea_neta",
+            "caption": "VIVIENDAS POR HECTAREA NETA",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "viviendas_hectarea_util",
+            "caption": "VIVIENDAS POR HECTAREA UTIL",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "total_habitantes",
+            "caption": "Total Habitantes",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "habitantes_hectarea_bruta",
+            "caption": "HABITANTES POR HECTAREA BRUTA",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "habitantes_hectarea_neta",
+            "caption": "HABITANTES POR HECTAREA NETA",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "habitantes_hectarea_util",
+            "caption": "HABITANTES POR HECTAREA ÚTIL",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "areas_construccionm2",
+            "type": "div",
+            "html": [
+                {
+                    "type": "h4",
+                    "html": "RESUMEN ÁREAS DE CONSTRUCCIÓN m2"
+                }
+            ]
+        },
+        {
+            "name": "vivienda",
+            "caption": "VIVIENDA",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "comercio_primer_piso",
+            "caption": "COMERCIO EN PRIMER PISO",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "servicios IDU",
+            "caption": "AREA TOTAL CONSTRUIDA IDU",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "espacio_publico",
+            "type": "div",
+            "html": [
+                {
+                    "type": "h4",
+                    "html": "ESTANDARES DE ESPACIO PÚBLICO"
+                }
+            ]
+        },
+        {
+            "name": "parques_viviendam2",
+            "caption": "Parques por vivienda m2",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "equipamentos_vivienda",
+            "caption": "Equipamientos por vivienda",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "estacionamientos",
+            "type": "div",
+            "html": [
+                {
+                    "type": "h4",
+                    "html": "ESTACIONAMIENTOS"
+                }
+            ]
+        },
+        {
+            "name": "estacionamientos_vip",
+            "caption": "N° de estacionamientos VIP",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "estacionamientos_comercio",
+            "caption": "N° de estacionamientos comercio",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "estacionamientos_servicios",
+            "caption": "N° de estacionamientos Servicios",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "area_estacionamientos_vip",
+            "caption": "Área Estacionamientos VIP",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "area_estacionamientos_comercio",
+            "caption": "Área Estacionamientos comercio",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "area_estacionamientos_servicios",
+            "caption": "Área Estacionamientos Servicios",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "observaciones",
+            "type": "div",
+            "html": [
+                {
+                    "type": "h4",
+                    "html": "OBSERVACIONES"
+                }
+            ]
+        },
+        {
+            "name": "observaciones_datos_basicos",
+            "caption": "Observaciones",
+            "type": "textarea",
+            "class": "input-xxlarge"
+        },
+        {
+            "name": "cuadro_areas",
+            "type": "div",
+            "html": [
+                {
+                    "type": "h4",
+                    "html": "CUADRO DE ÁREAS"
+                }
+            ]
+        },
+        {
+            "name": "area_bruta_valor",
+            "caption": "ÁREA BRUTA",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "area_bruta_desc",
+            "caption": "observaciones",
+            "type": "textarea",
+            "class": "input-xlarge",
+            "rows": 1
+        },
+        {
+            "name": "afectaciones_valor",
+            "caption": "AFECTACIONES",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "afectaciones_desc",
+            "caption": "Observaciones",
+            "type": "textarea",
+            "class": "input-xlarge",
+            "rows": 1
+        },
+        {
+            "name": "area_urbanizable_valor",
+            "caption": "AREA NETA URBANIZABLE",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "area_urbanizable_desc",
+            "caption": "observaciones",
+            "type": "textarea",
+            "class": "input-xlarge",
+            "rows": 1
+        },
+        {
+            "name": "area_edificabilidad_valor",
+            "caption": "AREA NETA BASE PARA CALCULO DE EDIFICABILIDAD",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "area_edificabilidad_desc",
+            "caption": "observaciones",
+            "type": "textarea",
+            "class": "input-xlarge",
+            "rows": 1
+        },
+        {
+            "name": "area_cesiones_valor",
+            "caption": "ÁREA NETA BASE CÁLCULO CESIONES",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "area_cesiones_desc",
+            "caption": "observaciones",
+            "type": "textarea",
+            "class": "input-xlarge",
+            "rows": 1
+        },
+        {
+            "name": "cesiones_publicas_valor",
+            "caption": "CESIONES PÚBLICAS",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "cesiones_publicas_desc",
+            "caption": "observaciones",
+            "type": "textarea",
+            "class": "input-xlarge",
+            "rows": 1
+        },
+        {
+            "name": "control_ambiental_valor",
+            "caption": "CONTROL AMBIENTAL",
+            "type": "number",
+            "class": "input-medium",
+            "rows": 1
+        },
+        {
+            "name": "control_ambiental_desc",
+            "caption": "observaciones",
+            "type": "textarea",
+            "class": "input-xlarge",
+            "rows": 1
+        },
+        {
+            "name": "cesiones_parques1_valor",
+            "caption": "CESIONES PÚBLICAS PARQUES",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "cesiones_parques1_desc",
+            "caption": "observaciones",
+            "type": "textarea",
+            "class": "input-xlarge",
+            "rows": 1
+        },
+        {
+            "name": "cesiones_parques2_valor",
+            "caption": "Cesiones Públicas para parques",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "cesiones_parques2_desc",
+            "caption": "observaciones",
+            "type": "textarea",
+            "class": "input-xlarge",
+            "rows": 1
+        },
+        {
+            "name": "zmpa_valor",
+            "caption": ".M.P.A Valida como parque",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "zmpa_desc",
+            "caption": "observaciones",
+            "type": "textarea",
+            "class": "input-xlarge",
+            "rows": 1
+        },
+        {
+            "name": "area_parque_adicional_valor",
+            "caption": "Área de parque adicional por IC superior al básico",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "area_parque_adicional_desc",
+            "caption": "observaciones",
+            "type": "textarea",
+            "class": "input-xlarge",
+            "rows": 1
+        },
+        {
+            "name": "parque_adicional_valor",
+            "caption": "Parque adicional",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "parque_adicional_desc",
+            "caption": "observaciones",
+            "type": "textarea",
+            "class": "input-xlarge",
+            "rows": 1
+        },
+        {
+            "name": "cesiones_publicas_eq_valor",
+            "caption": "CESIONES PÚBLICAS EQUIPAMIENTOS 8%",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "cesiones_publicas_eq_desc",
+            "caption": "observaciones",
+            "type": "textarea",
+            "class": "input-xlarge",
+            "rows": 1
+        },
+        {
+            "name": "zona_verde_adicional_valor",
+            "caption": "ZONA VERDE ADICIONAL",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "zona_verde_adicional_desc",
+            "caption": "observaciones",
+            "type": "textarea",
+            "class": "input-xlarge",
+            "rows": 1
+        },
+        {
+            "name": "pago_sesionesm2_valor",
+            "caption": "PAGO COMPENSATORIO DE CESIONES m2",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "pago_sesionesm2_desc",
+            "caption": "observaciones",
+            "type": "textarea",
+            "class": "input-xlarge",
+            "rows": 1
+        },
+        {
+            "name": "vias_locales_valor",
+            "caption": "VIAS LOCALES",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "vias_locales_desc",
+            "caption": "observaciones",
+            "type": "textarea",
+            "class": "input-xlarge",
+            "rows": 1
+        },
+        {
+            "name": "area_util_valor",
+            "caption": "AREA UTIL",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "area_util_desc",
+            "caption": "observaciones",
+            "type": "textarea",
+            "class": "input-xlarge",
+            "rows": 1
+        },
+        {
+            "name": "vip_con_comercio_valor",
+            "caption": "RESIDENCIAL VIP CON COMERCIO EN LOS PRIMEROS PISOS",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "vip_con_comercio_desc",
+            "caption": "observaciones",
+            "type": "textarea",
+            "class": "input-xlarge",
+            "rows": 1
+        },
+        {
+            "name": "area_institucional_valor",
+            "caption": "INSTITUCIONAL",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "area_institucional_desc",
+            "caption": "observaciones",
+            "type": "textarea",
+            "class": "input-xlarge",
+            "rows": 1
+        },
+        {
+            "name": "indice_ocupacion",
+            "type": "div",
+            "html": [
+                {
+                    "type": "h4",
+                    "html": "INDICE DE OCUPACIÓN"
+                }
+            ]
+        },
+        {
+            "name": "area_vivienda_comercial_valor",
+            "caption": "AREA OCUPADA VIVIENDA CON COMERCIO PRIMER PISO",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "area_vivienda_comercial_desc",
+            "caption": "observaciones",
+            "type": "textarea",
+            "class": "input-xlarge",
+            "rows": 1
+        },
+        {
+            "name": "area_ocupada_comercio_valor",
+            "caption": "AREA OCUPADA COMERCIO (Comercio aislado)",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "area_ocupada_comercio_desc",
+            "caption": "observaciones",
+            "type": "textarea",
+            "class": "input-xlarge",
+            "rows": 1
+        },
+        {
+            "name": "area_ocupada_idu_valor",
+            "caption": "AREA OCUPADA SEDE IDU",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "area_ocupada_idu_desc",
+            "caption": "observaciones",
+            "type": "textarea",
+            "class": "input-xlarge",
+            "rows": 1
+        },
+        {
+            "name": "area_total_ocupada_valor",
+            "caption": "AREA TOTAL OCUPADA",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "area_total_ocupada_desc",
+            "caption": "observaciones",
+            "type": "textarea",
+            "class": "input-xlarge",
+            "rows": 1
+        },
+        {
+            "name": "io_valor",
+            "caption": "IO",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "io_desc",
+            "caption": "observaciones",
+            "type": "textarea",
+            "class": "input-xlarge",
+            "rows": 1
+        },
+        {
+            "name": "indice_construccion",
+            "type": "div",
+            "html": [
+                {
+                    "type": "h4",
+                    "html": "INDICE DE CONSTRUCCIÓN"
+                }
+            ]
+        },
+        {
+            "name": "construida_comercial_valor",
+            "caption": "AREA CONSTRUIDA COMERCIAL (Comercio aislado)",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "construida_comercial_desc",
+            "caption": "observaciones",
+            "type": "textarea",
+            "class": "input-xlarge",
+            "rows": 1
+        },
+        {
+            "name": "pisos_valor",
+            "caption": "NUMERO DE PISOS VIVIENDA",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "pisos_desc",
+            "caption": "observaciones",
+            "type": "textarea",
+            "class": "input-xlarge",
+            "rows": 1
+        },
+        {
+            "name": "total_construida_residencial_valor",
+            "caption": "AREA TOTAL CONSTRUIDA USO RESIDENCIAL (AO x N° DE PISOS + AC Comercio aislado)",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "total_construida_residencial_desc",
+            "caption": "observaciones",
+            "type": "textarea",
+            "class": "input-xlarge",
+            "rows": 1
+        },
+        {
+            "name": "total_construida_idu_valor",
+            "caption": "AREA TOTAL CONSTRUIDA IDU (AO x 20 PISOS)",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "total_construida_idu_desc",
+            "caption": "observaciones",
+            "type": "textarea",
+            "class": "input-xlarge",
+            "rows": 1
+        },
+        {
+            "name": "area_construida_ic_valor",
+            "caption": "AREA CONSTRUIDA PARA IC",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "area_construida_ic_desc",
+            "caption": "observaciones",
+            "type": "textarea",
+            "class": "input-xlarge",
+            "rows": 1
+        },
+        {
+            "name": "ic_valor",
+            "caption": "IC",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "ic_desc",
+            "caption": "observaciones",
+            "type": "textarea",
+            "class": "input-xlarge",
+            "rows": 1
+        },
+        {
+            "name": "vivienda_areas_comerciales",
+            "type": "div",
+            "html": [
+                {
+                    "type": "h4",
+                    "html": "VIVIENDA Y ÁREAS COMERCIALES"
+                }
+            ]
+        },
+        {
+            "name": "num_total_viviendas",
+            "caption": "NUMERO TOTAL DE VIVIENDAS",
+            "type": "radiobuttons",
+            "options": {
+                "por_piso": "POR PISO",
+                "total": "TOTAL"
+            }
+        },
+        {
+            "name": "viviendas_piso_valor",
+            "caption": "POR PISO",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "viviendas_piso_desc",
+            "caption": "observaciones",
+            "type": "textarea",
+            "class": "input-xlarge",
+            "rows": 1
+        },
+        {
+            "name": "total_viviendas_valor",
+            "caption": "TOTAL",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "total_viviendas_desc",
+            "caption": "observaciones",
+            "type": "textarea",
+            "class": "input-xlarge",
+            "rows": 1
+        },
+        {
+            "name": "area_comercio_valor",
+            "caption": "AREA COMERCIO",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "area_comercio_desc",
+            "caption": "observaciones",
+            "type": "textarea",
+            "class": "input-xlarge",
+            "rows": 1
+        },
+        {
+            "name": "area_ventas_valor",
+            "caption": "AREA DE VENTAS (APROX.)",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "area_ventas_desc",
+            "caption": "observaciones",
+            "type": "textarea",
+            "class": "input-xlarge",
+            "rows": 1
+        },
+        {
+            "name": "equipamento_comunal_privado",
+            "type": "div",
+            "html": [
+                {
+                    "type": "h4",
+                    "html": "EQUIPAMIENTO COMUNAL PRIVADO"
+                }
+            ]
+        },
+        {
+            "name": "uso_residencial",
+            "type": "div",
+            "html": [
+                {
+                    "type": "h4",
+                    "html": "USO RESIDENCIAL"
+                }
+            ]
+        },
+        {
+            "name": "zonas_recreativas",
+            "caption": "zonas verdes recreativas",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "servicios_comunales",
+            "caption": "servicios comunales",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "otros_equipamentos",
+            "caption": "OTROS",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "observaciones_equipamentos",
+            "caption": "observaciones",
+            "type": "textarea",
+            "class": "input-xlarge"
+        },
+        {
+            "name": "uso_institucional",
+            "type": "div",
+            "html": [
+                {
+                    "type": "h4",
+                    "html": "USO INSTITUCIONAL"
+                }
+            ]
+        },
+        {
+            "name": "zonas_inst_recreativas",
+            "caption": "zonas verdes recreativas",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "servicios_inst_comunales",
+            "caption": "servicios comunales",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "otros_usos_institucionales",
+            "caption": "OTROS",
+            "type": "number",
+            "class": "input-medium"
+        },
+        {
+            "name": "observaciones_uso_institucional",
+            "caption": "observaciones",
+            "type": "textarea",
+            "class": "input-xlarge"
+        },
+        {
+            "name": "grafico_areas",
+            "caption": "GRÁFICO DE ÁREAS",
+            "type": "attachment"
+        },
+        {
+            "name": "elaboro",
+            "caption": "Elaboró",
+            "type": "text"
+        },
+        {
+            "name": "estado_ficha",
+            "caption": "Estado de la Ficha",
+            "type": "radiobuttons",
+            "options": {
+                "rechazado": "Rechazado",
+                "aprobado": "Aprobado",
+                "revisado": "Revisado",
+                "anulado": "Anulado",
+                "completado": "Completado"
+            }
+        }
+    ]
+}
