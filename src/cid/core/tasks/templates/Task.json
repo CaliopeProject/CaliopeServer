@@ -138,6 +138,12 @@
             "method": "tasks.commit",
             "params-to-send" : "uuid",
             "encapsulate-in-data" : "false"
+        },
+        {
+            "name": "Descartar",
+            "method": "tasks.discardDraft",
+            "params-to-send": "uuid",
+            "encapsulate-in-data": "false"
         }
     ],
     "layout": [
