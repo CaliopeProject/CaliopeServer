@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+import email
 import imaplib
 import sys
 
@@ -28,19 +29,18 @@ class ImapImport:
       return False
     return True
 
-  def Test(self):
+  def GetEmailUIDs(self):
     result = self.mail.uid('search', None, 'ALL') # search and return uids instead
     if not self.isOK(result):
-      return False
-    email_uids = result[1][0].split()
-    if len(email_uids) == 0:
-      return False
-    latest_email_uid = email_uids[1]
-    result = self.mail.uid('fetch', latest_email_uid, '(RFC822)')
+      return False, None
+    return True, result[1][0].split()
+
+  def FetchEmail(self, uid):
+    result = self.mail.uid('fetch', uid, '(RFC822)')
     if not self.isOK(result):
-      return False
-    print 'Data[0]: ', result[1][0][1]
-    return True
+      return False, None
+    mail = email.message_from_string(result[1][0][1])
+    return True, mail
 
 ii = ImapImport(server='imap.gmail.com', account='metrovivienda2@gmail.com', password='otrosecreto')
 if not ii.Login():
@@ -48,4 +48,12 @@ if not ii.Login():
   sys.exit(1)
 if not ii.SelectFolder(folder='label1'):
   print >> sys.stderr, 'Could not select folder'
-ii.Test()
+status, uids = ii.GetEmailUIDs()
+email_uid_to_fetch = uids[-1]
+if not status:
+  print >> sys.stderr, 'Could not get email uids'
+status, message = ii.FetchEmail(email_uid_to_fetch)
+if not status:
+  print >> sys.stderr, 'Could not get fetch emai with uid'
+# Ready, we've got an email.message.Message object.
+print message.__class__.__name__
