@@ -1,0 +1,66 @@
+{
+    "html": [
+        {
+            "name": "title",
+            "type": "div",
+            "html": [
+                {
+                    "type": "h1",
+                    "html": "Radicación"
+                }
+            ]
+        },
+        {
+            "name": "type",
+            "caption": "Tipo",
+            "type": "text",
+            "class": "input-xlarge",
+            "options": {
+                "tipo1": "Tipo 1",
+                "tipo2": "Tipo 2",
+                "tipo3": "Tipo 3",
+                "tipo4": "Tipo 4"
+            }
+        },
+        {
+            "name": "reference_code",
+            "caption": "Referencia",
+            "class": "input-large",
+            "type": "text"
+        },
+        {
+            "name": "guide_number",
+            "caption": "Guia",
+            "class": "input-large",
+            "type": "text"
+        },
+        {
+            "name": "subject",
+            "caption": "Asunto",
+            "class": "input-large",
+            "type": "text"
+        },
+        {
+            "name": "document_time",
+            "class": "input-large",
+            "caption": "Fecha Doc.",
+            "type": "datepicker",
+            "format": "dd/MM/yyyy"
+        },
+        {
+            "name": "attachment",
+            "caption": "Adjunto",
+            "type": "form",
+            "cardinality": "*",
+            "options-form": {
+                "formId": "OrfeoAttachment",
+                "generic": "true"
+            },
+            "relation": {
+                "rel_name": "attachment",
+                "class": "OrfeoAttachment",
+                "target": "{{attachment}}"
+            }
+        }
+    ]
+}
