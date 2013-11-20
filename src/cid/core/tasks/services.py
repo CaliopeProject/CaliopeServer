@@ -149,7 +149,7 @@ class TaskServices(CaliopeServices):
 
     @classmethod
     @public(name='commit')
-    def commit(cls, uuid):
+    def commit(cls, uuid, loopback_notification=False):
         hkey_name = uuid
         if cls.r.hexists(hkey_name, "formtask"):
             from cid.core.forms.services import FormManager
@@ -175,12 +175,14 @@ class TaskServices(CaliopeServices):
         rv = super(TaskServices, cls).commit(uuid)
         for holder in holders_to_add:
             PubSub().publish_command("",
-                                     holder, "createTask", VersionedNode.pull(uuid).serialize(), loopback=True)
+                                     holder, "createTask", VersionedNode.pull(uuid).serialize(),
+                                     loopback=loopback_notification)
             PubSub().subscribe_uuid_with_user_uuid(holder, uuid)
 
         for holder in holders_to_remove:
             PubSub().publish_command("",
-                                     holder, "removeTask", VersionedNode.pull(uuid).serialize(), loopback=True)
+                                     holder, "removeTask", VersionedNode.pull(uuid).serialize(),
+                                     loopback=loopback_notification)
         return rv
 
 
