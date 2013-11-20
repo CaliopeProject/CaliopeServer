@@ -35,8 +35,6 @@ class CaliopeDocument(VersionedNode):
     description = StringProperty()
     state = StringProperty()
 
-    def __init__(self, *args, **kwargs):
-        super(CaliopeDocument, self).__init__(*args, **kwargs)
 
 class ContentDocument(VersionedNode):
     __index__ = 'ContentFulltext'
