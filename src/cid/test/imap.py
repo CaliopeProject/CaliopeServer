@@ -55,5 +55,29 @@ if not status:
 status, message = ii.FetchEmail(email_uid_to_fetch)
 if not status:
   print >> sys.stderr, 'Could not get fetch emai with uid'
-# Ready, we've got an email.message.Message object.
-print message.__class__.__name__
+
+
+allowed_mime_types = ['image/jpeg', 'application/pdf', 'application/zip', 'application/gzip', 'audio/mp4', 'audio/mpeg', 'audio/ogg', 'audio/vorbis', 'audio/webm', 'image/gif', 'image/jpeg', 'image/pjpeg', 'image/png', 'image/tiff', 'text/csv', 'text/plain', 'text/xml', 'video/mpeg', 'video/mp4', 'video/ogg', 'video/quicktime', 'video/webm', 'application/vnd.oasis.opendocument.text', 'application/vnd.oasis.opendocument.spreadsheet', 'application/vnd.oasis.opendocument.presentation', 'application/vnd.oasis.opendocument.graphics', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
+
+
+attachment_id = 0
+for part in message.walk():
+    c_type = part.get_content_type()
+    c_disp = part.get('Content-Disposition')
+    print 'c_type:{}\nc_disp:{}\n'.format(c_type, c_disp)
+    body = ''
+    if c_type == 'text/plain' and c_disp == None:
+        print 'Body part <start>'
+        print part.get_payload().decode('quopri')#.decode('utf-8')
+        print 'Body part <stop>'
+        body += '\n' + part.get_payload()
+    elif c_type in allowed_mime_types:
+        print 'ELSE Body part <start>'
+        file_name = 'attachment_{}.png'.format(attachment_id)
+        # TODO(nel): use with.
+        f = open(file_name, 'w')
+        f.write(part.get_payload(decode=True))
+        f.close()
+        print 'ELSE Body part <stop>'
+
+print 'BODY:', body
