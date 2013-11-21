@@ -22,64 +22,64 @@ allowed_mime_types = ['image/jpeg', 'application/pdf', 'application/zip',
 
 class ImapImport:
 
-  def __init__(self, server, account, password):
-      self.server = server
-      self.account = account
-      self.password = password
+    def __init__(self, server, account, password):
+        self.server = server
+        self.account = account
+        self.password = password
 
-  def isOK(self, ret):
-      return ret[0] == 'OK'
+    def isOK(self, ret):
+        return ret[0] == 'OK'
 
-  def Login(self):
-      self.mail = imaplib.IMAP4_SSL(self.server)
-      if not self.isOK(self.mail.login(self.account, self.password)): 
-          return False
-      if not self.isOK(self.mail.list()):
-          return False
-      return True
+    def Login(self):
+        self.mail = imaplib.IMAP4_SSL(self.server)
+        if not self.isOK(self.mail.login(self.account, self.password)): 
+            return False
+        if not self.isOK(self.mail.list()):
+            return False
+        return True
 
-  def Logout(self):
-      self.mail.expunge()
-      self.mail.close()
-      self.mail.logout()
+    def Logout(self):
+        self.mail.expunge()
+        self.mail.close()
+        self.mail.logout()
 
-  def SelectFolder(self, folder):
-      ret = self.mail.select(folder) # connect to inbox.
-      if not self.isOK(ret):
-          return False
-      print >> sys.stderr, ret[1][0], 'emails in folder', folder
-      return True
+    def SelectFolder(self, folder):
+        ret = self.mail.select(folder) # connect to inbox.
+        if not self.isOK(ret):
+            return False
+        print >> sys.stderr, ret[1][0], 'emails in folder', folder
+        return True
 
-  def GetAvailableEmailUids(self):
-      result = self.mail.uid('search', None, 'ALL') # search and return uids instead
-      if not self.isOK(result):
+    def GetAvailableEmailUids(self):
+        result = self.mail.uid('search', None, 'ALL') # search and return uids instead
+        if not self.isOK(result):
+            return False, None
+        return True, result[1][0].split()
+
+    def DeleteEmail(self, uid):
+        self.mail.store(uid, '+FLAGS', '\\Deleted')
+
+    def FetchEmail(self, email_uid):
+        result = self.mail.uid('fetch', email_uid, '(RFC822)')
+        if not self.isOK(result):
+          print >> sys.stderr, 'Could not get fetch email with uid:', email_uidh
           return False, None
-      return True, result[1][0].split()
 
-  def DeleteEmail(self, uid):
-      self.mail.store(uid, '+FLAGS', '\\Deleted')
+        message = email.message_from_string(result[1][0][1])
 
-  def FetchEmail(self, email_uid):
-      result = self.mail.uid('fetch', email_uid, '(RFC822)')
-      if not self.isOK(result):
-        print >> sys.stderr, 'Could not get fetch email with uid:', email_uidh
-        return False, None
+        attachment_id = 0
+        attachments = []
 
-      message = email.message_from_string(result[1][0][1])
-
-      attachment_id = 0
-      attachments = []
-
-      for part in message.walk():
-          c_type = part.get_content_type()
-          c_disp = part.get('Content-Disposition')
-          body = ''
-          if c_type == 'text/plain' and c_disp == None:
-              body += part.get_payload().decode('quopri')
-          elif c_type in allowed_mime_types:
-              attachments.append((c_type, 'attachment_{}'.format(attachment_id) , part.get_payload(decode=True)))
-              attachment_id += 1
-      return True, [body, attachments]
+        for part in message.walk():
+            c_type = part.get_content_type()
+            c_disp = part.get('Content-Disposition')
+            body = ''
+            if c_type == 'text/plain' and c_disp == None:
+                body += part.get_payload().decode('quopri')
+            elif c_type in allowed_mime_types:
+                attachments.append((c_type, 'attachment_{}'.format(attachment_id) , part.get_payload(decode=True)))
+                attachment_id += 1
+        return True, [body, attachments]
 
 
 def CheckEmail():
