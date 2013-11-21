@@ -439,6 +439,7 @@ class CaliopeServices(object):
                             versioned_node.add_or_update_relationship_target(
                                 delta_k, target, new_properties=props)
                             #: clean stage area
+                            cls._remove_draft_rels(uuid)
             return {'uuid': uuid,
                     'value': versioned_node.uuid == uuid}
         else:
