@@ -35,6 +35,7 @@ from cid.core.login import LoginManager
 from cid.utils.thumbnails import get_thumbnail
 from cid.core.documents import DocumentManager, DocumentProcess
 from cid.utils.crossdomain import crossdomain
+from cid.core.entities import CaliopeServices
 
 file_uploader = Blueprint('file_uploader', __name__, template_folder='')
 
@@ -66,6 +67,7 @@ def uploader():
     if request.method == 'POST':
         #print request.form['id']
         #print str(request.form.viewitems())
+        attachment_params = {k:v[0] for k,v in [x for x in request.form.viewitems()]}
         if 'session_uuid' in request.form:
            if LoginManager().check_with_uuid(request.form['session_uuid']):
                print "OK"
@@ -101,6 +103,7 @@ def uploader():
                     'id':   idfile,
                     'thumbnail': get_thumbnail(os.path.join(UPLOAD_FOLDER, idfile),'data')
                 }
+                CaliopeServices().update_relationship(attachment_params['uuid'],attachment_params['field'],idfile)
             else:
                 result = {
                     'result': 'error',
