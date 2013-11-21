@@ -52,7 +52,7 @@ class LoginManager(object):
                 PubSub().subscribe_uuid(userNode.uuid)
                 PubSub().register_uuid_and_thread_id(userNode.uuid)
                 PubSub().publish_command(userNode.uuid, userNode.uuid, 'message',
-                                         {'body': 'Bienvenido', 'level': 'success'}, loopback=True)
+                                         {'msg': 'Bienvenido', 'type': 'success'}, loopback=True)
 
                 return {
                     'login': True,
@@ -83,7 +83,7 @@ class LoginManager(object):
                     PubSub().subscribe_uuid(userNode.uuid)
                     PubSub().register_uuid_and_thread_id(userNode.uuid)
                     PubSub().publish_command(userNode.uuid, userNode.uuid, 'message',
-                                         {'body': 'Bienvenido', 'level': 'success'}, loopback=True)
+                                         {'msg': 'Bienvenido', 'type': 'success'}, loopback=True)
                     return {'login': True,
                             'session_uuid': {'value': session_uuid},
                             'user_uuid': {'value': userNode.uuid},
