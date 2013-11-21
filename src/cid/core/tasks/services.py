@@ -178,11 +178,15 @@ class TaskServices(CaliopeServices):
                                      holder, "createTask", VersionedNode.pull(uuid).serialize(),
                                      loopback=loopback_notification)
             PubSub().subscribe_uuid_with_user_uuid(holder, uuid)
+            PubSub().publish_command('', holder, 'message',
+                                     {'body': 'Nueva tarea', 'level': 'info'})
 
         for holder in holders_to_remove:
             PubSub().publish_command("",
                                      holder, "removeTask", VersionedNode.pull(uuid).serialize(),
                                      loopback=loopback_notification)
+            PubSub().publish_command('', holder, 'message',
+                                     {'body': 'Tarea borrada', 'level': 'info'})
         return rv
 
 
