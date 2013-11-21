@@ -44,14 +44,14 @@ class ImapImport:
         self.mail.logout()
 
     def SelectFolder(self, folder):
-        ret = self.mail.select(folder) # connect to inbox.
+        ret = self.mail.select(folder)
         if not self.isOK(ret):
             return False
         print >> sys.stderr, ret[1][0], 'emails in folder', folder
         return True
 
     def GetAvailableEmailUids(self):
-        result = self.mail.uid('search', None, 'ALL') # search and return uids instead
+        result = self.mail.uid('search', None, 'ALL')
         if not self.isOK(result):
             return False, None
         return True, result[1][0].split()
@@ -79,6 +79,8 @@ class ImapImport:
             elif c_type in allowed_mime_types:
                 attachments.append((c_type, 'attachment_{}'.format(attachment_id) , part.get_payload(decode=True)))
                 attachment_id += 1
+            else:
+                print >> sys.stderr, 'Mime type "{}" not supported yet.'.format(c_type)
         return True, [body, attachments]
 
 
@@ -105,7 +107,10 @@ def CheckEmail():
     n_retrieved = 0
     for email_uid in email_uids:
         status, email = ii.FetchEmail(email_uid)
-        #body, attachments = email
+
+        body, attachments = email
+        #TODO(nel): Unused vars.
+
         ii.DeleteEmail(email_uid)
         if status:
           n_retrieved += 1
