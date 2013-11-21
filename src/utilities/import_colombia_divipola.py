@@ -130,8 +130,8 @@ class Importer(object):
         iso_code = StringProperty()
 
         """
-        colombia_data = {'name':'Colombia',
-                        'code':57,
+        colombia_data = {'name': 'COLOMBIA',
+                         'code':57,
                         'phone_code':'+57',
                         'currency_code':'COP',
                         'iso_code':'co'}
