@@ -50,6 +50,27 @@
             ]
         },
         {
+          "columns": [
+            {
+              "class": "span12",
+              "elements": [
+                "user"
+              ]
+            }
+          ]
+        },
+        {
+          "columns": [
+            {
+              "class": "span12",
+              "elements": [
+                "company"
+              ]
+            }
+
+          ]
+        },
+        {
             "columns": [
                 {
                     "class": "span12",
