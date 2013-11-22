@@ -1,4 +1,20 @@
-#!/usr/bin/python
+# -*- encoding: utf-8 -*-
+"""
+Copyright (C) 2013 Infometrika Ltda.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+"""
 
 import email
 import imaplib
@@ -20,8 +36,8 @@ allowed_mime_types = ['image/jpeg', 'application/pdf', 'application/zip',
                       'application/vnd.openxmlformats-officedocument.presentationml.presentation',
                       'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
 
-class ImapImport:
 
+class ImapImport:
     def __init__(self, server, account, password):
         self.server = server
         self.account = account
@@ -32,7 +48,7 @@ class ImapImport:
 
     def Login(self):
         self.mail = imaplib.IMAP4_SSL(self.server)
-        if not self.isOK(self.mail.login(self.account, self.password)): 
+        if not self.isOK(self.mail.login(self.account, self.password)):
             return False
         if not self.isOK(self.mail.list()):
             return False
@@ -59,13 +75,13 @@ class ImapImport:
 
     def DeleteEmail(self, uid):
         if not self.IsOK(self.mail.uid('store', uid, '+FLAGS', '\\Deleted')):
-          print >> sys.stderr, 'Could no delete email with uid', uid
+            print >> sys.stderr, 'Could no delete email with uid', uid
 
     def FetchEmail(self, email_uid):
         result = self.mail.uid('fetch', email_uid, '(RFC822)')
         if not self.isOK(result):
-          print >> sys.stderr, 'Could not get fetch email with uid:', email_uidh
-          return False, None
+            print >> sys.stderr, 'Could not get fetch email with uid:', email_uidh
+            return False, None
 
         message = email.message_from_string(result[1][0][1])
 
@@ -84,7 +100,8 @@ class ImapImport:
         return True, [message['Subject'], body, attachments]
 
 
-def CheckEmail():
+def CheckEmail(delete=False):
+    rv = list()
     ii = ImapImport(server='imap.gmail.com', account='metrovivienda2@gmail.com', password='otrosecreto')
 
     if not ii.Login():
@@ -108,19 +125,24 @@ def CheckEmail():
     for email_uid in email_uids:
         status, email = ii.FetchEmail(email_uid)
         if status:
-          n_retrieved += 1
-          subject, body, attachments = email
-          print 'Subject:', subject
-          print 'Body:', body
-          for a in attachments:
-            print 'mime', a[0]
-            print 'filename', a[1]
-            #print 'contents', a[2]
+            n_retrieved += 1
+            email_dict = dict()
+            email_dict['subject'], email_dict['body'], email_dict['attachments'] = email
+            rv.append(email_dict)
 
-          # Delete the email.
-          ii.DeleteEmail(email_uid)
+            #print 'Subject:', subject
+            #print 'Body:', body
+            #for a in attachments:
+            #    print 'mime', a[0]
+            #    print 'filename', a[1]
+            #    print 'contents', a[2]
+            if delete:
+                # Delete the email.
+                ii.DeleteEmail(email_uid)
 
     print >> sys.stderr, 'Retrieved', n_retrieved, 'emails'
     ii.Logout()
+    return rv
 
-CheckEmail()
+
+#rv = CheckEmail()
