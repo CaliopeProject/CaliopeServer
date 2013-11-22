@@ -45,16 +45,7 @@ class TaskServices(CaliopeServices):
     @classmethod
     @public(name='getAll')
     def get_all(cls):
-        a_node = CaliopeUser.category().instance.single()
-        results, metadata = a_node.cypher("START user=node(*)"
-                                          "MATCH (user)-[r:HOLDER]-(tdc)-[e:CURRENT]-(t)"
-                                          "WHERE has(r.category) "
-                                          "return distinct t")
-        task_list = []
-        for row in results:
-            task = cls.get_data(row[0]._properties['uuid'])
-            task_list.append(task)
-        return task_list
+        raise NotImplementedError
 
     @classmethod
     @public(name='getCurrentUserKanban')
@@ -66,15 +57,14 @@ class TaskServices(CaliopeServices):
         #: relationship and that node is connected with a  CURRENT relationship to a task.
         #: From the task find the FIRST node
         if category is None:
-            results, metadata = user_node.cypher("START user=node({self})"
-                                                 "MATCH (user)-[r:HOLDER]-(t)-["
-                                                 "TASK]-()"
-                                                 "WHERE has(r.category) and "
-                                                 "(r.category='ToDo' or "
-                                                 "r.category='Doing' or "
-                                                 "r.category='Done')"
-                                                 "return distinct (t), "
-                                                 "r.category");
+            results, metadata = user_node.cypher("""
+            START user=node({self})
+            MATCH (user)-[r:HOLDER]-(t)-[TASK]-(), (t)-[CONTEXT]-(context)
+            WHERE has(r.category) and (r.category='ToDo' or
+                                        r.category='Doing' or
+                                        r.category='Done')
+            RETURN distinct t, r.category
+             """);
         else:
             results, metadata = user_node.cypher("START user=node({self})"
                                                  "MATCH (user)-[r:HOLDER]-(t)-["

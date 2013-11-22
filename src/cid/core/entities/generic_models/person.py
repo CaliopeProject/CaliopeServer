@@ -36,6 +36,8 @@ class CaliopePerson(VersionedNode):
     last_name = StringProperty()
     #: segundo_apellido
     sur_name = StringProperty()
-    identification_document = RelationshipTo(CaliopeIdentificationDocument, 'IDENTIFIED_BY', ZeroOrOne)
+    identification_document = RelationshipTo(CaliopeIdentificationDocument,
+                                             'IDENTIFIED_BY', ZeroOrOne)
     #: información de contacto
-    contact_information = RelationshipTo(CaliopeContact, 'CONTACT_INFORMATION', ZeroOrOne)
+    contact_information = RelationshipTo(CaliopeContact,
+                                         'CONTACT_INFORMATION', ZeroOrOne)
