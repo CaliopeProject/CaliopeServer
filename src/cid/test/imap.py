@@ -144,5 +144,46 @@ def CheckEmail(delete=False):
     ii.Logout()
     return rv
 
+#tinyrpc
+from tinyrpc.protocols.jsonrpc import JSONRPCProtocol
+from tinyrpc.client import RPCClient, RPCError
+from tinyrpc.transports.http import HttpWebSocketClientTransport
+import hashlib
 
-#rv = CheckEmail()
+#
+class CaliopeClient(object):
+    def __init__(self, *args, **kwargs):
+         self.login(u'user', u'123')
+
+    def login(self, username, password):
+        self.rpc_client = RPCClient(JSONRPCProtocol(),
+                                    HttpWebSocketClientTransport('ws://localhost:9000/api/ws'))
+        self.loginManager = self.rpc_client.get_proxy("login.")
+        hashed_password = hashlib.sha256(password).hexdigest()
+        return self.loginManager.authenticate(username=username,
+                                              password=hashed_password)
+
+    def get_model(self, email):
+        tasks_proxy = self.rpc_client.get_proxy(prefix="tasks.")
+        model = tasks_proxy.getModel()
+        uuid = model["data"]["uuid"]["value"]
+        #:update
+        update = tasks_proxy.updateField(uuid=uuid,
+                                         field_name="name",
+                                         value=email['subject'])
+
+        update = tasks_proxy.updateField(uuid=uuid,
+                                         field_name="description",
+                                         value=email['body'])
+
+        #:commit
+        commit = tasks_proxy.commit(uuid=uuid)
+
+c = CaliopeClient()
+
+rv = CheckEmail()
+
+for email in rv:
+    c.get_model(email)
+
+#c.get_model()
