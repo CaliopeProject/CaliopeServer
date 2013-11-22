@@ -58,16 +58,8 @@ class ImapImport:
         return True, result[1][0].split()
 
     def DeleteEmail(self, uid):
-        print 'deleting email', uid
-
-        status, data = self.mail.uid('fetch', uid, '(FLAGS)')
-        print 'FLAGS BEFORE', status, data
-
-        status, response = self.mail.uid('store', uid, '+FLAGS', '\\Deleted')
-        print 'status', status, 'response', response
-
-        status, data = self.mail.uid('fetch', uid, '(FLAGS)')
-        print 'FLAGS AFTER', status, data
+        if not self.IsOK(self.mail.uid('store', uid, '+FLAGS', '\\Deleted')):
+          print >> sys.stderr, 'Could no delete email with uid', uid
 
     def FetchEmail(self, email_uid):
         result = self.mail.uid('fetch', email_uid, '(RFC822)')
