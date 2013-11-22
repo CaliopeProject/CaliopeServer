@@ -1,4 +1,20 @@
-#!/usr/bin/python
+# -*- encoding: utf-8 -*-
+"""
+Copyright (C) 2013 Infometrika Ltda.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+"""
 
 import email
 import imaplib
@@ -20,8 +36,8 @@ allowed_mime_types = ['image/jpeg', 'application/pdf', 'application/zip',
                       'application/vnd.openxmlformats-officedocument.presentationml.presentation',
                       'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
 
-class ImapImport:
 
+class ImapImport:
     def __init__(self, server, account, password):
         self.server = server
         self.account = account
@@ -32,13 +48,14 @@ class ImapImport:
 
     def Login(self):
         self.mail = imaplib.IMAP4_SSL(self.server)
-        if not self.isOK(self.mail.login(self.account, self.password)): 
+        if not self.isOK(self.mail.login(self.account, self.password)):
             return False
         if not self.isOK(self.mail.list()):
             return False
         return True
 
     def Logout(self):
+        print >> sys.stderr, 'Logging out.'
         self.mail.expunge()
         self.mail.close()
         self.mail.logout()
@@ -57,34 +74,34 @@ class ImapImport:
         return True, result[1][0].split()
 
     def DeleteEmail(self, uid):
-        self.mail.store(uid, '+FLAGS', '\\Deleted')
+        if not self.IsOK(self.mail.uid('store', uid, '+FLAGS', '\\Deleted')):
+            print >> sys.stderr, 'Could no delete email with uid', uid
 
     def FetchEmail(self, email_uid):
         result = self.mail.uid('fetch', email_uid, '(RFC822)')
         if not self.isOK(result):
-          print >> sys.stderr, 'Could not get fetch email with uid:', email_uidh
-          return False, None
+            print >> sys.stderr, 'Could not get fetch email with uid:', email_uidh
+            return False, None
 
         message = email.message_from_string(result[1][0][1])
 
-        attachment_id = 0
         attachments = []
 
         for part in message.walk():
             c_type = part.get_content_type()
             c_disp = part.get('Content-Disposition')
             body = ''
-            if c_type == 'text/plain' and c_disp == None:
+            if (c_type == 'text/plain' or c_type == 'text/html') and c_disp == None:
                 body += part.get_payload().decode('quopri')
             elif c_type in allowed_mime_types:
-                attachments.append((c_type, 'attachment_{}'.format(attachment_id) , part.get_payload(decode=True)))
-                attachment_id += 1
+                attachments.append((c_type, part.get_filename(), part.get_payload(decode=True)))
             else:
                 print >> sys.stderr, 'Mime type "{}" not supported yet.'.format(c_type)
-        return True, [body, attachments]
+        return True, [message['Subject'], body, attachments]
 
 
-def CheckEmail():
+def CheckEmail(delete=False):
+    rv = list()
     ii = ImapImport(server='imap.gmail.com', account='metrovivienda2@gmail.com', password='otrosecreto')
 
     if not ii.Login():
@@ -107,15 +124,25 @@ def CheckEmail():
     n_retrieved = 0
     for email_uid in email_uids:
         status, email = ii.FetchEmail(email_uid)
-
-        body, attachments = email
-        #TODO(nel): Unused vars.
-
-        ii.DeleteEmail(email_uid)
         if status:
-          n_retrieved += 1
+            n_retrieved += 1
+            email_dict = dict()
+            email_dict['subject'], email_dict['body'], email_dict['attachments'] = email
+            rv.append(email_dict)
+
+            #print 'Subject:', subject
+            #print 'Body:', body
+            #for a in attachments:
+            #    print 'mime', a[0]
+            #    print 'filename', a[1]
+            #    print 'contents', a[2]
+            if delete:
+                # Delete the email.
+                ii.DeleteEmail(email_uid)
 
     print >> sys.stderr, 'Retrieved', n_retrieved, 'emails'
     ii.Logout()
+    return rv
 
-CheckEmail()
+
+#rv = CheckEmail()

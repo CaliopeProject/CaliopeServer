@@ -33,7 +33,7 @@ from flask import ( request, Blueprint)
 
 from cid.core.login import LoginManager
 from cid.utils.thumbnails import get_thumbnail
-from cid.core.documents import DocumentManager, DocumentProcess
+from cid.core.documents import DocumentManager, DocumentProcess, CaliopeDocument
 from cid.utils.crossdomain import crossdomain
 from cid.core.entities import CaliopeServices
 

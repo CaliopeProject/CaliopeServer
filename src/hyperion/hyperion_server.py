@@ -117,6 +117,7 @@ def configure_server_and_app(server_config_file):
         app.config['port'] = int(config['server']['port'])
     else:
         app.config['port'] = 8001
+
         #: Load app config
     if 'app' in config:
         if 'modules' in config['app']:
@@ -129,6 +130,11 @@ def configure_server_and_app(server_config_file):
     else:
         #: TODO: load default storage if not found in config
         pass
+
+    if 'formModules' in config['server']:
+        app.config['FORM_MODULES'] = config['server']['formModules']
+    else:
+        app.config['FORM_MODULES'] = None
 
     if 'debug' in config['server']:
         app.debug = True if config['server']['debug'] == 'True' else False
@@ -154,6 +160,7 @@ def register_modules():
 
     """
     module_manager.register_modules(app, 'hyperion')
+    module_manager.register_form_modules(app)
 
 
 def run_server():

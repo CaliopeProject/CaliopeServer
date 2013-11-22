@@ -551,6 +551,7 @@ class CaliopeEntityController(object):
         :param template_html:
         :return:
         """
+        self.template = None
         self.entity_class = entity_class
         self.entity = self.entity_class.pull(uuid) if uuid is not None else \
             self.entity_class()
@@ -585,7 +586,7 @@ class CaliopeEntityController(object):
         #: TODO: Implement depending on user
         if self.actions is not None:
             return self.actions
-        elif 'actions' in self.template:
+        elif self.template and 'actions' in self.template:
             self.actions = self.template['actions']
             self.template.pop('actions')
         else:

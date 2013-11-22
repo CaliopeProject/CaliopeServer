@@ -2,7 +2,8 @@
     "server": {
         "address": "0.0.0.0",
         "port": "9020",
-        "debug": "True"
+        "debug": "True",
+        "formModules": ["conf/siim2_forms.json", "conf/orfeo_forms.json"]
     },
     /* Added fo app configurations */
     "app": {
