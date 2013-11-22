@@ -35,6 +35,9 @@ class CaliopeDocument(VersionedNode):
     description = StringProperty()
     state = StringProperty()
 
+    def save(cls):
+        return super(CaliopeDocument, cls).save(cls)
+
 
 class ContentDocument(VersionedNode):
     __index__ = 'ContentFulltext'
