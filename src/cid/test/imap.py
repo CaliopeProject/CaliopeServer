@@ -67,18 +67,16 @@ class ImapImport:
 
         message = email.message_from_string(result[1][0][1])
 
-        attachment_id = 0
         attachments = []
 
         for part in message.walk():
             c_type = part.get_content_type()
             c_disp = part.get('Content-Disposition')
             body = ''
-            if c_type == 'text/plain' and c_disp == None:
+            if (c_type == 'text/plain' or c_type == 'text/html') and c_disp == None:
                 body += part.get_payload().decode('quopri')
             elif c_type in allowed_mime_types:
-                attachments.append((c_type, 'attachment_{}'.format(attachment_id) , part.get_payload(decode=True)))
-                attachment_id += 1
+                attachments.append((c_type, part.get_filename(), part.get_payload(decode=True)))
             else:
                 print >> sys.stderr, 'Mime type "{}" not supported yet.'.format(c_type)
         return True, [body, attachments]
@@ -107,13 +105,17 @@ def CheckEmail():
     n_retrieved = 0
     for email_uid in email_uids:
         status, email = ii.FetchEmail(email_uid)
-
-        body, attachments = email
-        #TODO(nel): Unused vars.
-
-        ii.DeleteEmail(email_uid)
         if status:
           n_retrieved += 1
+          body, attachments = email
+          print 'Body', body
+          for a in attachments:
+            print 'mime', a[0]
+            print 'filename', a[1]
+            #print 'contents', a[2]
+
+          # Delete the email.
+          ii.DeleteEmail(email_uid)
 
     print >> sys.stderr, 'Retrieved', n_retrieved, 'emails'
     ii.Logout()
