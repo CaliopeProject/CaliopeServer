@@ -81,7 +81,7 @@ class ImapImport:
                 attachments.append((c_type, part.get_filename(), part.get_payload(decode=True)))
             else:
                 print >> sys.stderr, 'Mime type "{}" not supported yet.'.format(c_type)
-        return True, [body, attachments]
+        return True, [message['Subject'], body, attachments]
 
 
 def CheckEmail():
@@ -109,8 +109,9 @@ def CheckEmail():
         status, email = ii.FetchEmail(email_uid)
         if status:
           n_retrieved += 1
-          body, attachments = email
-          print 'Body', body
+          subject, body, attachments = email
+          print 'Subject:', subject
+          print 'Body:', body
           for a in attachments:
             print 'mime', a[0]
             print 'filename', a[1]
