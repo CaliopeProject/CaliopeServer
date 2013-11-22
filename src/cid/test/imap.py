@@ -39,6 +39,7 @@ class ImapImport:
         return True
 
     def Logout(self):
+        print >> sys.stderr, 'Logging out.'
         self.mail.expunge()
         self.mail.close()
         self.mail.logout()
@@ -57,7 +58,16 @@ class ImapImport:
         return True, result[1][0].split()
 
     def DeleteEmail(self, uid):
-        self.mail.store(uid, '+FLAGS', '\\Deleted')
+        print 'deleting email', uid
+
+        status, data = self.mail.uid('fetch', uid, '(FLAGS)')
+        print 'FLAGS BEFORE', status, data
+
+        status, response = self.mail.uid('store', uid, '+FLAGS', '\\Deleted')
+        print 'status', status, 'response', response
+
+        status, data = self.mail.uid('fetch', uid, '(FLAGS)')
+        print 'FLAGS AFTER', status, data
 
     def FetchEmail(self, email_uid):
         result = self.mail.uid('fetch', email_uid, '(RFC822)')
