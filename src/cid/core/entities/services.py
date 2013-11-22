@@ -485,8 +485,9 @@ class CaliopeServices(object):
             saved_data = vnode.serialize()
             #Notify to go back on saved data.
             for field_name in changed_fields.keys():
-                cls._publish_update_field(uuid, field_name, value=saved_data[
-                    field_name]["value"])
+                value = saved_data[field_name]["value"] if \
+                    field_name in saved_data else None
+                cls._publish_update_field(uuid, field_name, value=value)
             rv = (cls._has_draft_props(uuid) and cls
             ._remove_draft_props(
                 uuid))
