@@ -42,7 +42,7 @@
             ]
         },
         {
-            "name": "attachment",
+            "name": "document_attachment",
             "caption": "Archivo(s) adjuntos",
             "type": "attachment"
         }

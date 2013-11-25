@@ -43,6 +43,11 @@ from .versioned_node import (RelationshipTo,
 from .versioned_node import VersionedNode, timeStampGenerator
 
 
+class CaliopeContext(VersionedNode):
+    name = StringProperty()
+    elements = RelationshipFrom(VersionedNode, "CONTEXT", ZeroOrMore)
+
+
 class CaliopeUser(VersionedNode):
     username = StringProperty(unique_index=True)
     domainname = StringProperty()
@@ -57,3 +62,5 @@ class CaliopeGroup(VersionedNode):
     name = StringProperty(required=True)
     code = StringProperty(unique_index=True)
     members = RelationshipFrom('CaliopeUser', 'IS_MEMBER_OF_GROUP')
+
+

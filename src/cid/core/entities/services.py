@@ -439,6 +439,7 @@ class CaliopeServices(object):
                             versioned_node.add_or_update_relationship_target(
                                 delta_k, target, new_properties=props)
                             #: clean stage area
+                cls._remove_draft_rels(uuid)
             return {'uuid': uuid,
                     'value': versioned_node.uuid == uuid}
         else:
@@ -484,8 +485,9 @@ class CaliopeServices(object):
             saved_data = vnode.serialize()
             #Notify to go back on saved data.
             for field_name in changed_fields.keys():
-                cls._publish_update_field(uuid, field_name, value=saved_data[
-                    field_name]["value"])
+                value = saved_data[field_name]["value"] if \
+                    field_name in saved_data else None
+                cls._publish_update_field(uuid, field_name, value=value)
             rv = (cls._has_draft_props(uuid) and cls
             ._remove_draft_props(
                 uuid))
@@ -550,6 +552,7 @@ class CaliopeEntityController(object):
         :param template_html:
         :return:
         """
+        self.template = None
         self.entity_class = entity_class
         self.entity = self.entity_class.pull(uuid) if uuid is not None else \
             self.entity_class()
@@ -584,7 +587,7 @@ class CaliopeEntityController(object):
         #: TODO: Implement depending on user
         if self.actions is not None:
             return self.actions
-        elif 'actions' in self.template:
+        elif self.template and 'actions' in self.template:
             self.actions = self.template['actions']
             self.template.pop('actions')
         else:

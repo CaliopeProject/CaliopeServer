@@ -26,14 +26,12 @@ from ..base_models.entities_models import *
 from .geolocation import CaliopeMunicipality
 
 
-
 class CaliopeAddressType(VersionedNode):
     """
     This class allows to mark as home, work, personal etc, an address
     """
     name = StringProperty()
     code = StringProperty()
-
 
 
 class CaliopePhoneType(VersionedNode):
@@ -43,8 +41,6 @@ class CaliopePhoneType(VersionedNode):
     name = StringProperty()
     code = StringProperty()
     carrier = StringProperty()
-
-
 
 
 class CaliopeAddress(VersionedNode):
@@ -62,7 +58,6 @@ class CaliopePhone(VersionedNode):
     type = RelationshipTo(CaliopePhoneType, 'IS_TYPE', ZeroOrOne)
 
 
-
 class CaliopeEmail(VersionedNode):
     email = StringProperty()
     type = RelationshipTo(CaliopeAddressType, 'IS_TYPE', ZeroOrOne)
@@ -74,5 +69,3 @@ class CaliopeContact(VersionedNode):
     email_address = RelationshipTo(CaliopeEmail, 'EMAIL', ZeroOrMore)
 
 
-class CaliopeContact(VersionedNode):
-    __entity_data_type__ = CaliopeContact
