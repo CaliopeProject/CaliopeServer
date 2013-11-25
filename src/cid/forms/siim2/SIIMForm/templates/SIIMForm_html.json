@@ -12,6 +12,70 @@
             ]
         },
         {
+          "name": "ejRequired",
+          "caption": "Ejemplo required",
+          "type": "text",
+          "class": "input-xlarge",
+          "validations" : {
+            "required" : true
+          }
+        },
+        {
+          "name": "ejNumber",
+          "caption": "Ejemplo tipo number validacion min y max",
+          "type": "number",
+          "class": "input-xlarge",
+          "validations" : {
+            "min" : 0,
+            "max" : 1000
+          }
+        },
+        {
+          "name": "ejMinMaxLength",
+          "caption": "Ejemplo min length y max length",
+          "type": "text",
+          "class": "input-xlarge",
+          "validations" : {
+            "minlength" : 5,
+            "maxlength" : 20
+          }
+        },
+        {
+          "name": "ejRNumber1",
+          "caption": "Numero 1",
+          "type": "number",
+          "class": "input-xlarge",
+          "validations" : {
+            "min" : 0,
+            "max" : 10
+          }
+        },
+        {
+          "name": "ejRNumber2",
+          "caption": "Numero 2",
+          "type": "number",
+          "class": "input-xlarge",
+          "validations" : {
+            "min" : 0,
+            "max" : 10
+          }
+        },
+        {
+          "name": "ejRNumber3",
+          "caption": "Numero 3 - Restriccion: SI:Number1 + Number2 <= 10 ==> Number3 > 10",
+          "type": "number",
+          "class": "input-xlarge",
+          "validations" : {
+            "restrictions" : [
+              {
+                "evaluation" : "if( ({{ejRNumber1}} + {{ejRNumber2}}) <= 10 )",
+                "then" : " {{ejRNumber3}} > 10 ",
+                "key-message-false" : "El valor debe ser mayor de 10"
+              }
+            ]
+          }
+        },
+        {
             "name": "ficha",
             "caption": "Ficha",
             "type": "text",
@@ -47,18 +111,16 @@
             "type": "text",
             "class": "input-xlarge",
             "validations": {
-              "minlength": 10,
               "restrictions" : [
                 {
-                  "evaluation" : "if( {{estado}} === 'en_estudio' || {{ficha}} === 'idea')",
+                  "evaluation" : "if( {{estado}} !== 'en_estudio' )",
                   "then" : " {{nombre}} !== '' ",
-                  "key-message-true" : "Nombre correcto",
-                  "key-message-false" : "Nombre debe ser vacio"
+                  "key-message-false" : "Nombre debe tener información  cuando estado no es 'en estudio'"
                 },
                 {
-                  "evaluation" : "if( {{estado}} !== 'en_estudio' || {{ficha}} !== 'idea')",
+                  "evaluation" : "if( {{estado}} === 'en_estudio' )",
                   "then" : " {{nombre}} === '' ",
-                  "key-message-false" : "Nombre no puede ser vacio"
+                  "key-message-false" : "Cuando estado es 'En estudio' no se debe ingresar nombre del proyecto"
                 }
               ]
             }
