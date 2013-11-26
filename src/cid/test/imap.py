@@ -150,7 +150,9 @@ from tinyrpc.client import RPCClient, RPCError
 from tinyrpc.transports.http import HttpWebSocketClientTransport
 import hashlib
 
-#
+def EncodeStr(s):
+    return s.decode('utf-8').encode('ascii', 'ignore')
+
 class CaliopeClient(object):
     def __init__(self, *args, **kwargs):
          self.login(u'user', u'123')
@@ -163,18 +165,18 @@ class CaliopeClient(object):
         return self.loginManager.authenticate(username=username,
                                               password=hashed_password)
 
-    def get_model(self, email):
+    def get_model(self, msg):
         tasks_proxy = self.rpc_client.get_proxy(prefix="tasks.")
         model = tasks_proxy.getModel()
         uuid = model["data"]["uuid"]["value"]
         #:update
         update = tasks_proxy.updateField(uuid=uuid,
                                          field_name="name",
-                                         value=email['subject'])
+                                         value=EncodeStr(msg['subject']))
 
         update = tasks_proxy.updateField(uuid=uuid,
                                          field_name="description",
-                                         value=email['body'])
+                                         value=EncodeStr(msg['body']))
 
         #:commit
         commit = tasks_proxy.commit(uuid=uuid)
