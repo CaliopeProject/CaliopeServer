@@ -124,9 +124,7 @@
             "name": "description",
             "caption": "Descripción tarea",
             "class": "input-large",
-            "type": "textarea",
-            "rows": "5",
-            "cols": "70"
+            "type": "ckedit"
         },
         {
             "name": "deadline",
