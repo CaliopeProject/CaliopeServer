@@ -74,7 +74,7 @@ class ImapImport:
         return True, result[1][0].split()
 
     def DeleteEmail(self, uid):
-        if not self.IsOK(self.mail.uid('store', uid, '+FLAGS', '\\Deleted')):
+        if not self.isOK(self.mail.uid('store', uid, '+FLAGS', '\\Deleted')):
             print >> sys.stderr, 'Could no delete email with uid', uid
 
     def FetchEmail(self, email_uid):
@@ -100,7 +100,7 @@ class ImapImport:
         return True, [message['Subject'], body, attachments]
 
 
-def CheckEmail(delete=False):
+def CheckEmail(delete=True):
     rv = list()
     ii = ImapImport(server='imap.gmail.com', account='metrovivienda2@gmail.com', password='otrosecreto')
 
