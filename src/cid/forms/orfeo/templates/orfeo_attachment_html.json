@@ -20,7 +20,10 @@
             "name": "pages",
             "caption": "No. páginas",
             "class": "input-large",
-            "type": "text"
+            "type": "number",
+            "validations" : {
+              "min" : "1"
+            }
         },
         {
             "name": "document_type",

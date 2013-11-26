@@ -51,6 +51,36 @@
             "format": "dd/MM/yyyy"
         },
         {
+          "name": "user",
+          "caption": "Destinatario Usuario",
+          "type": "form",
+          "cardinality": "0",
+          "options-form": {
+            "formId": "Person",
+            "generic": "true"
+          },
+          "relation": {
+            "rel_name": "user",
+            "class": "Person",
+            "target": "{{user}}"
+          }
+        },
+        {
+          "name": "company",
+          "caption": "Destinatario Empresa",
+          "type": "form",
+          "cardinality": "0",
+          "options-form": {
+            "formId": "Person",
+            "generic": "true"
+          },
+          "relation": {
+            "rel_name": "company",
+            "class": "Person",
+            "target": "{{company}}"
+          }
+        },
+        {
             "name": "attachment",
             "caption": "Adjunto",
             "type": "form",

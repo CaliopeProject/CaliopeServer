@@ -9,6 +9,36 @@
       ]
     },
     {
+      "class": "span12",
+      "columns": [
+        {
+          "class": "span6",
+          "elements": ["ejNumber", "ejMinMaxLength"]
+        },
+        {
+          "class": "span6",
+          "elements": ["ejRequired"]
+        }
+      ]
+    },
+    {
+      "class": "span12",
+      "columns": [
+        {
+          "class": "span4",
+          "elements": ["ejRNumber1"]
+        },
+        {
+          "class": "span4",
+          "elements": ["ejRNumber2"]
+        },
+        {
+          "class": "span4",
+          "elements": ["ejRNumber3"]
+        }
+      ]
+    },
+    {
       "class" : "span12",
       "columns" : [
         {
