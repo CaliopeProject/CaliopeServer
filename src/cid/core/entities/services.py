@@ -169,6 +169,10 @@ class CaliopeServices(object):
         return bool(cls.r.delete(uuid + "_rels"))
 
     @classmethod
+    def _get_draft_class(cls, uuid):
+        return cls.r.hget(uuid + str("_class"), "name")
+
+    @classmethod
     @public("updateField")
     def update_field(cls, uuid, field_name, value, subfield_id=None,
                      pos=None, delete=False, metadata=None):
@@ -199,7 +203,7 @@ class CaliopeServices(object):
                 return cls.r.hset(uuid, key, json.dumps(value,
                                                         cls=DatetimeEncoder))
             else:
-                return cls.r.hset(uuid, key, str(value))
+                return cls.r.hset(uuid, key, value)
 
         def get_in_stage(uuid, field):
             """
@@ -406,8 +410,9 @@ class CaliopeServices(object):
             versioned_node = cls.service_class.pull(uuid)
             #: if first time save create a node with given uuid.
             if versioned_node is None:
-                node_class = VersionedNode.__extended_classes__[cls.r.hget(
-                    uuid + str("_class"), "name")]
+                node_class = VersionedNode.__extended_classes__[
+                    cls._get_draft_class(uuid)
+                ]
                 versioned_node = node_class(uuid=uuid)
                 #: apply first the properties changes
             if cls._has_draft_props(uuid):
