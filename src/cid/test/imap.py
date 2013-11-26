@@ -80,7 +80,7 @@ class ImapImport:
     def FetchEmail(self, email_uid):
         result = self.mail.uid('fetch', email_uid, '(RFC822)')
         if not self.isOK(result):
-            print >> sys.stderr, 'Could not get fetch email with uid:', email_uidh
+            print >> sys.stderr, 'Could not get fetch email with uid:', email_uid
             return False, None
 
         message = email.message_from_string(result[1][0][1])
@@ -109,7 +109,7 @@ def CheckEmail(delete=False):
         ii.Logout()
         return
 
-    if not ii.SelectFolder(folder='label1'):
+    if not ii.SelectFolder(folder='CaliopeMail'):
         print >> sys.stderr, 'Could not select folder'
         ii.Logout()
         return
@@ -180,10 +180,11 @@ class CaliopeClient(object):
         commit = tasks_proxy.commit(uuid=uuid)
 
 c = CaliopeClient()
+import time
+while True:
+    rv = CheckEmail()
+    for msg in rv:
+        c.get_model(msg)
 
-rv = CheckEmail()
+    time.sleep(30)
 
-for email in rv:
-    c.get_model(email)
-
-#c.get_model()
