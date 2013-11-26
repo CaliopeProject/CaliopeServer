@@ -33,7 +33,8 @@ from flask import ( request, Blueprint)
 
 from cid.core.login import LoginManager
 from cid.utils.thumbnails import get_thumbnail
-from cid.core.documents import DocumentManager, DocumentProcess, CaliopeDocument
+from cid.core.documents import DocumentManager, CaliopeDocument
+from cid.core.forms import FormManager
 from cid.utils.crossdomain import crossdomain
 from cid.core.entities import CaliopeServices
 
@@ -89,12 +90,12 @@ def uploader():
         for uploaded_file in request.files.getlist('files[]'):
             filename = secure_filename(uploaded_file.filename)
             if uploaded_file and allowed_file(uploaded_file.filename):
-                idfile = str(uuid.uuid4()).decode('utf-8') #TODO: change to uuid3 nither uuid5
+                model = FormManager().get_empty_model('CaliopeDocument')
+                idfile = model['data']['uuid']['value']
                 uploaded_file.save(os.path.join(UPLOAD_FOLDER, idfile))
 
-                dm = DocumentManager()
-                doc = dm.addLocalDocument('', idfile, '')
-                DocumentProcess().enqueue(doc)
+                #doc = dm.addLocalDocument('', idfile, '')
+                #DocumentProcess().enqueue(doc)
 
                 result = {
                     'result': 'ok',
