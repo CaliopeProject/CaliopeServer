@@ -13,6 +13,11 @@
             "label": "OrfeoAttachment",
             "html": "templates/orfeo_attachment_html.json",
             "layout": "templates/orfeo_attachment_layout.json"
+        },
+        {
+            "package": "cid.core.entities",
+            "module": "CaliopeDocument",
+            "label": "CaliopeDocument"
         }
     ]
 }
