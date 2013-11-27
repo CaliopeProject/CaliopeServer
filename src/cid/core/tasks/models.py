@@ -40,7 +40,7 @@ class Task(VersionedNode):
 
     holders = RelationshipFrom(VersionedNode, 'HOLDER')
     target = RelationshipTo(VersionedNode, 'TARGET')
-    context = RelationshipTo(VersionedNode, "__CONTEXT__")
+    contexts = RelationshipTo(VersionedNode, "__CONTEXT__")
 
     deadline = DateTimeProperty()
     name = StringProperty()

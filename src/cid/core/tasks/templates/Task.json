@@ -99,6 +99,24 @@
             }
         },
         {
+            "name": "contexts",
+            "caption": "Contexto",
+            "class": "input-large",
+            "type": "multi-choices",
+            "options-load-server": {
+                "method": "tasks.getCurrentUserContexts",
+                "field-value": "uuid",
+                "field-desc": "caption"
+            },
+            "relation": {
+                "rel_name": "contexts",
+                "class": "VersionedNode",
+                "target": "{{contexts}}",
+                "properties": {
+                }
+            }
+        },
+        {
             "name": "status",
             "caption": "Estado",
             "class": "input-large",
@@ -179,7 +197,7 @@
                 },
                 {
                     "class": "span6",
-                    "elements": ["formtask", "deadline", "holders", "loopback_notification", "target", "status"]
+                    "elements": ["formtask", "deadline", "holders", "loopback_notification", "target", "status", "contexts"]
                 }
             ]
         }
