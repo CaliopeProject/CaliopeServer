@@ -459,9 +459,9 @@ class CaliopeServices(object):
             if entity_class is None:
                 entity_class = VersionedNode.pull(uuid, only_class=True)
             vnode = entity_class.pull(uuid)
-            if vnode is None and cls._has_draft_props(uuid):
+            if vnode is None:
                 #get a vnode with the class and uuid
-                vnode = cls._get_vnode_from_drafts(uuid, entity_class)
+                vnode = cls._get_vnode_with_data(uuid, entity_class)
                 #: Append related uuids to the list.
             for rel_name, rel_repr in vnode._serialize_relationships() \
                 .items():
@@ -525,9 +525,9 @@ class CaliopeServices(object):
 
 
     @classmethod
-    def _get_vnode_from_drafts(cls, uuid, entity_class):
+    def _get_vnode_with_data(cls, uuid, entity_class):
         vnode = entity_class()
-        setattr(vnode, "uuid", uuid)
+        vnode.uuid = uuid
         return vnode
 
 
