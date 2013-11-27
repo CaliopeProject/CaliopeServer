@@ -11,53 +11,54 @@
             ]
         },
         {
-            "name": "type",
-            "caption": "Tipo",
-            "type": "select",
-            "options": [
+            "name"    : "type",
+            "caption" : "Tipo",
+            "class"   : "input-xlarge",
+            "type"    : "select",
+            "options" : [
                 {
-                    "html": "tipo1",
-                    "value": "Tipo 2"
+                    "html"  : "tipo1",
+                    "value" : "Tipo 2"
                 },
                 {
-                    "html": "tipo1",
-                    "value": "Tipo 3"
+                    "html"  : "tipo1",
+                    "value" : "Tipo 3"
                 }
             ]
         },
         {
-            "name": "reference_code",
-            "caption": "Referencia",
-            "class": "input-large",
-            "type": "text"
+            "name"    : "reference_code",
+            "caption" : "Referencia",
+            "class"   : "input-xlarge",
+            "type"    : "text"
         },
         {
-            "name": "guide_number",
-            "caption": "Guia",
-            "class": "input-large",
-            "type": "text"
+            "name"    : "guide_number",
+            "caption" : "Guia",
+            "class"   : "input-xlarge",
+            "type"    : "text"
         },
         {
-            "name": "subject",
-            "caption": "Asunto",
-            "class": "input-large",
-            "type": "text"
+            "name"    : "subject",
+            "caption" : "Asunto",
+            "class"   : "input-xlarge",
+            "type"    : "text"
         },
         {
-            "name": "document_time",
-            "class": "input-large",
-            "caption": "Fecha Doc.",
-            "type": "datepicker",
-            "format": "dd/MM/yyyy"
+            "name"    : "document_time",
+            "class"   : "input-xlarge",
+            "caption" : "Fecha Doc.",
+            "type"    : "datepicker",
+            "format"  : "dd/MM/yyyy"
         },
         {
-          "name": "user",
-          "caption": "Destinatario Usuario",
-          "type": "form",
-          "cardinality": "0",
+          "name"        : "user",
+          "caption"     : "Destinatario Usuario",
+          "type"        : "form",
+          "cardinality" : "0",
           "options-form": {
-            "formId": "Person",
-            "generic": "true"
+            "formId"  : "Person",
+            "generic" : "true"
           },
           "relation": {
             "rel_name": "user",
