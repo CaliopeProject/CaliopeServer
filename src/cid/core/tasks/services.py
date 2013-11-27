@@ -175,6 +175,12 @@ class TaskServices(CaliopeServices):
                                      loopback=loopback_notification)
         return rv
 
+    @classmethod
+    @public(name="getCurrentUserContexts")
+    def get_current_user_contexts(cls):
+        user = CaliopeUser.index.get(username=LoginManager().get_user())
+        return [{'uuid': {'value': user.uuid}, 'caption': {'value': user
+        .username}}]
 
     @classmethod
     @public(name='getDeletedByCurrentUser')
