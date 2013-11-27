@@ -22,7 +22,7 @@
         {
             "name": "general_location",
             "caption": "Localización",
-            "type": "ckedit"
+            "type": "wysiwyg"
         },
         {
             "name": "locality",
