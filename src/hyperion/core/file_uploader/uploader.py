@@ -38,6 +38,9 @@ from cid.core.forms import FormManager
 from cid.utils.crossdomain import crossdomain
 from cid.core.entities import CaliopeServices
 
+import urlparse
+
+
 file_uploader = Blueprint('file_uploader', __name__, template_folder='')
 
 #: TODO: This items should be came from configuration files.
@@ -59,6 +62,13 @@ def human_readable_size(size_bytes):
     formatted_size = ("%d" % num) if (precision == 0) else str(round(num, ndigits=precision))
 
     return "%s %s" % (formatted_size, suffix)
+
+
+def local_document_url(parent_uuid, path, description):
+    netloc = params = query = fragment = ''
+    scheme = 'localstorage'
+    url = urlparse.urlunparse((scheme, netloc, path, params, query, fragment))
+    return url
 
 
 @file_uploader.route('/', methods=['GET', 'POST','OPTIONS'])
@@ -94,7 +104,7 @@ def uploader():
                 idfile = model['data']['uuid']['value']
                 uploaded_file.save(os.path.join(UPLOAD_FOLDER, idfile))
 
-                #doc = dm.addLocalDocument('', idfile, '')
+                FormManager().update_field(idfile, 'url', local_document_url('', idfile, ''))
                 #DocumentProcess().enqueue(doc)
 
                 result = {
