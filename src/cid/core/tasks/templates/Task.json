@@ -109,7 +109,7 @@
                 "field-desc": "caption"
             },
             "relation": {
-                "rel_name": "context",
+                "rel_name": "contexts",
                 "class": "VersionedNode",
                 "target": "{{contexts}}",
                 "properties": {
