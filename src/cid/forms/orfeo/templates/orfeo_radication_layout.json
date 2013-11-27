@@ -13,37 +13,28 @@
         {
             "columns": [
                 {
-                    "class": "span4",
+                    "class": "span3",
                     "elements": [
-                        "type"
+                        "subject"
+                        ,"document_time"
                     ]
                 },
                 {
-                    "class": "span4",
+                    "class": "span3",
                     "elements": [
                         "reference_code"
                     ]
                 },
                 {
-                    "class": "span4",
+                    "class": "span3",
                     "elements": [
                         "guide_number"
                     ]
-                }
-            ]
-        },
-        {
-            "columns": [
-                {
-                    "class": "span4",
-                    "elements": [
-                        "subject"
-                    ]
                 },
                 {
-                    "class": "span4",
+                    "class": "span3",
                     "elements": [
-                        "document_time"
+                        "type"
                     ]
                 }
 
@@ -52,31 +43,26 @@
         {
           "columns": [
             {
-              "class": "span12",
+              "class": "span6",
               "elements": [
                 "user"
               ]
-            }
-          ]
-        },
-        {
-          "columns": [
+            },
             {
-              "class": "span12",
+              "class": "span6",
               "elements": [
                 "company"
               ]
             }
-
           ]
         },
         {
-            "columns": [
-                {
-                    "class": "span12",
-                    "elements": ["attachment"]
-                }
-            ]
+          "columns": [
+            {
+              "class": "span3",
+              "elements": ["attachment"]
+            }
+          ]
         }
     ]
 }
