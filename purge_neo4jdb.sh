@@ -10,3 +10,5 @@ export PYTHONPATH=${BASE}/caliope_server_el_cid/src
 time ${PYTHON} ${PYTHONPATH}/cid/utils/cleanDb.py
 #${HOME}/.virtualenvs/${ENV}/bin/nosetests
 time ${PYTHON} ${PYTHONPATH}/cid/utils/DefaultDatabase.py
+echo "Cleaning cache(redis)"
+time redis-cli flushdb
