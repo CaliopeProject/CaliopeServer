@@ -29,7 +29,8 @@ from cid.core.entities import (VersionedNode,
                                StringProperty,
                                IntegerProperty,
                                RelationshipFrom,
-                               RelationshipTo
+                               RelationshipTo,
+                               ZeroOrOne
                                )
 
 
@@ -39,8 +40,9 @@ class Task(VersionedNode):
     """
 
     holders = RelationshipFrom(VersionedNode, 'HOLDER')
-    target = RelationshipTo(VersionedNode, 'TARGET')
-    contexts = RelationshipTo(VersionedNode, "__CONTEXT__")
+    target = RelationshipTo(VersionedNode, 'TARGET', cardinality=ZeroOrOne)
+    contexts = RelationshipTo(VersionedNode, "__CONTEXT__",
+                              cardinality=ZeroOrOne)
 
     deadline = DateTimeProperty()
     name = StringProperty()
