@@ -193,9 +193,7 @@ class TaskServices(CaliopeServices):
     @classmethod
     @public(name="getCurrentUserContexts")
     def get_current_user_contexts(cls):
-        user = CaliopeUser.index.get(username=LoginManager().get_user())
-        return [{'uuid': {'value': user.uuid}, 'name': {'value':
-                                                            'Personal'}}]
+        return cls._get_project_list()
 
     @classmethod
     @public(name='getDeletedByCurrentUser')
@@ -208,4 +206,24 @@ class TaskServices(CaliopeServices):
     def get_archived_by_current_user(cls):
         rv = cls.get_current_user_kanban(category="archived")
         return rv
+
+    @classmethod
+    def _get_project_list(cls):
+        user_node = CaliopeUser.index.get(
+            username=LoginManager().get_user())
+        #: default context "personal is related to current user
+        rv = [{'uuid': {'value': user_node.uuid}, 'name':
+            {'value': 'Personal'}}]
+
+        results, metadata = user_node.cypher("""
+            START project=node(*)
+            MATCH (project)-[:PROJECT]-()
+            WHERE has(project.name)
+            RETURN distinct project.uuid, project.name
+             """)
+        for row in results:
+            rv.append({'uuid': {'value': row[0]}, 'name': {'value': row[1]}})
+        return rv
+
+
 
