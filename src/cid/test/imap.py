@@ -195,7 +195,7 @@ class CaliopeClient(object):
 c = CaliopeClient()
 import time
 while True:
-    rv = CheckEmail()
+    rv = CheckEmail(delete=True)
     for msg in rv:
         c.get_model(msg)
 
