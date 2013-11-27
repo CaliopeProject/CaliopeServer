@@ -89,30 +89,29 @@ class ImapImport:
 
         attachments = []
 
-        body = ''
+        available_body = {}
         for part in message.walk():
             c_type = part.get_content_type()
             c_disp = part.get('Content-Disposition')
             if c_type in ('text/plain', 'text/html') and c_disp == None:
-                body += part.get_payload().decode('quopri')
+                available_body[c_type] = part.get_payload().decode('quopri')
             elif c_type in allowed_mime_types:
                 attachments.append((c_type, part.get_filename(), part.get_payload(decode=True)))
-            elif c_type == "multipart/mixed":
-                available = {}
-                # Messages within the message.
-                for msg in part.get_payload():
-                    for m_part in msg.walk():
-                        if m_part.get_content_type() in ('text/plain', 'text/html'):
-                            available[m_part.get_content_type()] = m_part.get_payload().decode('quopri')
-                for t in ['text/html', 'text/plain']:
-                  if t in available:
-                    body += available[t]
-                    break
             else:
                 print >> sys.stderr, 'Mime type "{}" not supported yet.'.format(c_type)
-        subject, s_encoding = decode_header(message['Subject'])[0]
 
-        return True, {'subject' : subject.decode(s_encoding).encode('utf-8'), 'body' : body, 'attachments' : attachments}
+        subject, s_encoding = decode_header(message['Subject'])[0]
+        subject = subject.decode(s_encoding).encode('utf-8')
+
+        body = ''
+        for c_type in ('text/html', 'text/plain'):
+          if c_type in available_body:
+            body = available_body[c_type]
+            break
+
+        return True, {'subject' : subject,
+                      'body' : body,
+                      'attachments' : attachments}
 
 def CheckEmail(delete=False):
     rv = list()
@@ -123,7 +122,7 @@ def CheckEmail(delete=False):
         ii.Logout()
         return
 
-    if not ii.SelectFolder(folder='label1'):
+    if not ii.SelectFolder(folder='CaliopeMail'):
         print >> sys.stderr, 'Could not select folder'
         ii.Logout()
         return
@@ -162,8 +161,8 @@ from tinyrpc.transports.http import HttpWebSocketClientTransport
 import hashlib
 
 def EncodeStr(s):
-    return s.decode('utf8')
-    #return s.decode('utf-8').encode('ascii', 'ignore')
+    #return s.decode('utf8')
+    return s.decode('utf-8').encode('ascii', 'ignore')
 
 class CaliopeClient(object):
     def __init__(self, *args, **kwargs):
