@@ -124,7 +124,12 @@
             "name": "description",
             "caption": "Descripción tarea",
             "class": "input-large",
-            "type": "ckedit"
+            "type": "wysiwyg",
+            "wysiwyg-options" : {
+              "toolbars" : [
+                { "name": "basicstyles", "items": ["Bold", "Italic", "Strike", "TextColor", "-", "RemoveFormat"] }
+              ]
+            }
         },
         {
             "name": "deadline",
