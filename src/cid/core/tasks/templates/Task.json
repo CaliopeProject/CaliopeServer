@@ -106,7 +106,7 @@
             "options-load-server": {
                 "method": "tasks.getCurrentUserContexts",
                 "field-value": "uuid",
-                "field-desc": "caption"
+                "field-desc": "name"
             },
             "relation": {
                 "rel_name": "contexts",

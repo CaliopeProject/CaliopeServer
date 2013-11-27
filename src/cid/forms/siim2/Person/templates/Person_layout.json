@@ -12,16 +12,12 @@
       "class" : "span12",
       "columns" : [
         {
-          "class": "span4",
-          "elements"    : ["name", "genero"]
+          "class": "span6",
+          "elements"    : ["name", "surname1"]
         },
         {
-          "class": "span4",
-          "elements"    : ["surname"]
-        },
-        {
-          "class": "span4",
-          "elements"    : ["surname1"]
+          "class": "span6",
+          "elements"    : ["surname", "genero"]
         }
       ]
     },    {

@@ -194,8 +194,8 @@ class TaskServices(CaliopeServices):
     @public(name="getCurrentUserContexts")
     def get_current_user_contexts(cls):
         user = CaliopeUser.index.get(username=LoginManager().get_user())
-        return [{'uuid': {'value': user.uuid}, 'caption': {'value':
-                                                               'Personal'}}]
+        return [{'uuid': {'value': user.uuid}, 'name': {'value':
+                                                            'Personal'}}]
 
     @classmethod
     @public(name='getDeletedByCurrentUser')
