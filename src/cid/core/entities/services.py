@@ -423,8 +423,8 @@ class CaliopeServices(object):
                         draft_rel[target_other]['__delete__'] = True
                         cls._del_related(uuid, target_other)
                         #remove changed mark
-                        if "__changed__" in draft_rel[target_uuid]:
-                            del draft_rel[target_uuid]["__changed__"]
+                        if "__changed__" in draft_rel[target_other]:
+                            del draft_rel[target_other]["__changed__"]
                 draft_rel[target_uuid] = new_properties
                 draft_rel[target_uuid]["__changed__"] = True
                 #: add to related
