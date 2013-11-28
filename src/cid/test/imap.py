@@ -152,8 +152,7 @@ from tinyrpc.transports.http import HttpWebSocketClientTransport
 import hashlib
 
 def EncodeStr(s):
-    return s
-    #return s.encode('ascii', 'ignore')
+    return s.decode('utf-8').encode('ascii', 'ignore')
 
 class CaliopeClient(object):
     def __init__(self, *args, **kwargs):
