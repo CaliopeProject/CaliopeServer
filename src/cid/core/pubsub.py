@@ -37,24 +37,24 @@ class PubSub(object):
     @classmethod
     def register_uuid_and_thread_id(cls, user_uuid):
         cls.r.hset('thread_pool_id', str(g.connection_thread_id), str(user_uuid))
-        cls.r.sadd(str(user_uuid)+'_threads',str(g.connection_thread_id))
+        cls.r.sadd(str(user_uuid) + '_threads', str(g.connection_thread_id))
 
     @classmethod
     def subscribe_uuid_with_user_uuid(cls, user_uuid, uuid):
         if True: #TODO: check user_uuid
-            list = cls.r.smembers(str(user_uuid)+'_threads')
+            list = cls.r.smembers(str(user_uuid) + '_threads')
             for thread_id in list:
-                cls._subscribe_uuid_with_connection_thread_id(thread_id,uuid)
+                cls._subscribe_uuid_with_connection_thread_id(thread_id, uuid)
 
     @classmethod
     def subscribe_uuid(cls, uuid):
         if True: #TODO: check uuid
-            return cls._subscribe_uuid_with_connection_thread_id(g.connection_thread_id,uuid)
+            return cls._subscribe_uuid_with_connection_thread_id(g.connection_thread_id, uuid)
         else:
             return None
 
     @classmethod
-    def _subscribe_uuid_with_connection_thread_id(cls, connection_thread_id,uuid):
+    def _subscribe_uuid_with_connection_thread_id(cls, connection_thread_id, uuid):
         if True: #TODO: check connection_thread_id
             queue = HotQueue("connection_thread_id_queue=" + str(connection_thread_id))
             msg = {'cmd': 'subscribe', 'params': str(uuid)}
@@ -82,8 +82,8 @@ class PubSub(object):
                 "method": method,
                 "params": data,
                 "id": str(res_uuid),
-                "thread": str(g.connection_thread_id),
-                "loopback":loopback
+                "thread": None if 'connection_thread_id' not in g else str(g.connection_thread_id),
+                "loopback": loopback
             }
             cls.r.publish('uuid=' + str(res_uuid), json.dumps(cmd, cls=DatetimeEncoder))
 
