@@ -151,7 +151,7 @@
         {
             "name": "localizacion_general",
             "caption": "Localizacion General Proyecto",
-            "type": "ckedit",
+            "type": "wysiwyg",
             "class": "input-xxlarge"
         },
         {
