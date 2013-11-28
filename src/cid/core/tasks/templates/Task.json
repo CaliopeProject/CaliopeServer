@@ -70,12 +70,8 @@
                 "field-value": "formId",
                 "field-desc": "label"
             },
-            "validation": {
+            "validations": {
                 "required": true
-            },
-            "options": {
-                "predios": "Selección de Predios",
-                "projects": "Formulario de proyectos"
             }
         },
         {
@@ -95,6 +91,25 @@
                 "target" : "{{holders}}",
                 "properties" : {
                   "category" : "{{category}}"
+                }
+            }
+        },
+        {
+            "name": "contexts",
+            "caption": "Contexto",
+            "class": "input-large",
+            "type": "multi-choices",
+            "single": "true",
+            "options-load-server": {
+                "method": "tasks.getCurrentUserContexts",
+                "field-value": "uuid",
+                "field-desc": "name"
+            },
+            "relation": {
+                "rel_name": "contexts",
+                "class": "VersionedNode",
+                "target": "{{contexts}}",
+                "properties": {
                 }
             }
         },
@@ -179,7 +194,7 @@
                 },
                 {
                     "class": "span6",
-                    "elements": ["formtask", "deadline", "holders", "loopback_notification", "target", "status"]
+                    "elements": ["formtask", "deadline", "holders", "loopback_notification", "target", "status", "contexts"]
                 }
             ]
         }

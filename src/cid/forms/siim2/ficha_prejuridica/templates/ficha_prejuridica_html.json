@@ -205,7 +205,7 @@
         {
             "name": "linderos",
             "caption": "Linderos",
-            "type": "ckedit"
+            "type": "wysiwyg"
         },
         {
             "name": "tipo_linderos",
