@@ -119,7 +119,7 @@ class FormManager(CaliopeServices):
         rv.update(super(FormManager, cls).commit(uuid, loopback_notification))
 
         PubSub().publish_command("", uuid, 'message',
-                                 {'msg': 'Formulario actualizado en base de datos.', 'type': 'success'}, loopback=True)
+                                 {'msg': 'Formulario actualizado.', 'type': 'success'}, loopback=True)
         return rv
 
 
