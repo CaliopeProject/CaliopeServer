@@ -22,11 +22,12 @@ Copyright (C) 2013 Infometrika Ltda.
 import json
 from tinyrpc.dispatch import public
 
-
 from flask import current_app
 
 from cid.core.entities import ( CaliopeServices)
 from cid.core.entities.base_models.versioned_node import VersionedNode
+
+from cid.core.pubsub import PubSub
 
 
 class FormManager(CaliopeServices):
@@ -110,12 +111,15 @@ class FormManager(CaliopeServices):
                 #Avoid related locks if theres is a back-relationship:
                 if cls._is_related(target_uuid, uuid):
                     continue
-                #: This is to save nodes when no data added but there are
+                    #: This is to save nodes when no data added but there are
                 # in a relationships, we're saving "blank" connected nodes.
                 if VersionedNode.pull(target_uuid) is None:
                     cls.update_field(target_uuid, "uuid", target_uuid)
                 rv.update(cls.commit(target_uuid, loopback_notification))
         rv.update(super(FormManager, cls).commit(uuid, loopback_notification))
+
+        PubSub().publish_command("", uuid, 'message',
+                                 {'msg': 'Formulario actualizado.', 'type': 'success'}, loopback=True)
         return rv
 
 

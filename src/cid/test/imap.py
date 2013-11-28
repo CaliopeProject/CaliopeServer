@@ -99,16 +99,14 @@ class ImapImport:
                 attachments.append((c_type, part.get_filename(), part.get_payload(decode=True)))
             else:
                 print >> sys.stderr, 'Mime type "{}" not supported yet.'.format(c_type)
-
-        subject, s_encoding = decode_header(message['Subject'])[0]
-        subject = subject.decode(s_encoding).encode('utf-8')
-
         body = ''
         for c_type in ('text/html', 'text/plain'):
-          if c_type in available_body:
-            body = available_body[c_type]
-            break
-
+            if c_type in available_body:
+                body = available_body[c_type]
+                break
+        subject, s_encoding = decode_header(message['Subject'])[0]
+        if s_encoding:
+            subject = subject.decode(s_encoding).encode('utf-8')
         return True, {'subject' : subject,
                       'body' : body,
                       'attachments' : attachments}
@@ -140,14 +138,7 @@ def CheckEmail(delete=False):
         if status:
             n_retrieved += 1
             rv.append(mail)
-            #print 'Subject:', mail['subject']
-            #print 'Body:', mail['body']
-            #for a in mail['attachments']:
-            #    print 'mime', a[0]
-            #    print 'filename', a[1]
-            #    print 'contents', a[2]
             if delete:
-                # Delete the email.
                 ii.DeleteEmail(email_uid)
 
     print >> sys.stderr, 'Retrieved', n_retrieved, 'emails'
@@ -161,7 +152,6 @@ from tinyrpc.transports.http import HttpWebSocketClientTransport
 import hashlib
 
 def EncodeStr(s):
-    #return s.decode('utf8')
     return s.decode('utf-8').encode('ascii', 'ignore')
 
 class CaliopeClient(object):
@@ -184,11 +174,9 @@ class CaliopeClient(object):
         update = tasks_proxy.updateField(uuid=uuid,
                                          field_name="name",
                                          value=EncodeStr(msg['subject']))
-
         update = tasks_proxy.updateField(uuid=uuid,
                                          field_name="description",
                                          value=EncodeStr(msg['body']))
-
         #:commit
         commit = tasks_proxy.commit(uuid=uuid)
 

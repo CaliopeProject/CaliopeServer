@@ -29,11 +29,10 @@ class CaliopeDocument(VersionedNode):
     owner = RelationshipFrom(CaliopeUser, 'OWNER', cardinality=One)
     holders = RelationshipFrom(CaliopeUser, 'HOLDER')
 
+    filename = StringProperty()
     url = StringProperty()
     sha256 = StringProperty()
-    insertion_date = DateTimeProperty(default=timeStampGenerator)
     description = StringProperty()
-    state = StringProperty()
 
     def save(cls):
         return super(CaliopeDocument, cls).save(cls)
