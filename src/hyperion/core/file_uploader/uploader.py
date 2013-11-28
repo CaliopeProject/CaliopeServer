@@ -104,7 +104,7 @@ def uploader():
                 idfile = model['data']['uuid']['value']
                 uploaded_file.save(os.path.join(UPLOAD_FOLDER, idfile))
 
-                FormManager().update_field(idfile, 'url', local_document_url('', idfile, ''))
+                CaliopeServices().update_field(idfile, 'url', local_document_url('', idfile, ''))
                 #DocumentProcess().enqueue(doc)
 
                 result = {
