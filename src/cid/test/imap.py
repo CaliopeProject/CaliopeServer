@@ -17,6 +17,7 @@ Copyright (C) 2013 Infometrika Ltda.
 """
 
 import email
+from email.header import decode_header
 import imaplib
 import sys
 
@@ -31,6 +32,7 @@ allowed_mime_types = ['image/jpeg', 'application/pdf', 'application/zip',
                       'application/vnd.oasis.opendocument.presentation',
                       'application/vnd.oasis.opendocument.graphics',
                       'application/vnd.ms-excel',
+                      'application/octet-stream',
                       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                       'application/vnd.ms-powerpoint',
                       'application/vnd.openxmlformats-officedocument.presentationml.presentation',
@@ -87,20 +89,31 @@ class ImapImport:
 
         attachments = []
 
+        available_body = {}
         for part in message.walk():
             c_type = part.get_content_type()
             c_disp = part.get('Content-Disposition')
-            body = ''
-            if (c_type == 'text/plain' or c_type == 'text/html') and c_disp == None:
-                body += part.get_payload().decode('quopri')
+            if c_type in ('text/plain', 'text/html') and c_disp == None:
+                available_body[c_type] = part.get_payload().decode('quopri')
             elif c_type in allowed_mime_types:
                 attachments.append((c_type, part.get_filename(), part.get_payload(decode=True)))
             else:
                 print >> sys.stderr, 'Mime type "{}" not supported yet.'.format(c_type)
-        return True, [message['Subject'], body, attachments]
 
+        subject, s_encoding = decode_header(message['Subject'])[0]
+        subject = subject.decode(s_encoding).encode('utf-8')
 
-def CheckEmail(delete=True):
+        body = ''
+        for c_type in ('text/html', 'text/plain'):
+          if c_type in available_body:
+            body = available_body[c_type]
+            break
+
+        return True, {'subject' : subject,
+                      'body' : body,
+                      'attachments' : attachments}
+
+def CheckEmail(delete=False):
     rv = list()
     ii = ImapImport(server='imap.gmail.com', account='metrovivienda2@gmail.com', password='otrosecreto')
 
@@ -123,16 +136,13 @@ def CheckEmail(delete=True):
 
     n_retrieved = 0
     for email_uid in email_uids:
-        status, email = ii.FetchEmail(email_uid)
+        status, mail = ii.FetchEmail(email_uid)
         if status:
             n_retrieved += 1
-            email_dict = dict()
-            email_dict['subject'], email_dict['body'], email_dict['attachments'] = email
-            rv.append(email_dict)
-
-            #print 'Subject:', subject
-            #print 'Body:', body
-            #for a in attachments:
+            rv.append(mail)
+            #print 'Subject:', mail['subject']
+            #print 'Body:', mail['body']
+            #for a in mail['attachments']:
             #    print 'mime', a[0]
             #    print 'filename', a[1]
             #    print 'contents', a[2]
@@ -151,8 +161,8 @@ from tinyrpc.transports.http import HttpWebSocketClientTransport
 import hashlib
 
 def EncodeStr(s):
-    return s.decode('utf8')
-    #return s.decode('utf-8').encode('ascii', 'ignore')
+    #return s.decode('utf8')
+    return s.decode('utf-8').encode('ascii', 'ignore')
 
 class CaliopeClient(object):
     def __init__(self, *args, **kwargs):
@@ -185,7 +195,7 @@ class CaliopeClient(object):
 c = CaliopeClient()
 import time
 while True:
-    rv = CheckEmail()
+    rv = CheckEmail(delete=True)
     for msg in rv:
         c.get_model(msg)
 
