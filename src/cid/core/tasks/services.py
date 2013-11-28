@@ -217,8 +217,8 @@ class TaskServices(CaliopeServices):
 
         results, metadata = user_node.cypher("""
             START project=node(*)
-            MATCH (project)-[:PROJECT]-()
-            WHERE has(project.name)
+            MATCH (project)-[:PROJECT]-(), pa=(project)-[:PARENT]->()
+            WHERE ANY(project in TAIL(pa) WHERE has(project.name))
             RETURN distinct project.uuid, project.name
              """)
         for row in results:
