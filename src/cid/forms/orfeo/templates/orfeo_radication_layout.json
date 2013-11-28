@@ -46,6 +46,7 @@
               "class": "span6",
               "elements": [
                 "user"
+                ,"attachment"
               ]
             },
             {
@@ -53,14 +54,6 @@
               "elements": [
                 "company"
               ]
-            }
-          ]
-        },
-        {
-          "columns": [
-            {
-              "class": "span3",
-              "elements": ["attachment"]
             }
           ]
         }

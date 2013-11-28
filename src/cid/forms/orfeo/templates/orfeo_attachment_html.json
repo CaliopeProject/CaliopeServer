@@ -13,13 +13,13 @@
         {
             "name": "description",
             "caption": "Descripción",
-            "class": "input-large",
+            "class": "input-xlarge",
             "type": "text"
         },
         {
             "name": "pages",
             "caption": "No. páginas",
-            "class": "input-large",
+            "class": "input-xlarge",
             "type": "number",
             "validations" : {
               "min" : "1"
