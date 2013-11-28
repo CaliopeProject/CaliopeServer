@@ -13,21 +13,16 @@
         {
             "columns": [
                 {
-                    "class": "span4",
+                    "class": "span6",
                     "elements": [
                         "description"
+                        ,"document_type"
                     ]
                 },
                 {
-                    "class": "span4",
+                    "class": "span6",
                     "elements": [
                         "pages"
-                    ]
-                },
-                {
-                    "class": "span4",
-                    "elements": [
-                        "document_type"
                     ]
                 }
             ]
@@ -35,7 +30,7 @@
         {
             "columns": [
                 {
-                    "class": "span12",
+                    "class": "span8",
                     "elements": [
                         "document_attachment"
                     ]
