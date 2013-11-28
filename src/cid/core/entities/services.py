@@ -117,8 +117,8 @@ class CaliopeServices(object):
 
         if entity_class is None:
             entity_class = VersionedNode
-        if not cls.r.hexists(uuid + str("_class"), "name"):
-            cls.r.hset(uuid + str("_class"), "name", entity_class.__name__)
+        if not cls.r.hexists(uuid + "_class", "name"):
+            cls.r.hset(uuid + "_class", "name", entity_class.__name__)
 
     @classmethod
     def _set_related(cls, uuid, target_uuid, **kwargs):
@@ -170,7 +170,23 @@ class CaliopeServices(object):
 
     @classmethod
     def _get_draft_class(cls, uuid):
-        return cls.r.hget(uuid + str("_class"), "name")
+        """
+        Return the class of the uuid, even if is not yet saved.
+        :param uuid: The UUID of the draft or saved object
+        :return: The class of the object with uuid
+        """
+        hkey = uuid + "_class"
+        if cls.r.hexists(hkey, "name"):
+            vncls = cls.r.hget(hkey, "name")
+            if vncls in VersionedNode\
+                .__extended_classes__:
+                return VersionedNode.__extended_classes__[vncls]
+            return  VersionedNode
+        else:
+            vncls = VersionedNode.pull(uuid, only_class=True)
+            if vncls:
+                return vncls
+            return VersionedNode
 
     @classmethod
     @public("updateField")
@@ -356,6 +372,17 @@ class CaliopeServices(object):
             return cls.r.hset(hkey_name, key, json.dumps(value,
                                                          cls=DatetimeEncoder))
 
+        def get_draft_rel_count(uuid, rel_name):
+            hkey_name = uuid + "_rels"
+            draft_rel = get_in_stage(uuid, rel_name)
+            added=0
+            removed=0
+            if draft_rel:
+                added =  len([x for x in draft_rel.values() if '__changed__' in x])
+                removed =  len([x for x in draft_rel.values() if '__delete__' in x])
+            return added - removed
+
+
         def get_in_stage(uuid, key):
             """
             hset returns 1 if is the first time a key, val is set,
@@ -368,25 +395,60 @@ class CaliopeServices(object):
             return None
 
         draft_rel = get_in_stage(uuid, rel_name)
+
         if draft_rel is None:
             versioned_node = cls.service_class.pull(uuid)
             if versioned_node is not None:
                 draft_rel = versioned_node._format_relationships(rel_name)
             else:
                 draft_rel = {}
+        #: TODO this information can be extracted and put in redis
+        rel_def = getattr(cls._get_draft_class(uuid), rel_name)
+        if rel_def:
+            __cardinality__ = rel_def.manager.description
 
         if delete:
             #: Mark the relationship to deletion on commit.
             draft_rel[target_uuid]["__delete__"] = True
             #: Remove from related
             cls._del_related(uuid, target_uuid)
+            #remove changed mark
+            if "__changed__" in draft_rel[target_uuid]:
+                del draft_rel[target_uuid]["__changed__"]
+
         else:
-            draft_rel[target_uuid] = new_properties
-            draft_rel[target_uuid]["__changed__"] = True
-            #: add to related
-            cls._set_related(uuid, target_uuid)
-            if "__delete__" in draft_rel[target_uuid]:
-                del draft_rel[target_uuid]["__delete__"]
+            if 'zero or one' in __cardinality__:
+                if get_draft_rel_count(uuid, rel_name) >= 1:
+                    for target_other in draft_rel.keys():
+                        draft_rel[target_other]['__delete__'] = True
+                        cls._del_related(uuid, target_other)
+                        #remove changed mark
+                        if "__changed__" in draft_rel[target_uuid]:
+                            del draft_rel[target_uuid]["__changed__"]
+                draft_rel[target_uuid] = new_properties
+                draft_rel[target_uuid]["__changed__"] = True
+                #: add to related
+                cls._set_related(uuid, target_uuid)
+                #: remove if marked to delete
+                if "__delete__" in draft_rel[target_uuid]:
+                    del draft_rel[target_uuid]["__delete__"]
+
+            elif 'one or more' in __cardinality__:
+                #Check at least one valid
+                pass
+            elif 'one relationship' == __cardinality__:
+                #Check exactly one rel}
+                pass
+            elif 'zero or more' in __cardinality__:
+                draft_rel[target_uuid] = new_properties
+                draft_rel[target_uuid]["__changed__"] = True
+                #: add to related
+                cls._set_related(uuid, target_uuid)
+                #: remove if marked to delete
+                if "__delete__" in draft_rel[target_uuid]:
+                    del draft_rel[target_uuid]["__delete__"]
+
+
 
         return append_change(uuid, rel_name, draft_rel) in [0, 1]
 
@@ -410,9 +472,7 @@ class CaliopeServices(object):
             versioned_node = cls.service_class.pull(uuid)
             #: if first time save create a node with given uuid.
             if versioned_node is None:
-                node_class = VersionedNode.__extended_classes__[
-                    cls._get_draft_class(uuid)
-                ]
+                node_class = cls._get_draft_class(uuid)
                 versioned_node = node_class(uuid=uuid)
                 #: apply first the properties changes
             if cls._has_draft_props(uuid):

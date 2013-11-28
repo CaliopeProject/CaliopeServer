@@ -118,6 +118,13 @@ class TaskServices(CaliopeServices):
                                      new_properties={"category": "ToDo"})
             return {user_node.uuid: {"category": "ToDo"}}
 
+        def append_default_context(uuid):
+            user_node = CaliopeUser.index.get(
+                username=LoginManager().get_user())
+            super(TaskServices, cls) \
+                .update_relationship(uuid, "contexts", user_node.uuid)
+            return {user_node.uuid: {}}
+
         template_path = os.path.join(
             os.path.split(__file__)[0], "templates/" +
                                         cls.service_class.__name__ + ".json")
@@ -127,6 +134,9 @@ class TaskServices(CaliopeServices):
                              template_html=template_path)
         rv["data"]["holders"] = append_default_holder(rv["data"]["uuid"][
             "value"])
+        rv['data']['contexts'] = append_default_context(rv['data']['uuid'][
+            'value'])
+
         return rv
 
     @classmethod
@@ -153,14 +163,6 @@ class TaskServices(CaliopeServices):
             form_name = cls.r.hget(hkey_name, "formtask")
             form = FormManager.create_form_from_id(form_name, {})
             cls.update_relationship(uuid, "target", form["uuid"])
-
-        #set the default context to user if no context defined.
-        if not 'contexts' in cls._get_draft_rels(uuid):
-            #: TODO: Add change the method for getting current user uuid
-            cls.update_relationship(uuid, 'contexts',
-                                    CaliopeUser.index.get(
-                                        username=LoginManager().get_user())
-                                    .uuid)
 
         #notify the other users of the change
         hkey_name_rels = uuid + "_rels"
