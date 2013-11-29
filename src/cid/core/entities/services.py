@@ -495,8 +495,17 @@ class CaliopeServices(object):
                 for delta_k, delta_v in changes.items():
                     delta_v = json.loads(delta_v,
                                          object_hook=DatetimeDecoder.json_date_parser)
-                    #: do the changes for each target
+                    #: do the deletes first.
+                    order_list = []
                     for target, props in delta_v.items():
+                        if "__delete__" in props and props["__delete__"]:
+                            order_list.insert(0, target)
+                        elif "__changed__" in props and props["__changed__"]:
+                            order_list.append(target)
+                    #: do the changes for each target, in order
+                    for i in xrange(len(order_list)):
+                        target = order_list[i]
+                        props = delta_v[target]
                         if "__delete__" in props and props["__delete__"]:
                             versioned_node.delete_relationship(delta_k, target)
                         elif "__changed__" in props and props["__changed__"]:
