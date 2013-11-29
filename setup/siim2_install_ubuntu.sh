@@ -59,4 +59,4 @@ pip install -r requirements.txt
 
 nosetests
 
-./run_server.sh
+./start_server.sh
