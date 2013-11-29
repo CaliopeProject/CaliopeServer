@@ -207,18 +207,31 @@ class VersionedNode(SemiStructuredNode):
                                        end_node=target_node,
                                        bidirectional=True)
 
-        if len(rels) == 1:
-            if delete:
+        #: check if just to delete.
+        if delete:
+            #check if there is a rel to delete
+            if len(rels) == 1:
+                #delete the rel
                 rels[0].delete()
-            else:
+        else:
+            #check if already exists
+            if len(rels) == 1:
+                #set the new properties
                 if new_properties:
                     rels[0].update_properties(new_properties)
                 else:
+                 #delete properties
                     rels[0].delete_properties()
-        else:
+            else:
+                # a new relationship, so connect.
+                target_vnode = VersionedNode.pull(target_uuid)
+                other_node = reldef.single()
+                #TODO: Add support for the different types of cardinality
+                if isinstance(reldef, ZeroOrOne) and other_node:
+                    reldef.reconnect(other_node,target_vnode)
+                    return
+                reldef.connect(target_vnode, new_properties)
 
-            target_vnode = VersionedNode.pull(target_uuid)
-            reldef.connect(target_vnode, new_properties)
 
     def delete_relationship(self, rel_name, target_uuid):
         self.add_or_update_relationship_target(rel_name, target_uuid,
@@ -231,6 +244,8 @@ class VersionedNode(SemiStructuredNode):
             if k not in self.__special_fields__ and \
                     isinstance(v, RelationshipDefinition):
                 rv[k] = v
+
+
         return rv
 
     def serialize(self):
