@@ -218,10 +218,10 @@ class TaskServices(CaliopeServices):
             {'value': 'Personal'}}]
 
         results, metadata = user_node.cypher("""
-            START project=node(*)
-            MATCH (project)-[:PROJECT]-(), pa=(project)-[:PARENT]->()
-            WHERE ANY(project in TAIL(pa) WHERE has(project.name))
-            RETURN distinct project.uuid, project.name
+             START project=node(*)
+             MATCH pa=(p)<-[?:PARENT*]-(project)-[:PROJECT]-(category), p_none= (project)<-[?:PARENT*]-()
+             WHERE ANY(project in TAIL(pa) WHERE has(project.uuid)) and p_none = null
+             RETURN distinct project.uuid, project.name
              """)
         for row in results:
             rv.append({'uuid': {'value': row[0]}, 'name': {'value': row[1]}})
