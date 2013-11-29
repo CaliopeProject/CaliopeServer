@@ -94,7 +94,7 @@ class TaskServices(CaliopeServices):
 
     @classmethod
     @public("getModel")
-    def get_empty_model(cls):
+    def get_empty_model(cls, data=True):
         """
         In order to create a Task, first you need to get the model, in the
         model is incluided de default dform (.json) the layout, the actions
@@ -131,11 +131,12 @@ class TaskServices(CaliopeServices):
         entity_class = cls.service_class
         rv = super(TaskServices, cls) \
             .get_empty_model(entity_class=entity_class,
-                             template_html=template_path)
-        rv["data"]["holders"] = append_default_holder(rv["data"]["uuid"][
-            "value"])
-        rv['data']['contexts'] = append_default_context(rv['data']['uuid'][
-            'value'])
+                             template_html=template_path, data=data)
+        if data:
+            rv["data"]["holders"] = append_default_holder(rv["data"]["uuid"][
+                "value"])
+            rv['data']['contexts'] = append_default_context(rv['data']['uuid'][
+                'value'])
 
         return rv
 

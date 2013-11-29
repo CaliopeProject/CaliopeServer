@@ -60,7 +60,8 @@ class CaliopeServices(object):
 
     @classmethod
     @public("getModel")
-    def get_empty_model(cls, entity_class=None, template_html=None, template_layout=None, actions=None):
+    def get_empty_model(cls, entity_class=None, template_html=None,
+                        template_layout=None, actions=None, data=True):
         """
         This method needs to be override if you want to use configured json
         forms.
@@ -78,8 +79,9 @@ class CaliopeServices(object):
                                                     template_layout=template_layout,
                                                     actions=actions)
         rv = entity_controller.get_model()
-        rv["data"] = entity_controller.get_data()
-        cls.set_drafts_uuid(rv['data']['uuid']['value'], entity_class)
+        if data:
+            rv["data"] = entity_controller.get_data()
+            cls.set_drafts_uuid(rv['data']['uuid']['value'], entity_class)
         return rv
 
     @PendingDeprecationWarning
