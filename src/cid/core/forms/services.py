@@ -24,10 +24,12 @@ from tinyrpc.dispatch import public
 
 from flask import current_app
 
-from cid.core.entities import ( CaliopeServices)
-from cid.core.entities.base_models.versioned_node import VersionedNode
-
 from cid.core.pubsub import PubSub
+
+from cid.core.entities import (VersionedNode, CaliopeUser,
+                               CaliopeServices)
+
+from cid.core.login import LoginManager
 
 
 class FormManager(CaliopeServices):
@@ -68,7 +70,7 @@ class FormManager(CaliopeServices):
                                      "method": "form.discardDraft",
                                      "params-to-send": "uuid",
                                      "encapsulate-in-data": "false"}],
-                                     data=data)
+                                data=data)
 
             rv['form']['name'] = form['name']
             return rv
@@ -141,6 +143,22 @@ class FormManager(CaliopeServices):
         return rv
 
 
+    @classmethod
+    @public("getAll")
+    def get_all(cls, context=None):
+        user_node = CaliopeUser.index.get(username=LoginManager().get_user())
 
+        if context:
+            node_context = VersionedNode.pull(context).__node__.id
+        else:
+            node_context = '*'
 
+        results, metadata = user_node.cypher("""
+            START n=node(*)
+            MATCH (n)-[:TARGET]-()-[:__CONTEXT__]-(context)
+            WHERE has(n.uuid)
+            RETURN n
+             """.format(context=node_context))
+
+        pass
 
