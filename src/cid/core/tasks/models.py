@@ -30,6 +30,7 @@ from cid.core.entities import (VersionedNode,
                                IntegerProperty,
                                RelationshipFrom,
                                RelationshipTo,
+                               BooleanProperty,
                                ZeroOrOne
                                )
 
@@ -53,6 +54,7 @@ class Task(VersionedNode):
     color = StringProperty()
     status = StringProperty()
     formtask = StringProperty()
+    notified = BooleanProperty()
 
     def __init__(self, *args, **kwargs):
         super(Task, self).__init__(*args, **kwargs)
