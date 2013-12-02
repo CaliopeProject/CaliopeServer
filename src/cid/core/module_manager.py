@@ -48,6 +48,7 @@ def _register_form_modules_from_path(path, app):
             module = importlib.import_module(m['package'])
             path = str(module.__path__[0])
 
+
             try:
                 form['layout'] = os.path.join(path, m['layout'])
             except:
@@ -56,6 +57,11 @@ def _register_form_modules_from_path(path, app):
                 form['html'] = os.path.join(path, m['html'])
             except:
                 form['html'] = None
+            try:
+                form['browsable'] = True if m['browsable'] else False
+            except:
+                form['browsable'] = False
+
             form['label'] = m['label']
             form['module'] = getattr(module, m['module'])
             app.caliope_forms[m['module']] = form

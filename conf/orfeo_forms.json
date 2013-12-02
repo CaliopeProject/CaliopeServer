@@ -5,7 +5,8 @@
             "module": "Orfeo",
             "label": "Orfeo",
             "html": "templates/orfeo_radication_html.json",
-            "layout": "templates/orfeo_radication_layout.json"
+            "layout": "templates/orfeo_radication_layout.json",
+            "browsable": true
         },
         {
             "package": "cid.forms.orfeo",

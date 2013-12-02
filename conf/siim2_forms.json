@@ -12,75 +12,87 @@
             "module": "FichaPredial",
             "label": "Ficha predial",
             "html": "templates/ficha_predial_html.json",
-            "layout": "templates/ficha_predial_layout.json"
+            "layout": "templates/ficha_predial_layout.json",
+            "browsable": true
         },
         {
             "package": "cid.forms.siim2.acta_recibo_predios",
             "module": "ActaReciboPredios",
             "label": "Acta de recibo de predios",
-            "html": "templates/acta_recibo_predios_html.json"
+            "html": "templates/acta_recibo_predios_html.json",
+            "browsable": true
         },
         {
             "package": "cid.forms.siim2.chequeo_traslado_provision_VIS_VIP",
             "module": "ChequeoTrasladoProvision",
             "label": "Lista de chequeo para la realización del traslado de provisión VIS/VIP",
-            "html": "templates/chequeo_traslado_provision_VIS-VIP_html.json"
+            "html": "templates/chequeo_traslado_provision_VIS-VIP_html.json",
+            "browsable": true
         },
         {
             "package": "cid.forms.siim2.aplicacion_traslado",
             "module": "AplicacionTraslado",
             "label": "Aplicación de traslado",
-            "html": "templates/formulario_aplicacion_traslado_html.json"
+            "html": "templates/formulario_aplicacion_traslado_html.json",
+            "browsable": true
         },
         {
             "package": "cid.forms.siim2.derecho_preferencia",
             "module": "DerechoPreferencia",
             "label": "Derecho de preferencia-datos básicos",
-            "html": "templates/derecho_preferencia_html.json"
+            "html": "templates/derecho_preferencia_html.json",
+            "browsable": true
         },
         {
             "package": "cid.forms.siim2.ficha_catastral",
             "module": "FichaCatastral",
             "label": "Ficha catastral",
-            "html": "templates/ficha_catastral_html.json"
+            "html": "templates/ficha_catastral_html.json",
+            "browsable": true
         },
         {
             "package": "cid.forms.siim2.ficha_prejuridica",
             "module": "FichaPrejuridica",
             "label": "Ficha prejurídica",
             "html": "templates/ficha_prejuridica_html.json",
-            "layout": "templates/ficha_prejuridica_layout.json"
+            "layout": "templates/ficha_prejuridica_layout.json",
+            "browsable": true
         },
         {
             "package": "cid.forms.siim2.ficha_urbanistica",
             "module": "FichaUrbanistica",
             "label": "Ficha urbanistica",
             "html": "templates/ficha_urbanistica_html.json",
-            "layout": "templates/ficha_urbanistica_layout.json"
+            "layout": "templates/ficha_urbanistica_layout.json",
+            "browsable": true
         },
         {
             "package": "cid.forms.siim2.viabilidad_normativa",
             "module": "ViabilidadNormativa",
             "label": "Viabilidad normativa",
-            "html": "templates/viabilidad_normativa_html.json"
+            "html": "templates/viabilidad_normativa_html.json",
+            "browsable": true
         },
         {
             "package": "cid.forms.siim2.concepto_viabilidad",
             "module": "ConceptoViabilidad",
             "label": "Concepto viabilidad",
-            "html": "templates/concepto_viabilidad_html.json"
+            "html": "templates/concepto_viabilidad_html.json",
+            "browsable": true
         },
         {
             "package": "cid.forms.siim2.evaluacion_producto",
             "module": "EvaluacionProducto",
             "label": "Evaluación del producto",
-            "html": "templates/evaluacion_producto_html.json"
+            "html": "templates/evaluacion_producto_html.json",
+            "browsable": true
         },
         {
             "package": "cid.forms.siim2.control_ajustes",
             "module": "ControlAjustes",
             "label": "Control de ajustes",
-            "html": "templates/control_ajustes_html.json"
+            "html": "templates/control_ajustes_html.json",
+            "browsable": true
         },
         /*
          * Testing forms.
@@ -91,26 +103,30 @@
             "module": "SIIMForm",
             "label": "SIIMForm",
             "html": "templates/SIIMForm_html.json",
-            "layout": "templates/SIIMForm_layout.json"
+            "layout": "templates/SIIMForm_layout.json",
+            "browsable": true
         },
         {
             "package": "cid.forms.siim2.Person",
             "module": "Person",
             "label": "Person",
             "html": "templates/Person_html.json",
-            "layout": "templates/Person_layout.json"
+            "layout": "templates/Person_layout.json",
+            "browsable": true
         },
         {
             "package": "cid.forms.siim2.Address",
             "module": "Address",
             "label": "Address",
             "html": "templates/Address_html.json",
-            "layout": "templates/Address_layout.json"
+            "layout": "templates/Address_layout.json",
+            "browsable": true
         },
         {
             "package": "cid.forms.siim2.RegistroPredioCatastroTipoII",
             "module": "RegistroPredioCatastroTipoII",
-            "label": "RegistroPredioCatastroTipoII"
+            "label": "RegistroPredioCatastroTipoII",
+            "browsable": true
         }
     ]
 }
