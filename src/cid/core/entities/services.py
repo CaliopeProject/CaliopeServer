@@ -61,7 +61,7 @@ class CaliopeServices(object):
     @classmethod
     @public("getModel")
     def get_empty_model(cls, entity_class=None, template_html=None,
-                        template_layout=None, actions=None, data=True):
+                        template_layout=None, actions=None, data=False):
         """
         This method needs to be override if you want to use configured json
         forms.

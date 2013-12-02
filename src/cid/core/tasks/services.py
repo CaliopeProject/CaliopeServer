@@ -94,7 +94,7 @@ class TaskServices(CaliopeServices):
 
     @classmethod
     @public("getModel")
-    def get_empty_model(cls, data=True):
+    def get_empty_model(cls, data=False):
         """
         In order to create a Task, first you need to get the model, in the
         model is incluided de default dform (.json) the layout, the actions
