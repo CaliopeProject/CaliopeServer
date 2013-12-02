@@ -160,5 +160,19 @@ class FormManager(CaliopeServices):
             RETURN n
              """.format(context=node_context))
 
-        pass
+        rv = list()
+        for row in results:
+            form = dict()
+            uuid = row[0]['uuid']
+            entity_name = VersionedNode.pull(uuid).__class__.__name__
+            data = super(FormManager, cls).get_data(uuid=uuid)
+
+            form['uuid']  = uuid
+            form['classname'] = entity_name
+            form['data'] = data
+            form['browsable'] = current_app.caliope_forms[entity_name]['browsable']
+
+            rv.append(form)
+
+        return rv
 
