@@ -5,7 +5,8 @@
             "module": "Project",
             "label": "Project",
             "html": "templates/siim2_project_html.json",
-            "layout": "templates/siim2_project_layout.json"
+            "layout": "templates/siim2_project_layout.json",
+            "browsable": true
         },
         {
             "package": "cid.forms.siim2.ficha_predial",
