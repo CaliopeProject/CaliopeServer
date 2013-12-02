@@ -100,7 +100,7 @@ def uploader():
         for uploaded_file in request.files.getlist('files[]'):
             filename = secure_filename(uploaded_file.filename)
             if uploaded_file and allowed_file(uploaded_file.filename):
-                model = FormManager().get_empty_model('CaliopeDocument')
+                model = FormManager().get_empty_model('CaliopeDocument',data=True)
                 idfile = model['data']['uuid']['value']
                 uploaded_file.save(os.path.join(UPLOAD_FOLDER, idfile))
 
