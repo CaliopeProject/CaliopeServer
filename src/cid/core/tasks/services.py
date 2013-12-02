@@ -157,8 +157,9 @@ class TaskServices(CaliopeServices):
     @public(name='commit')
     def commit(cls, uuid, loopback_notification=False):
         hkey_name = uuid
+        hkey_name_rels = uuid + "_rels"
         #Create form if is associated to a form
-        if cls.r.hexists(hkey_name, "formtask"):
+        if cls.r.hexists(hkey_name, "formtask") and not cls.r.hexists(hkey_name_rels, "target"):
             from cid.core.forms.services import FormManager
 
             form_name = cls.r.hget(hkey_name, "formtask")
@@ -166,7 +167,6 @@ class TaskServices(CaliopeServices):
             cls.update_relationship(uuid, "target", form["uuid"])
 
         #notify the other users of the change
-        hkey_name_rels = uuid + "_rels"
         holders_to_add = []
         holders_to_remove = []
         if cls.r.hexists(hkey_name_rels, "holders"):
