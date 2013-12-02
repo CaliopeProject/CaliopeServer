@@ -48,7 +48,7 @@ class FormManager(CaliopeServices):
 
     @classmethod
     @public("getModel")
-    def get_empty_model(cls, formId):
+    def get_empty_model(cls, formId, data=False):
         if formId in current_app.caliope_forms:
             form = current_app.caliope_forms[formId]
             module = form['module']
@@ -66,7 +66,8 @@ class FormManager(CaliopeServices):
                                     {"name": "Descartar Borrador",
                                      "method": "form.discardDraft",
                                      "params-to-send": "uuid",
-                                     "encapsulate-in-data": "false"}])
+                                     "encapsulate-in-data": "false"}],
+                                     data=data)
 
             rv['form']['name'] = form['name']
             return rv
