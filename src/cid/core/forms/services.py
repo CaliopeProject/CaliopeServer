@@ -39,11 +39,12 @@ class FormManager(CaliopeServices):
     def get_forms(cls):
         rv = []
         for formId in current_app.caliope_forms:
-            f = {
-                'formId': {'value': formId},
-                'label': {'value': current_app.caliope_forms[formId]['label']}
-            }
-            rv.append(f)
+            if current_app.caliope_forms[formId]['browsable']:
+                f = {
+                    'formId': {'value': formId},
+                    'label': {'value': current_app.caliope_forms[formId]['label']}
+                }
+                rv.append(f)
         return rv
 
     @classmethod
