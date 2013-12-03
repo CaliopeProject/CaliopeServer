@@ -19,17 +19,21 @@ Copyright (C) 2013 Infometrika Ltda.
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
-import json
+import os
+
+from flask.globals import current_app
+
 from tinyrpc.dispatch import public
 
 from flask import current_app
 
 from cid.core.pubsub import PubSub
 
-from cid.core.entities import (VersionedNode, CaliopeUser,
+from cid.core.entities import (VersionedNode, CaliopeDocument,
                                CaliopeServices)
 
-from cid.core.login import LoginManager
+from cid.utils.fileUtils import human_readable_size
+from cid.utils.thumbnails import get_thumbnail
 
 
 class DocumentServices(CaliopeServices):
@@ -40,4 +44,24 @@ class DocumentServices(CaliopeServices):
     @classmethod
     @public("getData")
     def get_data(cls, uuids):
-        return {}
+        rv = list()
+
+        storage_setup = current_app.config['storage']
+
+        if 'local' in storage_setup and 'absolut_path' in storage_setup['local']:
+            STORAGE = storage_setup['local']['absolut_path']
+
+        for uuid in uuids:
+            vnode = CaliopeDocument.pull(uuid)
+            filename = os.path.join(STORAGE, vnode.uuid)
+            size = os.stat(filename).st_size
+            data = {
+                'result': 'ok',
+                'name': vnode.filename,
+                'size': human_readable_size(size),
+                'id': vnode.uuid,
+                'thumbnail': get_thumbnail(filename, 'data')
+            }
+            rv.append(data)
+
+        return rv

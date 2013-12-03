@@ -27,13 +27,12 @@ import json
 import uuid
 
 #flask
-from werkzeug import secure_filename
 from flask.globals import current_app
 from flask import ( request, Blueprint)
 
 from cid.core.login import LoginManager
 from cid.utils.thumbnails import get_thumbnail
-from cid.core.documents import DocumentManager, CaliopeDocument
+from cid.utils.fileUtils import human_readable_size
 from cid.core.forms import FormManager
 from cid.utils.crossdomain import crossdomain
 from cid.core.entities import CaliopeServices
@@ -46,22 +45,6 @@ file_uploader = Blueprint('file_uploader', __name__, template_folder='')
 #: TODO: This items should be came from configuration files.
 UPLOAD_FOLDER = "/tmp"
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
-
-def human_readable_size(size_bytes):
-    if size_bytes == 1:
-        return "1 byte"
-
-    suffixes_table = [('bytes',0),('KB',1),('MB',2),('GB',2),('TB',3), ('PB',3)]
-
-    num = float(size_bytes)
-    for suffix, precision in suffixes_table:
-        if num < 1024.0:
-            break
-        num /= 1024.0
-        
-    formatted_size = ("%d" % num) if (precision == 0) else str(round(num, ndigits=precision))
-
-    return "%s %s" % (formatted_size, suffix)
 
 
 def local_document_url(parent_uuid, path, description):
@@ -88,7 +71,7 @@ def uploader():
            return "unrecheable"
 
         app = current_app
-        storage_setup =  app.config['storage']
+        storage_setup = app.config['storage']
 
         if 'local' in storage_setup and 'absolut_path' in storage_setup['local']:
             UPLOAD_FOLDER  = storage_setup['local']['absolut_path']

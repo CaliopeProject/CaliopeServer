@@ -39,6 +39,23 @@ from werkzeug.exceptions import NotFound
 from cid.utils.jsOptimizer import jsOptimizer
 
 
+def human_readable_size(size_bytes):
+    if size_bytes == 1:
+        return "1 byte"
+
+    suffixes_table = [('bytes', 0), ('KB', 1), ('MB', 2), ('GB', 2), ('TB', 3), ('PB', 3)]
+
+    num = float(size_bytes)
+    for suffix, precision in suffixes_table:
+        if num < 1024.0:
+            break
+        num /= 1024.0
+
+    formatted_size = ("%d" % num) if (precision == 0) else str(round(num, ndigits=precision))
+
+    return "%s %s" % (formatted_size, suffix)
+
+
 def loadJSONFromFile(filename, root_path=''):
     if filename is not None:
         if len(root_path):
