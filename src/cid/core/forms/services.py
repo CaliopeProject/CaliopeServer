@@ -161,18 +161,30 @@ class FormManager(CaliopeServices):
              """.format(context=node_context))
 
         rv = list()
+        instances = list()
+        entities = list()
+        models = list()
         for row in results:
             form = dict()
             uuid = row[0]['uuid']
             entity_name = VersionedNode.pull(uuid).__class__.__name__
+
+            if entity_name not in entities:
+                entities.append(entity_name)
+
             data = super(FormManager, cls).get_data(uuid=uuid)
 
-            form['uuid']  = uuid
+            form['uuid'] = uuid
             form['classname'] = entity_name
             form['data'] = data
             form['browsable'] = current_app.caliope_forms[entity_name]['browsable']
 
-            rv.append(form)
+            instances.append(form)
+        rv.append({'instances': instances})
+
+        for entity_name in entities:
+            models.append(cls.get_empty_model(entity_name))
+
+        rv.append({'models': models})
 
         return rv
-
