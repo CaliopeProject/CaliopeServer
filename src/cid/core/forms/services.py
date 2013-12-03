@@ -155,8 +155,8 @@ class FormManager(CaliopeServices):
 
         results, metadata = user_node.cypher("""
             START n=node(*)
-            MATCH (n)-[:TARGET]-()-[:__CONTEXT__]-(context)
-            WHERE has(n.uuid)
+            MATCH path=(n)-[:TARGET]-(task)-[:__CONTEXT__]-(context), p_none=(task)<-[?:PARENT*]-()
+            WHERE has(n.uuid) and p_none=null
             RETURN n
              """.format(context=node_context))
 
