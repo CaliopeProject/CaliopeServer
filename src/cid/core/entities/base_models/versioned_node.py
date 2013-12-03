@@ -40,7 +40,7 @@ from neomodel import (StringProperty,
 
 from neomodel.contrib import SemiStructuredNode
 
-from cid.core.utils import uuidGenerator, timeStampGenerator
+from cid.core.utils import uuidGenerator, timeStampGenerator, DictDiffer
 
 from caliope_properties import CaliopeJSONProperty
 
@@ -345,4 +345,25 @@ class VersionedNode(SemiStructuredNode):
             raise ValueError("{} not a property or attribute"
             .format(field_name))
 
+
+    def get_change_history(self, history={}):
+        previous = self.parent.single()
+        if previous:
+            p_data = previous._get_node_data()
+            c_data = self._get_node_data()
+            diff = DictDiffer(c_data, p_data)
+            history[previous.uuid] = \
+                {'changed': {k:v for k,v in p_data.iteritems() if k in diff.changed()},\
+                'added': {k:v for k,v in p_data.iteritems() if k in diff.added()},\
+                'removed': {k:v for k,v in p_data.iteritems() if k in diff.removed()},\
+                'unchanged': {k:v for k,v in p_data.iteritems() if k in diff.unchanged()}}
+
+            previous.get_change_history(history=history)
+        return history
+
+
+class NonVersionedNode(VersionedNode):
+
+    def save(self):
+        super(self, VersionedNode).save(skip_difference=True)
 

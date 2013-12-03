@@ -135,6 +135,25 @@ class TestVersionedNodeStorage(unittest.TestCase):
         assert node_prev.other == props['other']
         self.printLine()
 
+    def test_VersionedNode_history(self):
+        self.printLine()
+        props = {'foo': 'bar', 'other': 2}
+        node = VersionedNode.push(**props)
+        print node.uuid, node.timestamp
+        setattr(node, 'foo', 'no_bar')
+        setattr(node, 'other', 3)
+        node.save()
+        node_prev = node.parent.single()
+        history = node.get_change_history()
+        #:TODO Asserts.
+        setattr(node, 'x', 'new')
+        setattr(node, 'other', 3)
+        delattr(node,'foo')
+        node.save()
+        history = node.get_change_history()
+
+        self.printLine()
+
     def test_versionednode_update_field(self):
         self.printLine()
         node = VersionedNode()
