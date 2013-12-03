@@ -169,6 +169,10 @@ class FormManager(CaliopeServices):
             uuid = row[0]['uuid']
             entity_name = VersionedNode.pull(uuid).__class__.__name__
 
+            #TODO: fix workaround
+            if entity_name not in current_app.caliope_forms:
+                continue
+
             if entity_name not in entities:
                 entities.append(entity_name)
 
