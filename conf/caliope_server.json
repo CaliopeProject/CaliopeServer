@@ -55,6 +55,12 @@
                     "package": "core.access_control",
                     "service": "ac"
                 }
+            },
+            {
+                "document": {
+                    "package": "core.documents",
+                    "service": "document"
+                }
             }
         ]
     },
