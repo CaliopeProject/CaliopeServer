@@ -354,9 +354,9 @@ class VersionedNode(SemiStructuredNode):
             diff = DictDiffer(c_data, p_data)
             history[previous.uuid] = \
                 {'changed': {k:v for k,v in p_data.iteritems() if k in diff.changed()},\
-                'added': {k:v for k,v in p_data.iteritems() if k in diff.added()},\
-                'removed': {k:v for k,v in p_data.iteritems() if k in diff.removed()},\
-                'unchanged': {k:v for k,v in p_data.iteritems() if k in diff.unchanged()}}
+                 'added': {k:v for k,v in p_data.iteritems() if k in diff.added()},\
+                 'removed': {k:v for k,v in p_data.iteritems() if k in diff.removed()},\
+                 'unchanged': {k:v for k,v in p_data.iteritems() if k in diff.unchanged()}}
 
             previous.get_change_history(history=history)
         return history
