@@ -30,8 +30,9 @@ from cid.utils.fileUtils import loadJSONFromFile
 from cid.utils.helpers import DatetimeEncoder, DatetimeDecoder
 from cid.core.pubsub import PubSub
 
+from cid.core.login import LoginManager
 from .utils import CaliopeEntityUtil
-from .models import VersionedNode
+from .models import VersionedNode, CaliopeTransaction
 
 from cid.core.access_control import AccessControlManager
 
@@ -466,6 +467,9 @@ class CaliopeServices(object):
     def commit(cls, uuid, loopback_notification=False):
         """
         Push the changes that are in the draft (Redis) to the neo4j database
+
+        Also creates a node containg the changes doing within the commit for
+        the conservation of the history of transactions in the system.
         """
         #: TODO: Ensure all updates runs within the same transaction or batch.
 
@@ -490,7 +494,15 @@ class CaliopeServices(object):
                     versioned_node.update_field(delta_k, delta_v)
                     #: clean stage area
                 #: push all changes to database
-                versioned_node.save()
+                if versioned_node.save():
+                    CaliopeTransaction(**{
+                        'uuid_object':uuid,
+                        'uuid_agent': LoginManager().get_current_user_uuid(),
+                        'uuid_session': LoginManager().get_current_session_id(),
+                        'change_type':'PROPERTY',
+                        'change_value': changes
+                    }).save()
+
             cls._remove_draft_props(uuid)
             if cls._has_draft_rels(uuid):
                 changes = cls._get_draft_rels(uuid)
@@ -504,7 +516,7 @@ class CaliopeServices(object):
                             order_list.insert(0, target)
                         elif "__changed__" in props and props["__changed__"]:
                             order_list.append(target)
-                    #: do the changes for each target, in order
+                    #: do the changes for each target, in order first delete rels.
                     for i in xrange(len(order_list)):
                         target = order_list[i]
                         props = delta_v[target]

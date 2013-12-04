@@ -131,6 +131,26 @@ class LoginManager(object):
                 return current_app.storekv.get(key)
         return None
 
+    @staticmethod
+    def get_current_user_uuid():
+        """
+        Get the current user uuid.
+
+        TODO: Store those values in a global context, because is dump query db
+        for those.
+        :return: user node uuid
+        """
+        username = LoginManager.get_user()
+        userNode = CaliopeUser.index.get(username=username)
+        return userNode.uuid
+
+    @staticmethod
+    def get_current_session_id():
+        """
+        :return: The session uuid.
+        """
+        return g.connection_thread_pool_id[g.connection_thread_id]
+
 
 def login_required(func, **kwargs):
     @wraps(func)

@@ -64,3 +64,11 @@ class CaliopeGroup(VersionedNode):
     members = RelationshipFrom('CaliopeUser', 'IS_MEMBER_OF_GROUP')
 
 
+class CaliopeTransaction(VersionedNode):
+    uuid_object= StringProperty(index=True)
+    uuid_agent = StringProperty(index=True)
+    uuid_session = StringProperty(index=True)
+    change_type = StringProperty()
+    change_value = CaliopeJSONProperty()
+
+
