@@ -25,6 +25,7 @@ Copyright (C) 2013 Fundación Correlibre
 import os
 import json
 import uuid
+from werkzeug.utils import secure_filename
 
 #flask
 from flask.globals import current_app
@@ -36,6 +37,7 @@ from cid.utils.fileUtils import human_readable_size
 from cid.core.forms import FormManager
 from cid.utils.crossdomain import crossdomain
 from cid.core.entities import CaliopeServices
+import mimetypes
 
 import urlparse
 
@@ -87,7 +89,11 @@ def uploader():
                 idfile = model['data']['uuid']['value']
                 uploaded_file.save(os.path.join(UPLOAD_FOLDER, idfile))
 
+                mimetype = mimetypes.guess_type(filename)[0]
+                if mimetype is None:
+                    mimetype = 'application/octet-stream'
 
+                CaliopeServices().update_field(idfile, 'mimetype', mimetype)
                 CaliopeServices().update_field(idfile, 'filename', filename)
                 CaliopeServices().update_field(idfile, 'url', local_document_url('', idfile, ''))
                 #DocumentProcess().enqueue(doc)

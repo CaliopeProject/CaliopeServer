@@ -26,9 +26,9 @@ Copyright (C) 2013 Infometrika Ltda.
 import os
 import getopt
 import sys
-from logging import getLogger
-
 import redis
+
+from logging import getLogger
 
 
 #gevent
@@ -37,8 +37,7 @@ from geventwebsocket.handler import WebSocketHandler
 from gevent import monkey
 
 #flask
-from flask import (Flask )
-from flask.helpers import safe_join
+from flask import Flask
 
 #simplekv
 from simplekv.memory.redisstore import RedisStore
@@ -47,7 +46,6 @@ from simplekv.memory.redisstore import RedisStore
 from cid.core import module_manager
 from cid.utils.fileUtils import loadJSONFromFileNoPath, send_from_memory, Gzip
 from cid.utils.crossdomain import crossdomain
-
 
 #: Gevent to patch all TCP/IP connections
 monkey.patch_all()
@@ -61,11 +59,6 @@ def index():
     return 'Out of bounding.'
 
 
-@app.route('/<path:filename>', methods=['GET', 'POST', 'OPTIONS'])
-@crossdomain(origin=['*'], headers=['Content-Type', 'Authorization', 'Content-Length', 'X-Requested-With'],
-             methods=['POST', 'GET', 'PUT', 'HEAD', 'OPTIONS'])
-def custom_static(filename):
-    return 'Out of bounding.'
 
 
 def main(argv):

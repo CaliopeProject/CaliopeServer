@@ -32,6 +32,7 @@ class CaliopeDocument(VersionedNode):
     filename = StringProperty()
     url = StringProperty()
     sha256 = StringProperty()
+    mimetype = StringProperty()
     description = StringProperty()
 
     def save(cls):
