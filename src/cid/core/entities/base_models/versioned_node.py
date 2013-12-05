@@ -182,6 +182,8 @@ class VersionedNode(SemiStructuredNode):
                 for target in relations.all():
                     rel_inst = relations.relationship(target)
                     rv[target.uuid] = dict(rel_inst._properties)
+                    #TODO: fix workaround
+                    rv[target.uuid]['uuid'] = target.uuid
             return rv
         else:
             raise ValueError("{} not a relationship"
