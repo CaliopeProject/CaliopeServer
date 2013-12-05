@@ -53,14 +53,22 @@ def _register_form_modules_from_path(path, app):
                 form['layout'] = os.path.join(path, m['layout'])
             except:
                 form['layout'] = None
+
             try:
                 form['html'] = os.path.join(path, m['html'])
             except:
                 form['html'] = None
+
+            try:
+                form['thumbnail'] = os.path.join(path, m['thumbnail'])
+            except:
+                form['thumbnail'] = None
+
             try:
                 form['browsable'] = True if m['browsable'] else False
             except:
                 form['browsable'] = False
+
 
             form['label'] = m['label']
             form['module'] = getattr(module, m['module'])

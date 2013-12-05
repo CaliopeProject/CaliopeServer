@@ -1,0 +1,15 @@
+{
+    "layout": [
+        {
+            "columns": [
+                {
+                    "class": "span3",
+                    "elements": [
+                        "subject",
+                        "type"
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -14,6 +14,7 @@
             "label": "Ficha predial",
             "html": "templates/ficha_predial_html.json",
             "layout": "templates/ficha_predial_layout.json",
+            "thumbnail": "templates/ficha_predial_thumbnail.json",
             "browsable": true
         },
         {

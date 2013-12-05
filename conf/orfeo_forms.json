@@ -6,6 +6,7 @@
             "label": "Orfeo",
             "html": "templates/orfeo_radication_html.json",
             "layout": "templates/orfeo_radication_layout.json",
+            "thumbnail": "templates/orfeo_radication_thumbnail.json",
             "browsable": true
         },
         {

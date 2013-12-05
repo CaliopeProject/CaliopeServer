@@ -1,0 +1,15 @@
+{
+    "layout": [
+        {
+            "columns": [
+                {
+                    "class": "span6",
+                    "elements": [
+                        "identificador_predial",
+                        "direccion_fuente"
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -51,16 +51,16 @@ class FormManager(CaliopeServices):
 
     @classmethod
     @public("getModel")
-    def get_empty_model(cls, formId, data=False):
+    def get_empty_model(cls, formId, data=False, thumbnails=False):
         if formId in current_app.caliope_forms:
             form = current_app.caliope_forms[formId]
             module = form['module']
+            template_layout = form['thumbnail'] if thumbnails else form['layout']
             rv = super(FormManager, cls). \
                 get_empty_model(entity_class=module,
                                 template_html=form[
                                     'html'],
-                                template_layout=form[
-                                    'layout'],
+                                template_layout=template_layout,
                                 actions=[
                                     {"name": "Guardar",
                                      "method": "form.commit",
@@ -187,7 +187,7 @@ class FormManager(CaliopeServices):
         rv.append({'instances': instances})
 
         for entity_name in entities:
-            models.append(cls.get_empty_model(entity_name))
+            models.append(cls.get_empty_model(entity_name, thumbnails=True))
 
         rv.append({'models': models})
 
