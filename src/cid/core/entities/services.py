@@ -495,7 +495,8 @@ class CaliopeServices(object):
                     #: clean stage area
                 #: push all changes to database
                 versioned_node.update_field('change_info',
-                                        LoginManager().get_current_user_uuid())
+                                        LoginManager().get_current_user_uuid(),
+                                        special=True)
                 versioned_node.save()
 
             cls._remove_draft_props(uuid)
@@ -556,7 +557,7 @@ class CaliopeServices(object):
     def get_history(cls, uuid):
         vnode = VersionedNode.pull(uuid)
         if vnode:
-            return vnode.get_historty(format='json')
+            return vnode.get_history(format='json')
         else:
             return {}
 

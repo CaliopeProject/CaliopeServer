@@ -89,6 +89,7 @@ class FormManager(CaliopeServices):
 
     @classmethod
     def create_form_from_id(cls, formId, data):
+        #TODO IMPORTANT!!! Use EntityServices. update field, and commit.
         if formId in current_app.caliope_forms:
             module = current_app.caliope_forms[formId]['module']
             node = module()
