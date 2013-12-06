@@ -59,7 +59,9 @@ class VersionedNode(SemiStructuredNode):
 
     timestamp = DateTimeProperty(default=timeStampGenerator)
 
-    __special_fields__ = set(['timestamp', 'parent', 'uuid'])
+    change_info = StringProperty(index=True)
+
+    __special_fields__ = set(['timestamp', 'parent', 'uuid', 'change_info'])
 
     def __new__(cls, *args, **kwargs):
         cls.parent = RelationshipTo(cls, 'PARENT', ZeroOrOne)
@@ -348,20 +350,31 @@ class VersionedNode(SemiStructuredNode):
             .format(field_name))
 
 
-    def get_change_history(self, history={}):
+    def _get_change_history(self, history={}):
         previous = self.parent.single()
         if previous:
             p_data = previous._get_node_data()
             c_data = self._get_node_data()
             diff = DictDiffer(c_data, p_data)
             history[previous.uuid] = \
-                {'changed': {k:v for k,v in p_data.iteritems() if k in diff.changed()},\
-                 'added': {k:v for k,v in p_data.iteritems() if k in diff.added()},\
-                 'removed': {k:v for k,v in p_data.iteritems() if k in diff.removed()},\
-                 'unchanged': {k:v for k,v in p_data.iteritems() if k in diff.unchanged()}}
+                {'changed': {k:v for k,v in p_data.iteritems()
+                             if k in diff.changed()},\
+                 'added': {k:v for k,v in p_data.iteritems()
+                           if k in diff.added()},\
+                 'removed': {k:v for k,v in p_data.iteritems()
+                             if k in diff.removed()},\
+                 'unchanged': {k:v for k,v in p_data.iteritems()
+                               if k in diff.unchanged()}}
 
             previous.get_change_history(history=history)
         return history
+
+    def get_history(self, format='json'):
+        if format=='json':
+            return {k:self._format_data(v) for k, v in self._get_change_history()\
+                .iteritems()}
+        else:
+            return self._get_change_history()
 
 
 class NonVersionedNode(VersionedNode):

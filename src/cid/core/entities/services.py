@@ -494,14 +494,9 @@ class CaliopeServices(object):
                     versioned_node.update_field(delta_k, delta_v)
                     #: clean stage area
                 #: push all changes to database
-                if versioned_node.save():
-                    CaliopeTransaction(**{
-                        'uuid_object':uuid,
-                        'uuid_agent': LoginManager().get_current_user_uuid(),
-                        'uuid_session': LoginManager().get_current_session_id(),
-                        'change_type':'PROPERTY',
-                        'change_value': changes
-                    }).save()
+                versioned_node.update_field('change_info',
+                                        LoginManager().get_current_user_uuid())
+                versioned_node.save()
 
             cls._remove_draft_props(uuid)
             if cls._has_draft_rels(uuid):
@@ -555,6 +550,15 @@ class CaliopeServices(object):
         except AssertionError:
             return RuntimeError("The give uuid {0} is not a valid object of "
                                 "class {1}".format(uuid, cls.__name__))
+
+    @classmethod
+    @public("getHistory")
+    def get_history(cls, uuid):
+        vnode = VersionedNode.pull(uuid)
+        if vnode:
+            return vnode.get_historty(format='json')
+        else:
+            return {}
 
     @classmethod
     @public("discardDraft")

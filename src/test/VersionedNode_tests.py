@@ -144,13 +144,13 @@ class TestVersionedNodeStorage(unittest.TestCase):
         setattr(node, 'other', 3)
         node.save()
         node_prev = node.parent.single()
-        history = node.get_change_history()
+        history = node._get_change_history()
         #:TODO Asserts.
         setattr(node, 'x', 'new')
         setattr(node, 'other', 3)
         delattr(node,'foo')
         node.save()
-        history = node.get_change_history()
+        history = node._get_change_history()
 
         self.printLine()
 
