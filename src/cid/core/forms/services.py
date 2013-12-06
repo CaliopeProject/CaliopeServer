@@ -143,10 +143,16 @@ class FormManager(CaliopeServices):
         rv.update(super(FormManager, cls).discard_draft(uuid))
         return rv
 
+    @classmethod
+    @public("getAllWithThumbnails")
+    def get_all_with_thumbnails(cls, context=None):
+        rv = cls.get_all(cls, context)
+        return rv
+
 
     @classmethod
     @public("getAll")
-    def get_all(cls, context=None):
+    def get_all(cls, context=None, recursive=False):
         user_node = CaliopeUser.index.get(username=LoginManager().get_user())
 
         if context:
@@ -184,7 +190,8 @@ class FormManager(CaliopeServices):
             form['data'] = data
             form['browsable'] = current_app.caliope_forms[entity_name]['browsable']
 
-            cls.get_related_data(instances, data)
+            if(recursive):
+                cls.get_related_data(instances, data)
 
             instances.append(form)
 
