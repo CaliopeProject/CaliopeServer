@@ -26,8 +26,8 @@ from cid.core.entities.base_models.entities_models import *
 
 
 class CaliopeDocument(VersionedNode):
-    owner = RelationshipFrom(CaliopeUser, 'OWNER', cardinality=One)
-    holders = RelationshipFrom(CaliopeUser, 'HOLDER')
+    #owner = RelationshipFrom(CaliopeUser, 'OWNER', cardinality=One)
+    #holders = RelationshipFrom(CaliopeUser, 'HOLDER')
 
     filename = StringProperty()
     url = StringProperty()

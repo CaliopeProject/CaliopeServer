@@ -19,7 +19,7 @@ Copyright (C) 2013 Infometrika Ltda.
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
-import json
+import re
 from tinyrpc.dispatch import public
 
 from flask import current_app
@@ -183,7 +183,10 @@ class FormManager(CaliopeServices):
             form['data'] = data
             form['browsable'] = current_app.caliope_forms[entity_name]['browsable']
 
+            cls.get_related_data(instances, data)
+
             instances.append(form)
+
         rv.append({'instances': instances})
 
         for entity_name in entities:
@@ -192,3 +195,31 @@ class FormManager(CaliopeServices):
         rv.append({'models': models})
 
         return rv
+
+    @classmethod
+    def get_related_data(cls,instances, data):
+
+        uuid4hex = re.compile('[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}')
+
+        for field_name in data:
+            field = data[field_name]
+            type(field) == dict
+            for key in field:
+                related_uuid = uuid4hex.match(key)
+                if related_uuid:
+                    entity_name = VersionedNode.pull(related_uuid.string).__class__.__name__
+                    #TODO: fix workaround
+                    if entity_name not in current_app.caliope_forms:
+                        continue
+
+                    form = dict()
+                    node = super(FormManager, cls).get_data(uuid=related_uuid.string)
+                    form['uuid'] = related_uuid.string
+                    form['classname'] = entity_name
+                    form['data'] = node
+                    form['browsable'] = False
+
+                    instances.append(form)
+
+                    cls.get_related_data(instances, node)
+
