@@ -227,5 +227,6 @@ class FormManager(CaliopeServices):
     @classmethod
     @public("getAllWithThumbnails")
     def get_all_with_thumbnails(cls, context=None):
-        rv = cls.get_all(context=context)
+        rv = cls.get_all(context=context, recursive=True)
+
         return rv
