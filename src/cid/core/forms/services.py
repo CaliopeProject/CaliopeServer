@@ -144,13 +144,6 @@ class FormManager(CaliopeServices):
         return rv
 
     @classmethod
-    @public("getAllWithThumbnails")
-    def get_all_with_thumbnails(cls, context=None):
-        rv = cls.get_all(cls, context)
-        return rv
-
-
-    @classmethod
     @public("getAll")
     def get_all(cls, context=None, recursive=False):
         user_node = CaliopeUser.index.get(username=LoginManager().get_user())
@@ -231,3 +224,8 @@ class FormManager(CaliopeServices):
 
                     cls.get_related_data(instances, node)
 
+    @classmethod
+    @public("getAllWithThumbnails")
+    def get_all_with_thumbnails(cls, context=None):
+        rv = cls.get_all(context=context)
+        return rv
