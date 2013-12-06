@@ -357,7 +357,9 @@ class VersionedNode(SemiStructuredNode):
         previous = self.parent.single()
         if previous:
             p_data = previous._get_node_data()
+            p_data.update(previous._serialize_relationships())
             c_data = self._get_node_data()
+            c_data.update(self._serialize_relationships())
             diff = DictDiffer(c_data, p_data)
             history[previous.uuid] = \
                 {'changed': {k:v for k,v in p_data.iteritems()
@@ -376,7 +378,8 @@ class VersionedNode(SemiStructuredNode):
 
     def get_history(self, format='json'):
         if format=='json':
-            return {k:self._format_data(v) for k, v in self._get_change_history()\
+            return {k:self._format_data(v) for k, v in self
+            ._get_change_history(history={})\
                 .iteritems()}
         else:
             return self._get_change_history()
