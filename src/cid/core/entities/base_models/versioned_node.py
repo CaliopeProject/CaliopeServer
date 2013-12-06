@@ -61,7 +61,7 @@ class VersionedNode(SemiStructuredNode):
 
     change_info = StringProperty(index=True)
 
-    __special_fields__ = set(['timestamp', 'parent', 'uuid', 'change_info'])
+    __special_fields__ = set(['timestamp', 'parent', 'uuid'])
 
     def __new__(cls, *args, **kwargs):
         cls.parent = RelationshipTo(cls, 'PARENT', ZeroOrOne)
@@ -72,7 +72,9 @@ class VersionedNode(SemiStructuredNode):
         super(VersionedNode, self).__init__(*args, **kwargs)
 
 
-    def _attributes_to_diff(self):
+    def _attributes_to_diff(self, special=False):
+        if special:
+            return [a for a in self.__dict__ if a[:1] != '_']
         return [a for a in self.__dict__ if a[:1] != '_'
         and a not in self.__special_fields__]
 
@@ -299,7 +301,8 @@ class VersionedNode(SemiStructuredNode):
         super(VersionedNode, self).save()
         return self
 
-    def update_field(self, field_name, new_value, field_id=None):
+    def update_field(self, field_name, new_value, field_id=None,
+                     special=False):
         """
         Allow granular update of individual fields, including granular items
         and specific keys within dicts.
@@ -321,7 +324,7 @@ class VersionedNode(SemiStructuredNode):
         :raise ValueError: If the field_name is not a property of the object.
         """
 
-        if field_name in self._attributes_to_diff() or \
+        if field_name in self._attributes_to_diff(special=special) or \
                         getattr(self, field_name, None) is not None:
             if field_id is not None:
                 curr_value = getattr(self, field_name)
@@ -364,9 +367,11 @@ class VersionedNode(SemiStructuredNode):
                  'removed': {k:v for k,v in p_data.iteritems()
                              if k in diff.removed()},\
                  'unchanged': {k:v for k,v in p_data.iteritems()
-                               if k in diff.unchanged()}}
+                               if k in diff.unchanged()},
+                 'change_info': p_data['change_info'] if 'change_info' in
+                                                         p_data else 'None'}
 
-            previous.get_change_history(history=history)
+            previous._get_change_history(history=history)
         return history
 
     def get_history(self, format='json'):
