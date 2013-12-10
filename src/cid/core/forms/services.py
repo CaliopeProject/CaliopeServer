@@ -84,7 +84,7 @@ class FormManager(CaliopeServices):
 
     @classmethod
     @public("find")
-    def get_all(cls, formId):
+    def get_all(cls, formId, filter=None):
         rv = []
         if formId in current_app.caliope_forms:
             form = current_app.caliope_forms[formId]
