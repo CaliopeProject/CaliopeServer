@@ -188,7 +188,14 @@
             "cardinality": "*",
             "options-form": {
                 "formId": "Person",
-                "generic": "true"
+                "generic": "true",
+                "autocomplete"  : {
+                    "method" : "find.Data",
+                    "find-fields" : ["name", "surname"],
+                    "show-fields" : ["name", "surname"],
+                    "load-init"   : true,
+                    "load-on-type"   : false
+                }
             },
             "relation": {
                 "rel_name": "propietario",

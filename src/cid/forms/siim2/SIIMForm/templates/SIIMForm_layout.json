@@ -9,6 +9,14 @@
       ]
     },
     {
+      "columns" : [
+        {
+          "class" :  "span12",
+          "elements"  : ["propietario"]
+        }
+      ]
+    },
+    {
       "class": "span12",
       "columns": [
         {
@@ -65,14 +73,6 @@
         {
           "class" :  "span6",
           "elements"  : ["areas"]
-        }
-      ]
-    },
-    {
-      "columns" : [
-        {
-          "class" :  "span12",
-          "elements"  : ["propietario"]
         }
       ]
     }
