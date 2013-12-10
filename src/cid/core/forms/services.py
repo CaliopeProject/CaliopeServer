@@ -83,6 +83,17 @@ class FormManager(CaliopeServices):
             return ""
 
     @classmethod
+    @public("find")
+    def get_all(cls, formId):
+        rv = []
+        if formId in current_app.caliope_forms:
+            form = current_app.caliope_forms[formId]
+            module = form['module']
+            rv = [vnode.serialize() for vnode in module.category().instance.all()]
+
+        return rv
+
+    @classmethod
     @public("getData")
     def get_data(cls, formId, uuid):
         if formId in current_app.caliope_forms:
