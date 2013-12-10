@@ -20,16 +20,21 @@ Copyright (C) 2013 Infometrika Ltda.
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 import re
+
+import os
+
 from tinyrpc.dispatch import public
 
 from flask import current_app
 
 from cid.core.pubsub import PubSub
 
-from cid.core.entities import (VersionedNode, CaliopeUser,
+from cid.core.entities import (VersionedNode, CaliopeUser, CaliopeDocument,
                                CaliopeServices)
 
 from cid.core.login import LoginManager
+from cid.utils.thumbnails import get_thumbnail
+from cid.utils.fileUtils import human_readable_size
 
 
 class FormManager(CaliopeServices):
@@ -78,6 +83,17 @@ class FormManager(CaliopeServices):
             return ""
 
     @classmethod
+    @public("find")
+    def get_all(cls, formId, filter=None):
+        rv = []
+        if formId in current_app.caliope_forms:
+            form = current_app.caliope_forms[formId]
+            module = form['module']
+            rv = [vnode.serialize() for vnode in module.category().instance.all()]
+
+        return rv
+
+    @classmethod
     @public("getData")
     def get_data(cls, formId, uuid):
         if formId in current_app.caliope_forms:
@@ -89,6 +105,7 @@ class FormManager(CaliopeServices):
 
     @classmethod
     def create_form_from_id(cls, formId, data):
+        #TODO IMPORTANT!!! Use EntityServices. update field, and commit.
         if formId in current_app.caliope_forms:
             module = current_app.caliope_forms[formId]['module']
             node = module()
@@ -142,10 +159,9 @@ class FormManager(CaliopeServices):
         rv.update(super(FormManager, cls).discard_draft(uuid))
         return rv
 
-
     @classmethod
     @public("getAll")
-    def get_all(cls, context=None):
+    def get_all(cls, context=None, recursive=False):
         user_node = CaliopeUser.index.get(username=LoginManager().get_user())
 
         if context:
@@ -183,7 +199,8 @@ class FormManager(CaliopeServices):
             form['data'] = data
             form['browsable'] = current_app.caliope_forms[entity_name]['browsable']
 
-            cls.get_related_data(instances, data)
+            if (recursive):
+                cls.get_related_data(instances, data)
 
             instances.append(form)
 
@@ -197,7 +214,7 @@ class FormManager(CaliopeServices):
         return rv
 
     @classmethod
-    def get_related_data(cls,instances, data):
+    def get_related_data(cls, instances, data):
 
         uuid4hex = re.compile('[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}')
 
@@ -223,3 +240,48 @@ class FormManager(CaliopeServices):
 
                     cls.get_related_data(instances, node)
 
+    @classmethod
+    @public("getAllWithThumbnails")
+    def get_all_with_thumbnails(cls, context=None, thumbnails=False):
+        rv = cls.get_all(context=context, recursive=False)
+
+        #TODO: move to DocumentServices
+        user_node = CaliopeUser.index.get(username=LoginManager().get_user())
+
+        storage_setup = current_app.config['storage']
+        if 'local' in storage_setup and 'absolut_path' in storage_setup['local']:
+            STORAGE = storage_setup['local']['absolut_path']
+
+        for form in rv[0]['instances']:
+            #TODO: optimize
+            results, metadata = user_node.cypher("""
+                START form=node:CaliopeStorage(uuid='{uuid}')
+                MATCH  pa=(form)-[*1..2]-(file)<-[CALIOPE_DOCUMENT]-(),p_none=(file)<-[?:PARENT*]-()
+                WHERE p_none = null and has(file.url)
+                return distinct file
+                 """.format(uuid=form['uuid']))
+
+            #TODO: use cache to thumbnails
+            attachments = list()
+            for row in results:
+                attachment = row[0]
+                file_uuid = attachment['uuid']
+                node = CaliopeDocument.pull(file_uuid)
+                if thumbnails:
+                    filename = os.path.join(STORAGE, file_uuid)
+                    size = os.stat(filename).st_size
+                    data = {
+                        'uuid': file_uuid,
+                        'name': node.filename,
+                        'size': human_readable_size(size),
+                        'thumbnail': get_thumbnail(filename, 'data')
+                    }
+                else:
+                    data = {
+                        'uuid': file_uuid,
+                        'name': node.filename
+                    }
+                attachments.append(data)
+            form['attachments'] = attachments
+
+        return rv
