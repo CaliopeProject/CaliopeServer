@@ -72,12 +72,12 @@
           "type": "form",
           "cardinality": "0",
           "options-form": {
-            "formId": "Person",
+            "formId": "Company",
             "generic": "true"
           },
           "relation": {
             "rel_name": "company",
-            "class": "Person",
+            "class": "Company",
             "target": "{{company}}"
           }
         },

@@ -1,0 +1,59 @@
+{
+    "layout": [
+        {
+            "columns": [
+                {
+                    "class": "page-header",
+                    "elements": [
+                        "title"
+                    ]
+                }
+            ]
+        },
+        {
+            "columns": [
+                {
+                    "class": "span4",
+                    "elements": [
+                        "number_identification"
+                    ]
+                },
+                {
+                    "class": "span1",
+                    "elements": [
+                        "digit_verification"
+                    ]
+                }
+            ]
+        },
+        {
+            "columns": [
+                {
+                    "class": "span6",
+                    "elements": [
+                        "name",
+                        "telephone"
+                    ]
+                },
+                {
+                    "class": "span6",
+                    "elements": [
+                        "initial",
+                        "email"
+                    ]
+                }
+            ]
+        },
+        {
+          "columns": [
+            {
+              "class": "span12",
+              "elements": [
+                  "address",
+                  "legal_representative"
+              ]
+            }
+          ]
+        }
+    ]
+}

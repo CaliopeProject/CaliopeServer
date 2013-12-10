@@ -1,0 +1,88 @@
+{
+    "name": "Company",
+    "html": [
+        {
+            "name": "title",
+            "type": "div",
+            "html": [
+                {
+                    "type": "h1",
+                    "html": "Empresa"
+                }
+            ]
+        },
+        {
+            "name"    : "number_identification",
+            "caption" : "Documento",
+            "class"   : "input-medium",
+            "type"    : "text",
+            "validations" : {
+                "required" : true
+            }
+        },
+        {
+            "name"    : "digit_verification",
+            "caption": "DV",
+            "class"   : "input-small",
+            "type"    : "number",
+            "validations" : {
+                "min" : 0,
+                "max" : 9
+            }
+        },
+        {
+            "name"    : "name",
+            "caption" : "Razón social",
+            "class"   : "input-xlarge",
+            "type"    : "text"
+        },
+        {
+            "name"    : "initial",
+            "caption" : "Sigla",
+            "class"   : "input-mini",
+            "type"    : "text"
+        },
+        {
+            "name"    : "telephone",
+            "caption" : "Teléfono",
+            "class"   : "input-small",
+            "type"    : "text"
+        },
+        {
+            "name"    : "email",
+            "caption" : "Email",
+            "class"   : "input-medium",
+            "type"    : "text"
+        },
+        {
+            "name": "address",
+            "caption": "Direccion",
+            "type": "form",
+            "cardinality": "*",
+            "options-form": {
+                "formId": "Address",
+                "generic": "true"
+            },
+            "relation": {
+                "rel_name": "address",
+                "class": "Address",
+                "target": "{{address}}"
+            }
+        },
+        {
+          "name"        : "legal_representative",
+          "caption"     : "Representante Legal",
+          "type"        : "form",
+          "cardinality" : "0",
+          "options-form": {
+            "formId"  : "Person",
+            "generic" : "true"
+          },
+          "relation": {
+            "rel_name": "user",
+            "class": "Person",
+            "target": "{{user}}"
+          }
+        }
+    ]
+}

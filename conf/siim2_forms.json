@@ -98,8 +98,8 @@
         },
         /*
          * Testing forms.
+         *
          * */
-
         {
             "package": "cid.forms.siim2.SIIMForm",
             "module": "SIIMForm",
@@ -128,6 +128,14 @@
             "package": "cid.forms.siim2.RegistroPredioCatastroTipoII",
             "module": "RegistroPredioCatastroTipoII",
             "label": "RegistroPredioCatastroTipoII",
+            "browsable": true
+        },
+        {
+            "package": "cid.forms.siim2.Company",
+            "module": "Company",
+            "label": "Company",
+            "html": "templates/Company_html.json",
+            "layout": "templates/Company_layout.json",
             "browsable": true
         }
     ]
