@@ -234,20 +234,24 @@ class FormManager(CaliopeServices):
     def get_all_with_thumbnails(cls, context=None):
         rv = cls.get_all(context=context, recursive=False)
 
+        #TODO: move to DocumentServices
         user_node = CaliopeUser.index.get(username=LoginManager().get_user())
 
         storage_setup = current_app.config['storage']
         if 'local' in storage_setup and 'absolut_path' in storage_setup['local']:
             STORAGE = storage_setup['local']['absolut_path']
 
-        for form in rv[0]['instances']:
 
+        for form in rv[0]['instances']:
+            #TODO: optimize
             results, metadata = user_node.cypher("""
                 START form=node:CaliopeStorage(uuid='{uuid}')
                 MATCH  pa=(form)-[*1..2]-(file)<-[CALIOPE_DOCUMENT]-(),p_none=(file)<-[?:PARENT*]-()
                 WHERE p_none = null and has(file.url)
                 return distinct file
                  """.format(uuid=form['uuid']))
+
+            #TODO: use cache to thumbnails
             attachments = list()
             for row in results:
                 attachment = row[0]
