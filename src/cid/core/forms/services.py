@@ -231,7 +231,7 @@ class FormManager(CaliopeServices):
 
     @classmethod
     @public("getAllWithThumbnails")
-    def get_all_with_thumbnails(cls, context=None):
+    def get_all_with_thumbnails(cls, context=None, thumbnails=False):
         rv = cls.get_all(context=context, recursive=False)
 
         #TODO: move to DocumentServices
@@ -240,7 +240,6 @@ class FormManager(CaliopeServices):
         storage_setup = current_app.config['storage']
         if 'local' in storage_setup and 'absolut_path' in storage_setup['local']:
             STORAGE = storage_setup['local']['absolut_path']
-
 
         for form in rv[0]['instances']:
             #TODO: optimize
@@ -257,14 +256,20 @@ class FormManager(CaliopeServices):
                 attachment = row[0]
                 file_uuid = attachment['uuid']
                 node = CaliopeDocument.pull(file_uuid)
-                filename = os.path.join(STORAGE, file_uuid)
-                size = os.stat(filename).st_size
-                data = {
-                    'name': node.filename,
-                    'size': human_readable_size(size),
-                    'uuid': file_uuid,
-                    'thumbnail': get_thumbnail(filename, 'data')
-                }
+                if thumbnails:
+                    filename = os.path.join(STORAGE, file_uuid)
+                    size = os.stat(filename).st_size
+                    data = {
+                        'uuid': file_uuid,
+                        'name': node.filename,
+                        'size': human_readable_size(size),
+                        'thumbnail': get_thumbnail(filename, 'data')
+                    }
+                else:
+                    data = {
+                        'uuid': file_uuid,
+                        'name': node.filename
+                    }
                 attachments.append(data)
             form['attachments'] = attachments
 
