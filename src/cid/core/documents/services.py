@@ -61,7 +61,7 @@ class DocumentServices(CaliopeServices):
                 'size': human_readable_size(size),
                 'mime': vnode.mimetype,
                 'id': vnode.uuid,
-                'thumbnail': get_thumbnail(filename, 'data')
+                'thumbnail': get_thumbnail(filename, field_name='data', mimetype=vnode.mimetype)
             }
             rv.append(data)
 

@@ -58,7 +58,7 @@ def _image_thumbnail(filename):
 
 
 def get_thumbnail(filename, field_name='value', mimetype=None):
-    if 'pdf' in mimetype:
+    if mimetype and 'pdf' in mimetype:
         rv = {field_name: _pdf_thumbnail(filename)}
     else:
         rv = {field_name: _image_thumbnail(filename)}
