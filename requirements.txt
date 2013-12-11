@@ -27,4 +27,5 @@ simplekv==0.6
 six==1.4.1
 -e git://github.com/neoecos/tinyrpc#egg=tinyrpc
 websocket-client==0.12.0
+Wand==0.3.5
 wsgiref==0.1.2

@@ -274,7 +274,7 @@ class FormManager(CaliopeServices):
                         'uuid': file_uuid,
                         'name': node.filename,
                         'size': human_readable_size(size),
-                        'thumbnail': get_thumbnail(filename, 'data')
+                        'thumbnail': get_thumbnail(filename, field_name='data', mimetype=node.mimetype)
                     }
                 else:
                     data = {
