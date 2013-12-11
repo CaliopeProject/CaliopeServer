@@ -56,36 +56,36 @@ def local_document_url(parent_uuid, path, description):
     return url
 
 
-@file_uploader.route('/', methods=['GET', 'POST','OPTIONS'])
+@file_uploader.route('/', methods=['GET', 'POST', 'OPTIONS'])
 @crossdomain(origin=['*'], headers=['Content-Type', 'Authorization', 'Content-Length', 'X-Requested-With'],
              methods=['POST', 'GET', 'PUT', 'HEAD', 'OPTIONS'])
 def uploader():
     if request.method == 'POST':
         #print request.form['id']
         #print str(request.form.viewitems())
-        attachment_params = {k:v[0] for k,v in [x for x in request.form.viewitems()]}
+        attachment_params = {k: v[0] for k, v in [x for x in request.form.viewitems()]}
         if 'session_uuid' in request.form:
-           if LoginManager().check_with_uuid(request.form['session_uuid']):
-               print "OK"
-           else:
-               return "unrecheable"
+            if LoginManager().check_with_uuid(request.form['session_uuid']):
+                print "OK"
+            else:
+                return "unrecheable"
         else:
-           return "unrecheable"
+            return "unrecheable"
 
         app = current_app
         storage_setup = app.config['storage']
 
         if 'local' in storage_setup and 'absolut_path' in storage_setup['local']:
-            UPLOAD_FOLDER  = storage_setup['local']['absolut_path']
+            UPLOAD_FOLDER = storage_setup['local']['absolut_path']
 
         if 'local' in storage_setup and 'allowed_extensions' in storage_setup['local']:
             ALLOWED_EXTENSIONS = storage_setup['local']['allowed_extensions']
-            
+
         rv = []
         for uploaded_file in request.files.getlist('files[]'):
             filename = secure_filename(uploaded_file.filename)
             if uploaded_file and allowed_file(uploaded_file.filename):
-                model = FormManager().get_empty_model('CaliopeDocument',data=True)
+                model = FormManager().get_empty_model('CaliopeDocument', data=True)
                 idfile = model['data']['uuid']['value']
                 uploaded_file.save(os.path.join(UPLOAD_FOLDER, idfile))
 
@@ -102,10 +102,11 @@ def uploader():
                     'result': 'ok',
                     'name': filename,
                     'size': human_readable_size(uploaded_file.tell()),
-                    'id':   idfile,
-                    'thumbnail': get_thumbnail(os.path.join(UPLOAD_FOLDER, idfile),'data')
+                    'id': idfile,
+                    'thumbnail': get_thumbnail(os.path.join(UPLOAD_FOLDER, idfile), mimetype=mimetype,
+                                               field_name='data')
                 }
-                CaliopeServices().update_relationship(attachment_params['uuid'],attachment_params['field'],idfile)
+                CaliopeServices().update_relationship(attachment_params['uuid'], attachment_params['field'], idfile)
             else:
                 result = {
                     'result': 'error',
