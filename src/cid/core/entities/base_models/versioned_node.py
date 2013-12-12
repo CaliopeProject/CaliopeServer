@@ -36,7 +36,9 @@ from neomodel import (StringProperty,
                       RelationshipDefinition,
                       RelationshipManager,
                       RelationshipFrom,
-                      RelationshipTo)
+                      RelationshipTo,
+                      CustomBatch,
+                      connection)
 
 from neomodel.contrib import SemiStructuredNode
 
@@ -292,6 +294,7 @@ class VersionedNode(SemiStructuredNode):
                                       RelationshipManager):
                         setattr(copy, field, getattr(stored_node, field))
                 copy.save(skip_difference=True)
+                self._remove_indexes(copy)
                 if len(self.parent):
                     copy.parent.connect(self.parent.get())
                     self.parent.disconnect(self.parent.get())
@@ -300,6 +303,13 @@ class VersionedNode(SemiStructuredNode):
                 self.timestamp = timeStampGenerator()
         super(VersionedNode, self).save()
         return self
+
+
+    def _remove_indexes(self, vnode):
+        batch = CustomBatch(connection(), vnode.index.name, vnode.__node__.id)
+        props = self.deflate(vnode.__properties__, vnode.__node__.id)
+        self._remove_prop_indexes(vnode.__node__, props, batch)
+        batch.submit()
 
     def update_field(self, field_name, new_value, field_id=None,
                      special=False):
