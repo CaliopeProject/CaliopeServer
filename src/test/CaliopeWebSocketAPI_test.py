@@ -144,7 +144,7 @@ class CaliopeServerTestCase(unittest.TestCase):
         except BaseException:
             assert False
 
-    def test_projects_get_all(self):
+    def test_form_find(self):
         user = self.login(u'user', u'123')
         projects_proxy = self.rpc_client.get_proxy(prefix="project.")
         rv = projects_proxy.getAll()
