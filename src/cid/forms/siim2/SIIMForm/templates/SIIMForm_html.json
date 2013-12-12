@@ -193,7 +193,7 @@
                     "method" : "form.find",
                     "find-fields" : ["name", "surname"],
                     "show-fields" : ["name", "surname"],
-                    "load-init"   : true,
+                    "load-init"   : false,
                     "load-on-type": false
                 }
             },
