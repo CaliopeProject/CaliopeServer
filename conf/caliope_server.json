@@ -6,7 +6,7 @@
         "test_port": "9001",
         "debug": "True",
         "static": "../caliope_webui_beowulf/app",
-        "formTemplates": "../../templates/formTemplates",
+        "formTemplates": "../../templates/formTemplates", /*Deprecated*/
         "formModules": ["conf/siim2_forms.json", "conf/orfeo_forms.json"],
         "cid_base_directory": "src/cid",
         "cache_enabled": "True",

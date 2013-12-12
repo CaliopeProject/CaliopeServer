@@ -4,10 +4,12 @@
         "port": "9001",
         "debug": "True",
         "static": "../caliope_webui_beowulf/app",
-        "formTemplates": "../templates/formTemplates",
-        "formModules": ["../../conf/siim2_forms.json"],
-        "cid_base_directory": "../../src/cid",
-        "acl_file" : "conf/permissions_for_test.json"
+        "formTemplates": "../../templates/formTemplates", /*Deprecated*/
+        "formModules": ["conf/siim2_forms.json", "conf/orfeo_forms.json"],
+        "cid_base_directory": "src/cid",
+        "cache_enabled": "True",
+        "minify_enabled": "False",
+        "acl_file" : "conf/permissions.json"
     },
     /* Added fo app configurations */
     "app": {
@@ -53,23 +55,9 @@
                 }
             },
             {
-                "search": {
-                    "package": "core.search",
-                    "service": "search"
-                }
-            },
-            /*
-             {
-                "mtvprojects": {
-                    "package": "modules.project",
-                    "service": "project"
-                }
-            },
-             */
-            {
-                "reg2bogota": {
-                    "package": "modules.reg2bogota",
-                    "service": "catastro"
+                "document": {
+                    "package": "core.documents",
+                    "service": "document"
                 }
             }
         ]
