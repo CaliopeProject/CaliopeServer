@@ -191,10 +191,11 @@
                 "generic": "true",
                 "autocomplete"  : {
                     "method" : "form.find",
-                    "find-fields" : ["name", "surname"],
+                    "find-fields" : ["name"],
                     "show-fields" : ["name", "surname"],
                     "load-init"   : false,
-                    "load-on-type": false
+                    "load-on-type": false,
+                    "type-min-length" : 3
                 }
             },
             "relation": {
