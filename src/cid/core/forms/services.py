@@ -30,7 +30,7 @@ from flask import current_app
 from cid.core.pubsub import PubSub
 
 from cid.core.entities import (VersionedNode, CaliopeUser, CaliopeDocument,
-                               CaliopeServices, Q)
+                               CaliopeServices)
 
 from cid.core.login import LoginManager
 from cid.utils.thumbnails import get_thumbnail
