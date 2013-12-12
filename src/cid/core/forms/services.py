@@ -30,7 +30,7 @@ from flask import current_app
 from cid.core.pubsub import PubSub
 
 from cid.core.entities import (VersionedNode, CaliopeUser, CaliopeDocument,
-                               CaliopeServices)
+                               CaliopeServices, Q)
 
 from cid.core.login import LoginManager
 from cid.utils.thumbnails import get_thumbnail
@@ -89,8 +89,10 @@ class FormManager(CaliopeServices):
         if formId in current_app.caliope_forms:
             form = current_app.caliope_forms[formId]
             module = form['module']
-            rv = [vnode.serialize() for vnode in module.category().instance.all()]
-
+            if filter and len(filter) == 1:
+                k,v = filter.popitem()
+                query = k + ':' + v
+                rv = [vnode.serialize() for vnode in module.index.search(query)]
         return rv
 
     @classmethod
