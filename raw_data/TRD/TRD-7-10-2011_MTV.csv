@@ -1,0 +1,1448 @@
+"CODIGO"|"SERIES,SUBSERIES Y TIPOS DOCUMENTALES "|"CLASIF."|"RETENCION "||"TRADICION DOCUMENTAL"||"Disposicion Final "||||"PROCEDIMIENTOS"
+||"S (SERIE) – SS (SUBSERIE) – TD (TIPO DOCUMENTAL)"|"AÑOS ARCHIVO GESTION"|"AÑOS ARCHIVO CENTRAL"|"Original "|"Copia"|"Conservacion Total"|"Eliminacion"|"Microfimacion"|"Selección "|
+"GG.20"|"ACCIONES "|"S"|||||||||
+"GG.20.15"|"ACCIONES DE LA EMPRESA DE ACUEDUCTO Y ALCANTARILLADO"|"SS"|1|19|"X"||"X"||||
+"GG.20.30"|"ACCIONES DE TRANSMILENIO "|"SS"|1|19|"X"||"X"||||
+"GG.60"|"ACTAS "|"S"|||||||||
+"GG.60.75"|"ACTAS COMITES DE CONTROL INTERNO"|"SS"|2|18|||"X"||||
+|"Acta"|"TD"|||"X"||||||
+"GG.100"|"ACUERDOS"|"S"|||||||||
+"GG.100.240"|"ACUERDOS DE GESTION POR DEPENDENCIA"|"SS"|2|18|||"X"||||
+|"Instructivo"|"TD"|||"X"||||||
+|"Formato Acuerdo de Gestión "|"TD"|||"X"||||||
+|"Comunicaciones"|"TD"|||"X"||||||
+"GG.200"|"ASISTENCIA "|"S"|||||||||
+"GG.200.405"|"ASISTENCIA JUNTA DIRECTIVA AGUAS DE BOGOTA "|"SS"|1|9|"X"|||||"X"|"Cumplido su tiempo de retencion se Selecciona una muestra representativa del 10%"
+"GG.200.420"|"ASISTENCIA JUNTA DIRECTIVA CAJA DE VIVIENDA POPULAR "|"SS"|1|9|"X"|||||"X"|"Cumplido su tiempo de retencion se Selecciona una muestra representativa del 10%"
+"GG.200.435"|"ASISTENCIA JUNTA DIRECTIVA CANAL CAPITAL "|"SS"|1|9|"X"|||||"X"|"Cumplido su tiempo de retencion se Selecciona una muestra representativa del 10%"
+"GG.500"|"DERECHOS DE PETICIÓN"|"S"|1|4||||||"X"|"Cumplido su tiempo de retencion se Selecciona una muestra representativa del 10%"
+|"Derechos de Petición"|"TD"|||"X "||||||
+|"Comunicaciones oficiales "|"TD"|||"X "|" "|||||
+"GG.620"|"EVALUACION"|"S"|||||||||
+"GG.620.1365"|"EVALUACION DE CULTURA DEL AUTOCONTROL "|"SS"|2|18|||"X"||||
+"GG.620.1380"|"EVALUACION DE GESTION POR DEPENDENCIA "|"SS"|2|18|||"X"||||
+|"Instructivo"|"TD"|||"X"||||||
+|"Formato de Evaluación"|"TD"|||"X"||||||
+|"Comunicaciones Oficiales"|"TD"|||"X"||||||
+"GG.680"|"INFORMES"|"S"|||||||||
+"GG.680.1455"|"INFORMES A ORGANISMOS DE CONTROL"|"SS"|1|9||||||"X"|"Cumplido su tiempo de retencion se Selecciona una muestra representativa del 10%"
+|"Contraloría"|"TD"|||"X"||||||
+|"Consejo de Bogotá"|"TD"|||"X"||||||
+|"Personeria"|"TD"|||"X"||||||
+|"Procuraduría"|"TD"|||"X"||||||
+|"Veeduria"|"TD"|||"X"||||||
+|"Las demás entidades de control"|"TD"|||"X"||||||
+"GG.680.1470"|"INFORME ANUAL DE CONTROL INTERNO CONTABLE "|"SS"|1|9|"X"||"X"||||
+"GG.680.1500"|"INFORMES DE AUDITORIAS INTERNAS "|"SS"|1|9|"X"||"X"||||
+"GG.680.1545"|"INFORMES DE GESTION"|"SS"|1|9||||||"X"|"Cumplido su tiempo de retencion se Selecciona una muestra representativa del 10%"
+|"Informe"|"TD"|||"X"||||||
+"GG.680.1620"|"INFORME EJECUTIVO DE CONTROL INTERNO "|"SS"|1|9|"X"||"X"||||
+"GG.760"|"MAPA DE RIESGOS"|"S"|1|5|"X"||"X"||||
+"GG.860"|"PLANES"|"S"|||||||||
+"GG.860.1800"|"PLAN DE ACCION"|"SS"|1|9||||"X"|"X"||"Cumplido su tiempo de retención, microfilmar y eliminar  "
+|"Mapa de Riesgos"|"TD"|||"X"||||||
+|"Plan"|"TD"|||"X"||||||
+|"Comunicaciones Oficiales"|"TD"||||"X"|||||
+"GG.860.1830"|"PLAN DE DESARROLLO"|"SS"|1|9||||"X"|"X"||"Cumplido su tiempo de retención Microfilmar y Eliminar "
+|"Plan"|"TD"|||"X"||||||
+|"Comunicaciones Oficiales"|"TD"|||"X"||||||
+"GG.860.1845"|"PLAN DE MEJORAMIENTO"|"SS"|1|9||||"X"|"X"||"Cumplido su tiempo de retencion, microfilmar y eliminar "
+|"Plan"|"TD"|||"X"||||||
+|"Comunicaciones Oficiales"|"TD"|||"X"||||||
+"GG.860.1875"|"PLAN DE ORDENAMIENTO TERRITORIAL"|"SS"|1|9||||"X"|"X"||
+"GG.1040"|"PROYECTO "|"S"|||||||||
+"GG.1040.2190"|"PROYECTO DE PRESUPUESTO ANUAL"|"SS"|2|10|"X"|||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+"GG.1100"|"SEGUIMIENTO"|"S"|||||||||
+"GG.1100.2310"|"SEGUIMIENTO IMPLEMENTACION MECI "|"SS"|1|9|"X"|||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+"OAP.160"|"ANTEPROYECTO ANUAL DE PRESUPUESTO"|"S"|2|10|"X"|||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+"OAP.220"|"BANCO DE PROYECTOS "|"S"|1|19|||"X"||||
+"OAP.500"|"DERECHOS DE PETICIÓN"|"S"|1|4||||||"X"|"Cumplido su tiempo de retención seleccionar una muestra representativa del 10%"
+|"Derechos de peticion "|"TD"|||"X "||||||
+|"Comunicaciones Oficiales "|"TD"|||"X "|" "|||||
+"OAP.600"|"ESTUDIOS"|"S"|||||||||
+"OAP.600.1260"|"ESTUDIOS DE GESTION "|"SS"|1|9||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+"OAP.600.1320"|"ESTUDIOS PREVIOS DE PLANEACION "|"SS"|1|9||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+"OAP.600.1320"|"Estudios"|"SS"|||"X"||||||
+"OAP.600.1320"|"Informes"|"SS"||||"X"|||||
+"OAP.600.1320"|"Comunicaciones Oficiales"|"SS"||||"X"|||||
+"OAP.680"|"INFORMES"|"S"|||||||||
+"OAP.680.1455"|"INFORMES A ORGANISMOS DE CONTROL"|"SS"|1|9||||||"X"|"Cumplido su tiempo de retención seleccionar una muestra representativa del 10%"
+|"Contraloría"|"TD"|||"X"||||||
+|"Personería"|"TD"|||"X"||||||
+|"Consejo de Bogotá"|"TD"|||"X"||||||
+|"Procuraduría"|"TD"|||"X"||||||
+|"Las demás entidades de control"|"TD"|||"X"||||||
+"OAP.680.1485"|"INFORMES DE GESTION PRESUPUESTAL"|"SS"|2|10||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Vigencia"|"TD"|||"X"||||||
+|"Vigencia futura"|"TD"|||"X"||||||
+|"Cuentas x pagar"|"TD"|||"X"||||||
+"OAP.680.1545"|"INFORMES DE GESTION"|"SS"|1|9||||||"X"|"Cumplido su tiempo de retención seleccionar una muestra representativa del 10%"
+|"Informe"|"TD"|||"X"||||||
+"OAP.740"|"MANUALES"|"S"|||||||||
+"OAP.740.1695"|"MANUAL DE CALIDAD "|"SS"|2|18|"X"||"X"||||
+"OAP.740.1725"|"MANUAL DE PROCEDIMIENTOS "|"SS"|1|5||" "|"X"||||
+"OAP.740.1740"|"MANUAL DE PROCESOS "|"SS"|2|18|"X"||"X"||||
+"OAP.860"|"PLAN"|"S"|||||||||
+"OAP.860.1800"|"PLAN DE ACCION"|"SS"|1|9||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Plan"|"TD"|||"X"||||||
+"OAP.860.1860"|"PLAN DE OPERACIONES Y PROYECTOS "|"SS"|1|9||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+"OAP.860.1890"|"PLAN ESTRATEGICO"|"SS"|1|9||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Plan"|"TD"|||"X"||||||
+"OAP.860.1950"|"PLAN OPERATIVO"|"SS"|1|9||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Plan"|"TD"|||"X"||||||
+"OAP.960"|"PROGRAMAS"|"S"|||||||||
+"OAP.960.2100"|"PROGRAMA INTERNO DEL PLAN INSTITUCIONAL DE GESTION AMBIENTAL -PIGA"|"SS"|2|18|||"X"||||
+"OAP.1120"|"SISTEMAS"|"S"|||||||||
+"OAP.1120.2325"|"SISTEMA DE GESTION DE CALIDAD "|"SS"|2|18|||"X"||||
+"OAP.1120.2355"|"SISTEMA MECI - MODELO ESTANDAR DE CONTROL INTERNO "|"SS"|2|18||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+"OAC.260"|"CAMPAÑAS"|"S"|||||||||
+"OAC.260.450"|"CAMPAÑAS INFORMATIVAS"|"SS"|2|8||||||"X"|"Cumplido su tiempo de retención seleccionar una muestra representativa del 10%"
+"OAC.500"|"DERECHOS DE PETICIÓN"|"S"|1|4||||||"X"|"Cumplido su tiempo de retención seleccionar una muestra representativa del 10%"
+|"Informes"|"TD"|||"X "||||||
+|"Comunicaciones Oficiales"|"TD"|||"X "|" "|||||
+"OAC.600"|"ESTUDIOS "|"S"|||||||||
+"OAC.600.1200"|"ESTUDIO PARA DISEÑO E IMPLEMENTACION DE POLITICAS DE COMUNICACIÓN"|"SS"|1|19|||"X"||||
+"OAC.680"|"INFORMES"|"S"|||||||||
+"OAC.680.1455"|"INFORMES A ORGANISMOS DE CONTROL"|"SS"|1|9||||||"X"|"Cumplido su tiempo de retención seleccionar una muestra representativa del 10%"
+|"Contraloría"|"TD"|||"X"||||||
+|"Personería"|"TD"|||"X"||||||
+|"Consejo de Bogotá"|"TD"|||"X"||||||
+|"Procuraduría"|"TD"|||"X"||||||
+|"Las demás entidades de control"|"TD"|||"X"||||||
+"OAC.680.1545"|"INFORMES DE GESTION"|"SS"|1|9||||||"X"|"Cumplido su tiempo de retención seleccionar una muestra representativa del 10%"
+|"Informes"|"TD"|||"X"||||||
+"OAC.860"|"PLAN"|"S"|||||||||
+"OAC.860.1905"|"PLAN ESTRATEGICO DE COMUNICACIONES"|"SS"|1|9||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Plan"|"TD"|||"X"||||||
+|"Comunicaciones Oficiales"|"TD"|||"X"||||||
+"OAC.860.1980"|"PLAN Y PROGRAMA DE COMUNICACIONES "|"SS"|1|9||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+"OAC.980"|"PROMOCIÓN E IMAGEN INSTITUCIONAL"|"S"|||||||||
+"OAC.980.2115"|"IMAGEN CORPORATIVA"|"SS"|1|4||||||"X"|"Cumplido su tiempo de retención seleccionar una muestra representativa del 10%"
+|"Logotipo "|"TD"|||"X"||||||
+|"Eslogan"|"TD"|||"X"||||||
+|"Carátulas institucionales"|"TD"|||"X"||||||
+|"Manuales"|"TD"||||"X"|||||
+|"Comunicaciones Oficiales"|"TD"|||"X"||||||
+"OAC.980.2130"|"PRENSA"|"SS"|1|19|||"X"||||
+|"Artículos "|"TD"|||"X"||||||
+|"Avisos"|"TD"|||"X"||||||
+|"Oficios"|"TD"|||"X"||||||
+"OAC.980.2145"|"PRESENTACIONES INSTITUCIONALES"|"SS"|1|4||||||"X"|"Cumplido su tiempo de retención seleccionar una muestra representativa del 10%"
+|"Plegables/ volantes"|"TD"|||"X"||||||
+|"Acetatos"|"TD"|||"X"||||||
+|"Documentos de presentación"|"TD"|||"X"||||||
+|"Comunicaciones oficiales "|"TD"||||"X"|||||
+"OAC.1020"|"PROTOCOLOS"|"S"|||||||||
+"OAC.1020.2160"|"PROTOCOLO   DE COMUNICACIONES"|"SS"|1|19|||"X"||||
+"OAC.1060"|"PUBLICACIONES "|"S"|||||||||
+"OAC.1060.2205"|"PUBLICACIONES DE FOTOGRAFIAS  "|"SS"|1|19|||"X"||||
+|"Fotografía"|"TD"|||"X"||||||
+"OAC.1060.2220"|"PUBLICACIONES DE TEXTO"|"SS"|1|19|"X"||"X"||||
+"OAC.1060.2235"|"PUBLICACIONES DE VIDEO"|"SS"|1|19|||"X"||||
+|"Video"|"TD"|||"X"||||||
+"OAC.1060.2250"|"PUBLICACIONES DE VOZ"|"SS"|1|19|"X"||"X"||||
+"DOEP.305"|"COMITES"|"S"|||||||||
+"DOEP.305.470"|"COMITÉ INTERSECTORIAL DE OPERACIONES  ESTRATEGICAS DEL DISTRITO
+"|"SS"|2|18|||"X"||||
+|"Comunicaciones Oficiales"|"TD"|||"X"||||||
+"DOEP.500"|"DERECHOS DE PETICIÓN"|"S"|1|4||||||"X"|"Cumplido su tiempo de retención seleccionar una muestra representativa del 10%"
+|"Informes"|"TD"|||"X "||||||
+|"Comunicaciones Oficiales"|"TD"|||"X "|" "|||||
+"DOEP.680"|"INFORMES"|"S"|||||||||
+"DOEP.680,1455"|"INFORMES A ORGANISMOS DE CONTROL"|"SS"|1|9||||||"X"|"Cumplido su tiempo de retención seleccionar una muestra representativa del 10%"
+|"Contraloría"|"TD"|||"X"||||||
+|"Personería"|"TD"|||"X"||||||
+|"Consejo de Bogotá"|"TD"|||"X"||||||
+|"Procuraduría"|"TD"|||"X"||||||
+|"Las demás entidades de control"|"TD"|||"X"||||||
+"DOEP.680.1545"|"INFORMES DE GESTION"|"SS"|1|9||||||"X"|"Cumplido su tiempo de retención seleccionar una muestra representativa del 10%"
+|"Informes"|"TD"|||"X"||||||
+"DOEP.840"|"OPERACIONES"|"S"|||||||||
+"DOEP.840.1755"|"OPERACIÓN ESTRATEGICA"|"SS"|1|19|||"X"||||
+"DOEP.860"|"PLAN"|"S"|||||||||
+"DOEP.860,1880"|"PLAN DE ORDENAMIENTO ZONAL"|"SS"|1|9|||"X"||||
+"DOEP.860.1920"|"PLAN FINANCIERO PLURIANUAL"|"SS"|1|9|"X"|||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+"DOEP.860.1965"|"PLAN PARCIAL "|"SS"|1|9|"X"||"X"||||
+"DOEP.1180"|"UNIDADES"|"S"|||||||||
+"DOEP.1180.2595"|"UNIDADES DE ACTUACION URBANISTICA"|"SS"|1|19|"X"||"X"||||
+"DOEP.1180.2610"|"UNIDADES DE GESTION"|"SS"|1|19|"X"||"X"||||
+"DTO.500"|"DERECHOS DE PETICIÓN"|"S"|1|4||||||"X"|"Cumplido su tiempo de retención seleccionar una muestra representativa del 10%"
+|"Informes"|"TD"|||"X "||||||
+|"Comunicaciones Oficiales"|"TD"|||"X "|" "|||||
+"DTO.600"|"ESTUDIOS"|"S"|||||||||
+"DTO.600.1245"|"ESTUDIOS AMBIENTALES"|"SS"|2|18|"X"||"X"||||
+"DTO.600.1275"|"ESTUDIOS DE INVESTIGACION Y PROMOCION DE TECNOLOGIA "|"SS"|2|18|"X"||"X"||||
+"DTO.600.1290"|"ESTUDIO DE OPERACIONES Y PROYECTOS TECNICOS"|"SS"|2|18|"X"||"X"||||
+"DTO.600.1350"|"ESTUDIOS TECNICOS "|"SS"|2|18|"X"||"X"||||
+"DTO.680"|"INFORMES"|"S"|||||||||
+"DTO.680.1455"|"INFORMES A ORGANISMOS DE CONTROL"|"SS"|1|9||||||"X"|"Cumplido su tiempo de retención seleccionar una muestra representativa del 10%"
+|"Contraloría"|"TD"|||"X"||||||
+|"Personería"|"TD"|||"X"||||||
+|"Consejo de Bogotá"|"TD"|||"X"||||||
+|"Procuraduría"|"TD"|||"X"||||||
+|"Las demás entidades de control"|"TD"|||"X"||||||
+"DTO.680.1545"|"INFORMES DE GESTION"|"SS"|1|9||||||"X"|"Cumplido su tiempo de retención seleccionar una muestra representativa del 10%"
+|"Informes"|"TD"|||"X"||||||
+"DGI.500"|"DERECHOS DE PETICIÓN"|"S"|1|4||||||"X"|"Cumplido su tiempo de retención seleccionar una muestra representativa del 10%"
+|"Informes"|"TD"|||"X "||||||
+|"Comunicaciones Oficiales"|"TD"|||"X "|" "|||||
+"DGI.520"|"DISEÑOS"|"S"|||||||||
+"DGI.520.1050"|"DISEÑO DE CREACION DE VITRINAS VIRTUALES"|"SS"|2|8|||"X"||||
+"DGI.540"|"DIVULGACIÓN Y ORGANIZACIÓN COMUNIDADES "|"S"|||||||||
+"DGI.540.1065"|"ATENCIÓN AL  PÚBLICO"|"SS"|1|19|||"X"||||
+|"Registros Primera Vez"|"TD"|||"X"||||||
+|"Registros Segunda Vez"|"TD"|||"X"||||||
+"DGI.540.1080"|"PARTICIPACIÓN EN EVENTOS"|"SS"|1|19|"X"||"X"||||
+|"Programación"|"TD"|||"X"||||||
+|"Oficios"|"TD"|||"X"||||||
+"DGI.540.1095"|"PROGRAMAS DE CAPACITACION "|"SS"|1|19|||"X "||||
+|"Oficio de invitación"|"TD"|||"X"||||||
+|"Reporte de participantes"|"TD"|||"X"||||||
+|"Oficio de agradecimiento"|"TD"|||"X"||||||
+"DGI.600"|"ESTUDIOS "|"S"|||||||||
+"DGI.600.1215"|"ESTUDIOS PARA  EJECUCION DE NEGOCIOS INMOBILIARIOS "|"SS"|1|19|||"X"||||
+"DGI.600.1230"|"ESTUDIO Y DESARROLLO DEL SUBSIDIO DISTRITAL DE VIVIENDA "|"SS"|1|19|"X"||"X"||||
+"DGI.600.1335"|"ESTUDIOS SOCIOECONÒMICOS"|"SS"|1|19|||"X"||||
+|"Perfil Socioeconomico "|"TD"|||"X"||||||
+|"Encuesta piloto"|"TD"|||"X"||||||
+|"Encuesta aplicada"|"TD"|||"X"||||||
+|"Informe de resultados"|"TD"|||"X"||||||
+|"Comunicaciones Oficiales"|"TD"|||"X"||||||
+"DGI.680"|"INFORMES"|"S"|||||||||
+"DGI.680.1545"|"INFORMES DE GESTION"|"SS"|1|4||||||"X"|"Cumplido su tiempo de retención seleccionar una muestra representativa del 10%"
+|"Informe"|"TD"|||"X"||||||
+"DGI.700"|"INVENTARIO"|"S"|||||||||
+"DGI.700.1635"|"INVENTARIO DE BIENES INMUEBLES"|"SS"|2|18|||"X"||||
+"DGI.820"|"OFERTAS DE TERRENOS"|"S"|1|19|||"X"||||
+|"Ofertas de terrenos"|"TD"|||"X"||||||
+|"Comunicaciones Oficiales"|"TD"|||"X"||||||
+"DGI.940"|"PROCESOS"|"S"|||||||||
+"DGI.940.1995"|"PROCESOS DE COMERCIALIZACION"|"SS"|2|18|"X"||"X"||||
+"DGI.1100"|"SEGUIMIENTO"|"S"|||||||||
+"DGI.1100.2280"|"SEGUIMIENTO A DESARROLLO DEC.327"|"SS"|1|19|"X"||"X"||||
+"DGI.1120"|"SISTEMAS"|"S"|||||||||
+"DGI.1120.2340"|"SISTEMA DE INFORMACION DE DISPONIBILIDAD DE OFERTA DE VIVIENDA NVA Y USADA"|"SS"|2|18|||"X"||||
+"DGI.1120.2370"|"SISTEMA UNICO DE REGISTRO DE ADQUIRIENTES"|"SS"|2|18|||"X"||||
+"DGI.1160"|"SUBSIDIO DISTRITAL DE VIVIENDA "|"S"|||||||||
+"DGI.1160.2445"|"SUBSIDIO DISTRITAL DE VIVIENDA - ADQUISICION DE VIVIENDA NUEVA Y USADA -ERU"|"SS"|2|18|||"X"||||
+|"Formulario Unico de Postulacion"|"TD"|||"X"||||||
+|"Fotocopia de las cedulas de ciudadania "|"TD"||||"X"|||||
+|"Fotocopia de registros civiles de menores de edad"|"TD"||||"X"|||||
+|"Fotocopia de carnet o certificacion del sisben"|"TD"||||"X"|||||
+|"Certificacion bancaria de ahorro programado"|"TD"|||"X"||||||
+|"Certificado medico que acredite discapacidad"|"TD"|||"X"||||||
+|"Certificacion de instancia o autoridad competente que acredite la condicion de indigena o afrocolombiano "|"TD"|||"X"||||||
+|"Copia de escritura publica de compraventa para hogares "|"TD"||||"X"|||||
+|"Carta de renuncia al subsidio distrital "|"TD"|||"X"||||||
+|"Acta de Correccion"|"TD"|||"X"||||||
+|"Formulario de Correccion"|"TD"|||"X"||||||
+"DGI.1160.2460"|"SUBSIDIO DISTRITAL DE VIVIENDA - COLA DE GOBIERNO"|"SS"|2|18|||"X"||||
+|"Oficio de Intencion "|"TD"|||"X"||||||
+|"Oficio de Asignacion "|"TD"|||"X"||||||
+"DGI.1160.2475"|"SUBSIDIO DISTRITAL DE VIVIENDA - DESPLAZADOS"|"SS"|2|18|||"X"||||
+|"Formulario Unico de Postulacion"|"TD"|||"X"||||||
+|"Fotocopia de las cedulas de ciudadania "|"TD"||||"X"|||||
+|"Fotocopia de registros civiles de menores de edad"|"TD"||||"X"|||||
+|"Fotocopia de carnet o certificacion del sisben"|"TD"||||"X"|||||
+|"Copia de la carta de asignacion de subsidio familiar de vivienda "|"TD"||||"X"|||||
+|"Certificado Tradicion y libertad   "|"TD"|||"X"||||||
+|"Certificado del boletin catastral "|"TD"|||"X"||||||
+|"Certificado medico que acredite discapacidad"|"TD"|||"X"||||||
+|"Certificacion de instancia o autoridad competente que acredite la condicion de indigena o afrocolombiano "|"TD"|||"X"||||||
+|"Copia de escritura publica de compraventa para hogares "|"TD"||||"X"|||||
+|"Carta de renuncia al subsidio distrital "|"TD"|||"X"||||||
+|"Acta de Correccion"|"TD"|||"X"||||||
+|"Formulario de Correccion"|"TD"|||"X"||||||
+|"Comunicaciones Oficiales"|"TD"||||"X"|||||
+|"Derechos de Peticion "|"TD"|||"X"||||||
+|"Tutelas"|"TD"|||"X"||||||
+"DGI.1160.2490"|"SUBSIDIO DISTRITAL DE VIVIENDA - FONDO DE VENTAS "|"SS"|2|18|||"X"||||
+|"Formulario Unico de Postulacion"|"TD"|||"X"||||||
+|"Fotocopia de las cedulas de ciudadania "|"TD"||||"X"|||||
+|"Fotocopia de registros civiles de menores de edad"|"TD"||||"X"|||||
+|"Fotocopia de carnet o certificacion del sisben"|"TD"||||"X"|||||
+|"Certificacion bancaria de ahorro programado"|"TD"|||"X"||||||
+|"Certificado Tradicion y libertad   "|"TD"|||"X"||||||
+|"Certificado del boletin catastral "|"TD"|||"X"||||||
+|"Certificado medico que acredite discapacidad"|"TD"|||"X"||||||
+|"Certificacion de instancia o autoridad competente que acredite la condicion de indigena o afrocolombiano "|"TD"|||"X"||||||
+|"Copia de escritura publica de compraventa para hogares "|"TD"||||"X"|||||
+|"Carta de renuncia al subsidio distrital "|"TD"|||"X"||||||
+|"Acta de Correccion"|"TD"|||"X"||||||
+|"Formulario de Correccion"|"TD"|||"X"||||||
+"DGI.1160.2505"|"SUBSIDIO DISTRITAL DE VIVIENDA - FONVIVIENDA  "|"SS"|2|18|||"X"||||
+|"Formulario Unico de Postulacion"|"TD"|||"X"||||||
+|"Fotocopia de las cedulas de ciudadania "|"TD"||||"X"|||||
+|"Fotocopia de registros civiles de menores de edad"|"TD"||||"X"|||||
+|"Fotocopia de carnet o certificacion del sisben"|"TD"||||"X"|||||
+|"Copia de la carta de asignacion de subsidio familiar de vivienda "|"TD"||||"X"|||||
+|"Certificado Tradicion y libertad   "|"TD"|||"X"||||||
+|"Certificado del boletin catastral "|"TD"|||"X"||||||
+|"Certificado medico que acredite discapacidad"|"TD"|||"X"||||||
+|"Certificacion de instancia o autoridad competente que acredite la condicion de indigena o afrocolombiano "|"TD"|||"X"||||||
+|"Copia de escritura publica de compraventa para hogares "|"TD"||||"X"|||||
+|"Carta de renuncia al subsidio distrital "|"TD"|||"X"||||||
+|"Acta de Correccion"|"TD"|||"X"||||||
+|"Formulario de Correccion"|"TD"|||"X"||||||
+"DGI.1160.2520"|"SUBSIDIO DISTRITAL DE VIVIENDA - MEJORAMIENTO DE VIVIENDA EN CONDICIONES DE HABITABILIDAD / COMPLEMENTARIO PROYECTOS ASOCIATIVOS "|"SS"|2|18|||"X"||||
+|"Formulario Unico de Postulacion"|"TD"|||"X"||||||
+|"Fotocopia de las cedulas de ciudadania "|"TD"||||"X"|||||
+|"Fotocopia de registros civiles de menores de edad"|"TD"||||"X"|||||
+|"Fotocopia de carnet o certificacion del sisben"|"TD"||||"X"|||||
+|"Certificacion bancaria de ahorro programado"|"TD"|||"X"||||||
+|"Certificado Tradicion y libertad   "|"TD"|||"X"||||||
+|"Certificado del boletin catastral "|"TD"|||"X"||||||
+|"Certificado medico que acredite discapacidad"|"TD"|||"X"||||||
+|"Certificacion de instancia o autoridad competente que acredite la condicion de indigena o afrocolombiano "|"TD"|||"X"||||||
+|"Copia de escritura publica de compraventa para hogares "|"TD"||||"X"|||||
+|"Carta de renuncia al subsidio distrital "|"TD"|||"X"||||||
+|"Acta de Correccion"|"TD"|||"X"||||||
+|"Formulario de Correccion"|"TD"|||"X"||||||
+"DGI.1160.2535"|"SUBSIDIO DISTRITAL DE VIVIENDA - MEJORAMIENTO Y CONTRUCCION EN SITIO PROPIO  "|"SS"|2|18|||"X"||||
+|"Formulario Unico de Postulacion"|"TD"|||"X"||||||
+|"Fotocopia de las cedulas de ciudadania "|"TD"||||"X"|||||
+|"Fotocopia de registros civiles de menores de edad"|"TD"||||"X"|||||
+|"Fotocopia de carnet o certificacion del sisben"|"TD"||||"X"|||||
+|"Certificacion bancaria de ahorro programado"|"TD"|||"X"||||||
+|"Certificado Tradicion y libertad   "|"TD"|||"X"||||||
+|"Certificado del boletin catastral "|"TD"|||"X"||||||
+|"Certificado medico que acredite discapacidad"|"TD"|||"X"||||||
+|"Certificacion de instancia o autoridad competente que acredite la condicion de indigena o afrocolombiano "|"TD"|||"X"||||||
+|"Copia de escritura publica de compraventa para hogares "|"TD"||||"X"|||||
+|"Carta de renuncia al subsidio distrital "|"TD"|||"X"||||||
+|"Acta de Correccion"|"TD"|||"X"||||||
+|"Formulario de Correccion"|"TD"|||"X"||||||
+"DGI.1160.2550"|"SUBSIDIO DISTRITAL DE VIVIENDA - PROYECTO PILOTO POBLACION INVIDENTE"|"SS"|2|18|||"X"||||
+|"Formulario Unico de Postulacion"|"TD"|||"X"||||||
+|"Fotocopia de las cedulas de ciudadania "|"TD"||||"X"|||||
+|"Fotocopia de registros civiles de menores de edad"|"TD"||||"X"|||||
+|"Fotocopia de carnet o certificacion del sisben"|"TD"||||"X"|||||
+|"Certificacion bancaria de ahorro programado"|"TD"|||"X"||||||
+|"Certificado medico que acredite discapacidad"|"TD"|||"X"||||||
+|"Certificacion de instancia o autoridad competente que acredite la condicion de indigena o afrocolombiano "|"TD"|||"X"||||||
+|"Copia de escritura publica de compraventa para hogares "|"TD"||||"X"|||||
+|"Carta de renuncia al subsidio distrital "|"TD"|||"X"||||||
+|"Acta de Correccion"|"TD"|||"X"||||||
+|"Formulario de Correccion"|"TD"|||"X"||||||
+"DGI.1160.2565"|"SUBSIDIO DISTRITAL DE VIVIENDA -  REACENTAMIENTO  "|"SS"|2|18|||"X"||||
+|"Formulario Unico de Postulacion"|"TD"|||"X"||||||
+|"Fotocopia de las cedulas de ciudadania "|"TD"||||"X"|||||
+|"Fotocopia de registros civiles de menores de edad"|"TD"||||"X"|||||
+|"Fotocopia de carnet o certificacion del sisben"|"TD"||||"X"|||||
+|"Certificacion bancaria de ahorro programado"|"TD"|||"X"||||||
+|"Valor Unico de reconocimiento - VUR"|"TD"|||"X"||||||
+|"Certificado medico que acredite discapacidad"|"TD"|||"X"||||||
+|"Certificacion de instancia o autoridad competente que acredite la condicion de indigena o afrocolombiano "|"TD"|||"X"||||||
+|"Copia de escritura publica de compraventa para hogares "|"TD"||||"X"|||||
+|"Carta de renuncia al subsidio distrital "|"TD"|||"X"||||||
+|"Acta de Correccion"|"TD"|||"X"||||||
+|"Formulario de Correccion"|"TD"|||"X"||||||
+"DGI.1160.2580"|"SUBSIDIO DISTRITAL DE VIVIENDA - VENDEDORES AMBULANTES "|"SS"|2|18|||"X"||||
+|"Formulario Unico de Postulacion"|"TD"|||"X"||||||
+|"Fotocopia de las cedulas de ciudadania "|"TD"||||"X"|||||
+|"Fotocopia de registros civiles de menores de edad"|"TD"||||"X"|||||
+|"Fotocopia de carnet o certificacion del sisben"|"TD"||||"X"|||||
+|"Certificacion bancaria de ahorro programado"|"TD"|||"X"||||||
+|"Certificado medico que acredite discapacidad"|"TD"|||"X"||||||
+|"Certificacion de instancia o autoridad competente que acredite la condicion de indigena o afrocolombiano "|"TD"|||"X"||||||
+|"Copia de escritura publica de compraventa para hogares "|"TD"||||"X"|||||
+|"Carta de renuncia al subsidio distrital "|"TD"|||"X"||||||
+|"Acta de Correccion"|"TD"|||"X"||||||
+|"Formulario de Correccion"|"TD"|||"X"||||||
+"DJ.40"|"ACCIONES POPULARES"|"S"|||||||||
+"DJ.40.45"|"ACCIONES POPULARES DE TUTELA "|"SS"|2|18|||"X"||||
+|"Tutelas"|"TD"|||"X"||||||
+|"Comunicaciones oficiales"|"TD"||||"X"|||||
+"DJ.60"|"ACTAS"|"S"|||||||||
+"DJ.80"|"ACTOS ADMINISTRATIVOS"|"S"|||||||||
+"DJ.80.165"|"Acuerdos de Junta Directiva"|"SS"|2|18|"X"||"X"||||
+"DJ.80.180"|"Circulares"|"SS"|2|18|"X"||"X"||||
+"DJ.80.195"|"Decretos "|"SS"|2|18|"X"||"X"||||
+"DJ.80.210"|"Directivas"|"SS"|2|18|"X"||"X"||||
+"DJ.80.225"|"Resoluciones"|"SS"|2|18|"X"||"X"||||
+"DJ.420"|"CONVENIOS"|"S"|||||||||
+"DJ.420.855"|"CONVENIOS CON ORGANISMOS MULTILATERALES "|"SS"|2|18|||"X"||||
+"DJ.420.870"|"CONVENIOS INTERADMINISTRATIVOS"|"SS"|2|18|||"X"||||
+"DJ.480"|"DECLARACIONES TRIBUTARIAS"|"S"|||||||||
+"DJ.480.960"|"DECLARACION DE IMPUESTO PREDIAL UNIFICADO"|"SS"|2|18|||"X"||||
+|"Formularios"|"TD"||||"X"|||||
+"DJ.480.1020"|"DECLARACION DE VALORIZACION POR BENEFICIO LOCAL "|"SS"|2|18|||"X"||||
+|"Formularios"|"TD"||||"X"|||||
+"DJ.500"|"DERECHOS DE PETICIÓN"|"S"|1|4||||||"X"|"Cumplido su tiempo de retencion seleccionar una muestra representativa del 10%"
+|"Derechos de peticion "|"TD"|||"X "||||||
+|"Comunicaciones Oficiales"|"TD"|||"X "|" "|||||
+"DJ.580"|"ENGLOBE Y CONSTITUCIONES DE URBANIZACIONES"|"S"|2|18|||"X"||||
+|"Escrituras "|"TD"||||"X"|||||
+|"Folio de matrícula"|"TD"|||"X"||||||
+|"Comunicaciones Oficiales"|"TD"|||"X"||||||
+"DJ.600"|"ESTUDIOS"|"S"|||||||||
+"DJ.600.1305"|"ESTUDIOS DE TITULOS "|"SS"|2|18|||"X"||||
+|"Boletin Catastral"|"TD"|||"X"||||||
+|"Certificado de Tradicion y libertad de matricula inmobiliaria "|"TD"|||"X"||||||
+|"Escritura Publica"|"TD"||||"X"|||||
+|"Estudio de Titulos"|"TD"|||"X"||||||
+|"Registro Topografico"|"TD"|||"X"||||||
+"DJ.680"|"INFORMES"|"S"|||||||||
+"DJ.680.1455"|"INFORMES A ORGANISMOS DE CONTROL"|"SS"|1|9||||||"X"|"Cumplido su tiempo de retencion seleccionar una muestra representativa del 10%"
+|"Contraloría"|"TD"||||"X"|||||
+|"Consejo de Bogotá"|"TD"||||"X"|||||
+|"Personeria"|"TD"||||"X"|||||
+|"Procuraduría"|"TD"||||"X"|||||
+|"Las demás entidades de control"|"TD"||||"X"|||||
+"DJ.680.1545"|"INFORMES DE GESTION"|"SS"|1|9|"X"|||||"X"|"Cumplido su tiempo de retencion seleccionar una muestra representativa del 10%"
+"DJ.820"|"OFERTAS DE TERRENOS"|"S"|1|19|||"X"||||
+|"Ofertas de terrenos"|"TD"|||||||||
+|"Comunicaciones Oficiales"|"TD"|||||||||
+"DJ.860"|"PLAN"|"S"|||||||||
+"DJ.860.1785"|"PLAN CENTRO"|"SS"|2|18|"X"||"X"||||
+"DJ.900"|"PREDIOS ADQUIRIDOS"|"S"|2|18|||"X"||||
+|"Plano de ubicación del proyecto"|"TD"||||"X"|||||
+|"Acto administrativo por el cual se adopta el proyecto"|"TD"||||"X"|||||
+|"Estudio Socioeconómico"|"TD"|||"X"||||||
+|"Escrituras públicas del estudio de títulos"|"TD"||||"X"|||||
+|"Folios de matriculas inmobiliarias "|"TD"|||"X"||||||
+|"Estudio de titulos"|"TD"|||"X"||||||
+|"Registro topografico"|"TD"||||"X"|||||
+|"Solicitud certificacion area y linderos "|"TD"||||"X"|||||
+|"Certificacion de area y linderos "|"TD"|||"X"||||||
+|"Avaluo del predio "|"TD"|||"X"||||||
+|"Disponibilidad presupuestal"|"TD"||||"X"|||||
+|"Oferta de compra"|"TD"|||"X"||||||
+|"Citacion por correo certificado-V- "|"TD"||||"X"|||||
+|"Guia de constancia de envio-V-"|"TD"|||"X"||||||
+|"Edicto con constancia de fijacion y desfijacion "|"TD"|||"X"||||||
+|"Recibo de caja"|"TD"|||"X"||||||
+|"Folio de matricula inmobiliaria con oferta de compra"|"TD"|||"X"||||||
+|"Documentos allegados por el vendedor"|"TD"|||"X"||||||
+|"Aceptacion de la oferta "|"TD"|||"X"||||||
+|"Documentos recibidos del propietario o interesado"|"TD"|||"X"||||||
+|"Comunicaciones Oficiales"|"TD"|||"X"||||||
+|"Pagos gastos escrituracion y registros"|"TD"|||"X"||||||
+|"Acta de acuerdo preliminar"|"TD"|||"X"||||||
+|"Promesa de compraventa"|"TD"|||"X"||||||
+|"Certificado de registro presupuestal "|"TD"|||"X"||||||
+|"Otro si a la promesa de compraventa "|"TD"|||"X"||||||
+|"Estado de cuenta pagos entidades "|"TD"|||"X"||||||
+|"Pagos por impuestos distritales "|"TD"||||"X"|||||
+|"Pagos por valorizaciones "|"TD"||||"X"|||||
+|"Pagos servicios publicos"|"TD"||||"X"|||||
+|"Pagos por otros conceptos"|"TD"||||"X"|||||
+|"Acta de entrega "|"TD"|||"X"||||||
+|"Escritura debidamente registrada"|"TD"||||"X"|||||
+|"Oficio levantamiento oferta de compra "|"TD"||||"X"|||||
+|"Folio de matricula inmobiliaria-X- "|"TD"|||"X"||||||
+|"Resolucion de Expropiacion "|"TD"||||"X"|||||
+|"Citacion por correo certificado-XI- "|"TD"||||"X"|||||
+|"Guia de constancia de envio-XI- "|"TD"|||"X"||||||
+|"Edicto con constancia de fijacion y desfinacion "|"TD"|||"X"||||||
+|"Recurso contentivo del recurso"|"TD"|||"X"||||||
+|"Acto administrativo que resuelve el recurso"|"TD"||||"X"|||||
+|"Poder debidamente otorgado"|"TD"||||"X"|||||
+|"Demanda de expropiacion"|"TD"||||"X"|||||
+|"Recibo de consignacion"|"TD"||||"X"|||||
+|"Auto que ordena la entrega anticipada"|"TD"|||"X"||||||
+|"Diligencia de entrega anticipada"|"TD"||||"X"|||||
+|"Demas actuaciones procesales"|"TD"||||"X"|||||
+|"Sentencia de expropiacion "|"TD"||||"X"|||||
+|"Folio de matricula inmobiliaria-XII- "|"TD"|||"X"||||||
+|"Recurso presentado contra sentencia "|"TD"|||"X"||||||
+|"Sentencia de segunda instancia "|"TD"||||"X"|||||
+|"Ficha informacion predial y socioeconomica "|"TD"|||"X"||||||
+|"Oficio solicitud de documentacion "|"TD"|||"X"||||||
+|"Fotocopia cedula "|"TD"||||"X"|||||
+|"Registro civil de nacimiento"|"TD"||||"X"|||||
+|"Contrato de arrendamiento"|"TD"||||"X"|||||
+|"Certificacion de arriendo (contrato verbal)"|"TD"||||"X"|||||
+|"Paz y salvo propietario del inmueble "|"TD"|||"X"||||||
+|"Recibos de pago arriendo "|"TD"||||"X"|||||
+|"Recibo servicios publicos "|"TD"||||"X"|||||
+|"Peritaje actividad economica "|"TD"|||"X"||||||
+|"Certificado camara y comercio "|"TD"|||"X"||||||
+|"Formulario de IVA"|"TD"||||"X"|||||
+|"Declaracion de renta "|"TD"||||"X"|||||
+|"Estados financieros"|"TD"||||"X"|||||
+|"Facturas compras y ventas varias"|"TD"||||"X"|||||
+|"Proceso de identificacion y atencion"|"TD"|||"X"||||||
+|"Resolucion de pago"|"TD"||||"X"|||||
+|"Notificacion personal "|"TD"|||"X"||||||
+|"Formato de resumen informacion de calculo y "|"TD"|||"X"||||||
+|"Liquidacion de reconocimientos economicos"|"TD"|||"X"||||||
+|"Ficha resumen liquidacion "|"TD"|||"X"||||||
+|"Poder"|"TD"|||"X"||||||
+|"Prorrogas"|"TD"|||"X"||||||
+|"Autorizacion de descuento "|"TD"|||"X"||||||
+|"Oficio uso del predio "|"TD"|||"X"||||||
+"DJ.920"|"PREDIOS TRANSFERIDOS"|"S"|2|18|||"X"||||
+|"Certificado de Libertad"|"TD"|||"X"||||||
+|"Boletin de Nomenclatura"|"TD"|||"X"||||||
+|"Cuadro de valores"|"TD"|||"X"||||||
+|"Impuesto Predial"|"TD"|||"X"||||||
+|"Valorización"|"TD"|||"X"||||||
+|"Anuncio del proceso / Resolución"|"TD"|||"X"||||||
+|"Terminos de Referencia"|"TD"|||"X"||||||
+|"Oferta del comprador"|"TD"|||"X"||||||
+|"Comunicaciones"|"TD"|||"X"||||||
+|"Acta de Selección"|"TD"||||"X"|||||
+|"Oficio de Adjudicación "|"TD"|||"X"||||||
+|"Acta de entrega"|"TD"|||"X"||||||
+|"Contrato promesa de compraventa"|"TD"|||"X"||||||
+|"Escritura de compraventa"|"TD"|||"X"||||||
+|"Folio matricula inmobiliaria"|"TD"|||"X"||||||
+|"Boletín de calificación"|"TD"|||"X"||||||
+|"Garantia Bancaria"|"TD"||||"X"|||||
+|"Pagaré abierto"|"TD"||||"X"|||||
+|"Carta de Instrucciones"|"TD"||||"X"|||||
+"DJ.940"|"PROCESOS"|"S"|||||||||
+"DJ.940.2040"|"PROCESOS JUDICIALES"|"SS"|2|18||||||"X"|"Cumplido su tiempo de retención seleccionar una muestra representativa del 10%"
+|"Memoriales"|"TD"|||"X"||||||
+|"Oficios "|"TD"|||"X"||||||
+|"Sentencias"|"TD"|||"X"||||||
+|"Autos"|"TD"|||"X"||||||
+|"Edictos"|"TD"|||"X"||||||
+|"Notificaciones"|"TD"|||"X"||||||
+"DJ.1040"|"PROYECTOS  "|"S"|||||||||
+"DJ.1040.2175"|"PROYECTOS ASOCIATIVOS"|"SS"|1|19|||"X"||||
+|"Estudios"|"TD"|||"X"||||||
+|"Informes"|"TD"||||"X"|||||
+|"Comunicaciones Oficiales"|"TD"||||"X"|||||
+"DGCID.60"|"ACTAS"|"S"|||||||||
+"DGCID.60.60"|"ACTA DE COMITÉ DE ARCHIVO Y CORRESPONDENCIA "|"SS"|1|19|||"X"||||
+|"Orden del Dia "|"TD"|||"X"||||||
+|"Acta"|"TD"|||"X"||||||
+"DGCID.60.90"|"ACTAS DE COMITÉ DE GERENCIA"|"SS"|1|19|||"X"||||
+|"Acta"|"TD"|||"X"||||||
+"DGCID.60.105"|"ACTA DE COMITÉ PARITARIO DE SALUD"|"SS"|1|19|||"X"||||
+|"Orden del Dia"|"TD"|||||||||
+|"Acta"|"TD"|||"X"||||||
+"DGCID.60.120"|"ACTAS JUNTA DIRECTIVA"|"SS"|1|19|||"X"||||
+|"Acta"|"TD"|||"X"||||||
+"DGCID.60.150"|"ACTAS DE POSESION"|"SS"|1|19|||"X"||||
+"DGCID.120"|"ADMINISTRACION BIENES MUEBLES E INMUEBLES"|"S"|||||||||
+"DGCID.120.255"|"ADMINISTRACIÓN DE EDIFICIO"|"SS"|2|10|||"X"||||
+|"Actas"|"TD"||||"X"|||||
+|"Comunicaciones Oficiales"|"TD"|||"X"||||||
+|"Informes de Gestion"|"TD"|||"X"||||||
+"DGCID.120.270"|"ADMINISTRACIÓN SERVICIOS DE TELEFONIA MOVIL"|"SS"|2|10|||"X"||||
+|"Facturas"|"TD"|||"X"||||||
+|"Comunicaciones Oficiales"|"TD"|||"X"||||||
+"DGCID.120.285"|"ADMINISTRACION  VEHICULOS"|"SS"|2|10|||"X"||||
+|"Tarjeta de propiedad"|"TD"|||"X"||||||
+|"Póliza  de seguro "|"TD"|||"X"||||||
+|"Matrícula"|"TD"|||"X"||||||
+|"Recibo de impuesto"|"TD"||||"X"|||||
+|"Factura de venta"|"TD"|||"X"||||||
+|"Recibo pago retefuente y derechos"|"TD"||||"X"|||||
+|"Certificación nacionalización vehículo"|"TD"|||"X"||||||
+|"Certificación importación"|"TD"|||"X"||||||
+|"Inventario de entrega"|"TD"|||"X"||||||
+|"Certificado de garantía"|"TD"|||"X"||||||
+"DGCID.120.300"|"ADMINISTRACION DE SEGUROS"|"SS"|1|19|||"X"||||
+|"Pólizas"|"TD"|||"X"||||||
+|"Oficios"|"TD"|||"X"||||||
+"DGCID.225"|"BRIGADAS"|"S"|||||||||
+"DGCID.225.440"|"BRIGADAS DE EMERGENCIA  "|"SS"|1|19|||"X"||||
+|"Comunicaciones Oficiales"|"TD"|||"X"||||||
+"DGCID.400"|"CONSECUTIVO COMUNICACIONES OFICIALES"|"S"|||||||||
+"DGCID.400.705"|"CONSECUTIVO COMUNICACIONES OFICIALES EXTERNAS ENVIADAS"|"SS"|2|18|||"X"||||
+|"Consecutivos"|"TD"||||"X"|||||
+"DGCID.400.720"|"CONSECUTIVO COMUNICACIONES OFICIALES INTERNAS ENVIADAS"|"SS"|2|18|||"X"||||
+|"Consecutivos"|"TD"||||"X"|||||
+"DGCID.420"|"CONTRATOS "|"S"|||||||||
+"DGCID.420.735"|"CONTRATOS DE ARRENDAMIENTO"|"SS"|2|18||||||"X"|"Cumplido su tiempo de retención seleccionar una muestra representativa del 10%"
+|"Justificacion. Estudio de Conveniencia y Oportunidad "|"TD"|||"X"||||||
+|"Certificado de Disponibilidad Presupuestal "|"TD"|||"X"||||||
+|"Solicitud de Contratación "|"TD"|||"X"||||||
+|"Terminos de Referencia "|"TD"|||"X"||||||
+|"Especificaciones Tecnicas del producto o servicio"|"TD"|||"X"||||||
+|"Comunicación a la Camara y Comercio y Confecamaras "|"TD"|||"X"||||||
+|"Acta en la que coste la lista de proponentes seleccionada "|"TD"|||"X"||||||
+|"Respuestas ofrecidas en la audiencia "|"TD"|||"X"||||||
+|"Acta de recibo de propuestas "|"TD"|||"X"||||||
+|"Resolucion de Apertura licitacion o concurso "|"TD"|||"X"||||||
+|"Aviso de prensa "|"TD"|||"X"||||||
+|"Acta de apertura de licitacion o concurso "|"TD"|||"X"||||||
+|"Recibo de Pago de Venta de pliegos "|"TD"|||"X"||||||
+|"Acta de Audiencia de aclaracion de pliegos "|"TD"|||"X"||||||
+|"Adendos a los terminos de referencia "|"TD"|||"X"||||||
+|"Propuestas "|"TD"|||"X"||||||
+|"Acta de cierre y apertura de propuestas "|"TD"|||"X"||||||
+|"Polizas de seriedad"|"TD"|||"X"||||||
+|"Estudios de Evaluacion Juridica"|"TD"|||"X"||||||
+|"Estudios de Evaluacion de Factores de Selección"|"TD"|||"X"||||||
+|"Informe preliminar de evaluacion "|"TD"|||"X"||||||
+|"Informe final de evaluacion "|"TD"|||"X"||||||
+|"Oficio comunicando adjudicacion "|"TD"|||"X"||||||
+|"Reglamento de inversion de oferentes en la audiencia de la adjudicacion "|"TD"||||"X"|||||
+|"Acta de adjudicacion o resolucion de adjudicacion "|"TD"|||"X"||||||
+|"Antecedentes propios de tipo contractual "|"TD"|||"X"||||||
+|"Informe de evaluación contemplado en observaciones"|"TD"|||"X"||||||
+|"Acto administrativo donde se notifica declaratoria de desierta"|"TD"||||"X"|||||
+|"Certificado SICE"|"TD"|||"X"||||||
+|"Hoja de vida"|"TD"|||"X"||||||
+|"Copia cedula de ciudadania "|"TD"||||"X"|||||
+|"Copia de libreta militar"|"TD"||||"X"|||||
+|"Boletin de responsables fiscales "|"TD"|||"X"||||||
+|"Registro de Informacion Tributaria"|"TD"||||"X"|||||
+|"Afiliación a fondo de pensiones y salud"|"TD"|||"X"||||||
+|"Certificacion de cuenta bancaria "|"TD"|||"X"||||||
+|"Registro Unico Tributario"|"TD"|||"X"||||||
+|"Certificado de Antecedentes Disciplinarios"|"TD"|||"X"||||||
+|"Certificado de antecedentes -Procuraduria"|"TD"|||"X"||||||
+|"Certificacion judicial -DAS"|"TD"||||"X"|||||
+|"Certificado de aportes parafiscales para personas naturales y juridicas "|"TD"|||"X"||||||
+|"Certificado de Paz y Salvo de pension y salud  para personas naturales y juridicas  "|"TD"||||"X"|||||
+|"Contrato"|"TD"|||"X"||||||
+|"Recibo de pago de publicacion del contrato "|"TD"|||"X"||||||
+|"Recibo de pago de impuesto de timbre"|"TD"|||"X"||||||
+|"Nit de la Union Temporal o Consorcio "|"TD"||||"X"|||||
+|"Certificado Registro Presupuestal"|"TD"|||"X"||||||
+|"Garantia Unica"|"TD"|||"X"||||||
+|"Formato de publicacion en registro distrital "|"TD"|||"X"||||||
+|"Oficio Designando Interventoria "|"TD"|||"X"||||||
+|"Acta de iniciacion "|"TD"|||"X"||||||
+|"Informe de Actividades"|"TD"|||"X"||||||
+|"Actas de Interventoria "|"TD"|||"X"||||||
+|"Actas de Finalizacion o Recibo a Satisfaccion "|"TD"|||"X"||||||
+|"Formato de solicitud ultimo pago "|"TD"|||"X"||||||
+|"Memorando donde se comunica la novedad "|"TD"|||"X"||||||
+|"Otrosi, adiciones, prorrogas"|"TD"|||"X"||||||
+|"Estados de cuenta"|"TD"|||"X"||||||
+|"Acta de liquidacion de contratos, anexos."|"TD"|||"X"||||||
+|"Acto administrativo de Liquidacion Unilateral "|"TD"|||"X"||||||
+|"Hoja de estudio para verificacion y seguimiento de garantias y contrato"|"TD"|||"X"||||||
+|"Comunicaciones Oficiales"|"TD"|||"X"||||||
+|"Informe final de Contratistas"|"TD"|||"X"||||||
+"DGCID.420.750"|"CONTRATOS DE COMPRAVENTA"|"SS"|2|18||||||"X"|"Cumplido su tiempo de retención seleccionar una muestra representativa del 10%"
+|"Justificacion. Estudio de Conveniencia y Oportunidad "|"TD"|||"X"||||||
+|"Certificado de Disponibilidad Presupuestal "|"TD"|||"X"||||||
+|"Solicitud de Contratación "|"TD"|||"X"||||||
+|"Terminos de Referencia "|"TD"|||"X"||||||
+|"Especificaciones Tecnicas del producto o servicio"|"TD"|||"X"||||||
+|"Comunicación a la Camara y Comercio y Confecamaras "|"TD"|||"X"||||||
+|"Acta en la que coste la lista de proponentes seleccionada "|"TD"|||"X"||||||
+|"Respuestas ofrecidas en la audiencia "|"TD"|||"X"||||||
+|"Acta de recibo de propuestas "|"TD"|||"X"||||||
+|"Resolucion de Apertura licitacion o concurso "|"TD"|||"X"||||||
+|"Aviso de prensa "|"TD"|||"X"||||||
+|"Acta de apertura de licitacion o concurso "|"TD"|||"X"||||||
+|"Recibo de Pago de Venta de pliegos "|"TD"|||"X"||||||
+|"Acta de Audiencia de aclaracion de pliegos "|"TD"|||"X"||||||
+|"Adendos a los terminos de referencia "|"TD"|||"X"||||||
+|"Propuestas "|"TD"|||"X"||||||
+|"Acta de cierre y apertura de propuestas "|"TD"|||"X"||||||
+|"Polizas de seriedad"|"TD"|||"X"||||||
+|"Estudios de Evaluacion Juridica"|"TD"|||"X"||||||
+|"Estudios de Evaluacion de Factores de Selección"|"TD"|||"X"||||||
+|"Informe preliminar de evaluacion "|"TD"|||"X"||||||
+|"Informe final de evaluacion "|"TD"|||"X"||||||
+|"Oficio comunicando adjudicacion "|"TD"|||"X"||||||
+|"Reglamento de inversion de oferentes en la audiencia de la adjudicacion "|"TD"||||"X"|||||
+|"Acta de adjudicacion o resolucion de adjudicacion "|"TD"|||"X"||||||
+|"Antecedentes propios de tipo contractual "|"TD"|||"X"||||||
+|"Informe de evaluación contemplado en observaciones"|"TD"|||"X"||||||
+|"Acto administrativo donde se notifica declaratoria de desierta"|"TD"||||"X"|||||
+|"Certificado SICE"|"TD"|||"X"||||||
+|"Hoja de vida"|"TD"|||"X"||||||
+|"Copia cedula de ciudadania "|"TD"||||"X"|||||
+|"Copia de libreta militar"|"TD"||||"X"|||||
+|"Boletin de responsables fiscales "|"TD"|||"X"||||||
+|"Registro de Informacion Tributaria"|"TD"||||"X"|||||
+|"Afiliación a fondo de pensiones y salud"|"TD"|||"X"||||||
+|"Certificacion de cuenta bancaria "|"TD"|||"X"||||||
+|"Registro Unico Tributario"|"TD"|||"X"||||||
+|"Certificado de Antecedentes Disciplinarios"|"TD"|||"X"||||||
+|"Certificado de antecedentes -Procuraduria"|"TD"|||"X"||||||
+|"Certificacion judicial -DAS"|"TD"||||"X"|||||
+|"Certificado de aportes parafiscales para personas naturales y juridicas "|"TD"|||"X"||||||
+|"Certificado de Paz y Salvo de pension y salud  para personas naturales y juridicas  "|"TD"||||"X"|||||
+|"Contrato"|"TD"|||"X"||||||
+|"Recibo de pago de publicacion del contrato "|"TD"|||"X"||||||
+|"Recibo de pago de impuesto de timbre"|"TD"|||"X"||||||
+|"Nit de la Union Temporal o Consorcio "|"TD"||||"X"|||||
+|"Certificado Registro Presupuestal"|"TD"|||"X"||||||
+|"Garantia Unica"|"TD"|||"X"||||||
+|"Formato de publicacion en registro distrital "|"TD"|||"X"||||||
+|"Oficio Designando Interventoria "|"TD"|||"X"||||||
+|"Acta de iniciacion "|"TD"|||"X"||||||
+|"Informe de Actividades"|"TD"|||"X"||||||
+|"Actas de Interventoria "|"TD"|||"X"||||||
+|"Actas de Finalizacion o Recibo a Satisfaccion "|"TD"|||"X"||||||
+|"Formato de solicitud ultimo pago "|"TD"|||"X"||||||
+|"Memorando donde se comunica la novedad "|"TD"|||"X"||||||
+|"Otrosi, adiciones, prorrogas"|"TD"|||"X"||||||
+|"Estados de cuenta"|"TD"|||"X"||||||
+|"Acta de liquidacion de contratos, anexos."|"TD"|||"X"||||||
+|"Acto administrativo de Liquidacion Unilateral "|"TD"|||"X"||||||
+|"Hoja de estudio para verificacion y seguimiento de garantias y contrato"|"TD"|||"X"||||||
+|"Comunicaciones Oficiales"|"TD"|||"X"||||||
+|"Informe final de Contratistas"|"TD"|||"X"||||||
+"DGCID.420.765"|"CONTRATO DE CONSULTORIA "|"SS"|2|18||||||"X"|"Cumplido su tiempo de retención seleccionar una muestra representativa del 10% "
+|"Justificacion. Estudio de Conveniencia y Oportunidad "|"TD"|||"X"||||||
+|"Certificado de Disponibilidad Presupuestal "|"TD"|||"X"||||||
+|"Solicitud de Contratación "|"TD"|||"X"||||||
+|"Terminos de Referencia "|"TD"|||"X"||||||
+|"Especificaciones Tecnicas del producto o servicio"|"TD"|||"X"||||||
+|"Comunicación a la Camara y Comercio y Confecamaras "|"TD"|||"X"||||||
+|"Acta en la que coste la lista de proponentes seleccionada "|"TD"|||"X"||||||
+|"Respuestas ofrecidas en la audiencia "|"TD"|||"X"||||||
+|"Acta de recibo de propuestas "|"TD"|||"X"||||||
+|"Resolucion de Apertura licitacion o concurso "|"TD"|||"X"||||||
+|"Aviso de prensa "|"TD"|||"X"||||||
+|"Acta de apertura de licitacion o concurso "|"TD"|||"X"||||||
+|"Recibo de Pago de Venta de pliegos "|"TD"|||"X"||||||
+|"Acta de Audiencia de aclaracion de pliegos "|"TD"|||"X"||||||
+|"Adendos a los terminos de referencia "|"TD"|||"X"||||||
+|"Propuestas "|"TD"|||"X"||||||
+|"Acta de cierre y apertura de propuestas "|"TD"|||"X"||||||
+|"Polizas de seriedad"|"TD"|||"X"||||||
+|"Estudios de Evaluacion Juridica"|"TD"|||"X"||||||
+|"Estudios de Evaluacion de Factores de Selección"|"TD"|||"X"||||||
+|"Informe preliminar de evaluacion "|"TD"|||"X"||||||
+|"Informe final de evaluacion "|"TD"|||"X"||||||
+|"Oficio comunicando adjudicacion "|"TD"|||"X"||||||
+|"Reglamento de inversion de oferentes en la audiencia de la adjudicacion "|"TD"||||"X"|||||
+|"Acta de adjudicacion o resolucion de adjudicacion "|"TD"|||"X"||||||
+|"Antecedentes propios de tipo contractual "|"TD"|||"X"||||||
+|"Informe de evaluación contemplado en observaciones"|"TD"|||"X"||||||
+|"Acto administrativo donde se notifica declaratoria de desierta"|"TD"||||"X"|||||
+|"Certificado SICE"|"TD"|||"X"||||||
+|"Hoja de vida"|"TD"|||"X"||||||
+|"Copia cedula de ciudadania "|"TD"||||"X"|||||
+|"Copia de libreta militar"|"TD"||||"X"|||||
+|"Boletin de responsables fiscales "|"TD"|||"X"||||||
+|"Registro de Informacion Tributaria"|"TD"||||"X"|||||
+|"Afiliación a fondo de pensiones y salud"|"TD"|||"X"||||||
+|"Certificacion de cuenta bancaria "|"TD"|||"X"||||||
+|"Registro Unico Tributario"|"TD"|||"X"||||||
+|"Certificado de Antecedentes Disciplinarios"|"TD"|||"X"||||||
+|"Certificado de antecedentes -Procuraduria"|"TD"|||"X"||||||
+|"Certificacion judicial -DAS"|"TD"||||"X"|||||
+|"Certificado de aportes parafiscales para personas naturales y juridicas "|"TD"|||"X"||||||
+|"Certificado de Paz y Salvo de pension y salud  para personas naturales y juridicas  "|"TD"||||"X"|||||
+|"Contrato"|"TD"|||"X"||||||
+|"Recibo de pago de publicacion del contrato "|"TD"|||"X"||||||
+|"Recibo de pago de impuesto de timbre"|"TD"|||"X"||||||
+|"Nit de la Union Temporal o Consorcio "|"TD"||||"X"|||||
+|"Certificado Registro Presupuestal"|"TD"|||"X"||||||
+|"Garantia Unica"|"TD"|||"X"||||||
+|"Formato de publicacion en registro distrital "|"TD"|||"X"||||||
+|"Oficio Designando Interventoria "|"TD"|||"X"||||||
+|"Acta de iniciacion "|"TD"|||"X"||||||
+|"Informe de Actividades"|"TD"|||"X"||||||
+|"Actas de Interventoria "|"TD"|||"X"||||||
+|"Actas de Finalizacion o Recibo a Satisfaccion "|"TD"|||"X"||||||
+|"Formato de solicitud ultimo pago "|"TD"|||"X"||||||
+|"Memorando donde se comunica la novedad "|"TD"|||"X"||||||
+|"Otrosi, adiciones, prorrogas"|"TD"|||"X"||||||
+|"Estados de cuenta"|"TD"|||"X"||||||
+|"Acta de liquidacion de contratos, anexos."|"TD"|||"X"||||||
+|"Acto administrativo de Liquidacion Unilateral "|"TD"|||"X"||||||
+|"Hoja de estudio para verificacion y seguimiento de garantias y contrato"|"TD"|||"X"||||||
+|"Comunicaciones Oficiales"|"TD"|||"X"||||||
+|"Informe final de Contratistas"|"TD"|||"X"||||||
+"DGCID.420.780"|"CONTRATO DE OBRA"|"SS"|2|18|||"X"||||
+|"Justificacion. Estudio de Conveniencia y Oportunidad "|"TD"|||"X"||||||
+|"Certificado de Disponibilidad Presupuestal "|"TD"|||"X"||||||
+|"Solicitud de Contratación "|"TD"|||"X"||||||
+|"Terminos de Referencia "|"TD"|||"X"||||||
+|"Especificaciones Tecnicas del producto o servicio"|"TD"|||"X"||||||
+|"Comunicación a la Camara y Comercio y Confecamaras "|"TD"|||"X"||||||
+|"Acta en la que coste la lista de proponentes seleccionada "|"TD"|||"X"||||||
+|"Respuestas ofrecidas en la audiencia "|"TD"|||"X"||||||
+|"Acta de recibo de propuestas "|"TD"|||"X"||||||
+|"Resolucion de Apertura licitacion o concurso "|"TD"|||"X"||||||
+|"Aviso de prensa "|"TD"|||"X"||||||
+|"Acta de apertura de licitacion o concurso "|"TD"|||"X"||||||
+|"Recibo de Pago de Venta de pliegos "|"TD"|||"X"||||||
+|"Acta de Audiencia de aclaracion de pliegos "|"TD"|||"X"||||||
+|"Adendos a los terminos de referencia "|"TD"|||"X"||||||
+|"Propuestas "|"TD"|||"X"||||||
+|"Acta de cierre y apertura de propuestas "|"TD"|||"X"||||||
+|"Polizas de seriedad"|"TD"|||"X"||||||
+|"Estudios de Evaluacion Juridica"|"TD"|||"X"||||||
+|"Estudios de Evaluacion de Factores de Selección"|"TD"|||"X"||||||
+|"Informe preliminar de evaluacion "|"TD"|||"X"||||||
+|"Informe final de evaluacion "|"TD"|||"X"||||||
+|"Oficio comunicando adjudicacion "|"TD"|||"X"||||||
+|"Reglamento de inversion de oferentes en la audiencia de la adjudicacion "|"TD"||||"X"|||||
+|"Acta de adjudicacion o resolucion de adjudicacion "|"TD"|||"X"||||||
+|"Antecedentes propios de tipo contractual "|"TD"|||"X"||||||
+|"Informe de evaluación contemplado en observaciones"|"TD"|||"X"||||||
+|"Acto administrativo donde se notifica declaratoria de desierta"|"TD"||||"X"|||||
+|"Certificado SICE"|"TD"|||"X"||||||
+|"Hoja de vida"|"TD"|||"X"||||||
+|"Copia cedula de ciudadania "|"TD"||||"X"|||||
+|"Copia de libreta militar"|"TD"||||"X"|||||
+|"Boletin de responsables fiscales "|"TD"|||"X"||||||
+|"Registro de Informacion Tributaria"|"TD"||||"X"|||||
+|"Afiliación a fondo de pensiones y salud"|"TD"|||"X"||||||
+|"Certificacion de cuenta bancaria "|"TD"|||"X"||||||
+|"Registro Unico Tributario"|"TD"|||"X"||||||
+|"Certificado de Antecedentes Disciplinarios"|"TD"|||"X"||||||
+|"Certificado de antecedentes -Procuraduria"|"TD"|||"X"||||||
+|"Certificacion judicial -DAS"|"TD"||||"X"|||||
+|"Certificado de aportes parafiscales para personas naturales y juridicas "|"TD"|||"X"||||||
+|"Certificado de Paz y Salvo de pension y salud  para personas naturales y juridicas  "|"TD"||||"X"|||||
+|"Contrato"|"TD"|||"X"||||||
+|"Recibo de pago de publicacion del contrato "|"TD"|||"X"||||||
+|"Recibo de pago de impuesto de timbre"|"TD"|||"X"||||||
+|"Nit de la Union Temporal o Consorcio "|"TD"||||"X"|||||
+|"Certificado Registro Presupuestal"|"TD"|||"X"||||||
+|"Garantia Unica"|"TD"|||"X"||||||
+|"Formato de publicacion en registro distrital "|"TD"|||"X"||||||
+|"Oficio Designando Interventoria "|"TD"|||"X"||||||
+|"Acta de iniciacion "|"TD"|||"X"||||||
+|"Informe de Actividades"|"TD"|||"X"||||||
+|"Actas de Interventoria "|"TD"|||"X"||||||
+|"Actas de Finalizacion o Recibo a Satisfaccion "|"TD"|||"X"||||||
+|"Formato de solicitud ultimo pago "|"TD"|||"X"||||||
+|"Memorando donde se comunica la novedad "|"TD"|||"X"||||||
+|"Otrosi, adiciones, prorrogas"|"TD"|||"X"||||||
+|"Estados de cuenta"|"TD"|||"X"||||||
+|"Acta de liquidacion de contratos, anexos."|"TD"|||"X"||||||
+|"Acto administrativo de Liquidacion Unilateral "|"TD"|||"X"||||||
+|"Hoja de estudio para verificacion y seguimiento de garantias y contrato"|"TD"|||"X"||||||
+|"Comunicaciones Oficiales"|"TD"|||"X"||||||
+|"Informe final de Contratistas"|"TD"|||"X"||||||
+"DGCID.420.795"|"CONTRATOS DE OTRA NATURALEZA "|"SS"|2|18||||||"X"|"Cumplido su tiempo de retención seleccionar una muestra representativa del 10%"
+|"Justificacion. Estudio de Conveniencia y Oportunidad "|"TD"|||"X"||||||
+|"Certificado de Disponibilidad Presupuestal "|"TD"|||"X"||||||
+|"Solicitud de Contratación "|"TD"|||"X"||||||
+|"Terminos de Referencia "|"TD"|||"X"||||||
+|"Especificaciones Tecnicas del producto o servicio"|"TD"|||"X"||||||
+|"Comunicación a la Camara y Comercio y Confecamaras "|"TD"|||"X"||||||
+|"Acta en la que coste la lista de proponentes seleccionada "|"TD"|||"X"||||||
+|"Respuestas ofrecidas en la audiencia "|"TD"|||"X"||||||
+|"Acta de recibo de propuestas "|"TD"|||"X"||||||
+|"Resolucion de Apertura licitacion o concurso "|"TD"|||"X"||||||
+|"Aviso de prensa "|"TD"|||"X"||||||
+|"Acta de apertura de licitacion o concurso "|"TD"|||"X"||||||
+|"Recibo de Pago de Venta de pliegos "|"TD"|||"X"||||||
+|"Acta de Audiencia de aclaracion de pliegos "|"TD"|||"X"||||||
+|"Adendos a los terminos de referencia "|"TD"|||"X"||||||
+|"Propuestas "|"TD"|||"X"||||||
+|"Acta de cierre y apertura de propuestas "|"TD"|||"X"||||||
+|"Polizas de seriedad"|"TD"|||"X"||||||
+|"Estudios de Evaluacion Juridica"|"TD"|||"X"||||||
+|"Estudios de Evaluacion de Factores de Selección"|"TD"|||"X"||||||
+|"Informe preliminar de evaluacion "|"TD"|||"X"||||||
+|"Informe final de evaluacion "|"TD"|||"X"||||||
+|"Oficio comunicando adjudicacion "|"TD"|||"X"||||||
+|"Reglamento de inversion de oferentes en la audiencia de la adjudicacion "|"TD"||||"X"|||||
+|"Acta de adjudicacion o resolucion de adjudicacion "|"TD"|||"X"||||||
+|"Antecedentes propios de tipo contractual "|"TD"|||"X"||||||
+|"Informe de evaluación contemplado en observaciones"|"TD"|||"X"||||||
+|"Acto administrativo donde se notifica declaratoria de desierta"|"TD"||||"X"|||||
+|"Certificado SICE"|"TD"|||"X"||||||
+|"Hoja de vida"|"TD"|||"X"||||||
+|"Copia cedula de ciudadania "|"TD"||||"X"|||||
+|"Copia de libreta militar"|"TD"||||"X"|||||
+|"Boletin de responsables fiscales "|"TD"|||"X"||||||
+|"Registro de Informacion Tributaria"|"TD"||||"X"|||||
+|"Afiliación a fondo de pensiones y salud"|"TD"|||"X"||||||
+|"Certificacion de cuenta bancaria "|"TD"|||"X"||||||
+|"Registro Unico Tributario"|"TD"|||"X"||||||
+|"Certificado de Antecedentes Disciplinarios"|"TD"|||"X"||||||
+|"Certificado de antecedentes -Procuraduria"|"TD"|||"X"||||||
+|"Certificacion judicial -DAS"|"TD"||||"X"|||||
+|"Certificado de aportes parafiscales para personas naturales y juridicas "|"TD"|||"X"||||||
+|"Certificado de Paz y Salvo de pension y salud  para personas naturales y juridicas  "|"TD"||||"X"|||||
+|"Contrato"|"TD"|||"X"||||||
+|"Recibo de pago de publicacion del contrato "|"TD"|||"X"||||||
+|"Recibo de pago de impuesto de timbre"|"TD"|||"X"||||||
+|"Nit de la Union Temporal o Consorcio "|"TD"||||"X"|||||
+|"Certificado Registro Presupuestal"|"TD"|||"X"||||||
+|"Garantia Unica"|"TD"|||"X"||||||
+|"Formato de publicacion en registro distrital "|"TD"|||"X"||||||
+|"Oficio Designando Interventoria "|"TD"|||"X"||||||
+|"Acta de iniciacion "|"TD"|||"X"||||||
+|"Informe de Actividades"|"TD"|||"X"||||||
+|"Actas de Interventoria "|"TD"|||"X"||||||
+|"Actas de Finalizacion o Recibo a Satisfaccion "|"TD"|||"X"||||||
+|"Formato de solicitud ultimo pago "|"TD"|||"X"||||||
+|"Memorando donde se comunica la novedad "|"TD"|||"X"||||||
+|"Otrosi, adiciones, prorrogas"|"TD"|||"X"||||||
+|"Estados de cuenta"|"TD"|||"X"||||||
+|"Acta de liquidacion de contratos, anexos."|"TD"|||"X"||||||
+|"Acto administrativo de Liquidacion Unilateral "|"TD"|||"X"||||||
+|"Hoja de estudio para verificacion y seguimiento de garantias y contrato"|"TD"|||"X"||||||
+|"Comunicaciones Oficiales"|"TD"|||"X"||||||
+|"Informe final de Contratistas"|"TD"|||"X"||||||
+"DGCID.420.810"|"CONTRATO DE PRESTACION DE SERVICIOS"|"SS"|2|18||||||"X"|"Cumplido su tiempo de retención seleccionar una muestra representativa del 10%"
+|"Justificacion. Estudio de Conveniencia y Oportunidad "|"TD"|||"X"||||||
+|"Certificado de Disponibilidad Presupuestal "|"TD"|||"X"||||||
+|"Solicitud de Contratación "|"TD"|||"X"||||||
+|"Terminos de Referencia "|"TD"|||"X"||||||
+|"Especificaciones Tecnicas del producto o servicio"|"TD"|||"X"||||||
+|"Comunicación a la Camara y Comercio y Confecamaras "|"TD"|||"X"||||||
+|"Acta en la que coste la lista de proponentes seleccionada "|"TD"|||"X"||||||
+|"Respuestas ofrecidas en la audiencia "|"TD"|||"X"||||||
+|"Acta de recibo de propuestas "|"TD"|||"X"||||||
+|"Resolucion de Apertura licitacion o concurso "|"TD"|||"X"||||||
+|"Aviso de prensa "|"TD"|||"X"||||||
+|"Acta de apertura de licitacion o concurso "|"TD"|||"X"||||||
+|"Recibo de Pago de Venta de pliegos "|"TD"|||"X"||||||
+|"Acta de Audiencia de aclaracion de pliegos "|"TD"|||"X"||||||
+|"Adendos a los terminos de referencia "|"TD"|||"X"||||||
+|"Propuestas "|"TD"|||"X"||||||
+|"Acta de cierre y apertura de propuestas "|"TD"|||"X"||||||
+|"Polizas de seriedad"|"TD"|||"X"||||||
+|"Estudios de Evaluacion Juridica"|"TD"|||"X"||||||
+|"Estudios de Evaluacion de Factores de Selección"|"TD"|||"X"||||||
+|"Informe preliminar de evaluacion "|"TD"|||"X"||||||
+|"Informe final de evaluacion "|"TD"|||"X"||||||
+|"Oficio comunicando adjudicacion "|"TD"|||"X"||||||
+|"Reglamento de inversion de oferentes en la audiencia de la adjudicacion "|"TD"||||"X"|||||
+|"Acta de adjudicacion o resolucion de adjudicacion "|"TD"|||"X"||||||
+|"Antecedentes propios de tipo contractual "|"TD"|||"X"||||||
+|"Informe de evaluación contemplado en observaciones"|"TD"|||"X"||||||
+|"Acto administrativo donde se notifica declaratoria de desierta"|"TD"||||"X"|||||
+|"Certificado SICE"|"TD"|||"X"||||||
+|"Hoja de vida"|"TD"|||"X"||||||
+|"Copia cedula de ciudadania "|"TD"||||"X"|||||
+|"Copia de libreta militar"|"TD"||||"X"|||||
+|"Boletin de responsables fiscales "|"TD"|||"X"||||||
+|"Registro de Informacion Tributaria"|"TD"||||"X"|||||
+|"Afiliación a fondo de pensiones y salud"|"TD"|||"X"||||||
+|"Certificacion de cuenta bancaria "|"TD"|||"X"||||||
+|"Registro Unico Tributario"|"TD"|||"X"||||||
+|"Certificado de Antecedentes Disciplinarios"|"TD"|||"X"||||||
+|"Certificado de antecedentes -Procuraduria"|"TD"|||"X"||||||
+|"Certificacion judicial -DAS"|"TD"||||"X"|||||
+|"Certificado de aportes parafiscales para personas naturales y juridicas "|"TD"|||"X"||||||
+|"Certificado de Paz y Salvo de pension y salud  para personas naturales y juridicas  "|"TD"||||"X"|||||
+|"Contrato"|"TD"|||"X"||||||
+|"Recibo de pago de publicacion del contrato "|"TD"|||"X"||||||
+|"Recibo de pago de impuesto de timbre"|"TD"|||"X"||||||
+|"Nit de la Union Temporal o Consorcio "|"TD"||||"X"|||||
+|"Certificado Registro Presupuestal"|"TD"|||"X"||||||
+|"Garantia Unica"|"TD"|||"X"||||||
+|"Formato de publicacion en registro distrital "|"TD"|||"X"||||||
+|"Oficio Designando Interventoria "|"TD"|||"X"||||||
+|"Acta de iniciacion "|"TD"|||"X"||||||
+|"Informe de Actividades"|"TD"|||"X"||||||
+|"Actas de Interventoria "|"TD"|||"X"||||||
+|"Actas de Finalizacion o Recibo a Satisfaccion "|"TD"|||"X"||||||
+|"Formato de solicitud ultimo pago "|"TD"|||"X"||||||
+|"Memorando donde se comunica la novedad "|"TD"|||"X"||||||
+|"Otrosi, adiciones, prorrogas"|"TD"|||"X"||||||
+|"Estados de cuenta"|"TD"|||"X"||||||
+|"Acta de liquidacion de contratos, anexos."|"TD"|||"X"||||||
+|"Acto administrativo de Liquidacion Unilateral "|"TD"|||"X"||||||
+|"Hoja de estudio para verificacion y seguimiento de garantias y contrato"|"TD"|||"X"||||||
+|"Comunicaciones Oficiales"|"TD"|||"X"||||||
+|"Informe final de Contratistas"|"TD"|||"X"||||||
+"DGCID.420.825"|"CONTRATO DE SEGUROS"|"SS"|2|18||||||"X"|"Cumplido su tiempo de retencion seleccionar una muestra representativa del 10%"
+|"Justificacion. Estudio de Conveniencia y Oportunidad "|"TD"|||"X"||||||
+|"Certificado de Disponibilidad Presupuestal "|"TD"|||"X"||||||
+|"Solicitud de Contratación "|"TD"|||"X"||||||
+|"Terminos de Referencia "|"TD"|||"X"||||||
+|"Especificaciones Tecnicas del producto o servicio"|"TD"|||"X"||||||
+|"Comunicación a la Camara y Comercio y Confecamaras "|"TD"|||"X"||||||
+|"Acta en la que coste la lista de proponentes seleccionada "|"TD"|||"X"||||||
+|"Respuestas ofrecidas en la audiencia "|"TD"|||"X"||||||
+|"Acta de recibo de propuestas "|"TD"|||"X"||||||
+|"Resolucion de Apertura licitacion o concurso "|"TD"|||"X"||||||
+|"Aviso de prensa "|"TD"|||"X"||||||
+|"Acta de apertura de licitacion o concurso "|"TD"|||"X"||||||
+|"Recibo de Pago de Venta de pliegos "|"TD"|||"X"||||||
+|"Acta de Audiencia de aclaracion de pliegos "|"TD"|||"X"||||||
+|"Adendos a los terminos de referencia "|"TD"|||"X"||||||
+|"Propuestas "|"TD"|||"X"||||||
+|"Acta de cierre y apertura de propuestas "|"TD"|||"X"||||||
+|"Polizas de seriedad"|"TD"|||"X"||||||
+|"Estudios de Evaluacion Juridica"|"TD"|||"X"||||||
+|"Estudios de Evaluacion de Factores de Selección"|"TD"|||"X"||||||
+|"Informe preliminar de evaluacion "|"TD"|||"X"||||||
+|"Informe final de evaluacion "|"TD"|||"X"||||||
+|"Oficio comunicando adjudicacion "|"TD"|||"X"||||||
+|"Reglamento de inversion de oferentes en la audiencia de la adjudicacion "|"TD"||||"X"|||||
+|"Acta de adjudicacion o resolucion de adjudicacion "|"TD"|||"X"||||||
+|"Antecedentes propios de tipo contractual "|"TD"|||"X"||||||
+|"Informe de evaluación contemplado en observaciones"|"TD"|||"X"||||||
+|"Acto administrativo donde se notifica declaratoria de desierta"|"TD"||||"X"|||||
+|"Certificado SICE"|"TD"|||"X"||||||
+|"Hoja de vida"|"TD"|||"X"||||||
+|"Copia cedula de ciudadania "|"TD"||||"X"|||||
+|"Copia de libreta militar"|"TD"||||"X"|||||
+|"Boletin de responsables fiscales "|"TD"|||"X"||||||
+|"Registro de Informacion Tributaria"|"TD"||||"X"|||||
+|"Afiliación a fondo de pensiones y salud"|"TD"|||"X"||||||
+|"Certificacion de cuenta bancaria "|"TD"|||"X"||||||
+|"Registro Unico Tributario"|"TD"|||"X"||||||
+|"Certificado de Antecedentes Disciplinarios"|"TD"|||"X"||||||
+|"Certificado de antecedentes -Procuraduria"|"TD"|||"X"||||||
+|"Certificacion judicial -DAS"|"TD"||||"X"|||||
+|"Certificado de aportes parafiscales para personas naturales y juridicas "|"TD"|||"X"||||||
+|"Certificado de Paz y Salvo de pension y salud  para personas naturales y juridicas  "|"TD"||||"X"|||||
+|"Contrato"|"TD"|||"X"||||||
+|"Recibo de pago de publicacion del contrato "|"TD"|||"X"||||||
+|"Recibo de pago de impuesto de timbre"|"TD"|||"X"||||||
+|"Nit de la Union Temporal o Consorcio "|"TD"||||"X"|||||
+|"Certificado Registro Presupuestal"|"TD"|||"X"||||||
+|"Garantia Unica"|"TD"|||"X"||||||
+|"Formato de publicacion en registro distrital "|"TD"|||"X"||||||
+|"Oficio Designando Interventoria "|"TD"|||"X"||||||
+|"Acta de iniciacion "|"TD"|||"X"||||||
+|"Informe de Actividades"|"TD"|||"X"||||||
+|"Actas de Interventoria "|"TD"|||"X"||||||
+|"Actas de Finalizacion o Recibo a Satisfaccion "|"TD"|||"X"||||||
+|"Formato de solicitud ultimo pago "|"TD"|||"X"||||||
+|"Memorando donde se comunica la novedad "|"TD"|||"X"||||||
+|"Otrosi, adiciones, prorrogas"|"TD"|||"X"||||||
+|"Estados de cuenta"|"TD"|||"X"||||||
+|"Acta de liquidacion de contratos, anexos."|"TD"|||"X"||||||
+|"Acto administrativo de Liquidacion Unilateral "|"TD"|||"X"||||||
+|"Hoja de estudio para verificacion y seguimiento de garantias y contrato"|"TD"|||"X"||||||
+|"Comunicaciones Oficiales"|"TD"|||"X"||||||
+|"Informe final de Contratistas"|"TD"|||"X"||||||
+"DGCID.420.840"|"CONTRATO DE SUMINISTRO DE BIENES"|"SS"|2|18||||||"X"|"Cumplido su tiempo de retención seleccionar una muestra representativa del 10%"
+|"Justificacion. Estudio de Conveniencia y Oportunidad "|"TD"|||"X"||||||
+|"Certificado de Disponibilidad Presupuestal "|"TD"|||"X"||||||
+|"Solicitud de Contratación "|"TD"|||"X"||||||
+|"Terminos de Referencia "|"TD"|||"X"||||||
+|"Especificaciones Tecnicas del producto o servicio"|"TD"|||"X"||||||
+|"Comunicación a la Camara y Comercio y Confecamaras "|"TD"|||"X"||||||
+|"Acta en la que coste la lista de proponentes seleccionada "|"TD"|||"X"||||||
+|"Respuestas ofrecidas en la audiencia "|"TD"|||"X"||||||
+|"Acta de recibo de propuestas "|"TD"|||"X"||||||
+|"Resolucion de Apertura licitacion o concurso "|"TD"|||"X"||||||
+|"Aviso de prensa "|"TD"|||"X"||||||
+|"Acta de apertura de licitacion o concurso "|"TD"|||"X"||||||
+|"Recibo de Pago de Venta de pliegos "|"TD"|||"X"||||||
+|"Acta de Audiencia de aclaracion de pliegos "|"TD"|||"X"||||||
+|"Adendos a los terminos de referencia "|"TD"|||"X"||||||
+|"Propuestas "|"TD"|||"X"||||||
+|"Acta de cierre y apertura de propuestas "|"TD"|||"X"||||||
+|"Polizas de seriedad"|"TD"|||"X"||||||
+|"Estudios de Evaluacion Juridica"|"TD"|||"X"||||||
+|"Estudios de Evaluacion de Factores de Selección"|"TD"|||"X"||||||
+|"Informe preliminar de evaluacion "|"TD"|||"X"||||||
+|"Informe final de evaluacion "|"TD"|||"X"||||||
+|"Oficio comunicando adjudicacion "|"TD"|||"X"||||||
+|"Reglamento de inversion de oferentes en la audiencia de la adjudicacion "|"TD"||||"X"|||||
+|"Acta de adjudicacion o resolucion de adjudicacion "|"TD"|||"X"||||||
+|"Antecedentes propios de tipo contractual "|"TD"|||"X"||||||
+|"Informe de evaluación contemplado en observaciones"|"TD"|||"X"||||||
+|"Acto administrativo donde se notifica declaratoria de desierta"|"TD"||||"X"|||||
+|"Certificado SICE"|"TD"|||"X"||||||
+|"Hoja de vida"|"TD"|||"X"||||||
+|"Copia cedula de ciudadania "|"TD"||||"X"|||||
+|"Copia de libreta militar"|"TD"||||"X"|||||
+|"Boletin de responsables fiscales "|"TD"|||"X"||||||
+|"Registro de Informacion Tributaria"|"TD"||||"X"|||||
+|"Afiliación a fondo de pensiones y salud"|"TD"|||"X"||||||
+|"Certificacion de cuenta bancaria "|"TD"|||"X"||||||
+|"Registro Unico Tributario"|"TD"|||"X"||||||
+|"Certificado de Antecedentes Disciplinarios"|"TD"|||"X"||||||
+|"Certificado de antecedentes -Procuraduria"|"TD"|||"X"||||||
+|"Certificacion judicial -DAS"|"TD"||||"X"|||||
+|"Certificado de aportes parafiscales para personas naturales y juridicas "|"TD"|||"X"||||||
+|"Certificado de Paz y Salvo de pension y salud  para personas naturales y juridicas  "|"TD"||||"X"|||||
+|"Contrato"|"TD"|||"X"||||||
+|"Recibo de pago de publicacion del contrato "|"TD"|||"X"||||||
+|"Recibo de pago de impuesto de timbre"|"TD"|||"X"||||||
+|"Nit de la Union Temporal o Consorcio "|"TD"||||"X"|||||
+|"Certificado Registro Presupuestal"|"TD"|||"X"||||||
+|"Garantia Unica"|"TD"|||"X"||||||
+|"Formato de publicacion en registro distrital "|"TD"|||"X"||||||
+|"Oficio Designando Interventoria "|"TD"|||"X"||||||
+|"Acta de iniciacion "|"TD"|||"X"||||||
+|"Informe de Actividades"|"TD"|||"X"||||||
+|"Actas de Interventoria "|"TD"|||"X"||||||
+|"Actas de Finalizacion o Recibo a Satisfaccion "|"TD"|||"X"||||||
+|"Formato de solicitud ultimo pago "|"TD"|||"X"||||||
+|"Memorando donde se comunica la novedad "|"TD"|||"X"||||||
+|"Otrosi, adiciones, prorrogas"|"TD"|||"X"||||||
+|"Estados de cuenta"|"TD"|||"X"||||||
+|"Acta de liquidacion de contratos, anexos."|"TD"|||"X"||||||
+|"Acto administrativo de Liquidacion Unilateral "|"TD"|||"X"||||||
+|"Hoja de estudio para verificacion y seguimiento de garantias y contrato"|"TD"|||"X"||||||
+|"Comunicaciones Oficiales"|"TD"|||"X"||||||
+|"Informe final de Contratistas"|"TD"|||"X"||||||
+"DGCID.500"|"DERECHOS DE PETICIÓN"|"S"|1|4||||||"X"|"Cumplido su tiempo de retención seleccionar una muestra representativa del 10%"
+|"Derechos de peticion"|"TD"|||"X "||||||
+|"Comunicaciones Oficiales "|"TD"|||"X "|" "|||||
+"DGCID.605"|"ESTUDIANTE EN PRACTICA "|"S"|1|9||||||"X"|"Cumplido su tiempo de retención seleccionar una muestra representativa del 10%"
+|"Comunicaciones Oficiales "|"TD"|||"X"||||||
+|"Planillas de Control horarios"|"TD"|||"X"||||||
+"DGCID.680"|"INFORMES"|"S"|||||||||
+"DGCID.680.1455"|"INFORMES A ORGANISMOS DE CONTROL"|"SS"|1|9||||||"X"|"Cumplido su tiempo de retención seleccionar una muestra representativa del 10%"
+|"Contraloría"|"TD"|||"X"||||||
+|"Consejo de Bogotá"|"TD"|||"X"||||||
+|"Personería"|"TD"|||"X"||||||
+|"Procuraduría"|"TD"|||"X"||||||
+|"Veeduria"|"TD"|||"X"||||||
+|"Las demás entidades de control"|"TD"|||"X"||||||
+"DGCID.680.1545"|"INFORMES DE GESTION"|"SS"|1|4||||||"X"|"Cumplido su tiempo de retención seleccionar una muestra representativa del 10%"
+|"Informe"|"TD"|||"X"||||||
+"DGCID.740"|"MANUAL"|"S"|||||||||
+"DGCID.740.1710"|"MANUAL DE FUNCIONES"|"SS"|1|5|||"X"||||
+"DGCID.780"|"MOVIMIENTO O CUENTA DE ALMACÉN"|"S"|1|19|||"X"||||
+|"Solicitudes de almacén"|"TD"|||"X"||||||
+|"Ingresos de almacén"|"TD"|||"X"||||||
+|"Salida de almacén"|"TD"|||"X"||||||
+|"Inventarios"|"TD"|||"X"||||||
+|"Informes  registro  kárdex"|"TD"|||"X"||||||
+"DGCID.860"|"PLAN"|"S"|||||||||
+"DGCID.860.1815"|"PLAN DE COMPRAS "|"SS"|||||||||
+|"Evaluación "|"TD"|||"X"||||||
+|"Comunicaciones Oficiales"|"TD"|||"X"||||||
+"DGCID.860.1820"|"PLAN DE CONTRATACION"|"SS"|1|19|||"X"||||
+|"Comunicaciones Oficiales"|"TD"|||"X"||||||
+"DGCID.860.1935"|"PLAN INFORMATICO"|"SS"|1|9|"X"||"X"||||
+"DGCID.940"|"PROCESOS "|"S"|||||||||
+"DGCID.940.2010"|"PROCESOS DE CONTRATACION DECLARADOS DESIERTOS"|"SS"|1|9||||||"X"|"Cumplido su tiempo de retención seleccionar una muestra representativa del 10%"
+|"Estudio de conveniencia "|"TD"|||"X"||||||
+|"Certificado de Disponibilidad Presupuestal "|"TD"|||"X"||||||
+|"Preterminos"|"TD"|||"X"||||||
+|"Comentarios a los pliegos"|"TD"|||"X"||||||
+|"Formulario preguntas y respuestas "|"TD"|||"X"||||||
+|"Terminos de Referencia "|"TD"|||"X"||||||
+|"Resolucion de Apertura licitacion o concurso "|"TD"||||"X"|||||
+|"Resolucion de declaracion proceso desierto"|"TD"||||"X"|||||
+"DGCID.940.2025"|"PROCESOS DISCIPLINARIOS"|"SS"|2|18|||"X"||||
+|"Auto de indagacion "|"TD"|||"X"||||||
+|"Auto de apertura"|"TD"|||"X"||||||
+|"Comunicación oficial apertura indagacion"|"TD"|||"X"||||||
+|"Resoluciones"|"TD"||||"X"|||||
+|"Citacion "|"TD"|||"X"||||||
+|"Acta de visita adminitrativas"|"TD"|||"X"||||||
+|"Comunicaciones oficiales "|"TD"|||"X"||||||
+|"Informes evaluativos"|"TD"|||"X"||||||
+|"Recurso de apelacion"|"TD"|||"X"||||||
+|"Recurso de Reposicion "|"TD"|||"X"||||||
+|"Derecho de Peticion "|"TD"|||"X"||||||
+|"Auto formal de archivo de la indagacion preliminar"|"TD"|||"X"||||||
+|"Constancia "|"TD"|||"X"||||||
+"DGCID.940.2045"|"PROCESOS SINDICALES"|"SS"|||||||||
+"DGCID.960"|"PROGRAMAS"|"S"|||||||||
+"DGCID.960.2055"|"PROGRAMAS  DE  BIENESTAR SOCIAL"|"SS"|1|5||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Comunicaciones Oficiales"|"TD"|||"X"||||||
+"DGCID.960.2070"|"PROGRAMAS  DE CAPACITACION "|"SS"|1|5||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Comunicaciones Oficiales "|"TD"|||"X"||||||
+"DGCID.960.2085"|"PROGRAMAS  DE  SALUD OCUPACIONAL"|"SS"|1|5||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Comunicaciones Oficiales "|"TD"|||"X"||||||
+"DGCID.1000"|"PROPUESTAS DE PROVEEDORES"|"S"|2|||||"X"|||"Cumplido su tiempo de retención eliminar "
+|"Ofertas de servicios"|"TD"|||"X"||||||
+|"Comunicaciones Oficiales"|"TD"|||"X"||||||
+"DGCID.1140"|"SUBSISTEMA INTERNO DE GESTION DOCUMENTAL Y ARCHIVOS (SIGA)"|"S"|2|18|||"X"||||
+"DGCID.1140.2385"|"REGISTRO DE CONTROL DE COMUNICACIONES OFICIALES ENVIADAS Y RECIBIDAS "|"SS"|1|5|"X"|||||"X"|"Cumplido  su tiempo de retención seleccionar una muestra representativa del 10% "
+"DGCID.1140.2400"|"REGISTROS DE CONTROL PRESTAMO DE EXPEDIENTES "|"SS"|1|5|"X"|||||"X"|"Cumplido  su tiempo de retención seleccionar una muestra representativa del 10% "
+"DGCID.1140.2415"|"TABLAS DE RETENCION DOCUMENTAL "|"SS"|1|19|"X"||"X"||||
+"DGCID.1140.2430"|"TRANSFERENCIA DE DOCUMENTOS AL ARCHIVO CENTRAL "|"SS"|1|10|"X"|||||"X"|"Cumplido  su tiempo de retención seleccionar una muestra representativa del 10% "
+"DGCID.CON.60"|"ACTAS"|"S"|||||||||
+"DGCID.CON.60.135"|"ACTA DE LIBROS OFICIALES DE CONTABILIDAD "|"SS"|2|18|"X"||"X"||||
+"DGCID.CON.140"|"ANALISIS"|"S"|||||||||
+"DGCID.CON.140.315"|"ANALISIS DE CUENTAS POR PAGAR"|"SS"|2|10||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Analisis de Cierre "|"TD"|||"X"||||||
+|"Analisis de pasivos estimados "|"TD"|||"X"||||||
+"DGCID.CON.300"|"CERTIFICADOS"|"S"|||||||||
+"DGCID.CON.300.465"|"CERTIFICADOS DE RETENCION EN LA FUENTE "|"SS"|2|10|"X"|||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Comunicación Oficial "|"TD"|||"X"||||||
+|"Certificado "|"TD"|||"X"||||||
+"DGCID.CON.320"|"COMPROBANTES DE CONTABILIDAD "|"S"|||||||||
+"DGCID.CON.320.480"|"COMPROBANTES DE AJUSTES "|"SS"|2|10||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Hoja de trabajo"|"TD"|||"X"||||||
+|"Comunicaciones Oficiales"|"TD"|||"X"||||||
+|"Reporte de libros"|"TD"|||"X"||||||
+"DGCID.CON.320.495"|"COMPROBANTE DE AMORTIZACIONES "|"SS"|2|10||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Balances"|"TD"|||"X"||||||
+"DGCID.CON.320.510"|"COMPROBANTES DE CAUSACION "|"SS"|2|10||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Facturas"|"TD"|||"X"||||||
+|"Cuentas de cobro"|"TD"|||"X"||||||
+"DGCID.CON.320.525"|"COMPROBANTES DE PROVISION"|"SS"|2|10||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Hoja de trabajo"|"TD"|||"X"||||||
+"DGCID.CON.380"|"CONCILIACIONES "|"S"|||||||||
+"DGCID.CON.380.585"|"CONCILIACIONES ALMANCEN Y ACTIVOS FIJOS"|"SS"|2|10||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Acta de Conciliaciones de Almacen y activos fijos"|"TD"|||"X"||||||
+|"Reporte de Almacen - Kardex"|"TD"|||"X"||||||
+|"Reporte Activos Fijos "|"TD"|||"X"||||||
+|"Balance Contable"|"TD"|||"X"||||||
+"DGCID.CON.380.600"|"CONCILIACIONES BANCARIAS"|"SS"|2|10||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Actas de Conciliación de tesoreria "|"TD"|||"X"||||||
+|"Conciliación Bancaria "|"TD"|||"X"||||||
+|"Extractos Bancarios"|"TD"||||"X"|||||
+|"Libro de Bancos"|"TD"||||"X"|||||
+|"Libro Auxiliar de Movimiento de Bancos"|"TD"|||"X"||||||
+"DGCID.CON.380.615"|"CONCILIACIONES CARTERA"|"SS"|2|10||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Acta de Conciliación de Cartera "|"TD"|||"X"||||||
+|"Conciliacion "|"TD"|||"X"||||||
+|"Informe de Cartera"|"TD"|||"X"||||||
+|"Balance Contable"|"TD"|||"X"||||||
+"DGCID.CON.380.630"|"CONCILIACIONES CUENTAS CERO"|"SS"|2|10||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Actas de Conciliación Cuentas Cero  "|"TD"|||"X"||||||
+|"Conciliacion "|"TD"|||"X"||||||
+|"Balance Contable"|"TD"|||"X"||||||
+|"Ejecucion de Ingresos y Gastos  e Inversión "|"TD"|||"X"||||||
+"DGCID.CON.380.645"|"CONCILIACIONES LITIGIOS Y DEMANDAS"|"SS"|2|18|||"X"||||
+|"Conciliacion "|"TD"|||"X"||||||
+|"Reporte de Novedades"|"TD"|||"X"||||||
+|"Procesos a favor y en contra "|"TD"|||"X"||||||
+|"Anticipos sobre convenios y acuerdos"|"TD"|||"X"||||||
+|"Balance Contable"|"TD"|||"X"||||||
+"DGCID.CON.380.660"|"CONCILIACIONES NOMINA "|"SS"|2|10||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Acta de Conciliacion "|"TD"|||"X"||||||
+|"Conciliacion "|"TD"|||"X"||||||
+|"Nomina"|"TD"|||"X"||||||
+|"Resumen de Nomina"|"TD"||||"X"|||||
+|"Interface Contable"|"TD"||||"X"|||||
+|"Balance Contable"|"TD"|||"X"||||||
+|"Comprobante de reclacificacion"|"TD"|||"X"||||||
+"DGCID.CON.380.675"|"CONCILIACIONES OPERACIONES RECIPROCAS CON EL DISTRITO "|"SS"|2|10||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Acta de iniciacion "|"TD"|||"X"||||||
+|"Comunicaciones Oficiales "|"TD"|||"X"||||||
+|"Conciliacion "|"TD"|||"X"||||||
+"DGCID.CON.380.690"|"CONCILIACIONES PREDIOS"|"SS"|2|18|||"X"||||
+|"Reporte de Predios"|"TD"|||"X"||||||
+|"Enajenacion Voluntaria"|"TD"|||"X"||||||
+|"Informe de Predios en Expropiacion "|"TD"|||"X"||||||
+|"Balance Contable"|"TD"|||"X"||||||
+"DGCID.CON.480."|"DECLARACIONES TRIBUTARIAS"|"S"|||||||||
+"DGCID.CON.480.915"|"DECLARACION BIMESTRAL DE IMPUESTO SOBRE LAS VENTAS -IVA "|"SS"|2|10||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Orden de Pago "|"TD"|||"X"||||||
+|"Baucher del Banco"|"TD"|||"X"||||||
+|"Formulario de Declaracion "|"TD"||||"X"|||||
+|"Borrador del formulario"|"TD"|||"X"||||||
+|"Cuadro Resumen"|"TD"|||"X"||||||
+"DGCID.CON.480.930"|"DECLARACION DE IMPUESTO A LA SEGURIDAD DEMOCRATICA "|"SS"|2|10||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Orden de Pago "|"TD"|||"X"||||||
+|"Baucher del Banco"|"TD"|||"X"||||||
+|"Formulario de Declaracion "|"TD"||||"X"|||||
+|"Borrador del formulario"|"TD"|||"X"||||||
+|"Certificado de Disponibilidad Presupuestal "|"TD"|||"X"||||||
+|"Certificado de Registro Presupuestal "|"TD"|||"X"||||||
+|"Hoja de Trabajo"|"TD"|||"X"||||||
+"DGCID.CON.480.945"|"DECLARACION DE IMPUESTO AL PATRIMONIO "|"SS"|2|10||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Orden de Pago "|"TD"|||"X"||||||
+|"Baucher del Banco"|"TD"|||"X"||||||
+|"Formulario de Declaracion "|"TD"||||"X"|||||
+|"Borrador del formulario"|"TD"|||"X"||||||
+|"Certificado de Disponibilidad Presupuestal "|"TD"|||"X"||||||
+|"Certificado de Registro Presupuestal "|"TD"|||"X"||||||
+|"Hoja de Trabajo"|"TD"|||"X"||||||
+"DGCID.CON.480.975"|"DECLARACION DE INDUSTRIA Y COMERCIO "|"SS"|2|10||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Orden de Pago "|"TD"|||"X"||||||
+|"Formulario Declaración "|"TD"||||"X"|||||
+|"CRP"|"TD"||||"X"|||||
+|"CDP"|"TD"||||"X"|||||
+|"Relación Retención ICA"|"TD"||||"X"|||||
+|"Movimientos de subcuenta"|"TD"||||"X"|||||
+|"Libro Auxiliar"|"TD"||||"X"|||||
+"DGCID.CON.480.990"|"DECLARACION DE RENTA Y COMPLEMENTARIOS"|"SS"|2|10||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Formulario Declaracion"|"TD"||||"X"|||||
+|"Hoja de Trabajo"|"TD"|||"X"||||||
+|"Conciliacion de Utilidad o Perdida "|"TD"|||"X"||||||
+|"Balance General "|"TD"||||"X"|||||
+|"Estado de Resultados "|"TD"||||"X"|||||
+|"Libro Mayor "|"TD"||||"X"|||||
+|"Libro Auxiliar "|"TD"||||"X"|||||
+"DGCID.CON.480.1005"|"DECLARACION DE RETENCION EN LA FUENTE, RETEIVA E IMPUESTO DE TIMBRE"|"SS"|2|10||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Formulario Declaración"|"TD"||||"X"|||||
+|"Orden de Pago"|"TD"|||"X"||||||
+|"Borrador Formulario Declaración"|"TD"|||"X"||||||
+|"Cuadro de Resumen "|"TD"||||"X"|||||
+|"CDP"|"TD"||||"X"|||||
+|"Libros Auxiliares"|"TD"||||"X"|||||
+|"Comprobantes Reclasificación de Centros de Costos "|"TD"||||"X"|||||
+|"Libro Auxiliar Definitivo "|"TD"||||"X"|||||
+"DGCID.CON.480.1035"|"DECLARACIONES DE RETENCION DE INDUSTRIA Y COMERCIO"|"SS"|2|10||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Formulario Declaración"|"TD"||||"X"|||||
+|"Orden de Pago"|"TD"|||"X"||||||
+"DGCID.CON.680"|"INFORME"|"S"|||||||||
+"DGCID.CON.680.1515"|"INFORME DE COSTEO "|"SS"|2|10|"X"|||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+"DGCID.CON.680.1560"|"INFORMES DE GESTION CONTABLE"|"SS"|2|10||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Balance General"|"TD"|||"X"||||||
+|"Estado de perdidas y ganancias"|"TD"|||"X"||||||
+|"Estados  comparativos "|"TD"|||"X"||||||
+"DGCID.CON.680.1590"|"INFORME DE OPERACIONES EXOGENAS-MEDIOS MAGNETICOS NACIONALES "|"SS"|2|10|"X"|||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+"DGCID.CON.680.1605"|"INFORME DE OPERACIONES MEDIOS MAGNETICOS DISTRITALES"|"SS"|2|10|"X"|||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+"DGCID.CON.720"|"LIBROS OFICIALES DE CONTABILIDAD "|"S"|||||||||
+"DGCID.CON.720.1650"|"LIBROS AUXILIARES-MOVIMIENTO CONTABLE "|"SS"|2|10|"X"|||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+"DGCID.CON.720.1665"|"LIBRO DIARIO "|"SS"|2|10|"X"|||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+"DGCID.CON.720.1680"|"LIBRO MAYOR "|"SS"|2|10|"X"|||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+"DGCID.CON.1080"|"SANEAMIENTO CONTABLE"|"S"|2|10||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+"DGCID.CON.1080.2265"|"ACCIONES DE DEPURACION"|"SS"|||"X"||||||
+"DGCID.PR.560"|"EJECUCIÓN PRESUPUESTAL"|"S"|||||||||
+"DGCID.PR.560.1110"|"CERTIFICADO DE DISPONIBILIDAD PRESUPUESTAL"|"SS"|2|10|"X"|||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+"DGCID.PR.560.1125"|"CERTIFICADO DE REGISTRO PRESUPUESTAL"|"SS"|2|10|"X"|||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+"DGCID.PR.560.1140"|"LIBROS PRESUPUESTALES"|"SS"|2|10|"X"|||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+"DGCID.PR.560.1155"|"LIQUIDACIONES PRESUPUESTALES"|"SS"|2|10|"X"|||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+"DGCID.PR.560.1170"|"MODIFICACIONES"|"SS"|2|10||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Certificado disponibilidad presupuestal"|"TD"|||"X"||||||
+|"Justificación económica"|"TD"|||"X"||||||
+|"Presupuesto ajustado"|"TD"|||"X"||||||
+|"Resolución de aprobación"|"TD"||||"X"|||||
+|"Comunicaciones"|"TD"|||"X"||||||
+|"Informes"|"TD"||||"X"|||||
+"DGCID.PR.560.1185"|"SOLICITUD CDP O CRP"|"SS"|2|10||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+"DGCID.RH.180"|"APORTES DE SEGURIDAD SOCIAL"|"S"|||||||||
+"DGCID.RH.180.330"|"ARP"|"SS"|1|19||||||"X"|"Cumplido su tiempo de retención seleccionar una muestra representativa del 10%"
+|"Planillas"|"TD"||||"X"|||||
+|"Comunicaciones oficiales"|"TD"||||"X"|||||
+"DGCID.RH.180.345"|"CAJAS DE COMPENSACION"|"SS"|1|19||||||"X"|"Cumplido su tiempo de retención seleccionar una muestra representativa del 10%"
+|"Comunicaciones Oficiales "|"TD"|||"X"||||||
+"DGCID.RH.180.360"|"CESANTIAS"|"SS"|1|19||||||"X"|"Cumplido su tiempo de retención seleccionar una muestra representativa del 10%"
+|"Planillas"|"TD"||||"X"|||||
+|"Comunicaciones oficiales"|"TD"||||"X"|||||
+"DGCID.RH.180.375"|"EPS"|"SS"|1|19||||||"X"|"Cumplido su tiempo de retención seleccionar una muestra representativa del 10%"
+|"Planillas"|"TD"||||"X"|||||
+|"Comunicaciones oficiales"|"TD"||||"X"|||||
+"DGCID.RH.180.390"|"PENSIONES"|"SS"|1|19||||||"X"|"Cumplido su tiempo de retención seleccionar una muestra representativa del 10%"
+|"Planillas"|"TD"||||"X"|||||
+|"Comunicaciones oficiales"|"TD"||||"X"|||||
+"DGCID.RH.440"|"CONVOCATORIAS "|"S"|1|4||||"X"|||"En relación con las hojas de  vida (Curriculum Vitae) de los interesados que no fueron seleccionados, se podrán eliminar si estas no se recogen pasado seis meses. "
+|"Convocatoria"|"TD"|||"X"||||||
+|"Curriculum Vitae"|"TD"|||"X"||||||
+|"Examenes"|"TD"|||"X"||||||
+"DGCID.RH.660"|"HISTORIA LABORAL "|"S"|||||||||
+"DGCID.RH.660.1425"|"HISTORIA LABORAL-APRENDIZ SENA "|"SS"|5|95||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Comunicaciones Oficiales "|"TD"|||"X"||||||
+|"Hoja de vida "|"TD"|||"X"||||||
+|"Copia Documento de Identidad"|"TD"||||"X"|||||
+|"Guia contrato de aprendizaje"|"TD"|||"X"||||||
+|"Afiliacion EPS"|"TD"||||"X"|||||
+"DGCID.RH.660.1440"|"HISTORIA LABORAL-FUNCIONARIOS"|"SS"|1|99||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Formato Unico de Hoja de Vida"|"TD"|||"X"||||||
+|"Oficio de aceptacion al cargo "|"TD"|||"X"||||||
+|"Cedula de Ciudadania "|"TD"||||"X"|||||
+|"Libreta Militar "|"TD"||||"X"|||||
+|"Resolucion de Nombramiento"|"TD"||||"X"|||||
+|"Contrato de Trabajo"|"TD"|||"X"||||||
+|"Certificado Judicial "|"TD"||||"X"|||||
+|"Certificado de antecedentes disciplinarios Procuraduria "|"TD"|||"X"||||||
+|"Certificado antecedentes Personeria "|"TD"|||"X"||||||
+|"Certificado de Boletin de Responsables fiscales "|"TD"|||"X"||||||
+|"Certificado BDME"|"TD"|||"X"||||||
+|"Certificado de Cuenta Bancaria"|"TD"||||"X"|||||
+|"Comunicaciones Oficiales"|"TD"|||"X"||||||
+|"Declaracion Juramentada de Bienes y Rentas"|"TD"|||"X"||||||
+|"Declaracion Extrajuicio Procesos Alimenticios"|"TD"|||"X"||||||
+|"Certificado de estudios"|"TD"||||"X"|||||
+|"Examenes Medicos de Admision "|"TD"|||"X"||||||
+|"Acta de Posesion"|"TD"||||"X"|||||
+|"Formato solicitud de carnet"|"TD"|||"X"||||||
+|"Afiliacion EPS"|"TD"||||"X"|||||
+|"Afiliacion A.R.P"|"TD"||||"X"|||||
+|"Afiliacion F.P.C."|"TD"||||"X"|||||
+|"Afiliacion caja de compensación"|"TD"||||"X"|||||
+|"Certificaciones laborales "|"TD"||||"X"|||||
+|"Certificaciones salariales "|"TD"||||"X"|||||
+|"Certificaciones cesantias "|"TD"||||"X"|||||
+|"Certificaciones capacitacion"|"TD"||||"X"|||||
+|"Certificaciones Declaracion de Renta "|"TD"||||"X"|||||
+|"Certificaciones Ingresos y Retenciones"|"TD"|||"X"||||||
+|"Certificado de credito y libranza "|"TD"||||"X"|||||
+|"Certificado Junta Central de Contadores"|"TD"||||"X"|||||
+|"Certificado de Pension"|"TD"||||"X"|||||
+|"Certificado de EPS"|"TD"|||"X"||||||
+|"Certificado de Periodo Gravable /Cartera Hipotecaria "|"TD"||||"X"|||||
+|"Registros Civiles"|"TD"||||"X"|||||
+|"Incapacidades"|"TD"|||"X"||||||
+|"Documentos de Identidad"|"TD"||||"X"|||||
+|"Resolucion de Comision "|"TD"||||"X"|||||
+|"Resolucion de Encargo "|"TD"||||"X"|||||
+|"Resolucion de Licencia "|"TD"||||"X"|||||
+|"Resolucion de Vacaciones "|"TD"||||"X"|||||
+|"Resolucion de Ascensos"|"TD"||||"X"|||||
+|"Carta de renuncia o despido"|"TD"|||"X"||||||
+|"Liquidacion de contratos"|"TD"||||"X"|||||
+|"Liquidacion de Prestaciones sociales"|"TD"||||"X"|||||
+"DGCID.RH.800"|"NÓMINA"|"S"|5|95||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Certificado de Disponibilidad Presupuestal y Certificado de Registro Presupuestal "|"TD"||||"X"|||||
+|"Orden de Pago"|"TD"||||"X"|||||
+|"Consolidado de Nómina"|"TD"|||"X"||||||
+|"Causación de Nómina"|"TD"||||"X"|||||
+|"Resolución"|"TD"|||"X"||||||
+|"Gastos de Representación"|"TD"|||"X"||||||
+|"Subsidio de Transporte"|"TD"|||"X"||||||
+|"Subsidio de Alimentación"|"TD"|||"X"||||||
+|"Bonificacion por servicio prestado"|"TD"|||"X"||||||
+|"Prima Técnica "|"TD"|||"X"||||||
+|"Prima de Servicios"|"TD"|||"X"||||||
+|"Relación de Horas Extras "|"TD"|||"X"||||||
+|"Reporte de Vacaciones "|"TD"|||"X"||||||
+|"Formulario de autoliquidacion EPS "|"TD"|||"X"||||||
+|"Formulario de autoliquidacion Pensiones "|"TD"||||"X"|||||
+|"Formulario de parafiscales"|"TD"||||"X"|||||
+|"Listado de autoliquidación de aportes Fondo de pensiones"|"TD"|||"X"||||||
+|"Listado de autoliquidación de aportes EPS"|"TD"|||"X"||||||
+|"Listado de autoliquidación de aportes ARP"|"TD"|||"X"||||||
+|"Listado de autoliquidación de aportes Parafiscales"|"TD"|||"X"||||||
+|"Relación de Descuentos "|"TD"|||"X"||||||
+|"Recibo Comprobantes de Pago"|"TD"|||"X"||||||
+"DGCID.TES.240"|"CAJA MENOR"|"S"|2|10||||"X"|"X"||"Cumplido su tiempo de retencion microfilmar y eliminar"
+|"Orden de pago legalización"|"TD"|||"X"||||||
+|"Soporte de Giro "|"TD"|||"X"||||||
+|"Certificado de Registro Presupuestal "|"TD"|||"X"||||||
+|"Solicitud de legalización o de Prestación de Servicios"|"TD"|||"X"||||||
+|"Resumen de Saldos Caja Menor "|"TD"|||"X"||||||
+|"Resumen de Rublo Presupuestal"|"TD"|||"X"||||||
+|"Comprobantes de Gasto  "|"TD"|||"X"||||||
+|"Recibo de Caja"|"TD"|||"X"||||||
+|"Factura"|"TD"|||"X"||||||
+|"Legalización de Dinero"|"TD"|||"X"||||||
+|"Solicitud de Gasto"|"TD"|||"X"||||||
+|"Certificado de Disponibilidad Presupuestal "|"TD"|||"X"||||||
+"DGCID.TES.280"|"CAUSACIÓN DE CUENTAS"|"S"|2|10||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Factura o Certificado de Cumplimiento"|"TD"|||"X"||||||
+|"Comprobante de Causación"|"TD"||||"X"|||||
+|"Liquidación de nómina o comprobante contable"|"TD"||||"X"|||||
+"DGCID.TES.340"|"COMPROBANTES DE EGRESO "|"S"|||||||||
+"DGCID.TES.340.540"|"AVANCES"|"SS"|2|10||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Resolución de Adjudicacion de Avance"|"TD"|||"X"||||||
+|"Orden de pago"|"TD"|||"X"||||||
+|"Informe de legalización avance"|"TD"|||"X"||||||
+|"Facturas"|"TD"|||"X"||||||
+|"Tiquetes Aereos"|"TD"|||"X"||||||
+|"Paz y Salvo de Avance"|"TD"|||"X"||||||
+"DGCID.TES.340.555"|"ORDENES DE PAGO GENERALES"|"SS"|2|18|||"X"||||
+|"Corrientes"|"TD"|||"X"||||||
+|"Orden de pago y sus anexos o soportes"|"TD"|||"X"||||||
+|"Factura "|"TD"|||"X"||||||
+|"Certificado de disponibilidad presupuestal"|"TD"||||"X"|||||
+|"Certificado de registro presupuestal"|"TD"||||"X"|||||
+|"Contrato"|"TD"||||"X"|||||
+|"Certificado de conformidad o recibo a satisfacción"|"TD"|||"X"||||||
+|"Solicitud de bienes y/o servicios"|"TD"|||"X"||||||
+"DGCID.TES.340.570"|"ORDENES DE PAGO DE NÓMINA"|"SS"|5|95||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Orden de Pago"|"TD"|||"X"||||||
+|"Liquidación"|"TD"|||"X"||||||
+|"Reporte de envio y aplicación"|"TD"|||"X"||||||
+|"Certificados de Disponibilidad Presupuestal "|"TD"|||"X"||||||
+|"Certificado de Registro Presupuestal "|"TD"|||"X"||||||
+|"Ordenes de Pago a Terceros"|"TD"|||"X"||||||
+|"Autoliquidación de Aportes Patronales"|"TD"|||"X"||||||
+|"Reporte pago masivo aportes eps,pension,arp,parafiscales"|"TD"||||"X"|||||
+"DGCID.TES.360"|"COMPROBANTES DE INGRESO"|"S"|2|10||||"X"|"X"||"Cumplido su tiempo de retencion microfilmar y eliminar"
+|"Comprobantes"|"TD"|||"X"||||||
+|"Recibo de Consignación "|"TD"||||"X"|||||
+|"Convenios Interadministrativos"|"TD"||||"X"|||||
+"DGCID.TES.640"|"FACTURAS "|"S"|||||||||
+"DGCID.TES.640.1395"|"FACTURAS ENTIDADES OFICIALES"|"SS"|2|10||||"X"|"X"||"Cumplido su tiempo de retencion microfilmar y eliminar "
+|"Comunicaciones Oficiales  "|"TD"|||"X"||||||
+|"Acta de cruce de cuentas"|"TD"|||"X"||||||
+|"Certificado de Disponibilidad Presupuestal "|"TD"|||"X"||||||
+|"Certificado de Registro Presupuestal "|"TD"|||"X"||||||
+|"Acta de posesion "|"TD"||||"X"|||||
+|"Acuerdo de creacion de la entidad"|"TD"||||"X"|||||
+|"Fotocopia cedula del representante legal "|"TD"||||"X"|||||
+|"Registro Unico Tributario"|"TD"||||"X"|||||
+|"Certificacion Bancaria "|"TD"|||"X"||||||
+"DGCID.TES.640.1410"|"FACTURA ENTIDADES PRIVADAS "|"SS"|2|10||"X"||"X"|"X"||"Cumplido su tiempo de retencion microfilmar y eliminar "
+"DGCID.TES.680"|"INFORMES"|"S"|||||||||
+"DGCID.TES.680.1575"|"INFORMES DE GESTIÓN TESORERIA"|"SS"|2|10||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Estado de tesorería"|"TD"|||"X"||||||
+|"Inversiones financieras"|"TD"|||"X"||||||
+|"Ejecución presupuestal de ingresos"|"TD"|||"X"||||||
+|"Disponibilidad de fondos"|"TD"|||"X"||||||
+"DGCID.TES.860"|"PLAN"|"S"|||||||||
+"DGCID.TES.860.1770"|"PLAN ANUAL DE CAJA"|"SS"|2|10||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"PAC aprobado y sus modificaciones periódicas"|"TD"|||"X"||||||
+|"Orden de pago para transferencia de fondos para"|"TD"|||"X"||||||
+|" Inversión"|"TD"|||"X"||||||
+|"Modificaciones"|"TD"|||"X"||||||
+"DGCID.TES.880"|"PORTAFOLIO DE SERVICIOS BANCARIOS"|"S"|2|10||||"X"|"X"||"Cumplido su tiempo de retención microfilmar y eliminar "
+|"Convenios"|"TD"|||"X"||||||
+|"Cuentas Bancarias  "|"TD"|||"X"||||||
+|"Comunicaciones Oficiales"|"TD"||||"X"|||||
