@@ -23,25 +23,24 @@ Copyright (C) 2013 Infometrika Ltda.
 
 from cid.core.entities import (VersionedNode, DateTimeProperty,
                                StringProperty, IntegerProperty, RelationshipTo, CaliopeDocument, timeStampGenerator,
-                               ZeroOrOne)
+                               ZeroOrOne, ZeroOrMore)
+
+
+class OrfeoDocumentType(VersionedNode):
+    name = StringProperty(index=True)
 
 
 class OrfeoSerie(VersionedNode):
     name = StringProperty(index=True)
     code = StringProperty(index=True)
-    part_of = RelationshipTo(VersionedNode, 'MEMBER_OF', ZeroOrOne)
-
-
-class OrfeoDocumentalType(VersionedNode):
-    name = StringProperty()
-    member_of = RelationshipTo(OrfeoSerie, 'MEMBER_OF', ZeroOrOne)
+    member_of = RelationshipTo(VersionedNode, 'MEMBER_OF', ZeroOrOne)
+    document_type = RelationshipTo(OrfeoDocumentType, 'DOCUMENT_TYPE', ZeroOrMore)
 
 
 class OrfeoAttachment(VersionedNode):
     description = StringProperty()
     pages = IntegerProperty()
     document_type = StringProperty()
-
     document_attachment = RelationshipTo(CaliopeDocument, 'FILE')
 
 
