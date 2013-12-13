@@ -2,6 +2,7 @@ import Image
 import base64
 import StringIO
 from wand.image import Image as WandImage
+from wand.color import Color
 
 
 def _open_image(filename):
@@ -34,6 +35,7 @@ def pil_make_thumbnail(im, max_height, max_width):
 
 def _pdf_thumbnail(filename):
     img = WandImage(filename=filename + '[0]')
+    img.background_color = Color('white')
     tw, th = get_thumbnail_size(img.height, img.width, 50, 50)
     img.resize(tw, th)
     rawData = img.make_blob('jpeg')

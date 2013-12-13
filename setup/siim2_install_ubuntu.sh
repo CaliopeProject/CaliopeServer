@@ -5,7 +5,7 @@ BASE=$(echo $PWD | awk -F'caliope_server_el_cid' '{print $1}')
 set -e
 sudo apt-get install -y git aptitude
 sudo aptitude -y update
-sudo apt-get install -y git aptitude redis-server software-properties-common python-software-properties make python-dev python-pip libevent-dev virtualenvwrapper python-virtualenv redis-server libjpeg-dev zlib1g-dev libpng-dev tesseract-ocr libtesseract3 tesseract-ocr-eng tesseract-ocr-spa
+sudo apt-get install -y git aptitude redis-server software-properties-common python-software-properties make python-dev python-pip libevent-dev virtualenvwrapper python-virtualenv redis-server libjpeg-dev zlib1g-dev libpng-dev tesseract-ocr libtesseract3 tesseract-ocr-eng imagemagick tesseract-ocr-spa
 
 
 sudo bash <<EOF
