@@ -181,7 +181,7 @@ class CaliopeServices(object):
         """
         hkey = uuid + "_class"
         if cls.r.hexists(hkey, "name"):
-            vncls = cls.r.hget(hkey, "name")
+            vncls = unicode(cls.r.hget(hkey, "name"),'utf-8')
             if vncls in VersionedNode\
                 .__extended_classes__:
                 return VersionedNode.__extended_classes__[vncls]
@@ -231,7 +231,7 @@ class CaliopeServices(object):
             0 if is an update.
             """
             if cls.r.hexists(uuid, field):
-                value = cls.r.hget(uuid, field)
+                value = unicode(cls.r.hget(uuid, field),'utf-8')
                 try:
                     return json.loads(value,
                                       object_hook=
@@ -394,7 +394,7 @@ class CaliopeServices(object):
             """
             hkey_name = uuid + "_rels"
             if cls.r.hexists(hkey_name, key):
-                return json.loads(cls.r.hget(hkey_name, key),
+                return json.loads(unicode(cls.r.hget(hkey_name, key),'utf-8'),
                                   object_hook=DatetimeDecoder.json_date_parser)
             return None
 
