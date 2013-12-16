@@ -156,7 +156,8 @@ class CaliopeServices(object):
 
     @classmethod
     def _get_draft_props(cls, uuid):
-        return cls.r.hgetall(uuid)
+        return {unicode(k,'utf-8'):unicode(v,'utf-8') for k,v in cls.r
+        .hgetall(uuid).items()}
 
     @classmethod
     def _get_draft_rels(cls, uuid):
@@ -485,9 +486,8 @@ class CaliopeServices(object):
                 changes = cls._get_draft_props(uuid)
                 for delta_k, delta_v in changes.items():
                     try:
-                        delta_v = json.loads(delta_v,
-                                             object_hook=
-                                             DatetimeDecoder.json_date_parser)
+                        delta_v = json.load(delta_v,
+                                             object_hook=DatetimeDecoder.json_date_parser)
                     except:
                         delta_v = DatetimeDecoder._parser(delta_v)
                         #: do the changes
