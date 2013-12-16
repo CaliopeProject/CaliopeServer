@@ -1,13 +1,15 @@
 # -*- encoding: utf-8 -*-
 
 #Caliope Entities
+from cid.core.forms import FormNode
+
 from cid.core.entities import (VersionedNode, RelationshipFrom,
                                CaliopeUser, One, NotConnected, DateTimeProperty,
                                StringProperty, IntegerProperty, FloatProperty, CaliopeJSONProperty)
 
 
 
-class FichaCatastral(VersionedNode):
+class FichaCatastral(FormNode):
     #Definición de datos para la ficha predial
 
     #imagenes_generales - IMÁGENES GENERALES DEL PROYECTO - Titulo1 - Se define como label en el formulario: imagenes_generales

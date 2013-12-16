@@ -1,12 +1,14 @@
 # -*- encoding: utf-8 -*-
 
 #Caliope Entities
+from cid.core.forms import FormNode
+
 from cid.core.entities import (VersionedNode, RelationshipFrom,
                                CaliopeUser, One, NotConnected, DateTimeProperty,
                                StringProperty, IntegerProperty, FloatProperty, CaliopeJSONProperty)
 
 
-class ChequeoTrasladoProvision(VersionedNode):
+class ChequeoTrasladoProvision(FormNode):
     #Definición de datos para la LISTA DE CHEQUEO PARA LA REALIZACIÓN DEL TRASLADO DE PROVISIÓN VIS/VIP EN PROYECTOS DE METROVIVIENDA
 
     #documentacion - DOCUMENTACIÓN - Tipo Label

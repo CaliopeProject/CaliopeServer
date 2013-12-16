@@ -1,12 +1,14 @@
 # -*- encoding: utf-8 -*-
 
 #Caliope Entities
+from cid.core.forms import FormNode
+
 from cid.core.entities import (VersionedNode, RelationshipFrom,
                                CaliopeUser, One, NotConnected, DateTimeProperty,
                                StringProperty, IntegerProperty, FloatProperty, CaliopeJSONProperty)
 
 
-class AplicacionTraslado(VersionedNode):
+class AplicacionTraslado(FormNode):
 
     #Definición de datos para el FORMULARIO APLICACIÓN DE TRASLADO
   

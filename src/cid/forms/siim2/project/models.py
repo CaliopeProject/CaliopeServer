@@ -23,12 +23,14 @@ Copyright (C) 2013 Infometrika Ltda.
 """
 
 #Caliope Entities
+from cid.core.forms import FormNode
+
 from cid.core.entities import (VersionedNode,
                                StringProperty,
                                CaliopeJSONProperty)
 
 
-class Project(VersionedNode):
+class Project(FormNode):
     name = StringProperty()
     general_location = StringProperty()
     locality = StringProperty()

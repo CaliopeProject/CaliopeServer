@@ -1,13 +1,16 @@
 # -*- encoding: utf-8 -*-
 
 #Caliope Entities
+
+from cid.core.forms import FormNode
+
 from cid.core.entities import (RelationshipFrom,
                                CaliopeUser, One, NotConnected, DateTimeProperty,
                                StringProperty, IntegerProperty, FloatProperty, CaliopeJSONProperty)
 
 from cid.core.entities.base_models.versioned_node import VersionedNode
 
-class ViabilidadNormativa(VersionedNode):
+class ViabilidadNormativa(FormNode):
     #Definición de datos para la ficha de viabilidad normativa 
     #nombre_proyecto NOMBRE DEL PROYECTO - Se define como label en el formulario
     #localización = tipo adjunto

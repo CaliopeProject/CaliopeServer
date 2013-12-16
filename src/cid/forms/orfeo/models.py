@@ -21,30 +21,31 @@ Copyright (C) 2013 Infometrika Ltda.
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from cid.core.entities import (VersionedNode, DateTimeProperty,
+from cid.core.forms import FormNode
+from cid.core.entities import (DateTimeProperty,
                                StringProperty, IntegerProperty, RelationshipTo, CaliopeDocument, timeStampGenerator,
                                ZeroOrOne, ZeroOrMore)
 
 
-class OrfeoDocumentType(VersionedNode):
+class OrfeoDocumentType(FormNode):
     name = StringProperty(index=True)
 
 
-class OrfeoSerie(VersionedNode):
+class OrfeoSerie(FormNode):
     name = StringProperty(index=True)
     code = StringProperty(index=True)
-    member_of = RelationshipTo(VersionedNode, 'MEMBER_OF', ZeroOrOne)
+    member_of = RelationshipTo(FormNode, 'MEMBER_OF', ZeroOrOne)
     document_type = RelationshipTo(OrfeoDocumentType, 'DOCUMENT_TYPE', ZeroOrMore)
 
 
-class OrfeoAttachment(VersionedNode):
+class OrfeoAttachment(FormNode):
     description = StringProperty()
     pages = IntegerProperty()
     document_type = StringProperty()
     document_attachment = RelationshipTo(CaliopeDocument, 'FILE')
 
 
-class Orfeo(VersionedNode):
+class Orfeo(FormNode):
     register_time = DateTimeProperty(default=timeStampGenerator)
     document_time = DateTimeProperty()
     reference_code = StringProperty()

@@ -1,12 +1,14 @@
 # -*- encoding: utf-8 -*-
 
 #Caliope Entities
+from cid.core.forms import FormNode
+
 from cid.core.entities import (VersionedNode, RelationshipFrom,
                                CaliopeUser, One, NotConnected, DateTimeProperty,
                                StringProperty, IntegerProperty, FloatProperty, CaliopeJSONProperty)
 
 
-class FichaPrejuridica(VersionedNode):
+class FichaPrejuridica(FormNode):
 
     #Definición de datos para la FICHA PRE- JURÍDICA
 

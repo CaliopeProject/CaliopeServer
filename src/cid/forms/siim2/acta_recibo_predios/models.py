@@ -1,13 +1,15 @@
 # -*- encoding: utf-8 -*-
 
 #Caliope Entities
+from cid.core.forms import FormNode
+
 from cid.core.entities import (VersionedNode, RelationshipFrom,
                                CaliopeUser, One, NotConnected, DateTimeProperty,
                                StringProperty, IntegerProperty, FloatProperty, CaliopeJSONProperty)
 
 
 
-class ActaReciboPredios(VersionedNode):
+class ActaReciboPredios(FormNode):
     #Definición de datos para el ACTA DE RECIBO DE PREDIOS
     fecha_acta = DateTimeProperty() # FECHA definido en el formulario como "datepicker"
     hora_acta = StringProperty() # HORA:

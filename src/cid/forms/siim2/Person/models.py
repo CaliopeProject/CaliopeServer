@@ -1,3 +1,5 @@
+from cid.core.forms import FormNode
+
 from cid.core.entities import (RelationshipFrom,
                                CaliopeUser, ZeroOrMore,
                                RelationshipTo,
@@ -6,7 +8,7 @@ from cid.core.entities import (RelationshipFrom,
 from cid.core.entities.base_models.versioned_node import VersionedNode
 
 
-class Person(VersionedNode):
+class Person(FormNode):
     name = StringProperty(index=True, index_name="PersonNames",
                           index_config={"type" : "fulltext"})
     surname = StringProperty()

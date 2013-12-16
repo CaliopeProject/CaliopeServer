@@ -1,14 +1,13 @@
 # -*- encoding: utf-8 -*-
 
 #Caliope Entities
+from cid.core.forms import FormNode
+
 from cid.core.entities import (RelationshipFrom,
                                CaliopeUser, One, NotConnected, DateTimeProperty,
                                StringProperty, IntegerProperty, FloatProperty, CaliopeJSONProperty)
 
-from cid.core.entities.base_models.versioned_node import VersionedNode
-
-
-class EvaluacionProducto(VersionedNode):
+class EvaluacionProducto(FormNode):
     #Definición de datos para el formato EVALUACIÓN DEL PRODUCTO
 
     # evaluacion_producto - EVALUACIÓN DEL PRODUCTO - Tipo Label
