@@ -27,7 +27,10 @@ import sys
 
 from cid.forms.orfeo.models import OrfeoSerie, OrfeoDocumentType
 
-
+def unicode_csv_reader(utf8_data, dialect=csv.excel, **kwargs):
+    csv_reader = csv.reader(utf8_data, dialect=dialect, **kwargs)
+    for row in csv_reader:
+        yield [unicode(cell, 'utf-8') for cell in row]
 
 def main(argv):
     if len(argv) is not 1:
@@ -40,7 +43,11 @@ def main(argv):
 
 def import_trd_from_csv(filename):
     with open(filename, 'rb') as csvfile:
-        records = csv.reader(csvfile, delimiter='|', quotechar='"')
+        dialect = csv.Sniffer().sniff(csvfile.read(1024))
+        csvfile.seek(0)
+        records = unicode_csv_reader(csvfile, dialect, delimiter='|', quotechar='"')
+
+        #records = csv.reader(csvfile, delimiter='|', quotechar='"')
         head0 = records.next()
         head1 = records.next()
         current_serie = None
