@@ -45,14 +45,18 @@ def import_trd_from_csv(filename):
         head1 = records.next()
         current_serie = None
         for row in records:
+            code = row[0].split('.')
+            name = row[1]
             type = row[2]
             if type not in ['TD', 'S', 'SS']:
                 print row + "unclassified entry"
 
             if type == 'TD':
-                dtnode = OrfeoDocumentType()
-                dtnode.name = row[1]
-                dtnode.save()
+                dtnode = OrfeoDocumentType.index.search(name=name)
+                if not len(dtnode):
+                    dtnode = OrfeoDocumentType()
+                    dtnode.name = row[1]
+                    dtnode.save()
 
 
 

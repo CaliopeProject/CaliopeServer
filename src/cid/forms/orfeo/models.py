@@ -22,18 +22,18 @@ Copyright (C) 2013 Infometrika Ltda.
 """
 
 from cid.core.forms import FormNode
-from cid.core.entities import (DateTimeProperty,
+from cid.core.entities import (VersionedNode, DateTimeProperty,
                                StringProperty, IntegerProperty, RelationshipTo, CaliopeDocument, timeStampGenerator,
                                ZeroOrOne, ZeroOrMore)
 
 
-class OrfeoDocumentType(FormNode):
-    name = StringProperty(index=True)
+class OrfeoDocumentType(VersionedNode):
+    name = StringProperty(unique_index=True)
 
 
-class OrfeoSerie(FormNode):
-    name = StringProperty(index=True)
-    code = StringProperty(index=True)
+class OrfeoSerie(VersionedNode):
+    name = StringProperty(unique_index=True)
+    code = StringProperty(unique_index=True)
     member_of = RelationshipTo(FormNode, 'MEMBER_OF', ZeroOrOne)
     document_type = RelationshipTo(OrfeoDocumentType, 'DOCUMENT_TYPE', ZeroOrMore)
 
