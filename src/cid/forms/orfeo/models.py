@@ -23,7 +23,8 @@ Copyright (C) 2013 Infometrika Ltda.
 
 from cid.core.entities import (VersionedNode, DateTimeProperty,
                                StringProperty, IntegerProperty, RelationshipTo, CaliopeDocument, timeStampGenerator)
-
+from cid.forms.siim2.Company.models import Company
+from cid.forms.siim2.Person.models import Person
 
 class OrfeoAttachment(VersionedNode):
     description = StringProperty()
@@ -43,4 +44,8 @@ class Orfeo(VersionedNode):
     sequence = StringProperty(unique_index=True)
 
     attachment = RelationshipTo(OrfeoAttachment, 'ATTACHMENT')
+    #: Destinatario persona
+    receiver_person = RelationshipTo(Person, 'RECEIVER_PERSON')
+    #: Destinatario empresa
+    receiver_company = RelationshipTo(Company, 'RECEIVER_COMPANY')
 
