@@ -54,8 +54,8 @@ class TaskServicesTestCase(unittest.TestCase):
         caliope_server.app.config['TESTING'] = True
         caliope_server.init_flask_app()
         caliope_server.configure_server_and_app(
-            "../../conf/test_caliope_server.json")
-        caliope_server.configure_logger("../../conf/tests_logger.json")
+            "conf/test_caliope_server.json")
+        caliope_server.configure_logger("conf/tests_logger.json")
         caliope_server.register_modules()
         caliope_server.app.storekv = RedisStore(redis.StrictRedis())
         self.http_server = WSGIServer((caliope_server.app.config['address'],

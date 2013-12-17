@@ -89,8 +89,10 @@ class FormManager(CaliopeServices):
         if formId in current_app.caliope_forms:
             form = current_app.caliope_forms[formId]
             module = form['module']
-            rv = [vnode.serialize() for vnode in module.category().instance.all()]
-
+            if filter and len(filter) == 1:
+                k,v = filter.popitem()
+                query = k + ':' + v
+                rv = [vnode.serialize() for vnode in module.index.search(query)]
         return rv
 
     @classmethod

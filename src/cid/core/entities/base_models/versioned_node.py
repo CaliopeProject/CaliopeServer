@@ -21,7 +21,7 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
-import types
+import re
 
 from py2neo import neo4j
 from neomodel import (StringProperty,
@@ -36,7 +36,9 @@ from neomodel import (StringProperty,
                       RelationshipDefinition,
                       RelationshipManager,
                       RelationshipFrom,
-                      RelationshipTo)
+                      RelationshipTo,
+                      CustomBatch,
+                      connection)
 
 from neomodel.contrib import SemiStructuredNode
 
@@ -44,6 +46,9 @@ from cid.core.utils import uuidGenerator, timeStampGenerator, DictDiffer
 
 from caliope_properties import CaliopeJSONProperty
 
+
+camel_to_upper = lambda x: "_".join(word.upper() for word in re.split(r"([A-Z][0-9a-z]*)", x)[1::2])
+upper_to_camel = lambda x: "".join(word.title() for word in x.split("_"))
 
 class VersionedNode(SemiStructuredNode):
     """
@@ -292,6 +297,8 @@ class VersionedNode(SemiStructuredNode):
                                       RelationshipManager):
                         setattr(copy, field, getattr(stored_node, field))
                 copy.save(skip_difference=True)
+                #Don't keep track of old information
+                self._remove_indexes(copy)
                 if len(self.parent):
                     copy.parent.connect(self.parent.get())
                     self.parent.disconnect(self.parent.get())
@@ -300,6 +307,13 @@ class VersionedNode(SemiStructuredNode):
                 self.timestamp = timeStampGenerator()
         super(VersionedNode, self).save()
         return self
+
+
+    def _remove_indexes(self, vnode):
+        batch = CustomBatch(connection(), vnode.index.name, vnode.__node__.id)
+        props = self.deflate(vnode.__properties__, vnode.__node__.id)
+        self._remove_prop_indexes(vnode.__node__, props, batch)
+        batch.submit()
 
     def update_field(self, field_name, new_value, field_id=None,
                      special=False):
@@ -357,9 +371,9 @@ class VersionedNode(SemiStructuredNode):
         previous = self.parent.single()
         if previous:
             p_data = previous._get_node_data()
-            p_data.update(previous._serialize_relationships())
+            #p_data.update(previous._serialize_relationships())
             c_data = self._get_node_data()
-            c_data.update(self._serialize_relationships())
+            #c_data.update(self._serialize_relationships())
             diff = DictDiffer(c_data, p_data)
             history[previous.uuid] = \
                 {'changed': {k:v for k,v in p_data.iteritems()
@@ -372,8 +386,18 @@ class VersionedNode(SemiStructuredNode):
                                if k in diff.unchanged()},
                  'change_info': p_data['change_info'] if 'change_info' in
                                                          p_data else 'None'}
-
             previous._get_change_history(history=history)
+
+        rels = self._serialize_relationships()
+        allrels_history = {}
+        if rels:
+            for k, v in rels.items():
+                rel_history = {}
+                if v:
+                    for r_uuid in v.keys():
+                        rel_history[r_uuid] = VersionedNode.pull(r_uuid)._get_change_history(history={})
+                allrels_history[k] = rel_history
+        history.update(allrels_history)
         return history
 
     def get_history(self, format='json'):

@@ -19,7 +19,7 @@
             "name": "category",
             "caption": "Categoria",
             "type": "text",
-            "class": "input-large",
+            "class": "input-xlarge",
             "readonly" : true,
             "relation": {
                 "rel_name" : "holders",
@@ -114,22 +114,9 @@
             }
         },
         {
-            "name": "status",
-            "caption": "Estado",
-            "class": "input-large",
-            "type": "multi-choices",
-            "single": "true",
-            "options-load-server": {
-                "method": "accounts.getAll",
-                "field-value": "estado",
-                "field-desc": "desc",
-                "field-image": "image"
-            }
-        },
-        {
             "name": "name",
             "caption": "Nombre",
-            "class": "input-large",
+            "class": "input-xlarge",
             "type": "text",
             "validations": {
                 "required": true
@@ -138,7 +125,7 @@
         {
             "name": "description",
             "caption": "Descripción tarea",
-            "class": "input-large",
+            "class": "input-xlarge",
             "type": "wysiwyg",
             "wysiwyg-options" : {
               "toolbars" : [
@@ -194,7 +181,7 @@
                 },
                 {
                     "class": "span6",
-                    "elements": ["formtask", "deadline", "holders", "loopback_notification", "target", "status", "contexts"]
+                    "elements": ["formtask", "deadline", "holders", "loopback_notification", "target", "contexts"]
                 }
             ]
         }

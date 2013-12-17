@@ -1,9 +1,10 @@
 # -*- encoding: utf-8 -*-
 """
 @authors: Andrés Felipe Calderón andres.calderon@correlibre.org
-          Sebastián Ortiz V. neoecos@gmail.com
 
-SIIM2 Server is the web server of SIIM2 Framework
+@license:  GNU AFFERO GENERAL PUBLIC LICENSE
+
+SIIM Models are the data definition of SIIM2 Framework
 Copyright (C) 2013 Infometrika Ltda.
 
     This program is free software: you can redistribute it and/or modify
@@ -20,9 +21,9 @@ Copyright (C) 2013 Infometrika Ltda.
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from cid.core.forms.services import FormManager
-from cid.core.forms.models import FormNode
+from cid.core.entities import (VersionedNode,
+                               StringProperty)
 
 
-def get_service():
-    return FormManager()
+class FormNode(VersionedNode):
+    status = StringProperty()

@@ -1,3 +1,5 @@
+from cid.core.forms import FormNode
+
 from cid.core.entities import (RelationshipFrom,
                                CaliopeUser, One, NotConnected, DateTimeProperty,
                                RelationshipFrom,
@@ -7,7 +9,7 @@ from cid.core.entities import (RelationshipFrom,
 from cid.core.entities.base_models.versioned_node import VersionedNode
 
 
-class SIIMForm(VersionedNode):
+class SIIMForm(FormNode):
 
     ficha = StringProperty()
     estado = StringProperty()

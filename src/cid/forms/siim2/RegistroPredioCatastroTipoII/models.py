@@ -22,12 +22,13 @@ Copyright (C) 2013 Infometrika Ltda.
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from cid.core.entities import (VersionedNode, RelationshipFrom,
-                               CaliopeUser, One, NotConnected, DateTimeProperty,
-                               StringProperty, IntegerProperty, FloatProperty, CaliopeJSONProperty)
+from cid.core.forms import FormNode
+
+from cid.core.entities import (DateTimeProperty,
+                               StringProperty, IntegerProperty, FloatProperty)
 
 
-class RegistroPredioCatastroTipoII(VersionedNode):
+class RegistroPredioCatastroTipoII(FormNode):
     #: Unique and indexed properties first
     sector = StringProperty(unique_index=True)
     chip = StringProperty(unique_index=True)

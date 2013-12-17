@@ -1,13 +1,15 @@
 # -*- encoding: utf-8 -*-
 
 #Caliope Entities
+from cid.core.forms import FormNode
+
 from cid.core.entities import (VersionedNode, RelationshipFrom,
                                CaliopeUser, One, NotConnected, DateTimeProperty,
                                StringProperty, IntegerProperty, FloatProperty, CaliopeJSONProperty)
 
 
 
-class FichaPredial(VersionedNode):
+class FichaPredial(FormNode):
 
     #Definición de datos para la ficha predial
 

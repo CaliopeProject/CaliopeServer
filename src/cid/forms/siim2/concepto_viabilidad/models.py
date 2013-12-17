@@ -1,6 +1,8 @@
 # -*- encoding: utf-8 -*-
 
 #Caliope Entities
+from cid.core.forms import FormNode
+
 from cid.core.entities import (RelationshipFrom,
                                CaliopeUser, One, NotConnected, DateTimeProperty,
                                StringProperty, IntegerProperty, FloatProperty, CaliopeJSONProperty)
@@ -8,7 +10,7 @@ from cid.core.entities import (RelationshipFrom,
 from cid.core.entities.base_models.versioned_node import VersionedNode
 
 
-class ConceptoViabilidad(VersionedNode):
+class ConceptoViabilidad(FormNode):
 
     #Definición de datos para el CONCEPTO DE VIABILIDAD TECNICA DE PROYECTOS VIP
 

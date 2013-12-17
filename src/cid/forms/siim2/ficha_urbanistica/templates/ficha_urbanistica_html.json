@@ -3,6 +3,7 @@
         {
             "name": "title",
             "type": "div",
+            "class": "inline",
             "html": [
                 {
                     "type": "h1",
@@ -19,6 +20,13 @@
                 "required": true
             }
         },
+
+        {
+            "name": "status",
+            "class": "inline",
+            "type": "widget-status"
+        },
+
         {
             "name": "localizacion",
             "caption": "LOCALIZACIÓN",

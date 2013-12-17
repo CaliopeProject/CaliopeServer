@@ -22,16 +22,15 @@ Copyright (C) 2013 Infometrika Ltda.
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 #Caliope Entities
+from cid.core.forms import FormNode
+
 from cid.core.entities import (VersionedNode,
-                               RelationshipFrom,
                                ZeroOrMore,
                                RelationshipTo,
-                               StringProperty,
-                               CaliopeJSONProperty)
+                               StringProperty)
 
 
-class Company(VersionedNode):
-
+class Company(FormNode):
     #: Número de documento o identificacion
     number_identification = StringProperty()
     #: Dígito de verificacion del numero de identificacion
