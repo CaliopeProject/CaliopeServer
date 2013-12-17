@@ -52,30 +52,32 @@
             "format"  : "dd/MM/yyyy"
         },
         {
-          "name"        : "user",
+          "name"        : "receiver_person",
           "caption"     : "Destinatario Usuario",
           "type"        : "form",
           "cardinality" : "0",
           "options-form": {
             "formId"  : "Person",
             "generic" : "true",
+            "group"   : "true",
+            "group-name" : "DESTINATARIO USUARIO",
             "autocomplete"  : {
                 "method" : "form.find",
                 "find-fields" : ["name"],
                 "show-fields" : ["name", "surname"],
                 "load-init"   : false,
                 "load-on-type": true,
-                "type-min-length" : 3
+                "type-min-length" : 5
              }
           },
           "relation": {
-            "rel_name": "user",
+            "rel_name": "receiver_person",
             "class": "Person",
-            "target": "{{user}}"
+            "target": "{{receiver_person}}"
           }
         },
         {
-          "name": "company",
+          "name": "receiver_company",
           "caption": "Destinatario Empresa",
           "type": "form",
           "cardinality": "0",
@@ -84,9 +86,9 @@
             "generic": "true"
           },
           "relation": {
-            "rel_name": "company",
+            "rel_name": "receiver_company",
             "class": "Company",
-            "target": "{{company}}"
+            "target": "{{receiver_company}}"
           }
         },
         {
@@ -96,7 +98,9 @@
             "cardinality": "*",
             "options-form": {
                 "formId": "OrfeoAttachment",
-                "generic": "true"
+                "generic": "true",
+                "group"   : "true",
+                "group-name" : "DOCUMENTOS"
             },
             "relation": {
                 "rel_name": "attachment",

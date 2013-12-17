@@ -45,14 +45,14 @@
             {
               "class": "span6",
               "elements": [
-                "user"
+                "receiver_person"
                 ,"attachment"
               ]
             },
             {
               "class": "span6",
               "elements": [
-                "company"
+                "receiver_company"
               ]
             }
           ]
