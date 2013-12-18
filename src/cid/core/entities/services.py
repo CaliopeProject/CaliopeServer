@@ -217,7 +217,7 @@ class CaliopeServices(object):
         def append_change(uuid, key, value):
             if is_draft(uuid):
                 cls.r.hdel(cls.draft_hkey, uuid)
-            value = json.loads(json.dumps(value, cls=DatetimeEncoder),
+            value =     json.loads(json.dumps(value, cls=DatetimeEncoder),
                                object_hook=DatetimeDecoder.json_date_parser)
             if isinstance(value, (dict, list,)):
                 return cls.r.hset(uuid, key, json.dumps(value,
@@ -486,9 +486,9 @@ class CaliopeServices(object):
                 changes = cls._get_draft_props(uuid)
                 for delta_k, delta_v in changes.items():
                     try:
-                        delta_v = json.load(delta_v,
+                        delta_v = json.loads(delta_v,
                                              object_hook=DatetimeDecoder.json_date_parser)
-                    except:
+                    except BaseException as be:
                         delta_v = DatetimeDecoder._parser(delta_v)
                         #: do the changes
                     versioned_node.update_field(delta_k, delta_v)
