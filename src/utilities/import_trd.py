@@ -27,10 +27,12 @@ import sys
 
 from cid.forms.orfeo.models import OrfeoSerie, OrfeoDocumentType
 
+
 def unicode_csv_reader(utf8_data, dialect=csv.excel, **kwargs):
     csv_reader = csv.reader(utf8_data, dialect=dialect, **kwargs)
     for row in csv_reader:
         yield [unicode(cell, 'utf-8') for cell in row]
+
 
 def main(argv):
     if len(argv) is not 1:
@@ -39,6 +41,13 @@ def main(argv):
         print "Preparing to import from "
         print argv
         import_trd_from_csv(argv[0])
+
+
+import unicodedata
+
+
+def excludeAccents(s):
+    return ''.join((c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn'))
 
 
 def import_trd_from_csv(filename):
@@ -53,7 +62,7 @@ def import_trd_from_csv(filename):
         current_serie = None
         for row in records:
             code = row[0].split('.')
-            name = row[1]
+            name = excludeAccents(row[1])
             type = row[2]
             if type not in ['TD', 'S', 'SS']:
                 print row + "unclassified entry"
@@ -62,9 +71,9 @@ def import_trd_from_csv(filename):
                 dtnode = OrfeoDocumentType.index.search(name=name)
                 if not len(dtnode):
                     dtnode = OrfeoDocumentType()
-                    dtnode.name = row[1]
+                    dtnode.name = name
                     dtnode.save()
-
+                    print name + " added type"
 
 
 if __name__ == '__main__':
