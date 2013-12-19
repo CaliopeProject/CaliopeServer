@@ -61,11 +61,25 @@ def import_trd_from_csv(filename):
         head1 = records.next()
         current_serie = None
         for row in records:
-            code = row[0].split('.')
-            name = excludeAccents(row[1])
+            code = row[0]
+            name = excludeAccents(row[1]).strip(' ')
             type = row[2]
             if type not in ['TD', 'S', 'SS']:
                 print row + "unclassified entry"
+
+            if type == 'S' or type == 'SS':
+                #if len(code) != 2:
+                #    print "error code at " + str(code)
+                snode = OrfeoSerie.index.search(name=name)
+                if not len(snode):
+                    snode = OrfeoDocumentType()
+                    snode.name = name
+                    snode.code = code
+                    snode.save()
+                    current_serie = snode
+                    print name + " code = " + code + " serie added"
+                else:
+                    current_serie = snode[0]
 
             if type == 'TD':
                 dtnode = OrfeoDocumentType.index.search(name=name)
@@ -73,7 +87,12 @@ def import_trd_from_csv(filename):
                     dtnode = OrfeoDocumentType()
                     dtnode.name = name
                     dtnode.save()
-                    print name + " added type"
+                    current_dt= dtnode
+                else:
+                    current_dt = dtnode[0]
+#                    snode.document_type
+                    #print name + " added type"
+                current_dt.add_or_update_relationship_target(target_uuid=current_serie.uuid, rel_name='document_type')
 
 
 if __name__ == '__main__':

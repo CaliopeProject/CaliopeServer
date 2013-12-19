@@ -84,7 +84,7 @@ def uploader():
         rv = []
         for uploaded_file in request.files.getlist('files[]'):
             filename = secure_filename(uploaded_file.filename)
-            if uploaded_file and allowed_file(uploaded_file.filename):
+            if uploaded_file and allowed_file(uploaded_file.filename, ALLOWED_EXTENSIONS):
                 model = FormManager().get_empty_model('CaliopeDocument', data=True)
                 idfile = model['data']['uuid']['value']
                 uploaded_file.save(os.path.join(UPLOAD_FOLDER, idfile))
@@ -118,6 +118,6 @@ def uploader():
     return "unrecheable"
 
 
-def allowed_file(filename):
+def allowed_file(filename, ALLOWED_EXTENSIONS):
     return '.' in filename and \
            filename.lower().rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
