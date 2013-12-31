@@ -1,9 +1,14 @@
 #!/bin/bash
+
+ENV=caliope
+PYTHON=${HOME}/.virtualenvs/${ENV}/bin/python
+
+
 BASE=$(echo $PWD | awk -F'caliope_server_el_cid' '{print $1}')
 export PYTHONPATH=${BASE}/caliope_server_el_cid/src
 
 
-sudo apt-get install virtualenvwrapper python-dev python-pip libevent-dev redis-server libjpeg-dev zlib1g-dev libpng-dev tesseract-ocr libtesseract3 tesseract-ocr-eng tesseract-ocr-spa
+sudo apt-get install install python-dev python-pip libevent-dev redis-server imagemagick libjpeg-dev zlib1g-dev libpng-dev tesseract-ocr libtesseract3 tesseract-ocr-eng tesseract-ocr-spa
 
 PIL_LIBS="libjpeg.so libz.so libpng.so"
 
@@ -19,4 +24,4 @@ do
   fi
 done
 
-pip install --upgrade -r requirements.txt
+${HOME}/.virtualenvs/${ENV}/bin/pip install --upgrade -r requirements.txt
