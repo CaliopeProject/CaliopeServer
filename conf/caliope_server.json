@@ -27,6 +27,12 @@
                 }
             },
             {
+                "hyperion_proxy": {
+                    "package": "modules.hyperion_proxy",
+                    "route": "/d"
+                }
+            },
+            {
                 "forms": {
                     "package": "core.forms",
                     "service": "form"
