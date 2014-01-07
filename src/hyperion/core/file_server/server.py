@@ -60,6 +60,8 @@ def server(filename):
     else:
             STORAGE = '.'
 
+    filename = filename.split('.')[0]
+
     node = CaliopeDocument.pull(filename)
     file = open(os.path.join(STORAGE, filename), 'rb')
     data = wrap_file(request.environ, file)
