@@ -92,7 +92,7 @@ def import_trd_from_csv(filename):
                     current_dt = dtnode[0]
 #                    snode.document_type
                     #print name + " added type"
-                current_dt.add_or_update_relationship_target(target_uuid=current_serie.uuid, rel_name='document_type')
+                #current_dt.add_or_update_relationship_target(target_uuid=current_serie.uuid, rel_name='document_type')
 
 
 if __name__ == '__main__':

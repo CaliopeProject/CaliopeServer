@@ -22,3 +22,4 @@ install and run neo4j
 run `sudo apt-get install python-dev python-pip libevent-dev redis-server imagemagick libjpeg-dev zlib1g-dev libpng-dev tesseract-ocr libtesseract3 tesseract-ocr-eng tesseract-ocr-spa`
 run `pip install -r requirements.txt` to install requirements and start the server with `sh run_server.sh` then browse `http://localhost:9000/` to try out.
 
+
